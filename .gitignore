@@ -56,3 +56,8 @@ Release/
 /UnityProject/Easy3D-Project/Library
 /UnityProject/Easy3D-Project/Temp
 /Engine/Include
+
+
+# VS2015 bullshit
+*.VC.opendb
+*.VC.db
