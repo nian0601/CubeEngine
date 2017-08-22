@@ -4,19 +4,31 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Precompile</Filter>
     </ClCompile>
-    <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="CE_Engine.cpp" />
+    <ClCompile Include="CE_AssetManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
       <UniqueIdentifier>{87e0d177-5502-4fef-b522-fc3042398d4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{6e9bd263-f256-4572-a822-769f92a2f3fa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Precompile</Filter>
     </ClInclude>
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="CE_Engine.h" />
+    <ClInclude Include="CE_AssetManager.h" />
+    <ClInclude Include="CE_Vector2.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Vector3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Vector4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "Game.h"
 
-#include <AssetManager.h>
+#include <CE_AssetManager.h>
 
 Game::Game()
 {
-	AssetManager myAssetManager;
+	CE_AssetManager myAssetManager;
 }
 
 

@@ -1,12 +1,12 @@
 #include "stdafx.h"
 
 #include <Game.h>
-#include <Engine.h>
+#include <CE_Engine.h>
 
 int main()
 {
 	Game myGame;
-	Engine myEngine;
+	CE_Engine myEngine;
 
 	int apa = 5;
 }
