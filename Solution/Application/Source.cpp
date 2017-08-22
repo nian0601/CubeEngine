@@ -8,5 +8,7 @@ int main()
 	Game myGame;
 	CE_Engine myEngine;
 
-	int apa = 5;
+	myEngine.Run();
+	myGame;
+	myEngine;
 }
