@@ -7,6 +7,12 @@
     <ClCompile Include="CE_Engine.cpp" />
     <ClCompile Include="CE_AssetManager.cpp" />
     <ClCompile Include="CE_WindowHandler.cpp" />
+    <ClCompile Include="CE_DebugLogger.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_Murmur.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -14,6 +20,12 @@
     </Filter>
     <Filter Include="Math">
       <UniqueIdentifier>{6e9bd263-f256-4572-a822-769f92a2f3fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{db58d6fd-001a-403c-9c36-e66bc54f8f25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="String">
+      <UniqueIdentifier>{76d545d5-1bd8-4bbb-962b-cf6b9983c125}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -32,5 +44,21 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="CE_WindowHandler.h" />
+    <ClInclude Include="CE_DebugLogger.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Memory.h" />
+    <ClInclude Include="CE_String.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Murmur.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Hashing.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Assert.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

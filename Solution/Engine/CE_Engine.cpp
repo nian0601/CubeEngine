@@ -5,6 +5,7 @@
 CE_Engine::CE_Engine()
 	: myWindowHandler(1280, 720)
 {
+	CE_ASSERT(false, "Test %f", 123.f);
 }
 
 

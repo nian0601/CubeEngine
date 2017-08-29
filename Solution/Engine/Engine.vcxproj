@@ -125,19 +125,27 @@
   <ItemGroup>
     <ClCompile Include="CE_AssetManager.cpp" />
     <ClCompile Include="CE_Engine.cpp" />
+    <ClCompile Include="CE_Murmur.cpp" />
     <ClCompile Include="CE_WindowHandler.cpp" />
+    <ClCompile Include="CE_DebugLogger.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CE_Assert.h" />
     <ClInclude Include="CE_AssetManager.h" />
     <ClInclude Include="CE_Engine.h" />
+    <ClInclude Include="CE_Hashing.h" />
+    <ClInclude Include="CE_Memory.h" />
+    <ClInclude Include="CE_Murmur.h" />
+    <ClInclude Include="CE_String.h" />
     <ClInclude Include="CE_Vector2.h" />
     <ClInclude Include="CE_Vector3.h" />
     <ClInclude Include="CE_Vector4.h" />
     <ClInclude Include="CE_WindowHandler.h" />
+    <ClInclude Include="CE_DebugLogger.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
