@@ -1,6 +1,7 @@
 #pragma once
 
-#include "CE_WindowHandler.h"
+class CE_DirectX;
+class CE_WindowHandler;
 
 class CE_Engine
 {
@@ -11,6 +12,7 @@ public:
 	void Run();
 
 private:
-	CE_WindowHandler myWindowHandler;
+	CE_WindowHandler* myWindowHandler;
+	CE_DirectX* myDirectX;
 };
 

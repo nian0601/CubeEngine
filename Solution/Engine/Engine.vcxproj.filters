@@ -13,6 +13,12 @@
     <ClCompile Include="CE_Murmur.cpp">
       <Filter>String</Filter>
     </ClCompile>
+    <ClCompile Include="CE_DirectX.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_DirextXFactory.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -26,6 +32,9 @@
     </Filter>
     <Filter Include="String">
       <UniqueIdentifier>{76d545d5-1bd8-4bbb-962b-cf6b9983c125}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DirectX">
+      <UniqueIdentifier>{4f59e534-afaa-4e7a-8b8a-61c5b3b05204}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +68,12 @@
     </ClInclude>
     <ClInclude Include="CE_Assert.h">
       <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_DirectX.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_DirextXFactory.h">
+      <Filter>DirectX</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,10 +1,9 @@
 #include "stdafx.h"
 #include "CE_WindowHandler.h"
 
-#include <windows.h>
+
 #include <WinUser.h>
 
-static HWND CE_WindowHandler_Hwnd;
 static MSG CE_WindowHandler_EventMsg;
 LRESULT CALLBACK CE_WindowHandler_StaticWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -57,6 +56,9 @@ LRESULT CALLBACK CE_WindowHandler_StaticWndProc(HWND hWnd, UINT message, WPARAM 
 
 CE_WindowHandler::CE_WindowHandler(int aWidth, int aHeight)
 {
+	myWindowSize.x = aWidth;
+	myWindowSize.y = aHeight;
+
 	const char* windowTitle = "Cube Engine";
 
 	WNDCLASSEX wcex;
@@ -79,7 +81,7 @@ CE_WindowHandler::CE_WindowHandler(int aWidth, int aHeight)
 	RECT rc = { 0, 0, aWidth, aHeight };
 	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
-	CE_WindowHandler_Hwnd = CreateWindowEx(
+	myHWND = CreateWindowEx(
 		WS_EX_CLIENTEDGE,
 		windowTitle,
 		windowTitle,
@@ -93,10 +95,10 @@ CE_WindowHandler::CE_WindowHandler(int aWidth, int aHeight)
 		GetModuleHandle(NULL),
 		this);
 
-	CE_ASSERT(CE_WindowHandler_Hwnd != nullptr, "Failed to CreateWindowEx");
+	CE_ASSERT(myHWND != nullptr, "Failed to CreateWindowEx");
 
-	ShowWindow(CE_WindowHandler_Hwnd, 10);
-	UpdateWindow(CE_WindowHandler_Hwnd);
+	ShowWindow(myHWND, 10);
+	UpdateWindow(myHWND);
 }
 
 bool CE_WindowHandler::PumpEvent()
@@ -120,8 +122,8 @@ void CE_WindowHandler::HandleWindowMessage(const CE_WindowMessage& aMessage)
 	{
 	case CE_WindowMessage::PAINT:
 		PAINTSTRUCT ps;
-		BeginPaint(CE_WindowHandler_Hwnd, &ps);
-		EndPaint(CE_WindowHandler_Hwnd, &ps);
+		BeginPaint(myHWND, &ps);
+		EndPaint(myHWND, &ps);
 		break;
 	case CE_WindowMessage::DESTROY:
 		PostQuitMessage(0);
