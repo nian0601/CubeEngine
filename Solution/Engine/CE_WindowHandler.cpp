@@ -18,7 +18,7 @@ LRESULT CALLBACK CE_WindowHandler_StaticWndProc(HWND hWnd, UINT message, WPARAM 
 		{
 			if (GetLastError() != 0)
 			{
-				//DL_ASSERT("Failed to setup WndProc");
+				CE_ASSERT_ALWAYS("Failed to setup WndProc");
 				return FALSE;
 			}
 		}
@@ -74,9 +74,7 @@ CE_WindowHandler::CE_WindowHandler(int aWidth, int aHeight)
 	wcex.lpszClassName = windowTitle;
 	wcex.hIconSm = LoadIcon(wcex.hInstance, NULL);
 
-	RegisterClassEx(&wcex);
-
-	//DL_ASSERT_EXP(RegisterClassEx(&wcex) != FALSE, "Failed to RegisterClassEx");
+	CE_ASSERT(RegisterClassEx(&wcex) != FALSE, "Failed to RegisterClassEx");
 
 	RECT rc = { 0, 0, aWidth, aHeight };
 	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
@@ -95,7 +93,7 @@ CE_WindowHandler::CE_WindowHandler(int aWidth, int aHeight)
 		GetModuleHandle(NULL),
 		this);
 
-	//DL_ASSERT_EXP(myHwnd != nullptr, "Failed to CreateWindowEx");
+	CE_ASSERT(CE_WindowHandler_Hwnd != nullptr, "Failed to CreateWindowEx");
 
 	ShowWindow(CE_WindowHandler_Hwnd, 10);
 	UpdateWindow(CE_WindowHandler_Hwnd);
