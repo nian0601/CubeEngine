@@ -75,5 +75,11 @@
     <ClInclude Include="CE_DirextXFactory.h">
       <Filter>DirectX</Filter>
     </ClInclude>
+    <ClInclude Include="CE_Matrix33.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Matrix44.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
