@@ -21,6 +21,9 @@ public:
 
 	void FinishFrame();
 
+	ID3D11Device* myDevice;
+	ID3D11DeviceContext* myDeviceContext;
+
 private:
 	void SetupSwapChain();
 	void SetupDebugInterface();
@@ -31,8 +34,7 @@ private:
 	const CE_WindowHandler* myWindowHandler;
 
 	ID3D11Debug* myDebugInterface;
-	ID3D11Device* myDevice;
-	ID3D11DeviceContext* myDeviceContext;
+	
 	IDXGISwapChain* mySwapChain;
 
 

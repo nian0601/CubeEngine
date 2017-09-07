@@ -4,7 +4,7 @@ struct PosColorPixel
 	float4 Color : COLOR;
 };
 
-float4 PixelShader(PosColorPixel anInput)
+float4 ColorPixelShader(PosColorPixel anInput) : SV_TARGET
 {
 	return anInput.Color;
 };

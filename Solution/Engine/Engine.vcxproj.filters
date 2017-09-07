@@ -19,6 +19,12 @@
     <ClCompile Include="CE_DirextXFactory.cpp">
       <Filter>DirectX</Filter>
     </ClCompile>
+    <ClCompile Include="CE_ColorShaderClass.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_Model.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -35,6 +41,9 @@
     </Filter>
     <Filter Include="DirectX">
       <UniqueIdentifier>{4f59e534-afaa-4e7a-8b8a-61c5b3b05204}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{ff1c7d03-2fd7-4e4a-ac57-057201fa0b4b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +88,27 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="CE_Matrix44.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_ColorShaderClass.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Model.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Matrix33_Decl.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Matrix44_Decl.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Vector2_Decl.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Vector3_Decl.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Vector4_Decl.h">
       <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
