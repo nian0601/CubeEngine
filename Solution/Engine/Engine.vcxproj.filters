@@ -25,6 +25,9 @@
     <ClCompile Include="CE_Model.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="CE_Cube.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -112,5 +115,8 @@
       <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="CE_Types.h" />
+    <ClInclude Include="CE_Cube.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

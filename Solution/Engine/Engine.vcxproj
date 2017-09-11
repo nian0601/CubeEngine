@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="CE_AssetManager.cpp" />
     <ClCompile Include="CE_ColorShaderClass.cpp" />
+    <ClCompile Include="CE_Cube.cpp" />
     <ClCompile Include="CE_DirectX.cpp" />
     <ClCompile Include="CE_DirextXFactory.cpp" />
     <ClCompile Include="CE_Engine.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="CE_Assert.h" />
     <ClInclude Include="CE_AssetManager.h" />
     <ClInclude Include="CE_ColorShaderClass.h" />
+    <ClInclude Include="CE_Cube.h" />
     <ClInclude Include="CE_DirectX.h" />
     <ClInclude Include="CE_DirextXFactory.h" />
     <ClInclude Include="CE_Engine.h" />

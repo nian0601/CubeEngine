@@ -5,6 +5,7 @@ class CE_WindowHandler;
 
 class CE_ColorShaderClass;
 class CE_Model;
+class CE_Cube;
 
 #include "CE_Vector3.h"
 #include "CE_Matrix44.h"
@@ -23,6 +24,7 @@ private:
 
 	CE_ColorShaderClass* myShader;
 	CE_Model* myModel;
+	CE_Cube* myCube;
 	CE_Matrix44f myWorld;
 	CE_Matrix44f myView;
 	CE_Matrix44f myViewProjection;
