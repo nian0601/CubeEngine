@@ -30,9 +30,9 @@ void CE_ColorShaderClass::Shutdown()
 	CE_SAFE_RELEASE(myVertexShader);
 }
 
-void CE_ColorShaderClass::Render(ID3D11DeviceContext* aContext, int aIndexCount, const CE_Matrix44f& aWorld, const CE_Matrix44f& aView, const CE_Matrix44f& aProjection)
+void CE_ColorShaderClass::Render(ID3D11DeviceContext* aContext, int aIndexCount, const CE_Matrix44f& aWorld, const CE_Matrix44f& aViewProjection)
 {
-	SetShaderParameters(aContext, aWorld, aView, aProjection);
+	SetShaderParameters(aContext, aWorld, aViewProjection);
 
 	RenderShader(aContext, aIndexCount);
 }
@@ -43,9 +43,10 @@ void CE_ColorShaderClass::InitShader(ID3D11Device* aDevice, const WCHAR* aVSName
 	ID3D10Blob* errorMessage = nullptr;
 
 	
+	int compileFlags = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION | D3D10_SHADER_ENABLE_STRICTNESS;
 
 	ID3D10Blob* vertexShaderBuffer = nullptr;
-	result = D3DCompileFromFile(aVSName, NULL, NULL, "ColorVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, &vertexShaderBuffer, &errorMessage);
+	result = D3DCompileFromFile(aVSName, NULL, NULL, "ColorVertexShader", "vs_5_0", compileFlags, 0, &vertexShaderBuffer, &errorMessage);
 	if (FAILED(result))
 	{
 		if (errorMessage)
@@ -56,7 +57,7 @@ void CE_ColorShaderClass::InitShader(ID3D11Device* aDevice, const WCHAR* aVSName
 	}
 
 	ID3D10Blob* pixelShaderBuffer = nullptr;
-	result = D3DCompileFromFile(aPSName, NULL, NULL, "ColorPixelShader", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, &pixelShaderBuffer, &errorMessage);
+	result = D3DCompileFromFile(aPSName, NULL, NULL, "ColorPixelShader", "ps_5_0", compileFlags, 0, &pixelShaderBuffer, &errorMessage);
 	if (FAILED(result))
 	{
 		if (errorMessage)
@@ -104,7 +105,7 @@ void CE_ColorShaderClass::InitShader(ID3D11Device* aDevice, const WCHAR* aVSName
 	result = aDevice->CreateBuffer(&matrixBufferDesc, NULL, &myMatrixBuffer);
 }
 
-void CE_ColorShaderClass::SetShaderParameters(ID3D11DeviceContext* aContext, const CE_Matrix44f& aWorld, const CE_Matrix44f& aView, const CE_Matrix44f& aProjection)
+void CE_ColorShaderClass::SetShaderParameters(ID3D11DeviceContext* aContext, const CE_Matrix44f& aWorld, const CE_Matrix44f& aViewProjection)
 {
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 
@@ -112,8 +113,7 @@ void CE_ColorShaderClass::SetShaderParameters(ID3D11DeviceContext* aContext, con
 
 	MatrixBufferType* dataPtr = (MatrixBufferType*)mappedResource.pData;
 	dataPtr->myWorld = aWorld;
-	dataPtr->myView = aView;
-	dataPtr->myProjection = aProjection;
+	dataPtr->myViewProjection = aViewProjection;
 
 	aContext->Unmap(myMatrixBuffer, 0);
 

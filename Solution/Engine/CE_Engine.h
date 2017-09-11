@@ -25,6 +25,7 @@ private:
 	CE_Model* myModel;
 	CE_Matrix44f myWorld;
 	CE_Matrix44f myView;
+	CE_Matrix44f myViewProjection;
 	CE_Matrix44f myProjection;
 
 	CE_Vector3i test;

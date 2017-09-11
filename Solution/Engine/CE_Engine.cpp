@@ -20,8 +20,10 @@ CE_Engine::CE_Engine()
 
 	myProjection = CE_Matrix44f::CreateProjectionMatrixLH(0.1f, 100.f, 720.f / 1280.f, PI * 0.5f);
 
-	myView.SetPos(CE_Vector4f(0.f, 0.f, -2.f, 0.f));
-	//myView = CE_InverseSimple(myView);
+	myView.SetPos(CE_Vector4f(0.f, 0.f, -5.f, 1.f));
+	myView = CE_InverseSimple(myView);
+
+	myViewProjection = myView * myProjection;
 }
 
 
@@ -36,7 +38,7 @@ void CE_Engine::Run()
 	while (myWindowHandler->PumpEvent())
 	{
 		myModel->Render(myDirectX->myDeviceContext);
-		myShader->Render(myDirectX->myDeviceContext, myModel->GetIndexCount(), myWorld, myView, myProjection);
+		myShader->Render(myDirectX->myDeviceContext, myModel->GetIndexCount(), myWorld, myViewProjection);
 		myDirectX->FinishFrame();
 	}
 }

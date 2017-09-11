@@ -1,8 +1,7 @@
 cbuffer MatrixBuffer
 {
 	Matrix WorldMatrix;
-	Matrix ViewMatrix;
-	Matrix ProjectionMatrix;
+	Matrix ViewProjectionMatrix;
 };
 
 struct PosColorVertex
@@ -21,13 +20,9 @@ struct PosColorPixel
 PosColorPixel ColorVertexShader(PosColorVertex aInput)
 {
 	PosColorPixel output;
-	output.Position = aInput.Position;
-	output.Position.w = 1.f;
 
-	output.Position = mul(output.Position, WorldMatrix);
-	output.Position = mul(output.Position, ViewMatrix);
-	output.Position = mul(output.Position, ProjectionMatrix);
-
+	Matrix mat = mul(WorldMatrix, ViewProjectionMatrix);
+	output.Position = mul(aInput.Position, mat);
 	output.Color = aInput.Color;
 	return output;
 };

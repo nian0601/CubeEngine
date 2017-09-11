@@ -161,6 +161,7 @@
     <ClInclude Include="CE_Model.h" />
     <ClInclude Include="CE_Murmur.h" />
     <ClInclude Include="CE_String.h" />
+    <ClInclude Include="CE_Types.h" />
     <ClInclude Include="CE_Vector2.h" />
     <ClInclude Include="CE_Vector2_Decl.h" />
     <ClInclude Include="CE_Vector3.h" />

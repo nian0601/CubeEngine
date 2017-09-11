@@ -20,10 +20,15 @@ CE_DirectX::CE_DirectX(const CE_WindowHandler* aWindowHandler)
 {
 	SetupSwapChain();
 
-	CE_DirextXFactory::Create(myDevice);
+	CE_DirextXFactory::Create(myDevice, myDeviceContext);
 
 	SetupDebugInterface();
 	SetupBackbuffer();
+
+	CE_DirextXFactory* factory = CE_DirextXFactory::GetInstance();
+	factory->SetRasterizerState(NO_CULLING);
+	factory->SetDepthStencilState(ENABLED);
+	factory->SetBlendState(NO_BLEND);
 }
 
 CE_DirectX::~CE_DirectX()

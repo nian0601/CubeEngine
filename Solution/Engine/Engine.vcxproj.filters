@@ -111,5 +111,6 @@
     <ClInclude Include="CE_Vector4_Decl.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="CE_Types.h" />
   </ItemGroup>
 </Project>
