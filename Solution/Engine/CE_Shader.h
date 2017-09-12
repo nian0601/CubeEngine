@@ -9,6 +9,7 @@ struct ID3D11Buffer;
 struct ID3D10Blob;
 
 class CE_GPUContext;
+class CE_Camera;
 
 class CE_Shader
 {
@@ -18,7 +19,7 @@ public:
 
 	void Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUContext);
 	void Shutdown();
-	void Render(const CE_GPUContext& aGPUContext, int aIndexCount, const CE_Matrix44f& aWorld, const CE_Matrix44f& aView, const CE_Matrix44f& aProjection);
+	void Render(const CE_GPUContext& aGPUContext, int aIndexCount, const CE_Matrix44f& aWorld, const CE_Camera& aCamera);
 
 private:
 	void OutputError(ID3D10Blob* aErrorBlob, const WCHAR* aShaderName);

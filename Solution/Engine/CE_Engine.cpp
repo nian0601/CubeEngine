@@ -5,6 +5,7 @@
 #include "CE_Shader.h"
 #include "CE_Model.h"
 #include "CE_GPUContext.h"
+#include "CE_Camera.h"
 
 #define PI 3.14159265f
 
@@ -17,11 +18,7 @@ CE_Engine::CE_Engine()
 	myShader->Init(L"Data/Shaders/Cube.ce_shader", *myGPUContext);
 	myCube = new CE_Model();
 	myCube->InitCube(*myGPUContext);
-
-	myProjection = CE_Matrix44f::CreateProjectionMatrixLH(0.1f, 100.f, 720.f / 1280.f, PI * 0.5f);
-
-	//myView.SetPos(CE_Vector3f(0.f, -5.f, -15.f));
-	myView = CE_InverseSimple(myView);
+	myCamera = new CE_Camera(myWindowHandler->GetWindowSize());
 
 	myWorld.SetPos(CE_Vector3f(1.f, 2.f, 5.f));
 }
@@ -43,7 +40,7 @@ void CE_Engine::Run()
 		myWorld.SetPos(pos);
 
 		myCube->Render(*myGPUContext); 
-		myShader->Render(*myGPUContext, myCube->GetIndexCount(), myWorld, myView, myProjection);
+		myShader->Render(*myGPUContext, myCube->GetIndexCount(), myWorld, *myCamera);
 		myGPUContext->EndFrame();
 	}
 }
