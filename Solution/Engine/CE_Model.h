@@ -14,7 +14,11 @@ public:
 	void InitCube(const CE_GPUContext& aGPUContext);
 	void Render(const CE_GPUContext& aGPUContext);
 
-	int GetIndexCount();
+	int GetIndexCount() const { return myIndexCount; }
+	const CE_Matrix44f& GetOrientation() const { return myOrientation; }
+
+	void SetPosition(const CE_Vector3f& aPosition);
+	void Rotate(const CE_Matrix44f& aRotation);
 
 private:
 	void InitBuffers(const CE_GPUContext& aGPUContext, void* aVertexData, void* aIndexData);
@@ -31,5 +35,7 @@ private:
 
 	ID3D11Buffer* myIndexBuffer;
 	int myIndexCount;
+
+	CE_Matrix44f myOrientation;
 };
 

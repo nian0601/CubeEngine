@@ -7,9 +7,6 @@ class CE_Shader;
 class CE_Model;
 class CE_Camera;
 
-#include "CE_Vector3.h"
-#include "CE_Matrix44.h"
-
 class CE_Engine
 {
 public:
@@ -26,7 +23,5 @@ private:
 	CE_Shader* myShader;
 	CE_Model* myCube;
 	CE_Camera* myCamera;
-
-	CE_Matrix44f myWorld;
 };
 

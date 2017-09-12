@@ -175,9 +175,17 @@ void CE_Model::Render(const CE_GPUContext& aGPUContext)
 	aGPUContext.GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-int CE_Model::GetIndexCount()
+void CE_Model::SetPosition(const CE_Vector3f& aPosition)
 {
-	return myIndexCount;
+	myOrientation.SetPos(aPosition);
+}
+
+void CE_Model::Rotate(const CE_Matrix44f& aRotation)
+{
+	CE_Vector3f pos = myOrientation.GetPos();
+	myOrientation.SetPos(CE_Vector3f());
+	myOrientation = myOrientation * aRotation;
+	myOrientation.SetPos(pos);
 }
 
 void CE_Model::InitBuffers(const CE_GPUContext& aGPUContext, void* aVertexData, void* aIndexData)

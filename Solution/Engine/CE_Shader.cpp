@@ -4,6 +4,7 @@
 #include <d3dcompiler.h>
 #include "CE_GPUContext.h"
 #include "CE_Camera.h"
+#include "CE_Model.h"
 
 
 CE_Shader::CE_Shader()
@@ -105,7 +106,7 @@ void CE_Shader::Shutdown()
 	CE_SAFE_RELEASE(myVertexShader);
 }
 
-void CE_Shader::Render(const CE_GPUContext& aGPUContext, int aIndexCount, const CE_Matrix44f& aWorld, const CE_Camera& aCamera)
+void CE_Shader::Render(const CE_GPUContext& aGPUContext, const CE_Model& aModel, const CE_Camera& aCamera)
 {
 	ID3D11DeviceContext* context = aGPUContext.GetContext();
 
@@ -115,7 +116,7 @@ void CE_Shader::Render(const CE_GPUContext& aGPUContext, int aIndexCount, const 
 	context->Map(myMatrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 
 	MatrixBufferType* dataPtr = (MatrixBufferType*)mappedResource.pData;
-	dataPtr->myWorld = aWorld;
+	dataPtr->myWorld = aModel.GetOrientation();
 	dataPtr->myView = aCamera.GetView();
 	dataPtr->myProjection = aCamera.GetProjection();
 
@@ -131,7 +132,7 @@ void CE_Shader::Render(const CE_GPUContext& aGPUContext, int aIndexCount, const 
 	context->VSSetShader(myVertexShader, NULL, 0);
 	context->PSSetShader(myPixelShader, NULL, 0);
 
-	context->DrawIndexed(aIndexCount, 0, 0);
+	context->DrawIndexed(aModel.GetIndexCount(), 0, 0);
 }
 
 void CE_Shader::OutputError(ID3D10Blob* aErrorBlob, const WCHAR* aShaderName)

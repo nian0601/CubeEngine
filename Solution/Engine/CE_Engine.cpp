@@ -20,7 +20,7 @@ CE_Engine::CE_Engine()
 	myCube->InitCube(*myGPUContext);
 	myCamera = new CE_Camera(myWindowHandler->GetWindowSize());
 
-	myWorld.SetPos(CE_Vector3f(1.f, 2.f, 5.f));
+	myCube->SetPosition(CE_Vector3f(1.f, 2.f, 5.f));
 }
 
 
@@ -34,13 +34,10 @@ void CE_Engine::Run()
 {
 	while (myWindowHandler->PumpEvent())
 	{
-		CE_Vector3f pos = myWorld.GetPos();
-		myWorld.SetPos(CE_Vector3f());
-		myWorld = CE_Matrix44f::CreateRotateAroundY(PI * 0.00001f) * myWorld;
-		myWorld.SetPos(pos);
+		myCube->Rotate(CE_Matrix44f::CreateRotateAroundY(PI * 0.00001f));
 
 		myCube->Render(*myGPUContext); 
-		myShader->Render(*myGPUContext, myCube->GetIndexCount(), myWorld, *myCamera);
+		myShader->Render(*myGPUContext, *myCube, *myCamera);
 		myGPUContext->EndFrame();
 	}
 }
