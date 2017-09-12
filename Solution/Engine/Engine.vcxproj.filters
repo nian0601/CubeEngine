@@ -5,7 +5,6 @@
       <Filter>Precompile</Filter>
     </ClCompile>
     <ClCompile Include="CE_Engine.cpp" />
-    <ClCompile Include="CE_AssetManager.cpp" />
     <ClCompile Include="CE_WindowHandler.cpp" />
     <ClCompile Include="CE_DebugLogger.cpp">
       <Filter>Debug</Filter>
@@ -54,7 +53,6 @@
       <Filter>Precompile</Filter>
     </ClInclude>
     <ClInclude Include="CE_Engine.h" />
-    <ClInclude Include="CE_AssetManager.h" />
     <ClInclude Include="CE_Vector2.h">
       <Filter>Math</Filter>
     </ClInclude>
