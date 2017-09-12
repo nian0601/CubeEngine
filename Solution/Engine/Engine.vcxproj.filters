@@ -19,14 +19,17 @@
     <ClCompile Include="CE_DirextXFactory.cpp">
       <Filter>DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="CE_ColorShaderClass.cpp">
-      <Filter>Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="CE_Model.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
     <ClCompile Include="CE_Cube.cpp">
       <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_Shader.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_GPUContext.cpp">
+      <Filter>DirectX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -93,9 +96,6 @@
     <ClInclude Include="CE_Matrix44.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="CE_ColorShaderClass.h">
-      <Filter>Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="CE_Model.h">
       <Filter>Rendering</Filter>
     </ClInclude>
@@ -117,6 +117,12 @@
     <ClInclude Include="CE_Types.h" />
     <ClInclude Include="CE_Cube.h">
       <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Shader.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_GPUContext.h">
+      <Filter>DirectX</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

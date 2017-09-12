@@ -58,7 +58,7 @@ CE_DirectX::~CE_DirectX()
 #endif
 }
 
-void CE_DirectX::FinishFrame()
+void CE_DirectX::EndFrame()
 {
 	mySwapChain->Present(0, 0);
 	float clearColor[4];

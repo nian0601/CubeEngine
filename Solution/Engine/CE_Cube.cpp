@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CE_Cube.h"
 #include <d3d11.h>
+#include "CE_GPUContext.h"
 
 
 CE_Cube::CE_Cube()
@@ -16,7 +17,7 @@ CE_Cube::~CE_Cube()
 	CE_SAFE_RELEASE(myVertexBuffer);
 }
 
-void CE_Cube::Init(ID3D11Device* aDevice)
+void CE_Cube::Init(const CE_GPUContext& aGPUContext)
 {
 #pragma region Vertices
 	myVertexCount = 24;
@@ -138,7 +139,7 @@ void CE_Cube::Init(ID3D11Device* aDevice)
 	vertexData.SysMemSlicePitch = 0;
 
 	HRESULT result;
-	result = aDevice->CreateBuffer(&vertexBufferDesc, &vertexData, &myVertexBuffer);
+	result = aGPUContext.GetDevice()->CreateBuffer(&vertexBufferDesc, &vertexData, &myVertexBuffer);
 	if (FAILED(result))
 		return;
 
@@ -156,7 +157,7 @@ void CE_Cube::Init(ID3D11Device* aDevice)
 	indexData.SysMemSlicePitch = 0;
 
 	// Create the index buffer.
-	result = aDevice->CreateBuffer(&indexBufferDesc, &indexData, &myIndexBuffer);
+	result = aGPUContext.GetDevice()->CreateBuffer(&indexBufferDesc, &indexData, &myIndexBuffer);
 	if (FAILED(result))
 		return;
 
@@ -164,14 +165,14 @@ void CE_Cube::Init(ID3D11Device* aDevice)
 	CE_SAFE_DELETE_ARRAY(indices);
 }
 
-void CE_Cube::Render(ID3D11DeviceContext* aContext)
+void CE_Cube::Render(const CE_GPUContext& aGPUContext)
 {
 	unsigned int stride = sizeof(VertexType);
 	unsigned int offset = 0;
 
-	aContext->IASetVertexBuffers(0, 1, &myVertexBuffer, &stride, &offset);
-	aContext->IASetIndexBuffer(myIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
-	aContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	aGPUContext.GetContext()->IASetVertexBuffers(0, 1, &myVertexBuffer, &stride, &offset);
+	aGPUContext.GetContext()->IASetIndexBuffer(myIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	aGPUContext.GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
 int CE_Cube::GetIndexCount()

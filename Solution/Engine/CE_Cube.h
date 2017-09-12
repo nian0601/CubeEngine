@@ -1,8 +1,8 @@
 #pragma once
 
 struct ID3D11Buffer;
-struct ID3D11Device;
-struct ID3D11DeviceContext;
+
+class CE_GPUContext;
 
 class CE_Cube
 {
@@ -10,8 +10,8 @@ public:
 	CE_Cube();
 	~CE_Cube();
 
-	void Init(ID3D11Device* aDevice);
-	void Render(ID3D11DeviceContext* aContext);
+	void Init(const CE_GPUContext& aGPUContext);
+	void Render(const CE_GPUContext& aGPUContext);
 
 	int GetIndexCount();
 

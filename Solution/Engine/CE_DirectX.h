@@ -19,10 +19,10 @@ public:
 	CE_DirectX(const CE_WindowHandler* aWindowHandler);
 	~CE_DirectX();
 
-	void FinishFrame();
+	void EndFrame();
 
-	ID3D11Device* myDevice;
-	ID3D11DeviceContext* myDeviceContext;
+	ID3D11Device* GetDevice() const { return myDevice; }
+	ID3D11DeviceContext* GetContext() const { return myDeviceContext; }
 
 private:
 	void SetupSwapChain();
@@ -36,6 +36,8 @@ private:
 	ID3D11Debug* myDebugInterface;
 	
 	IDXGISwapChain* mySwapChain;
+	ID3D11Device* myDevice;
+	ID3D11DeviceContext* myDeviceContext;
 
 
 	ID3D11Texture2D* myBackbuffer;

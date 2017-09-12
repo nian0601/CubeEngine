@@ -1,0 +1,36 @@
+#pragma once
+#include <wtypes.h>
+
+struct ID3D11VertexShader;
+struct ID3D11PixelShader;
+struct ID3D11InputLayout;
+struct ID3D11Buffer;
+
+struct ID3D10Blob;
+
+class CE_GPUContext;
+
+class CE_Shader
+{
+public:
+	CE_Shader();
+	~CE_Shader();
+
+	void Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUContext);
+	void Shutdown();
+	void Render(const CE_GPUContext& aGPUContext, int aIndexCount, const CE_Matrix44f& aWorld, const CE_Matrix44f& aViewProjection);
+
+private:
+	void OutputError(ID3D10Blob* aErrorBlob, const WCHAR* aShaderName);
+
+	struct MatrixBufferType
+	{
+		CE_Matrix44f myWorld;
+		CE_Matrix44f myViewProjection;
+	};
+
+	ID3D11VertexShader* myVertexShader;
+	ID3D11PixelShader* myPixelShader;
+	ID3D11InputLayout* myInputLayout;
+	ID3D11Buffer* myMatrixBuffer;
+};

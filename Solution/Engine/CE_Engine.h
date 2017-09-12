@@ -1,14 +1,14 @@
 #pragma once
 
-class CE_DirectX;
 class CE_WindowHandler;
+class CE_GPUContext;
 
-class CE_ColorShaderClass;
-class CE_Model;
+class CE_Shader;
 class CE_Cube;
 
 #include "CE_Vector3.h"
 #include "CE_Matrix44.h"
+
 class CE_Engine
 {
 public:
@@ -19,11 +19,10 @@ public:
 
 private:
 	CE_WindowHandler* myWindowHandler;
-	CE_DirectX* myDirectX;
+	CE_GPUContext* myGPUContext;
 
 
-	CE_ColorShaderClass* myShader;
-	CE_Model* myModel;
+	CE_Shader* myShader;
 	CE_Cube* myCube;
 	CE_Matrix44f myWorld;
 	CE_Matrix44f myView;
