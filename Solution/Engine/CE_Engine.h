@@ -4,7 +4,7 @@ class CE_WindowHandler;
 class CE_GPUContext;
 
 class CE_Shader;
-class CE_Cube;
+class CE_Model;
 
 #include "CE_Vector3.h"
 #include "CE_Matrix44.h"
@@ -23,12 +23,9 @@ private:
 
 
 	CE_Shader* myShader;
-	CE_Cube* myCube;
+	CE_Model* myCube;
 	CE_Matrix44f myWorld;
 	CE_Matrix44f myView;
-	CE_Matrix44f myViewProjection;
 	CE_Matrix44f myProjection;
-
-	CE_Vector3i test;
 };
 

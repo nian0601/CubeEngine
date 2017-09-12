@@ -1,18 +1,21 @@
 cbuffer MatrixBuffer
 {
-	Matrix WorldMatrix;
-	Matrix ViewProjectionMatrix;
+	Matrix World;
+	Matrix View;
+	Matrix Projection;
 };
 
 struct PosNormColorVertex
 {
 	float4 Position : POSITION;
+	float4 Normal : NORMAL;
 	float4 Color : COLOR;
 };
 
 struct PosNormColorPixel
 {
 	float4 Position : SV_POSITION;
+	float4 Normal : NORMAL;
 	float4 Color : COLOR;
 };
 
@@ -21,8 +24,13 @@ PosNormColorPixel VS(PosNormColorVertex aInput)
 {
 	PosNormColorPixel output;
 
-	Matrix mat = mul(WorldMatrix, ViewProjectionMatrix);
-	output.Position = mul(aInput.Position, mat);
+	aInput.Position.w = 1.f;
+	output.Position = mul(World, aInput.Position);
+	output.Position = mul(View, output.Position);
+	output.Position = mul(Projection, output.Position);
+
+
+	output.Normal = aInput.Normal;
 	output.Color = aInput.Color;
 	return output;
 };
@@ -30,5 +38,7 @@ PosNormColorPixel VS(PosNormColorVertex aInput)
 
 float4 PS(PosNormColorPixel anInput) : SV_TARGET
 {
-	return anInput.Color;
+	float4 color = float4(abs(anInput.Normal.xyz), 1.f);
+	return color;
+	//return anInput.Color;
 };

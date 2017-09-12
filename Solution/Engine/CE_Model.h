@@ -1,8 +1,8 @@
 #pragma once
 
 struct ID3D11Buffer;
-struct ID3D11Device;
-struct ID3D11DeviceContext;
+
+class CE_GPUContext;
 
 class CE_Model
 {
@@ -10,16 +10,19 @@ public:
 	CE_Model();
 	~CE_Model();
 
-	void Init(ID3D11Device* aDevice);
-	void Shutdown();
-	void Render(ID3D11DeviceContext* aContext);
+	void InitTriangle(const CE_GPUContext& aGPUContext);
+	void InitCube(const CE_GPUContext& aGPUContext);
+	void Render(const CE_GPUContext& aGPUContext);
 
 	int GetIndexCount();
 
 private:
+	void InitBuffers(const CE_GPUContext& aGPUContext, void* aVertexData, void* aIndexData);
+
 	struct VertexType
 	{
 		CE_Vector3f myPosition;
+		CE_Vector3f myNormal;
 		CE_Vector4f myColor;
 	};
 

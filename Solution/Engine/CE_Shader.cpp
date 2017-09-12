@@ -53,7 +53,7 @@ void CE_Shader::Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUCont
 	result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &myVertexShader);
 	result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &myPixelShader);
 
-	D3D11_INPUT_ELEMENT_DESC vertexLayout[2];
+	D3D11_INPUT_ELEMENT_DESC vertexLayout[3];
 	vertexLayout[0].SemanticName = "POSITION";
 	vertexLayout[0].SemanticIndex = 0;
 	vertexLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
@@ -62,13 +62,21 @@ void CE_Shader::Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUCont
 	vertexLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 	vertexLayout[0].InstanceDataStepRate = 0;
 
-	vertexLayout[1].SemanticName = "COLOR";
+	vertexLayout[1].SemanticName = "NORMAL";
 	vertexLayout[1].SemanticIndex = 0;
-	vertexLayout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	vertexLayout[1].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 	vertexLayout[1].InputSlot = 0;
 	vertexLayout[1].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
 	vertexLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 	vertexLayout[1].InstanceDataStepRate = 0;
+
+	vertexLayout[2].SemanticName = "COLOR";
+	vertexLayout[2].SemanticIndex = 0;
+	vertexLayout[2].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	vertexLayout[2].InputSlot = 0;
+	vertexLayout[2].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+	vertexLayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+	vertexLayout[2].InstanceDataStepRate = 0;
 
 	unsigned int numElements = sizeof(vertexLayout) / sizeof(vertexLayout[0]);
 
@@ -96,7 +104,7 @@ void CE_Shader::Shutdown()
 	CE_SAFE_RELEASE(myVertexShader);
 }
 
-void CE_Shader::Render(const CE_GPUContext& aGPUContext, int aIndexCount, const CE_Matrix44f& aWorld, const CE_Matrix44f& aViewProjection)
+void CE_Shader::Render(const CE_GPUContext& aGPUContext, int aIndexCount, const CE_Matrix44f& aWorld, const CE_Matrix44f& aView, const CE_Matrix44f& aProjection)
 {
 	ID3D11DeviceContext* context = aGPUContext.GetContext();
 
@@ -107,7 +115,8 @@ void CE_Shader::Render(const CE_GPUContext& aGPUContext, int aIndexCount, const 
 
 	MatrixBufferType* dataPtr = (MatrixBufferType*)mappedResource.pData;
 	dataPtr->myWorld = aWorld;
-	dataPtr->myViewProjection = aViewProjection;
+	dataPtr->myView = aView;
+	dataPtr->myProjection = aProjection;
 
 	context->Unmap(myMatrixBuffer, 0);
 

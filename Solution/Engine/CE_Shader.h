@@ -18,7 +18,7 @@ public:
 
 	void Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUContext);
 	void Shutdown();
-	void Render(const CE_GPUContext& aGPUContext, int aIndexCount, const CE_Matrix44f& aWorld, const CE_Matrix44f& aViewProjection);
+	void Render(const CE_GPUContext& aGPUContext, int aIndexCount, const CE_Matrix44f& aWorld, const CE_Matrix44f& aView, const CE_Matrix44f& aProjection);
 
 private:
 	void OutputError(ID3D10Blob* aErrorBlob, const WCHAR* aShaderName);
@@ -26,7 +26,8 @@ private:
 	struct MatrixBufferType
 	{
 		CE_Matrix44f myWorld;
-		CE_Matrix44f myViewProjection;
+		CE_Matrix44f myView;
+		CE_Matrix44f myProjection;
 	};
 
 	ID3D11VertexShader* myVertexShader;

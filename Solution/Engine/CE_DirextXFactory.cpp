@@ -91,10 +91,10 @@ void CE_DirextXFactory::SetupRasterizerStates()
 	D3D11_RASTERIZER_DESC desc;
 	ZeroMemory(&desc, sizeof(D3D11_RASTERIZER_DESC));
 	desc.FrontCounterClockwise = false;
-	desc.DepthBias = 0;
-	desc.DepthBiasClamp = 0.f;
+	desc.DepthBias = false;
+	desc.DepthBiasClamp = 0;
 	desc.SlopeScaledDepthBias = 0;
-	desc.DepthClipEnable = true;
+	desc.DepthClipEnable = false;
 	desc.ScissorEnable = false;
 	desc.MultisampleEnable = false;
 	desc.AntialiasedLineEnable = false;
