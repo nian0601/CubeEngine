@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "Game.h"
-#include "..\Engine\CE_Shader.h"
-#include "..\Engine\CE_Model.h"
-#include "..\Engine\CE_Camera.h"
-#include "..\Engine\CE_Engine.h"
+
+#include <CE_Shader.h>
+#include <CE_Model.h>
+#include <CE_Camera.h>
+#include <CE_Engine.h>
 
 Game::Game()
 {
