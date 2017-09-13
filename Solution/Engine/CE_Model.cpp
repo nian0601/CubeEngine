@@ -7,12 +7,14 @@
 CE_Model::CE_Model()
 	: myVertexBuffer(nullptr)
 	, myIndexBuffer(nullptr)
+	, myObjectDataBuffer(nullptr)
 {
 }
 
 
 CE_Model::~CE_Model()
 {
+	CE_SAFE_RELEASE(myObjectDataBuffer);
 	CE_SAFE_RELEASE(myIndexBuffer);
 	CE_SAFE_RELEASE(myVertexBuffer);
 }
@@ -167,12 +169,33 @@ void CE_Model::InitCube(const CE_GPUContext& aGPUContext)
 
 void CE_Model::Render(const CE_GPUContext& aGPUContext)
 {
+	ID3D11DeviceContext* context = aGPUContext.GetContext();
+
+	//Update constant-buffer
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+
+	context->Map(myObjectDataBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+
+	ObjectData* dataPtr = (ObjectData*)mappedResource.pData;
+	dataPtr->myWorld = myOrientation;
+	dataPtr->myColor = myColor;
+
+	context->Unmap(myObjectDataBuffer, 0);
+
+	context->VSSetConstantBuffers(1, 1, &myObjectDataBuffer);
+
+
+	// Set Vertex/Indexbuffers and Topology
 	unsigned int stride = sizeof(VertexType);
 	unsigned int offset = 0;
 
 	aGPUContext.GetContext()->IASetVertexBuffers(0, 1, &myVertexBuffer, &stride, &offset);
 	aGPUContext.GetContext()->IASetIndexBuffer(myIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	aGPUContext.GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+
+	// Actually render
+	context->DrawIndexed(GetIndexCount(), 0, 0);
 }
 
 void CE_Model::SetPosition(const CE_Vector3f& aPosition)
@@ -186,6 +209,11 @@ void CE_Model::Rotate(const CE_Matrix44f& aRotation)
 	myOrientation.SetPos(CE_Vector3f());
 	myOrientation = myOrientation * aRotation;
 	myOrientation.SetPos(pos);
+}
+
+void CE_Model::SetColor(const CE_Vector4f& aColor)
+{
+	myColor = aColor;
 }
 
 void CE_Model::InitBuffers(const CE_GPUContext& aGPUContext, void* aVertexData, void* aIndexData)
@@ -225,4 +253,14 @@ void CE_Model::InitBuffers(const CE_GPUContext& aGPUContext, void* aVertexData, 
 	result = aGPUContext.GetDevice()->CreateBuffer(&indexBufferDesc, &indexData, &myIndexBuffer);
 	if (FAILED(result))
 		return;
+
+	D3D11_BUFFER_DESC objectDataBufferDesc;
+	objectDataBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	objectDataBufferDesc.ByteWidth = sizeof(ObjectData);
+	objectDataBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	objectDataBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	objectDataBufferDesc.MiscFlags = 0;
+	objectDataBufferDesc.StructureByteStride = 0;
+
+	result = aGPUContext.GetDevice()->CreateBuffer(&objectDataBufferDesc, NULL, &myObjectDataBuffer);
 }

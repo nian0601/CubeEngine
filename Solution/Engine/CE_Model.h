@@ -12,6 +12,7 @@ public:
 
 	void InitTriangle(const CE_GPUContext& aGPUContext);
 	void InitCube(const CE_GPUContext& aGPUContext);
+
 	void Render(const CE_GPUContext& aGPUContext);
 
 	int GetIndexCount() const { return myIndexCount; }
@@ -19,6 +20,7 @@ public:
 
 	void SetPosition(const CE_Vector3f& aPosition);
 	void Rotate(const CE_Matrix44f& aRotation);
+	void SetColor(const CE_Vector4f& aColor);
 
 private:
 	void InitBuffers(const CE_GPUContext& aGPUContext, void* aVertexData, void* aIndexData);
@@ -30,6 +32,13 @@ private:
 		CE_Vector4f myColor;
 	};
 
+	struct ObjectData
+	{
+		CE_Matrix44f myWorld;
+		CE_Vector4f myColor;
+	};
+	ID3D11Buffer* myObjectDataBuffer;
+
 	ID3D11Buffer* myVertexBuffer;
 	int myVertexCount;
 
@@ -37,5 +46,6 @@ private:
 	int myIndexCount;
 
 	CE_Matrix44f myOrientation;
+	CE_Vector4f myColor;
 };
 

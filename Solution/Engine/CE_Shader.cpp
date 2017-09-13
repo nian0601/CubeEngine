@@ -11,13 +11,17 @@ CE_Shader::CE_Shader()
 	: myVertexShader(nullptr)
 	, myPixelShader(nullptr)
 	, myInputLayout(nullptr)
-	, myMatrixBuffer(nullptr)
+	, myGlobalDataBuffer(nullptr)
 {
 }
 
 
 CE_Shader::~CE_Shader()
 {
+	CE_SAFE_RELEASE(myGlobalDataBuffer);
+	CE_SAFE_RELEASE(myInputLayout);
+	CE_SAFE_RELEASE(myPixelShader);
+	CE_SAFE_RELEASE(myVertexShader);
 }
 
 void CE_Shader::Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUContext)
@@ -89,50 +93,37 @@ void CE_Shader::Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUCont
 
 	D3D11_BUFFER_DESC matrixBufferDesc;
 	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	matrixBufferDesc.ByteWidth = sizeof(MatrixBufferType);
+	matrixBufferDesc.ByteWidth = sizeof(GlobalData);
 	matrixBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	matrixBufferDesc.MiscFlags = 0;
 	matrixBufferDesc.StructureByteStride = 0;
 
-	result = device->CreateBuffer(&matrixBufferDesc, NULL, &myMatrixBuffer);
+	result = device->CreateBuffer(&matrixBufferDesc, NULL, &myGlobalDataBuffer);
 }
 
-void CE_Shader::Shutdown()
-{
-	CE_SAFE_RELEASE(myMatrixBuffer);
-	CE_SAFE_RELEASE(myInputLayout);
-	CE_SAFE_RELEASE(myPixelShader);
-	CE_SAFE_RELEASE(myVertexShader);
-}
-
-void CE_Shader::Render(const CE_GPUContext& aGPUContext, const CE_Model& aModel, const CE_Camera& aCamera)
+void CE_Shader::SetGlobalGPUData(const CE_GPUContext& aGPUContext, const CE_Camera& aCamera)
 {
 	ID3D11DeviceContext* context = aGPUContext.GetContext();
 
 	//Update constant-buffers
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 
-	context->Map(myMatrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	context->Map(myGlobalDataBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 
-	MatrixBufferType* dataPtr = (MatrixBufferType*)mappedResource.pData;
-	dataPtr->myWorld = aModel.GetOrientation();
+	GlobalData* dataPtr = (GlobalData*)mappedResource.pData;
 	dataPtr->myView = aCamera.GetView();
 	dataPtr->myProjection = aCamera.GetProjection();
 
-	context->Unmap(myMatrixBuffer, 0);
+	context->Unmap(myGlobalDataBuffer, 0);
 
-	context->VSSetConstantBuffers(0, 1, &myMatrixBuffer);
-
-
+	context->VSSetConstantBuffers(0, 1, &myGlobalDataBuffer);
 
 	//Actual draw-call
 	context->IASetInputLayout(myInputLayout);
 
 	context->VSSetShader(myVertexShader, NULL, 0);
 	context->PSSetShader(myPixelShader, NULL, 0);
-
-	context->DrawIndexed(aModel.GetIndexCount(), 0, 0);
 }
 
 void CE_Shader::OutputError(ID3D10Blob* aErrorBlob, const WCHAR* aShaderName)

@@ -36,8 +36,16 @@ void CE_Engine::Run()
 	{
 		myCube->Rotate(CE_Matrix44f::CreateRotateAroundY(PI * 0.00001f));
 
+		myShader->SetGlobalGPUData(*myGPUContext, *myCamera);
 		myCube->Render(*myGPUContext); 
-		myShader->Render(*myGPUContext, *myCube, *myCamera);
+
+		CE_Vector3f pos = myCube->GetOrientation().GetPos();
+		myCube->SetPosition(CE_Vector3f(0.f, 0.f, 5.f));
+		myCube->SetColor(CE_Vector4f(1.f, 0.f, 0.f, 1.f));
+		myCube->Render(*myGPUContext);
+		myCube->SetColor(CE_Vector4f(1.f, 1.f, 1.f, 1.f));
+		myCube->SetPosition(pos);
+
 		myGPUContext->EndFrame();
 	}
 }

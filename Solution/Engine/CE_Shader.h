@@ -19,15 +19,14 @@ public:
 	~CE_Shader();
 
 	void Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUContext);
-	void Shutdown();
-	void Render(const CE_GPUContext& aGPUContext, const CE_Model& aModel, const CE_Camera& aCamera);
+
+	void SetGlobalGPUData(const CE_GPUContext& aGPUContext, const CE_Camera& aCamera);
 
 private:
 	void OutputError(ID3D10Blob* aErrorBlob, const WCHAR* aShaderName);
 
-	struct MatrixBufferType
+	struct GlobalData
 	{
-		CE_Matrix44f myWorld;
 		CE_Matrix44f myView;
 		CE_Matrix44f myProjection;
 	};
@@ -35,5 +34,5 @@ private:
 	ID3D11VertexShader* myVertexShader;
 	ID3D11PixelShader* myPixelShader;
 	ID3D11InputLayout* myInputLayout;
-	ID3D11Buffer* myMatrixBuffer;
+	ID3D11Buffer* myGlobalDataBuffer;
 };

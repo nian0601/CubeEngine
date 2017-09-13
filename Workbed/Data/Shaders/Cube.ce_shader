@@ -1,8 +1,13 @@
-cbuffer MatrixBuffer
+cbuffer GlobalData
 {
-	Matrix World;
 	Matrix View;
 	Matrix Projection;
+};
+
+cbuffer ObjectData
+{
+	Matrix World;	
+	float4 Color;
 };
 
 struct PosNormColorVertex
@@ -31,14 +36,15 @@ PosNormColorPixel VS(PosNormColorVertex aInput)
 
 
 	output.Normal = aInput.Normal;
-	output.Color = aInput.Color;
+	output.Color = Color;
 	return output;
 };
 
 
 float4 PS(PosNormColorPixel anInput) : SV_TARGET
 {
-	float4 color = float4(abs(anInput.Normal.xyz), 1.f);
-	return color;
-	//return anInput.Color;
+	//return Color;
+	//float4 color = float4(abs(anInput.Normal.xyz), 1.f);
+	//return color;
+	return anInput.Color;
 };
