@@ -6,9 +6,7 @@
 int main()
 {
 	Game myGame;
-	CE_Engine myEngine;
+	CE_Engine myEngine(&myGame);
 
 	myEngine.Run();
-	myGame;
-	myEngine;
 }

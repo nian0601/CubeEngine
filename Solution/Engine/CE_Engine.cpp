@@ -6,21 +6,15 @@
 #include "CE_Model.h"
 #include "CE_GPUContext.h"
 #include "CE_Camera.h"
+#include "CE_Game.h"
 
-#define PI 3.14159265f
-
-CE_Engine::CE_Engine()
+CE_Engine::CE_Engine(CE_Game* aGame)
+	: myGame(aGame)
 {
 	myWindowHandler = new CE_WindowHandler(1280, 720);
 	myGPUContext = new CE_GPUContext(myWindowHandler);
 
-	myShader = new CE_Shader();
-	myShader->Init(L"Data/Shaders/Cube.ce_shader", *myGPUContext);
-	myCube = new CE_Model();
-	myCube->InitCube(*myGPUContext);
-	myCamera = new CE_Camera(myWindowHandler->GetWindowSize());
-
-	myCube->SetPosition(CE_Vector3f(1.f, 2.f, 5.f));
+	myGame->Init(*this);
 }
 
 
@@ -34,18 +28,20 @@ void CE_Engine::Run()
 {
 	while (myWindowHandler->PumpEvent())
 	{
-		myCube->Rotate(CE_Matrix44f::CreateRotateAroundY(PI * 0.00001f));
+		myGame->Update();
 
-		myShader->SetGlobalGPUData(*myGPUContext, *myCamera);
-		myCube->Render(*myGPUContext); 
-
-		CE_Vector3f pos = myCube->GetOrientation().GetPos();
-		myCube->SetPosition(CE_Vector3f(0.f, 0.f, 5.f));
-		myCube->SetColor(CE_Vector4f(1.f, 0.f, 0.f, 1.f));
-		myCube->Render(*myGPUContext);
-		myCube->SetColor(CE_Vector4f(1.f, 1.f, 1.f, 1.f));
-		myCube->SetPosition(pos);
+		myGame->Render(*myGPUContext);
 
 		myGPUContext->EndFrame();
 	}
+}
+
+const CE_GPUContext& CE_Engine::GetGPUContext() const
+{
+	return *myGPUContext;
+}
+
+const CE_Vector2i& CE_Engine::GetWindowSize() const
+{
+	return myWindowHandler->GetWindowSize();
 }

@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CE_Camera.cpp" />
+    <ClCompile Include="CE_Game.cpp" />
     <ClCompile Include="CE_Shader.cpp" />
     <ClCompile Include="CE_Model.cpp" />
     <ClCompile Include="CE_DirectX.cpp" />
@@ -149,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="CE_Assert.h" />
     <ClInclude Include="CE_Camera.h" />
+    <ClInclude Include="CE_Game.h" />
     <ClInclude Include="CE_Shader.h" />
     <ClInclude Include="CE_Model.h" />
     <ClInclude Include="CE_DirectX.h" />
