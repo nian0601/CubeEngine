@@ -13,4 +13,4 @@
 
 #include "CE_Types.h"
 
-#include "CE_Growingarray.h"
+#include "CE_GrowingArray.h"

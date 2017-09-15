@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CE_BaseProcessor.cpp" />
     <ClCompile Include="CE_Camera.cpp" />
     <ClCompile Include="CE_Renderer.cpp" />
     <ClCompile Include="CE_RendererProxy.cpp" />
@@ -143,6 +144,8 @@
     <ClCompile Include="CE_WindowHandler.cpp" />
     <ClCompile Include="CE_DebugLogger.cpp" />
     <ClCompile Include="CE_GPUContext.cpp" />
+    <ClCompile Include="CE_World.cpp" />
+    <ClCompile Include="CE_ComponentStorage.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -150,9 +153,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CE_Assert.h" />
+    <ClInclude Include="CE_BaseComponent.h" />
+    <ClInclude Include="CE_BaseProcessor.h" />
     <ClInclude Include="CE_Camera.h" />
+    <ClInclude Include="CE_ComponentFilter.h" />
+    <ClInclude Include="CE_CustomEntityTypes.h" />
     <ClInclude Include="CE_Game.h" />
-    <ClInclude Include="CE_Growingarray.h" />
+    <ClInclude Include="CE_GrowingArray.h" />
     <ClInclude Include="CE_Renderer.h" />
     <ClInclude Include="CE_RendererProxy.h" />
     <ClInclude Include="CE_Shader.h" />
@@ -167,7 +174,9 @@
     <ClInclude Include="CE_Matrix44_Decl.h" />
     <ClInclude Include="CE_Memory.h" />
     <ClInclude Include="CE_Murmur.h" />
+    <ClInclude Include="CE_StaticArray.h" />
     <ClInclude Include="CE_String.h" />
+    <ClInclude Include="CE_TypeID.h" />
     <ClInclude Include="CE_Types.h" />
     <ClInclude Include="CE_Vector2.h" />
     <ClInclude Include="CE_Vector2_Decl.h" />
@@ -178,6 +187,8 @@
     <ClInclude Include="CE_WindowHandler.h" />
     <ClInclude Include="CE_DebugLogger.h" />
     <ClInclude Include="CE_GPUContext.h" />
+    <ClInclude Include="CE_World.h" />
+    <ClInclude Include="CE_ComponentStorage.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

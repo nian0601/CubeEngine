@@ -25,7 +25,8 @@ public:
 
 	CE_GrowingArray& operator=(const CE_GrowingArray& aGrowingArray);
 
-	
+
+	inline void Respace(int aNewSize);
 	void Reserve(SizeType aNrOfItems, bool aUseSafeModeFlag = true);
 
 	inline ObjectType& operator[](const SizeType& aIndex);
@@ -68,8 +69,6 @@ public:
 	const_iterator end() const { return &myData[myCurrentSize]; }
 
 private:
-	void Init(SizeType aNrOfRecommendedItems, bool aUseSafeModeFlag = true);
-	inline void Resize(int aNewSize);
 	ObjectType* myData;
 	SizeType myCurrentSize;
 	SizeType myMaxSize;
@@ -83,8 +82,7 @@ inline CE_GrowingArray<ObjectType, SizeType>::CE_GrowingArray()
 	, myMaxSize(0)
 	, myUseSafeModeFlag(true)
 {
-	Resize(1);
-	//Init(1, myUseSafeModeFlag);
+	Respace(1);
 }
 
 template<typename ObjectType, typename SizeType = int>
@@ -130,23 +128,30 @@ inline CE_GrowingArray<ObjectType, SizeType>& CE_GrowingArray<ObjectType, SizeTy
 }
 
 template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::Init(SizeType aNrOfRecommendedItems, bool aUseSafeModeFlag = true)
+inline void CE_GrowingArray<ObjectType, SizeType>::Respace(int aNewSize)
 {
-	CE_ASSERT(aNrOfRecommendedItems > 0, locGrowingArray_ErrorStrings[INVALID_SIZE]);
-
+	CE_ASSERT(aNewSize > 0, locGrowingArray_ErrorStrings[INVALID_SIZE]);
+	ObjectType* newData = new ObjectType[aNewSize];
+	if (myUseSafeModeFlag == true)
+	{
+		for (SizeType i = 0; i < myCurrentSize; ++i)
+		{
+			newData[i] = myData[i];
+		}
+	}
+	else
+	{
+		memcpy(newData, myData, sizeof(ObjectType) * myCurrentSize);
+	}
 	delete[] myData;
-
-	myCurrentSize = 0;
-	myMaxSize = aNrOfRecommendedItems;
-	myUseSafeModeFlag = aUseSafeModeFlag;
-
-	myData = new ObjectType[myMaxSize];
+	myData = newData;
+	myMaxSize = static_cast<SizeType>(aNewSize);
 }
 
 template<typename ObjectType, typename SizeType = int>
 inline void CE_GrowingArray<ObjectType, SizeType>::Reserve(SizeType aNrOfItems, bool aUseSafeModeFlag = true)
 {
-	Init(aNrOfItems, aUseSafeModeFlag);
+	Respace(aNrOfItems);
 	myCurrentSize = aNrOfItems;
 }
 
@@ -171,7 +176,7 @@ inline void CE_GrowingArray<ObjectType, SizeType>::Add(const ObjectType& aObject
 {
 	if (myCurrentSize >= myMaxSize)
 	{
-		Resize(myMaxSize * 2);
+		Respace(myMaxSize * 2);
 	}
 	myData[myCurrentSize++] = aObject;
 }
@@ -182,7 +187,7 @@ inline ObjectType& CE_GrowingArray<ObjectType, SizeType>::Add()
 {
 	if (myCurrentSize >= myMaxSize)
 	{
-		Resize(myMaxSize * 2);
+		Respace(myMaxSize * 2);
 	}
 
 	ObjectType& object = myData[myCurrentSize++];
@@ -195,7 +200,7 @@ inline void CE_GrowingArray<ObjectType, SizeType>::AddEmptyObject()
 {
 	if (myCurrentSize == myMaxSize)
 	{
-		Resize(myMaxSize * 2);
+		Respace(myMaxSize * 2);
 	}
 
 	myCurrentSize++;
@@ -221,7 +226,7 @@ inline void CE_GrowingArray<ObjectType, SizeType>::Insert(SizeType aIndex, const
 
 	if (myCurrentSize >= myMaxSize)
 	{
-		Resize(myMaxSize * 2);
+		Respace(myMaxSize * 2);
 	}
 	for (SizeType i = myCurrentSize - 1; i >= aIndex; --i)
 	{
@@ -391,7 +396,7 @@ inline void CE_GrowingArray<ObjectType, SizeType>::Optimize()
 	{
 		myMaxSize = 1;
 	}
-	Resize(myMaxSize);
+	Respace(myMaxSize);
 }
 
 template<typename ObjectType, typename SizeType = int>
@@ -404,27 +409,6 @@ template<typename ObjectType, typename SizeType = int>
 __forceinline SizeType CE_GrowingArray<ObjectType, SizeType>::GetCapacity() const
 {
 	return myMaxSize;
-}
-
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::Resize(int aNewSize)
-{
-	CE_ASSERT(aNewSize > 0, locGrowingArray_ErrorStrings[INVALID_SIZE]);
-	ObjectType* newData = new ObjectType[aNewSize];
-	if (myUseSafeModeFlag == true)
-	{
-		for (SizeType i = 0; i < myCurrentSize; ++i)
-		{
-			newData[i] = myData[i];
-		}
-	}
-	else
-	{
-		memcpy(newData, myData, sizeof(ObjectType) * myCurrentSize);
-	}
-	delete[] myData;
-	myData = newData;
-	myMaxSize = static_cast<SizeType>(aNewSize);
 }
 
 template<typename ObjectType, typename SizeType = int>
