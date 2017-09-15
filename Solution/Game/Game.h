@@ -1,8 +1,8 @@
 #pragma once
 
 #include <CE_Game.h>
-#include <CE_Matrix44.h>
 
+class CE_World;
 class Game : public CE_Game
 {
 public:
@@ -10,9 +10,9 @@ public:
 	~Game();
 
 	void Init(CE_Engine& anEngine) override;
-	void Update() override;
+	void Update(float aDelta) override;
 	void Render(CE_RendererProxy& anRendererProxy) override;
 
 private:
-	CE_Matrix44f myWorldMatrix;
+	CE_World* myWorld;
 };

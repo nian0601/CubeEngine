@@ -1,5 +1,5 @@
 #pragma once
-#include <cstring>
+#include "CE_Assert.h"
 
 enum eGrowingArray_Errors
 {

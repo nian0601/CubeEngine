@@ -5,9 +5,9 @@
 #include "CE_StaticArray.h"
 
 
+struct CE_BaseComponent;
 struct CE_ComponentFilter;
 
-class CE_BaseComponent;
 class CE_ComponentStorage
 {
 public:

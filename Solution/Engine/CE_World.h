@@ -20,7 +20,7 @@ public:
 	const CE_GrowingArray<CE_Entity>& GetEntities(const CE_ComponentFilter& aFilter);
 
 	template<typename T>
-	void AddComponent(CE_Entity aEntity);
+	T& AddComponent(CE_Entity aEntity);
 
 	template<typename T>
 	void RemoveComponent(CE_Entity aEntity);
@@ -50,12 +50,14 @@ private:
 
 
 template<typename T>
-void CE_World::AddComponent(CE_Entity aEntity)
+T& CE_World::AddComponent(CE_Entity aEntity)
 {
 	T* component = new T();
 	unsigned int componentID = CE_TypeID<CE_BaseComponent>::GetID<T>();
 	myComponentStorage->AddComponent(aEntity, component, componentID);
 	ModifiedEntity(aEntity, componentID, true);
+
+	return *component;
 }
 
 template<typename T>

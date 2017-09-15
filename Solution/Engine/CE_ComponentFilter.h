@@ -3,24 +3,24 @@
 #include "CE_TypeID.h"
 
 template <typename... Args>
-struct TypeList { };
+struct CE_TypeList { };
 
 template <typename... Args>
-struct Requires : TypeList<Args...> {};
+struct CE_Requires : CE_TypeList<Args...> {};
 
 template <typename... Args>
-struct Excludes : TypeList<Args...> {};
+struct CE_Excludes : CE_TypeList<Args...> {};
 
 
 template<typename... Args>
-static void Types(CE_EntityComponentArray&, TypeList<Args...>) {}
+static void CE_Types(CE_EntityComponentArray&, CE_TypeList<Args...>) {}
 
 
 template<typename T, typename... Args>
-static void Types(CE_EntityComponentArray& someComponents, TypeList<T, Args...>)
+static void CE_Types(CE_EntityComponentArray& someComponents, CE_TypeList<T, Args...>)
 {
 	someComponents[CE_TypeID<CE_BaseComponent>::GetID<T>()] = 1;
-	Types(someComponents, TypeList<Args...>());
+	CE_Types(someComponents, CE_TypeList<Args...>());
 }
 
 struct CE_ComponentFilter
@@ -65,8 +65,8 @@ private:
 
 
 
-template <typename RequireList, typename ExcludeList = Excludes<>>
-CE_ComponentFilter CreateFilter()
+template <typename RequireList, typename ExcludeList = CE_Excludes<>>
+CE_ComponentFilter CE_CreateFilter()
 {
 	CE_EntityComponentArray requires;
 	CE_EntityComponentArray excludes;
@@ -77,8 +77,8 @@ CE_ComponentFilter CreateFilter()
 		excludes[i] = 0;
 	}
 
-	Types(requires, RequireList{});
-	Types(excludes, ExcludeList{});
+	CE_Types(requires, RequireList{});
+	CE_Types(excludes, ExcludeList{});
 
 	return CE_ComponentFilter(requires, excludes);
 }

@@ -14,3 +14,4 @@
 #include "CE_Types.h"
 
 #include "CE_GrowingArray.h"
+#include "CE_StaticArray.h"

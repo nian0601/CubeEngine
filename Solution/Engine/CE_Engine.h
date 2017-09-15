@@ -19,6 +19,7 @@ public:
 	void Run();
 
 	const CE_Camera& GetCamera() const;
+	CE_RendererProxy& GetRendererProxy();
 
 	const CE_GPUContext& GetGPUContext() const;
 	const CE_Vector2i& GetWindowSize() const;

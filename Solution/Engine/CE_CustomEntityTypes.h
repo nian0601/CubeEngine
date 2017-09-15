@@ -5,7 +5,7 @@
 
 #define MAX_NUMBER_OF_COMPONENTS 32
 
-class CE_BaseComponent;
+struct CE_BaseComponent;
 
 typedef unsigned int CE_Entity;
 
