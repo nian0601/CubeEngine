@@ -32,14 +32,16 @@
     <ClCompile Include="CE_Camera.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="CE_Game.cpp" />
+    <ClCompile Include="CE_Renderer.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_RendererProxy.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
       <UniqueIdentifier>{87e0d177-5502-4fef-b522-fc3042398d4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Math">
-      <UniqueIdentifier>{6e9bd263-f256-4572-a822-769f92a2f3fa}</UniqueIdentifier>
     </Filter>
     <Filter Include="Debug">
       <UniqueIdentifier>{db58d6fd-001a-403c-9c36-e66bc54f8f25}</UniqueIdentifier>
@@ -53,6 +55,12 @@
     <Filter Include="Rendering">
       <UniqueIdentifier>{ff1c7d03-2fd7-4e4a-ac57-057201fa0b4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{388e8702-2b6e-47a9-b006-eedcda3bb55a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Math">
+      <UniqueIdentifier>{6e9bd263-f256-4572-a822-769f92a2f3fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -60,13 +68,13 @@
     </ClInclude>
     <ClInclude Include="CE_Engine.h" />
     <ClInclude Include="CE_Vector2.h">
-      <Filter>Math</Filter>
+      <Filter>Utility\Math</Filter>
     </ClInclude>
     <ClInclude Include="CE_Vector3.h">
-      <Filter>Math</Filter>
+      <Filter>Utility\Math</Filter>
     </ClInclude>
     <ClInclude Include="CE_Vector4.h">
-      <Filter>Math</Filter>
+      <Filter>Utility\Math</Filter>
     </ClInclude>
     <ClInclude Include="CE_DebugLogger.h">
       <Filter>Debug</Filter>
@@ -91,25 +99,25 @@
       <Filter>DirectX</Filter>
     </ClInclude>
     <ClInclude Include="CE_Matrix33.h">
-      <Filter>Math</Filter>
+      <Filter>Utility\Math</Filter>
     </ClInclude>
     <ClInclude Include="CE_Matrix44.h">
-      <Filter>Math</Filter>
+      <Filter>Utility\Math</Filter>
     </ClInclude>
     <ClInclude Include="CE_Matrix33_Decl.h">
-      <Filter>Math</Filter>
+      <Filter>Utility\Math</Filter>
     </ClInclude>
     <ClInclude Include="CE_Matrix44_Decl.h">
-      <Filter>Math</Filter>
+      <Filter>Utility\Math</Filter>
     </ClInclude>
     <ClInclude Include="CE_Vector2_Decl.h">
-      <Filter>Math</Filter>
+      <Filter>Utility\Math</Filter>
     </ClInclude>
     <ClInclude Include="CE_Vector3_Decl.h">
-      <Filter>Math</Filter>
+      <Filter>Utility\Math</Filter>
     </ClInclude>
     <ClInclude Include="CE_Vector4_Decl.h">
-      <Filter>Math</Filter>
+      <Filter>Utility\Math</Filter>
     </ClInclude>
     <ClInclude Include="CE_Types.h" />
     <ClInclude Include="CE_Shader.h">
@@ -128,5 +136,14 @@
       <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="CE_Game.h" />
+    <ClInclude Include="CE_Renderer.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Growingarray.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_RendererProxy.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

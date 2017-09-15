@@ -18,6 +18,7 @@ public:
 	int GetIndexCount() const { return myIndexCount; }
 	const CE_Matrix44f& GetOrientation() const { return myOrientation; }
 
+	void SetOrientation(const CE_Matrix44f& anOrientation);
 	void SetPosition(const CE_Vector3f& aPosition);
 	void Rotate(const CE_Matrix44f& aRotation);
 	void SetColor(const CE_Vector4f& aColor);

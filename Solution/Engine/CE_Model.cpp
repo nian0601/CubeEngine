@@ -198,6 +198,11 @@ void CE_Model::Render(const CE_GPUContext& aGPUContext)
 	context->DrawIndexed(GetIndexCount(), 0, 0);
 }
 
+void CE_Model::SetOrientation(const CE_Matrix44f& anOrientation)
+{
+	myOrientation = anOrientation;
+}
+
 void CE_Model::SetPosition(const CE_Vector3f& aPosition)
 {
 	myOrientation.SetPos(aPosition);

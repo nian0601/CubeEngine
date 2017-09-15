@@ -1,11 +1,7 @@
 #pragma once
 
 #include <CE_Game.h>
-
-
-class CE_Shader;
-class CE_Model;
-class CE_Camera;
+#include <CE_Matrix44.h>
 
 class Game : public CE_Game
 {
@@ -15,11 +11,8 @@ public:
 
 	void Init(CE_Engine& anEngine) override;
 	void Update() override;
-	void Render(const CE_GPUContext& anGPUContext) override;
+	void Render(CE_RendererProxy& anRendererProxy) override;
 
 private:
-	CE_Shader* myShader;
-	CE_Model* myCube1;
-	CE_Model* myCube2;
-	CE_Camera* myCamera;
+	CE_Matrix44f myWorldMatrix;
 };
