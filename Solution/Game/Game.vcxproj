@@ -126,6 +126,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="InputComponent.h" />
+    <ClInclude Include="InputProcessor.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RenderProcessor.h" />
     <ClInclude Include="RotationComponent.h" />
@@ -135,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="RenderProcessor.cpp" />
     <ClCompile Include="RotationProcessor.cpp" />
     <ClCompile Include="stdafx.cpp">

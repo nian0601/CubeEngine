@@ -70,6 +70,11 @@ CE_RendererProxy& CE_Engine::GetRendererProxy()
 	return *myRendererProxy;
 }
 
+CE_Input& CE_Engine::GetInput()
+{
+	return *myInput;
+}
+
 const CE_GPUContext& CE_Engine::GetGPUContext() const
 {
 	return *myGPUContext;

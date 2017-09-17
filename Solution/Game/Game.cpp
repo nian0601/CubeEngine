@@ -1,16 +1,18 @@
 #include "stdafx.h"
 #include "Game.h"
 
+#include <CE_Camera.h>
 #include <CE_Engine.h>
 #include <CE_World.h>
 
 #include "RenderComponent.h"
 #include "TranslationComponent.h"
 #include "RotationComponent.h"
+#include "InputComponent.h"
 
 #include "RenderProcessor.h"
 #include "RotationProcessor.h"
-#include "..\Engine\CE_Camera.h"
+#include "InputProcessor.h"
 
 Game::Game()
 {
@@ -30,9 +32,12 @@ void Game::Init(CE_Engine& anEngine)
 	camera.SetPosition(CE_Vector3f(5.f, 10.f, -5.f));
 	camera.Rotate(CE_Matrix44f::CreateRotateAroundX(3.14f * 0.25));
 
-	RenderProcessor* processor = new RenderProcessor(*myWorld, anEngine.GetRendererProxy());
-	myWorld->AddProcessor(processor);
+	RenderProcessor* renderProcessor = new RenderProcessor(*myWorld, anEngine.GetRendererProxy());
+	myWorld->AddProcessor(renderProcessor);
 	myWorld->AddProcessor<RotationProcessor>();
+
+	InputProcessor* inputProcessor = new InputProcessor(*myWorld, anEngine.GetInput());
+	myWorld->AddProcessor(inputProcessor);
 
 	CreateGrid();
 
@@ -43,6 +48,16 @@ void Game::Init(CE_Engine& anEngine)
 
 	translate.myOrientation.SetPos(CE_Vector3f(5.f, 1.f, 5.f));
 	render.myColor = CE_Vector4f(1.f, 0.f, 0.f, 1.f);
+
+
+	CE_Entity player = myWorld->CreateEntity();
+	TranslationComponent& playerTranslate = myWorld->AddComponent<TranslationComponent>(player);
+	RenderComponent& playerRender = myWorld->AddComponent<RenderComponent>(player);
+	InputComponent& input = myWorld->AddComponent<InputComponent>(player);
+
+	playerTranslate.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 1.f));
+	playerRender.myColor = CE_Vector4f(0.f, 0.f, 0.56f, 1.f);
+	input.mySpeed = 10.f;
 }
 
 void Game::Update(float aDelta)
