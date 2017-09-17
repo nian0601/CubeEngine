@@ -9,6 +9,7 @@
 #include "CE_Camera.h"
 #include "CE_RendererProxy.h"
 #include "CE_Time.h"
+#include "CE_Input.h"
 
 CE_Engine::CE_Engine(CE_Game* aGame)
 	: myGame(aGame)
@@ -22,6 +23,7 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 	myCamera = new CE_Camera(myWindowHandler->GetWindowSize());
 
 	myTime = new CE_Time();
+	myInput = new CE_Input(myWindowHandler->GetHWND(), GetModuleHandle(NULL), DISCL_NONEXCLUSIVE | DISCL_FOREGROUND, DISCL_NONEXCLUSIVE | DISCL_FOREGROUND);
 
 	myGame->Init(*this);
 }
@@ -29,6 +31,7 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 
 CE_Engine::~CE_Engine()
 {
+	CE_SAFE_DELETE(myInput);
 	CE_SAFE_DELETE(myTime);
 	CE_SAFE_DELETE(myCamera);
 	CE_SAFE_DELETE(myRendererProxy);
@@ -42,6 +45,10 @@ void CE_Engine::Run()
 	while (myWindowHandler->PumpEvent())
 	{
 		myTime->Update();
+		myInput->Update();
+
+		if (myInput->KeyDown(DIK_ESCAPE))
+			return;
 
 		myGame->Update(myTime->GetFrameTime());
 		myCamera->Update();

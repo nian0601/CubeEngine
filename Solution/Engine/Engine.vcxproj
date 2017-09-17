@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="CE_BaseProcessor.cpp" />
     <ClCompile Include="CE_Camera.cpp" />
+    <ClCompile Include="CE_Input.cpp" />
     <ClCompile Include="CE_Renderer.cpp" />
     <ClCompile Include="CE_RendererProxy.cpp" />
     <ClCompile Include="CE_Shader.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="CE_CustomEntityTypes.h" />
     <ClInclude Include="CE_Game.h" />
     <ClInclude Include="CE_GrowingArray.h" />
+    <ClInclude Include="CE_Input.h" />
     <ClInclude Include="CE_Renderer.h" />
     <ClInclude Include="CE_RendererProxy.h" />
     <ClInclude Include="CE_Shader.h" />

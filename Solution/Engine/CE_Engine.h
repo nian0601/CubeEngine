@@ -3,6 +3,7 @@
 #include "CE_Vector2.h"
 
 class CE_Camera;
+class CE_Input;
 class CE_WindowHandler;
 class CE_GPUContext;
 class CE_Renderer;
@@ -31,6 +32,7 @@ private:
 
 	CE_Game* myGame;
 	CE_Time* myTime;
+	CE_Input* myInput;
 
 	CE_Camera* myCamera;
 	CE_Renderer* myRenderer;

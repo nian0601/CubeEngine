@@ -50,6 +50,9 @@
     <ClCompile Include="CE_Time.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
+    <ClCompile Include="CE_Input.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -185,6 +188,9 @@
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="CE_Time.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Input.h">
       <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
