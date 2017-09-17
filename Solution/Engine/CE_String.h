@@ -6,8 +6,8 @@
 #include "CE_Murmur.h"
 #include <string.h>
 
-#define CU_STRING_START_SIZE 20
-#define CU_STRING_MAX_NUMBER_CHARACTERS 30
+#define CE_STRING_START_SIZE 20
+#define CE_STRING_MAX_NUMBER_CHARACTERS 30
 
 class CE_String
 {
@@ -62,8 +62,8 @@ private:
 
 inline CE_String::CE_String()
 	: myCurrentSize(0)
-	, myMaxSize(CU_STRING_START_SIZE)
-	, myData(new char[CU_STRING_START_SIZE])
+	, myMaxSize(CE_STRING_START_SIZE)
+	, myData(new char[CE_STRING_START_SIZE])
 {
 	myHash = 0;
 }
@@ -75,24 +75,24 @@ inline CE_String::~CE_String()
 
 inline CE_String::CE_String(const CE_String &aString)
 	: myCurrentSize(0)
-	, myMaxSize(CU_STRING_START_SIZE)
-	, myData(new char[CU_STRING_START_SIZE])
+	, myMaxSize(CE_STRING_START_SIZE)
+	, myData(new char[CE_STRING_START_SIZE])
 {
 	*this = aString;
 }
 
 inline CE_String::CE_String(const char* aString)
 	: myCurrentSize(0)
-	, myMaxSize(CU_STRING_START_SIZE)
-	, myData(new char[CU_STRING_START_SIZE])
+	, myMaxSize(CE_STRING_START_SIZE)
+	, myData(new char[CE_STRING_START_SIZE])
 {
 	*this = aString;
 }
 
 inline CE_String::CE_String(const char aChar)
 	: myCurrentSize(0)
-	, myMaxSize(CU_STRING_START_SIZE)
-	, myData(new char[CU_STRING_START_SIZE])
+	, myMaxSize(CE_STRING_START_SIZE)
+	, myData(new char[CE_STRING_START_SIZE])
 {
 	myHash = 0;
 	myData[myCurrentSize] = aChar;
@@ -131,8 +131,8 @@ inline CE_String& CE_String::operator+=(const float aFloat)
 	if (myCurrentSize >= myMaxSize)
 		Resize(myCurrentSize * 2);
 
-	char buffer[CU_STRING_MAX_NUMBER_CHARACTERS];
-	_snprintf_s(buffer, CU_STRING_MAX_NUMBER_CHARACTERS, "%f", aFloat);
+	char buffer[CE_STRING_MAX_NUMBER_CHARACTERS];
+	_snprintf_s(buffer, CE_STRING_MAX_NUMBER_CHARACTERS, "%f", aFloat);
 
 	CE_String newString(buffer);
 	*this += newString;
@@ -148,8 +148,8 @@ inline CE_String& CE_String::operator+=(const double aDouble)
 	if (myCurrentSize >= myMaxSize)
 		Resize(myCurrentSize * 2);
 
-	char buffer[CU_STRING_MAX_NUMBER_CHARACTERS];
-	_snprintf_s(buffer, CU_STRING_MAX_NUMBER_CHARACTERS, "%f", aDouble);
+	char buffer[CE_STRING_MAX_NUMBER_CHARACTERS];
+	_snprintf_s(buffer, CE_STRING_MAX_NUMBER_CHARACTERS, "%f", aDouble);
 
 	CE_String newString(buffer);
 	*this += newString;
@@ -164,8 +164,8 @@ inline CE_String& CE_String::operator+=(const int aInt)
 	if (myCurrentSize >= myMaxSize)
 		Resize(myCurrentSize * 2);
 
-	char buffer[CU_STRING_MAX_NUMBER_CHARACTERS];
-	_snprintf_s(buffer, CU_STRING_MAX_NUMBER_CHARACTERS, "%i", aInt);
+	char buffer[CE_STRING_MAX_NUMBER_CHARACTERS];
+	_snprintf_s(buffer, CE_STRING_MAX_NUMBER_CHARACTERS, "%i", aInt);
 
 	CE_String newString(buffer);
 	*this += newString;

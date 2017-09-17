@@ -5,32 +5,32 @@
 #include "CE_Vector3_Decl.h"
 
 template <typename T>
-T Length(const CE_Vector3<T>& aVector)
+T CE_Length(const CE_Vector3<T>& aVector)
 {
-	return sqrt(Length2(aVector));
+	return sqrt(CE_Length2(aVector));
 }
 
 template <typename T>
-T Length2(const CE_Vector3<T>& aVector)
+T CE_Length2(const CE_Vector3<T>& aVector)
 {
-	return Dot(aVector, aVector);
+	return CE_Dot(aVector, aVector);
 }
 
 template <typename T>
-void Normalize(CE_Vector3<T>& aVector)
+void CE_Normalize(CE_Vector3<T>& aVector)
 {
 	if (aVector.x == 0 && aVector.y == 0 && aVector.z == 0)
 	{
 		//DL_DEBUG("Warning: Normalize zero vector.");
 		return;
 	}
-	aVector = GetNormalized(aVector);
+	aVector = CE_GetNormalized(aVector);
 }
 
 template <typename T>
-CE_Vector3<T> GetNormalized(const CE_Vector3<T>& aVector)
+CE_Vector3<T> CE_GetNormalized(const CE_Vector3<T>& aVector)
 {
-	T length = Length(aVector);
+	T length = CE_Length(aVector);
 	if (length == 0)
 	{
 		return aVector;
@@ -40,13 +40,13 @@ CE_Vector3<T> GetNormalized(const CE_Vector3<T>& aVector)
 }
 
 template <typename T>
-T Dot(const CE_Vector3<T>& aFirstVector, const CE_Vector3<T>& aSecondVector)
+T CE_Dot(const CE_Vector3<T>& aFirstVector, const CE_Vector3<T>& aSecondVector)
 {
 	return aFirstVector.x * aSecondVector.x + aFirstVector.y * aSecondVector.y + aFirstVector.z * aSecondVector.z;
 }
 
 template <typename T>
-CE_Vector3<T> Cross(const CE_Vector3<T>& aFirstVector, const CE_Vector3<T>& aSecondVector)
+CE_Vector3<T> CE_Cross(const CE_Vector3<T>& aFirstVector, const CE_Vector3<T>& aSecondVector)
 {
 	return CE_Vector3<T>(
 		aFirstVector.y * aSecondVector.z - aFirstVector.z * aSecondVector.y,
@@ -217,9 +217,9 @@ CE_Vector3<T> operator-(const CE_Vector3<T>& aVector)
 }
 
 template <typename T>
-CE_Vector3<T> Reflect(const CE_Vector3<T>& aDirection, const CE_Vector3<T>& aNormal)
+CE_Vector3<T> CE_Reflect(const CE_Vector3<T>& aDirection, const CE_Vector3<T>& aNormal)
 {
-	return (aDirection - 2.f * CU::Dot(aDirection, aNormal) * aNormal);
+	return (aDirection - 2.f * CE_Dot(aDirection, aNormal) * aNormal);
 }
 
 //typedefs

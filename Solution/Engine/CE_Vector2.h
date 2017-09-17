@@ -5,27 +5,27 @@
 #include "CE_Vector2_Decl.h"
 
 template <typename T>
-T Length(const CE_Vector2<T>& aVector)
+T CE_Length(const CE_Vector2<T>& aVector)
 {
-	return T(sqrt(Length2(aVector)));
+	return T(sqrt(CE_Length2(aVector)));
 }
 
 template <typename T>
-T Length2(const CE_Vector2<T>& aVector)
+T CE_Length2(const CE_Vector2<T>& aVector)
 {
-	return Dot(aVector, aVector);
+	return CE_Dot(aVector, aVector);
 }
 
 template <typename T>
-void Normalize(CE_Vector2<T>& aVector)
+void CE_Normalize(CE_Vector2<T>& aVector)
 {
-	aVector = GetNormalized(aVector);
+	aVector = CE_GetNormalized(aVector);
 }
 
 template <typename T>
-CE_Vector2<T> GetNormalized(const CE_Vector2<T>& aVector)
+CE_Vector2<T> CE_GetNormalized(const CE_Vector2<T>& aVector)
 {
-	T length = Length(aVector);
+	T length = CE_Length(aVector);
 	if (length == 0)
 	{
 		return CE_Vector2<T>();
@@ -34,7 +34,7 @@ CE_Vector2<T> GetNormalized(const CE_Vector2<T>& aVector)
 }
 
 template <typename T>
-T Dot(const CE_Vector2<T>& aFirstVector, const CE_Vector2<T>& aSecondVector)
+T CE_Dot(const CE_Vector2<T>& aFirstVector, const CE_Vector2<T>& aSecondVector)
 {
 	return aFirstVector.x * aSecondVector.x + aFirstVector.y * aSecondVector.y;
 }
