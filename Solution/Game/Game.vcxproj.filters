@@ -40,6 +40,12 @@
     <ClInclude Include="InputProcessor.h">
       <Filter>Entity\Processor</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionComponent.h">
+      <Filter>Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionProcessor.h">
+      <Filter>Entity\Processor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -53,6 +59,9 @@
       <Filter>Entity\Processor</Filter>
     </ClCompile>
     <ClCompile Include="InputProcessor.cpp">
+      <Filter>Entity\Processor</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionProcessor.cpp">
       <Filter>Entity\Processor</Filter>
     </ClCompile>
   </ItemGroup>

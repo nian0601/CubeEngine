@@ -125,6 +125,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CollisionComponent.h" />
+    <ClInclude Include="CollisionProcessor.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputProcessor.h" />
@@ -136,6 +138,7 @@
     <ClInclude Include="TranslationComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CollisionProcessor.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="RenderProcessor.cpp" />
