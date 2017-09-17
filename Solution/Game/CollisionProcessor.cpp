@@ -4,6 +4,8 @@
 #include "CollisionProcessor.h"
 #include "TranslationComponent.h"
 
+#include "CollisionSingletonComponent.h"
+
 CollisionProcessor::CollisionProcessor(CE_World& aWorld)
 	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<CollisionComponent, TranslationComponent>>())
 {
@@ -12,6 +14,9 @@ CollisionProcessor::CollisionProcessor(CE_World& aWorld)
 void CollisionProcessor::Update(float /*aDelta*/)
 {
 	CE_GrowingArray<CE_Entity> entities = GetEntities();
+
+	CollisionSingletonComponent& collisionSingleton = GetSingletonComponent<CollisionSingletonComponent>();
+	collisionSingleton.myCollisionPairs.RemoveAll();
 
 	for (int outer = 0; outer < entities.Size()-1; ++outer)
 	{
@@ -36,8 +41,7 @@ void CollisionProcessor::Update(float /*aDelta*/)
 
 			if (distance <= radius)
 			{
-				int apa = 5;
-				++apa;
+				collisionSingleton.myCollisionPairs.Add({ outerEntity, innerEntity });
 			}
 		}
 	}

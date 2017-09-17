@@ -37,6 +37,9 @@ public:
 	template<typename T>
 	void AddProcessor(T* aProcessor);
 
+	template<typename T>
+	T& GetSingletonComponent();
+
 	void SendEvent(const CE_Event& aEvent);
 
 	void ModifiedEntity(CE_Entity aEntity, int aComponentID, bool aAddedComponent);
@@ -46,6 +49,7 @@ private:
 
 	CE_ComponentStorage* myComponentStorage;
 	CE_GrowingArray<CE_BaseProcessor*> myProcessors;
+	CE_GrowingArray<CE_BaseComponent*> mySingletonComponents;
 };
 
 
@@ -90,4 +94,14 @@ template<typename T>
 void CE_World::AddProcessor(T* aProcessor)
 {
 	myProcessors.Add(aProcessor);
+}
+
+template<typename T>
+T& CE_World::GetSingletonComponent()
+{
+	unsigned int componentID = CE_TypeID<CE_BaseComponent>::GetID<T>();
+	if (mySingletonComponents[componentID] == nullptr)
+		mySingletonComponents[componentID] = new T();
+
+	return static_cast<T&>(*mySingletonComponents[componentID]);
 }

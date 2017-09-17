@@ -27,6 +27,9 @@ public:
 	template<typename T>
 	bool HasComponent(CE_Entity aEntity);
 
+	template<typename T>
+	T& GetSingletonComponent();
+
 	virtual void OnEvent(const CE_Event& aEvent);
 
 	const CE_ComponentFilter& GetComponentFilter() const { return myComponentFilter; }
@@ -61,4 +64,10 @@ template<typename T>
 bool CE_BaseProcessor::HasComponent(CE_Entity aEntity)
 {
 	return myWorld.HasComponent<T>(aEntity);
+}
+
+template<typename T>
+T& CE_BaseProcessor::GetSingletonComponent()
+{
+	return myWorld.GetSingletonComponent<T>();
 }

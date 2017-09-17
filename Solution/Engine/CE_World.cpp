@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "CE_BaseProcessor.h"
+#include "CE_BaseComponent.h"
 #include "CE_World.h"
 
 
@@ -8,6 +9,11 @@ CE_World::CE_World()
 	: myNextEntity(0)
 	, myComponentStorage(new CE_ComponentStorage)
 {
+	mySingletonComponents.Respace(MAX_NUMBER_OF_COMPONENTS);
+	for (int i = 0; i < MAX_NUMBER_OF_COMPONENTS; ++i)
+	{
+		mySingletonComponents.Add(nullptr);
+	}
 }
 
 
@@ -15,6 +21,7 @@ CE_World::~CE_World()
 {
 	CE_SAFE_DELETE(myComponentStorage);
 	myProcessors.DeleteAll();
+	mySingletonComponents.DeleteAll();
 }
 
 CE_Entity CE_World::CreateEntity()
