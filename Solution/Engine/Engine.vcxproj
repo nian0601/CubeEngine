@@ -141,6 +141,7 @@
     <ClCompile Include="CE_DirextXFactory.cpp" />
     <ClCompile Include="CE_Engine.cpp" />
     <ClCompile Include="CE_Murmur.cpp" />
+    <ClCompile Include="CE_Time.cpp" />
     <ClCompile Include="CE_WindowHandler.cpp" />
     <ClCompile Include="CE_DebugLogger.cpp" />
     <ClCompile Include="CE_GPUContext.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="CE_Murmur.h" />
     <ClInclude Include="CE_StaticArray.h" />
     <ClInclude Include="CE_String.h" />
+    <ClInclude Include="CE_Time.h" />
     <ClInclude Include="CE_TypeID.h" />
     <ClInclude Include="CE_Types.h" />
     <ClInclude Include="CE_Vector2.h" />

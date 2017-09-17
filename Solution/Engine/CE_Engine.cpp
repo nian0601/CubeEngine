@@ -8,6 +8,7 @@
 #include "CE_Renderer.h"
 #include "CE_Camera.h"
 #include "CE_RendererProxy.h"
+#include "CE_Time.h"
 
 CE_Engine::CE_Engine(CE_Game* aGame)
 	: myGame(aGame)
@@ -20,12 +21,16 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 
 	myCamera = new CE_Camera(myWindowHandler->GetWindowSize());
 
+	myTime = new CE_Time();
+
 	myGame->Init(*this);
 }
 
 
 CE_Engine::~CE_Engine()
 {
+	CE_SAFE_DELETE(myTime);
+	CE_SAFE_DELETE(myCamera);
 	CE_SAFE_DELETE(myRendererProxy);
 	CE_SAFE_DELETE(myRenderer);
 	CE_SAFE_DELETE(myGPUContext);
@@ -36,7 +41,9 @@ void CE_Engine::Run()
 {
 	while (myWindowHandler->PumpEvent())
 	{
-		myGame->Update(1.f/60.f);
+		myTime->Update();
+
+		myGame->Update(myTime->GetFrameTime());
 		myCamera->Update();
 
 		myGame->Render(*myRendererProxy);
@@ -46,7 +53,7 @@ void CE_Engine::Run()
 	}
 }
 
-const CE_Camera& CE_Engine::GetCamera() const
+CE_Camera& CE_Engine::GetCamera()
 {
 	return *myCamera;
 }

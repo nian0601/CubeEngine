@@ -47,6 +47,9 @@
     <ClCompile Include="CE_ComponentStorage.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
+    <ClCompile Include="CE_Time.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -180,6 +183,9 @@
     </ClInclude>
     <ClInclude Include="CE_ComponentStorage.h">
       <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Time.h">
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

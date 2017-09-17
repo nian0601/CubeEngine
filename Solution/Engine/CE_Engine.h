@@ -7,6 +7,7 @@ class CE_WindowHandler;
 class CE_GPUContext;
 class CE_Renderer;
 class CE_RendererProxy;
+class CE_Time;
 
 class CE_Game;
 
@@ -18,7 +19,7 @@ public:
 
 	void Run();
 
-	const CE_Camera& GetCamera() const;
+	CE_Camera& GetCamera();
 	CE_RendererProxy& GetRendererProxy();
 
 	const CE_GPUContext& GetGPUContext() const;
@@ -29,6 +30,7 @@ private:
 	CE_GPUContext* myGPUContext;
 
 	CE_Game* myGame;
+	CE_Time* myTime;
 
 	CE_Camera* myCamera;
 	CE_Renderer* myRenderer;

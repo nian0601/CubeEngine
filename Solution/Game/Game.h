@@ -14,5 +14,7 @@ public:
 	void Render(CE_RendererProxy& anRendererProxy) override;
 
 private:
+	void CreateGrid();
+
 	CE_World* myWorld;
 };
