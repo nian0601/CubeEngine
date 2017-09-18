@@ -10,11 +10,14 @@
 #include "RotationComponent.h"
 #include "InputComponent.h"
 #include "CollisionComponent.h"
+#include "PickUpComponent.h"
+#include "InventoryComponent.h"
 
 #include "RenderProcessor.h"
 #include "RotationProcessor.h"
 #include "InputProcessor.h"
 #include "CollisionProcessor.h"
+#include "PickUpProcessor.h"
 
 Game::Game()
 {
@@ -41,6 +44,7 @@ void Game::Init(CE_Engine& anEngine)
 	InputProcessor* inputProcessor = new InputProcessor(*myWorld, anEngine.GetInput());
 	myWorld->AddProcessor(inputProcessor);
 	myWorld->AddProcessor<CollisionProcessor>();
+	myWorld->AddProcessor<PickUpProcessor>();
 
 	CreateGrid();
 
@@ -49,10 +53,12 @@ void Game::Init(CE_Engine& anEngine)
 	TranslationComponent& translate = myWorld->AddComponent<TranslationComponent>(entity);
 	RenderComponent& render = myWorld->AddComponent<RenderComponent>(entity);
 	CollisionComponent& collision = myWorld->AddComponent<CollisionComponent>(entity);
+	PickUpComponent& pickup = myWorld->AddComponent<PickUpComponent>(entity);
 
 	translate.myOrientation.SetPos(CE_Vector3f(5.f, 1.f, 5.f));
 	render.myColor = CE_Vector4f(1.f, 0.f, 0.f, 1.f);
 	collision.myRadius = 1.f;
+	pickup.myItemType = eItemType::STONE;
 
 
 	CE_Entity player = myWorld->CreateEntity();
@@ -60,6 +66,7 @@ void Game::Init(CE_Engine& anEngine)
 	RenderComponent& playerRender = myWorld->AddComponent<RenderComponent>(player);
 	InputComponent& input = myWorld->AddComponent<InputComponent>(player);
 	CollisionComponent& playerCollision = myWorld->AddComponent<CollisionComponent>(player);
+	myWorld->AddComponent<InventoryComponent>(player);
 
 	playerTranslate.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 1.f));
 	playerRender.myColor = CE_Vector4f(0.f, 0.f, 0.56f, 1.f);

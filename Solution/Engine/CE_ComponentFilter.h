@@ -65,7 +65,7 @@ private:
 
 
 
-template <typename RequireList, typename ExcludeList = CE_Excludes<>>
+template <typename RequireList = CE_Requires<>, typename ExcludeList = CE_Excludes<>>
 CE_ComponentFilter CE_CreateFilter()
 {
 	CE_EntityComponentArray requires;

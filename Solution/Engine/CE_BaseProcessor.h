@@ -36,9 +36,11 @@ public:
 
 	virtual void EntityRemoved(CE_Entity /*aEntity*/) {};
 
+protected:
+	CE_World& myWorld;
+
 private:
 	void operator=(CE_BaseProcessor&) = delete;
-	CE_World& myWorld;
 	CE_ComponentFilter myComponentFilter;
 };
 

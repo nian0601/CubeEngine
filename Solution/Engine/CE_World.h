@@ -16,6 +16,7 @@ public:
 	~CE_World();
 
 	CE_Entity CreateEntity();
+	void QueueEntityForDestruction(CE_Entity anEntity);
 	void Update(float aDelta);
 	const CE_GrowingArray<CE_Entity>& GetEntities(const CE_ComponentFilter& aFilter);
 
@@ -50,6 +51,7 @@ private:
 	CE_ComponentStorage* myComponentStorage;
 	CE_GrowingArray<CE_BaseProcessor*> myProcessors;
 	CE_GrowingArray<CE_BaseComponent*> mySingletonComponents;
+	CE_GrowingArray<CE_Entity> myEntitiesToDestroy;
 };
 
 

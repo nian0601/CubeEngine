@@ -33,12 +33,23 @@ CE_Entity CE_World::CreateEntity()
 	return newEntity;
 }
 
+void CE_World::QueueEntityForDestruction(CE_Entity anEntity)
+{
+	myEntitiesToDestroy.AddUnique(anEntity);
+}
+
 void CE_World::Update(float aDelta)
 {
 	for (CE_BaseProcessor* processor : myProcessors)
 	{
 		processor->Update(aDelta);
 	}
+
+	for (const CE_Entity& entity : myEntitiesToDestroy)
+	{
+		myComponentStorage->DestroyEntity(entity);
+	}
+	myEntitiesToDestroy.RemoveAll();
 }
 
 const CE_GrowingArray<CE_Entity>& CE_World::GetEntities(const CE_ComponentFilter& aFilter)

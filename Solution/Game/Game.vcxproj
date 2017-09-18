@@ -131,17 +131,22 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputProcessor.h" />
+    <ClInclude Include="InventoryComponent.h" />
+    <ClInclude Include="PickUpComponent.h" />
+    <ClInclude Include="PickUpProcessor.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RenderProcessor.h" />
     <ClInclude Include="RotationComponent.h" />
     <ClInclude Include="RotationProcessor.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TranslationComponent.h" />
+    <ClInclude Include="Types.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollisionProcessor.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
+    <ClCompile Include="PickUpProcessor.cpp" />
     <ClCompile Include="RenderProcessor.cpp" />
     <ClCompile Include="RotationProcessor.cpp" />
     <ClCompile Include="stdafx.cpp">

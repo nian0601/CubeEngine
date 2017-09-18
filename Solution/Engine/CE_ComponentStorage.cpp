@@ -32,6 +32,15 @@ void CE_ComponentStorage::AddEntity()
 	}
 }
 
+void CE_ComponentStorage::DestroyEntity(CE_Entity anEntity)
+{
+	for (int i = 0; i < MAX_NUMBER_OF_COMPONENTS; ++i)
+	{
+		if (HasComponent(anEntity, i))
+			RemoveComponent(anEntity, i);
+	}
+}
+
 void CE_ComponentStorage::AddComponent(CE_Entity aEntity, CE_BaseComponent* aComponent, unsigned int aComponentID)
 {
 	CE_ASSERT(myEntityComponents.Size() > static_cast<int>(aEntity), "Invalid Entity-ID");

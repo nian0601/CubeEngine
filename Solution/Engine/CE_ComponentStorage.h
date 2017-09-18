@@ -15,7 +15,7 @@ public:
 	~CE_ComponentStorage();
 
 	void AddEntity();
-
+	void DestroyEntity(CE_Entity anEntity);
 	void AddComponent(CE_Entity aEntity, CE_BaseComponent* aComponent, unsigned int aComponentID);
 	void RemoveComponent(CE_Entity aEntity, unsigned int aComponentID);
 	CE_BaseComponent& GetComponent(CE_Entity aEntity, unsigned int aComponentID);
