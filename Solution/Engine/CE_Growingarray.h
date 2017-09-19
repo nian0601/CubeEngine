@@ -15,7 +15,7 @@ static const char* locGrowingArray_ErrorStrings[_GROWINGARRAY_ERROR_COUNT] = {
 	"a index out of bounds!"
 };
 
-template<typename ObjectType, typename SizeType = int>
+template<typename ObjectType>
 class CE_GrowingArray
 {
 public:
@@ -27,37 +27,37 @@ public:
 
 
 	inline void Respace(int aNewSize);
-	void Reserve(SizeType aNrOfItems, bool aUseSafeModeFlag = true);
+	void Reserve(int aNrOfItems);
 
-	inline ObjectType& operator[](const SizeType& aIndex);
-	inline const ObjectType& operator[](const SizeType& aIndex) const;
+	inline ObjectType& operator[](const int& aIndex);
+	inline const ObjectType& operator[](const int& aIndex) const;
 
 	inline void Add(const ObjectType& aObject);
 	inline ObjectType& Add();
 	inline void AddEmptyObject();
 	inline bool AddUnique(const ObjectType& aObject);
-	inline void Insert(SizeType aIndex, const ObjectType& aObject);
+	inline void Insert(int aIndex, const ObjectType& aObject);
 	inline void InsertFirst(const ObjectType& aObject);
 	inline void DeleteCyclic(ObjectType& aObject);
-	inline void DeleteCyclicAtIndex(SizeType aItemNumber);
-	inline void DeleteNonCyclicAtIndex(SizeType aItemNumber);
+	inline void DeleteCyclicAtIndex(int aItemNumber);
+	inline void DeleteNonCyclicAtIndex(int aItemNumber);
 	inline void RemoveCyclic(const ObjectType& aObject);
-	inline void RemoveCyclicAtIndex(SizeType aItemNumber);
+	inline void RemoveCyclicAtIndex(int aItemNumber);
 	inline void RemoveNonCyclic(const ObjectType& aObject);
-	inline void RemoveNonCyclicAtIndex(SizeType aItemNumber);
-	inline SizeType Find(const ObjectType& aObject) const;
+	inline void RemoveNonCyclicAtIndex(int aItemNumber);
+	inline int Find(const ObjectType& aObject) const;
 
 	inline ObjectType& GetLast();
 	inline const ObjectType& GetLast() const;
 
-	static const SizeType FoundNone = static_cast<SizeType>(-1);
+	static const int FoundNone = -1;
 
 	inline void RemoveAll();
 	inline void DeleteAll();
 
 	void Optimize();
-	__forceinline SizeType Size() const;
-	__forceinline SizeType GetCapacity() const;
+	__forceinline int Size() const;
+	__forceinline int GetCapacity() const;
 
 	inline ObjectType* GetArrayAsPointer();
 
@@ -70,13 +70,13 @@ public:
 
 private:
 	ObjectType* myData;
-	SizeType myCurrentSize;
-	SizeType myMaxSize;
+	int myCurrentSize;
+	int myMaxSize;
 	bool myUseSafeModeFlag;
 };
 
-template<typename ObjectType, typename SizeType = int>
-inline CE_GrowingArray<ObjectType, SizeType>::CE_GrowingArray()
+template<typename ObjectType>
+inline CE_GrowingArray<ObjectType>::CE_GrowingArray()
 	: myData(nullptr)
 	, myCurrentSize(0)
 	, myMaxSize(0)
@@ -85,21 +85,21 @@ inline CE_GrowingArray<ObjectType, SizeType>::CE_GrowingArray()
 	Respace(1);
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline CE_GrowingArray<ObjectType, SizeType>::CE_GrowingArray(const CE_GrowingArray& aGrowingArray)
+template<typename ObjectType>
+inline CE_GrowingArray<ObjectType>::CE_GrowingArray(const CE_GrowingArray& aGrowingArray)
 {
 	myData = nullptr;
 	operator=(aGrowingArray);
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline CE_GrowingArray<ObjectType, SizeType>::~CE_GrowingArray()
+template<typename ObjectType>
+inline CE_GrowingArray<ObjectType>::~CE_GrowingArray()
 {
 	delete[] myData;
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline CE_GrowingArray<ObjectType, SizeType>& CE_GrowingArray<ObjectType, SizeType>::operator=(const CE_GrowingArray& aGrowingArray)
+template<typename ObjectType>
+inline CE_GrowingArray<ObjectType>& CE_GrowingArray<ObjectType>::operator=(const CE_GrowingArray& aGrowingArray)
 {
 	// if aGrowingArray.myMaxSize <= myMaxSize, I could just copy everything, don't need newData
 	delete[] myData;
@@ -112,7 +112,7 @@ inline CE_GrowingArray<ObjectType, SizeType>& CE_GrowingArray<ObjectType, SizeTy
 
 	if (myUseSafeModeFlag == true)
 	{
-		for (SizeType i = 0; i < myCurrentSize; ++i)
+		for (int i = 0; i < myCurrentSize; ++i)
 		{
 			newData[i] = aGrowingArray.myData[i];
 		}
@@ -127,14 +127,14 @@ inline CE_GrowingArray<ObjectType, SizeType>& CE_GrowingArray<ObjectType, SizeTy
 	return *this;
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::Respace(int aNewSize)
+template<typename ObjectType>
+inline void CE_GrowingArray<ObjectType>::Respace(int aNewSize)
 {
 	CE_ASSERT(aNewSize > 0, locGrowingArray_ErrorStrings[INVALID_SIZE]);
 	ObjectType* newData = new ObjectType[aNewSize];
 	if (myUseSafeModeFlag == true)
 	{
-		for (SizeType i = 0; i < myCurrentSize; ++i)
+		for (int i = 0; i < myCurrentSize; ++i)
 		{
 			newData[i] = myData[i];
 		}
@@ -145,34 +145,34 @@ inline void CE_GrowingArray<ObjectType, SizeType>::Respace(int aNewSize)
 	}
 	delete[] myData;
 	myData = newData;
-	myMaxSize = static_cast<SizeType>(aNewSize);
+	myMaxSize = static_cast<int>(aNewSize);
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::Reserve(SizeType aNrOfItems, bool aUseSafeModeFlag = true)
+template<typename ObjectType>
+inline void CE_GrowingArray<ObjectType>::Reserve(int aNrOfItems)
 {
 	Respace(aNrOfItems);
 	myCurrentSize = aNrOfItems;
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline ObjectType& CE_GrowingArray<ObjectType, SizeType>::operator[](const SizeType& aIndex)
+template<typename ObjectType>
+inline ObjectType& CE_GrowingArray<ObjectType>::operator[](const int& aIndex)
 {
 	CE_ASSERT(aIndex >= 0, locGrowingArray_ErrorStrings[LOW_INDEX]);
 	CE_ASSERT(aIndex < myCurrentSize, locGrowingArray_ErrorStrings[HIGH_INDEX]);
 	return myData[aIndex];
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline const ObjectType& CE_GrowingArray<ObjectType, SizeType>::operator[](const SizeType& aIndex) const
+template<typename ObjectType>
+inline const ObjectType& CE_GrowingArray<ObjectType>::operator[](const int& aIndex) const
 {
 	CE_ASSERT(aIndex >= 0, locGrowingArray_ErrorStrings[LOW_INDEX]);
 	CE_ASSERT(aIndex < myCurrentSize, locGrowingArray_ErrorStrings[HIGH_INDEX]);
 	return myData[aIndex];
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::Add(const ObjectType& aObject)
+template<typename ObjectType>
+inline void CE_GrowingArray<ObjectType>::Add(const ObjectType& aObject)
 {
 	if (myCurrentSize >= myMaxSize)
 	{
@@ -182,8 +182,8 @@ inline void CE_GrowingArray<ObjectType, SizeType>::Add(const ObjectType& aObject
 }
 
 
-template<typename ObjectType, typename SizeType = int>
-inline ObjectType& CE_GrowingArray<ObjectType, SizeType>::Add()
+template<typename ObjectType>
+inline ObjectType& CE_GrowingArray<ObjectType>::Add()
 {
 	if (myCurrentSize >= myMaxSize)
 	{
@@ -195,8 +195,8 @@ inline ObjectType& CE_GrowingArray<ObjectType, SizeType>::Add()
 }
 
 
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::AddEmptyObject()
+template<typename ObjectType>
+inline void CE_GrowingArray<ObjectType>::AddEmptyObject()
 {
 	if (myCurrentSize == myMaxSize)
 	{
@@ -206,8 +206,8 @@ inline void CE_GrowingArray<ObjectType, SizeType>::AddEmptyObject()
 	myCurrentSize++;
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline bool CE_GrowingArray<ObjectType, SizeType>::AddUnique(const ObjectType& aObject)
+template<typename ObjectType>
+inline bool CE_GrowingArray<ObjectType>::AddUnique(const ObjectType& aObject)
 {
 	if (Find(aObject) == -1)
 	{
@@ -218,8 +218,8 @@ inline bool CE_GrowingArray<ObjectType, SizeType>::AddUnique(const ObjectType& a
 	return false;
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::Insert(SizeType aIndex, const ObjectType& aObject)
+template<typename ObjectType>
+inline void CE_GrowingArray<ObjectType>::Insert(int aIndex, const ObjectType& aObject)
 {
 	CE_ASSERT(aIndex >= 0, locGrowingArray_ErrorStrings[LOW_INDEX]);
 	CE_ASSERT(aIndex < myCurrentSize, locGrowingArray_ErrorStrings[HIGH_INDEX]);
@@ -228,9 +228,9 @@ inline void CE_GrowingArray<ObjectType, SizeType>::Insert(SizeType aIndex, const
 	{
 		Respace(myMaxSize * 2);
 	}
-	for (SizeType i = myCurrentSize - 1; i >= aIndex; --i)
+	for (int i = myCurrentSize - 1; i >= aIndex; --i)
 	{
-		if (i == SizeType(-1))
+		if (i == int(-1))
 		{
 			break;
 		}
@@ -240,8 +240,8 @@ inline void CE_GrowingArray<ObjectType, SizeType>::Insert(SizeType aIndex, const
 	++myCurrentSize;
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::InsertFirst(const ObjectType& aObject)
+template<typename ObjectType>
+inline void CE_GrowingArray<ObjectType>::InsertFirst(const ObjectType& aObject)
 {
 	if (myCurrentSize == 0)
 	{
@@ -253,10 +253,10 @@ inline void CE_GrowingArray<ObjectType, SizeType>::InsertFirst(const ObjectType&
 	}
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::DeleteCyclic(ObjectType& aObject)
+template<typename ObjectType>
+inline void CE_GrowingArray<ObjectType>::DeleteCyclic(ObjectType& aObject)
 {
-	for (SizeType i = 0; i < myCurrentSize; ++i)
+	for (int i = 0; i < myCurrentSize; ++i)
 	{
 		if (myData[i] == aObject)
 		{
@@ -267,8 +267,8 @@ inline void CE_GrowingArray<ObjectType, SizeType>::DeleteCyclic(ObjectType& aObj
 	CE_ASSERT_ALWAYS("Object not found.");
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::DeleteCyclicAtIndex(SizeType aItemNumber)
+template<typename ObjectType>
+inline void CE_GrowingArray<ObjectType>::DeleteCyclicAtIndex(int aItemNumber)
 {
 	CE_ASSERT(aItemNumber >= 0, locGrowingArray_ErrorStrings[LOW_INDEX]);
 	CE_ASSERT(aItemNumber < myCurrentSize, locGrowingArray_ErrorStrings[HIGH_INDEX]);
@@ -278,8 +278,8 @@ inline void CE_GrowingArray<ObjectType, SizeType>::DeleteCyclicAtIndex(SizeType 
 	myData[aItemNumber] = myData[--myCurrentSize];
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::DeleteNonCyclicAtIndex(SizeType aItemNumber)
+template<typename ObjectType>
+inline void CE_GrowingArray<ObjectType>::DeleteNonCyclicAtIndex(int aItemNumber)
 {
 	CE_ASSERT(aItemNumber >= 0, locGrowingArray_ErrorStrings[LOW_INDEX]);
 	CE_ASSERT(aItemNumber < myCurrentSize, locGrowingArray_ErrorStrings[HIGH_INDEX]);
@@ -287,7 +287,7 @@ inline void CE_GrowingArray<ObjectType, SizeType>::DeleteNonCyclicAtIndex(SizeTy
 	delete myData[aItemNumber];
 	myData[aItemNumber] = nullptr;
 
-	for (SizeType i = aItemNumber; i < myCurrentSize - 1; ++i)
+	for (int i = aItemNumber; i < myCurrentSize - 1; ++i)
 	{
 		myData[i] = myData[i + 1];
 	}
@@ -295,10 +295,10 @@ inline void CE_GrowingArray<ObjectType, SizeType>::DeleteNonCyclicAtIndex(SizeTy
 }
 
 
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::RemoveCyclic(const ObjectType& aObject)
+template<typename ObjectType>
+inline void CE_GrowingArray<ObjectType>::RemoveCyclic(const ObjectType& aObject)
 {
-	for (SizeType i = 0; i < myCurrentSize; ++i)
+	for (int i = 0; i < myCurrentSize; ++i)
 	{
 		if (myData[i] == aObject)
 		{
@@ -309,8 +309,8 @@ inline void CE_GrowingArray<ObjectType, SizeType>::RemoveCyclic(const ObjectType
 	CE_ASSERT_ALWAYS("Object not found.");
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::RemoveCyclicAtIndex(SizeType aItemNumber)
+template<typename ObjectType>
+inline void CE_GrowingArray<ObjectType>::RemoveCyclicAtIndex(int aItemNumber)
 {
 	CE_ASSERT(aItemNumber >= 0, locGrowingArray_ErrorStrings[LOW_INDEX]);
 	CE_ASSERT(aItemNumber < myCurrentSize, locGrowingArray_ErrorStrings[HIGH_INDEX]);
@@ -318,10 +318,10 @@ inline void CE_GrowingArray<ObjectType, SizeType>::RemoveCyclicAtIndex(SizeType 
 	myData[aItemNumber] = myData[--myCurrentSize];
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::RemoveNonCyclic(const ObjectType& aObject)
+template<typename ObjectType>
+inline void CE_GrowingArray<ObjectType>::RemoveNonCyclic(const ObjectType& aObject)
 {
-	for (SizeType i = 0; i < myCurrentSize; ++i)
+	for (int i = 0; i < myCurrentSize; ++i)
 	{
 		if (myData[i] == aObject)
 		{
@@ -333,23 +333,23 @@ inline void CE_GrowingArray<ObjectType, SizeType>::RemoveNonCyclic(const ObjectT
 }
 
 
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::RemoveNonCyclicAtIndex(SizeType aItemNumber)
+template<typename ObjectType>
+inline void CE_GrowingArray<ObjectType>::RemoveNonCyclicAtIndex(int aItemNumber)
 {
 	CE_ASSERT(aItemNumber >= 0, locGrowingArray_ErrorStrings[LOW_INDEX]);
 	CE_ASSERT(aItemNumber < myCurrentSize, locGrowingArray_ErrorStrings[HIGH_INDEX]);
 
-	for (SizeType i = aItemNumber; i < myCurrentSize - 1; ++i)
+	for (int i = aItemNumber; i < myCurrentSize - 1; ++i)
 	{
 		myData[i] = myData[i + 1];
 	}
 	--myCurrentSize;
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline SizeType CE_GrowingArray<ObjectType, SizeType>::Find(const ObjectType& aObject) const
+template<typename ObjectType>
+inline int CE_GrowingArray<ObjectType>::Find(const ObjectType& aObject) const
 {
-	for (SizeType i = 0; i < myCurrentSize; ++i)
+	for (int i = 0; i < myCurrentSize; ++i)
 	{
 		if (myData[i] == aObject)
 		{
@@ -359,28 +359,28 @@ inline SizeType CE_GrowingArray<ObjectType, SizeType>::Find(const ObjectType& aO
 	return FoundNone;
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline ObjectType& CE_GrowingArray<ObjectType, SizeType>::GetLast()
+template<typename ObjectType>
+inline ObjectType& CE_GrowingArray<ObjectType>::GetLast()
 {
 	return myData[myCurrentSize - 1];
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline const ObjectType& CE_GrowingArray<ObjectType, SizeType>::GetLast() const
+template<typename ObjectType>
+inline const ObjectType& CE_GrowingArray<ObjectType>::GetLast() const
 {
 	return myData[myCurrentSize - 1];
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::RemoveAll()
+template<typename ObjectType>
+inline void CE_GrowingArray<ObjectType>::RemoveAll()
 {
 	myCurrentSize = 0;
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::DeleteAll()
+template<typename ObjectType>
+inline void CE_GrowingArray<ObjectType>::DeleteAll()
 {
-	for (SizeType i = 0; i < myCurrentSize; ++i)
+	for (int i = 0; i < myCurrentSize; ++i)
 	{
 		delete myData[i];
 		myData[i] = nullptr;
@@ -388,8 +388,8 @@ inline void CE_GrowingArray<ObjectType, SizeType>::DeleteAll()
 	myCurrentSize = 0;
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline void CE_GrowingArray<ObjectType, SizeType>::Optimize()
+template<typename ObjectType>
+inline void CE_GrowingArray<ObjectType>::Optimize()
 {
 	myMaxSize = myCurrentSize;
 	if (myMaxSize < 1)
@@ -399,20 +399,20 @@ inline void CE_GrowingArray<ObjectType, SizeType>::Optimize()
 	Respace(myMaxSize);
 }
 
-template<typename ObjectType, typename SizeType = int>
-__forceinline SizeType CE_GrowingArray<ObjectType, SizeType>::Size() const
+template<typename ObjectType>
+__forceinline int CE_GrowingArray<ObjectType>::Size() const
 {
 	return myCurrentSize;
 }
 
-template<typename ObjectType, typename SizeType = int>
-__forceinline SizeType CE_GrowingArray<ObjectType, SizeType>::GetCapacity() const
+template<typename ObjectType>
+__forceinline int CE_GrowingArray<ObjectType>::GetCapacity() const
 {
 	return myMaxSize;
 }
 
-template<typename ObjectType, typename SizeType = int>
-inline ObjectType* CE_GrowingArray<ObjectType, SizeType>::GetArrayAsPointer()
+template<typename ObjectType>
+inline ObjectType* CE_GrowingArray<ObjectType>::GetArrayAsPointer()
 {
 	return myData;
 }
