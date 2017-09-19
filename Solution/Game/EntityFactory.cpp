@@ -66,14 +66,14 @@ void EntityFactory::LoadPlayer()
 	CE_Entity entity = myTemplateEntityMap[PLAYER];
 
 	myTemplateWorld.AddComponent<TranslationComponent>(entity);
-	RenderComponent& playerRender = myTemplateWorld.AddComponent<RenderComponent>(entity);
+	RenderComponent& render = myTemplateWorld.AddComponent<RenderComponent>(entity);
 	InputComponent& input = myTemplateWorld.AddComponent<InputComponent>(entity);
-	CollisionComponent& playerCollision = myTemplateWorld.AddComponent<CollisionComponent>(entity);
+	CollisionComponent& collision = myTemplateWorld.AddComponent<CollisionComponent>(entity);
 	myTemplateWorld.AddComponent<InventoryComponent>(entity);
 
-	playerRender.myColor = CE_Vector4f(0.f, 0.f, 0.56f, 1.f);
+	render.myColor = CE_Vector4f(0.f, 0.f, 0.56f, 1.f);
 	input.mySpeed = 10.f;
-	playerCollision.myRadius = 1.f;
+	collision.myRadius = 1.f;
 }
 
 void EntityFactory::LoadPickUp()
