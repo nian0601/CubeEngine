@@ -9,7 +9,7 @@
       <Filter>Debug</Filter>
     </ClCompile>
     <ClCompile Include="CE_Murmur.cpp">
-      <Filter>String</Filter>
+      <Filter>Utility\String</Filter>
     </ClCompile>
     <ClCompile Include="CE_DirectX.cpp">
       <Filter>DirectX</Filter>
@@ -61,9 +61,6 @@
     <Filter Include="Debug">
       <UniqueIdentifier>{db58d6fd-001a-403c-9c36-e66bc54f8f25}</UniqueIdentifier>
     </Filter>
-    <Filter Include="String">
-      <UniqueIdentifier>{76d545d5-1bd8-4bbb-962b-cf6b9983c125}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DirectX">
       <UniqueIdentifier>{4f59e534-afaa-4e7a-8b8a-61c5b3b05204}</UniqueIdentifier>
     </Filter>
@@ -78,6 +75,9 @@
     </Filter>
     <Filter Include="Entity">
       <UniqueIdentifier>{3ec3f9b9-8d72-49c1-b37a-a9c4a11e2998}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\String">
+      <UniqueIdentifier>{76d545d5-1bd8-4bbb-962b-cf6b9983c125}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -99,13 +99,13 @@
     </ClInclude>
     <ClInclude Include="CE_Memory.h" />
     <ClInclude Include="CE_String.h">
-      <Filter>String</Filter>
+      <Filter>Utility\String</Filter>
     </ClInclude>
     <ClInclude Include="CE_Murmur.h">
-      <Filter>String</Filter>
+      <Filter>Utility\String</Filter>
     </ClInclude>
     <ClInclude Include="CE_Hashing.h">
-      <Filter>String</Filter>
+      <Filter>Utility\String</Filter>
     </ClInclude>
     <ClInclude Include="CE_Assert.h">
       <Filter>Debug</Filter>
@@ -191,6 +191,9 @@
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="CE_Input.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Map.h">
       <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>

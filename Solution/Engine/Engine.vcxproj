@@ -193,6 +193,7 @@
     <ClInclude Include="CE_GPUContext.h" />
     <ClInclude Include="CE_World.h" />
     <ClInclude Include="CE_ComponentStorage.h" />
+    <ClInclude Include="CE_Map.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

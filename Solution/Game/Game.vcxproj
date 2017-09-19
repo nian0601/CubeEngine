@@ -128,6 +128,7 @@
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="CollisionProcessor.h" />
     <ClInclude Include="CollisionSingletonComponent.h" />
+    <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputProcessor.h" />
@@ -144,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollisionProcessor.cpp" />
+    <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="PickUpProcessor.cpp" />

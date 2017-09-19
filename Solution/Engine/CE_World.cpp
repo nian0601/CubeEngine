@@ -7,7 +7,7 @@
 
 CE_World::CE_World()
 	: myNextEntity(0)
-	, myComponentStorage(new CE_ComponentStorage)
+	, myComponentStorage(new CE_ComponentStorage())
 {
 	mySingletonComponents.Respace(MAX_NUMBER_OF_COMPONENTS);
 	for (int i = 0; i < MAX_NUMBER_OF_COMPONENTS; ++i)
@@ -24,7 +24,7 @@ CE_World::~CE_World()
 	mySingletonComponents.DeleteAll();
 }
 
-CE_Entity CE_World::CreateEntity()
+CE_Entity CE_World::CreateEmptyEntity()
 {
 	CE_Entity newEntity = myNextEntity++;
 

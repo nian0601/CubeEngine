@@ -15,7 +15,8 @@ public:
 	CE_World();
 	~CE_World();
 
-	CE_Entity CreateEntity();
+	CE_Entity CreateEmptyEntity();
+
 	void QueueEntityForDestruction(CE_Entity anEntity);
 	void Update(float aDelta);
 	const CE_GrowingArray<CE_Entity>& GetEntities(const CE_ComponentFilter& aFilter);

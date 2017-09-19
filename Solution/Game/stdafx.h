@@ -10,3 +10,5 @@
 #include <CE_Memory.h>
 #include <CE_DebugLogger.h>
 #include <CE_Assert.h>
+
+#include <CE_CustomEntityTypes.h>

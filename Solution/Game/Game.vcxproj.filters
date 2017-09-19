@@ -61,6 +61,9 @@
     <ClInclude Include="PickUpProcessor.h">
       <Filter>Entity\Processor</Filter>
     </ClInclude>
+    <ClInclude Include="EntityFactory.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -81,6 +84,9 @@
     </ClCompile>
     <ClCompile Include="PickUpProcessor.cpp">
       <Filter>Entity\Processor</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityFactory.cpp">
+      <Filter>Entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -18,6 +18,7 @@
 #include "InputProcessor.h"
 #include "CollisionProcessor.h"
 #include "PickUpProcessor.h"
+#include "EntityFactory.h"
 
 Game::Game()
 {
@@ -26,12 +27,16 @@ Game::Game()
 
 Game::~Game()
 {
+	CE_SAFE_DELETE(myEntityFactory);
+	CE_SAFE_DELETE(myTemplateWorld);
 	CE_SAFE_DELETE(myWorld);
 }
 
 void Game::Init(CE_Engine& anEngine)
 {
 	myWorld = new CE_World();
+	myTemplateWorld = new CE_World();
+	myEntityFactory = new EntityFactory(*myWorld, *myTemplateWorld);
 
 	CE_Camera& camera = anEngine.GetCamera();
 	camera.SetPosition(CE_Vector3f(5.f, 10.f, -5.f));
@@ -48,30 +53,13 @@ void Game::Init(CE_Engine& anEngine)
 
 	CreateGrid();
 
-
-	CE_Entity entity = myWorld->CreateEntity();
-	TranslationComponent& translate = myWorld->AddComponent<TranslationComponent>(entity);
-	RenderComponent& render = myWorld->AddComponent<RenderComponent>(entity);
-	CollisionComponent& collision = myWorld->AddComponent<CollisionComponent>(entity);
-	PickUpComponent& pickup = myWorld->AddComponent<PickUpComponent>(entity);
-
+	CE_Entity pickup = myEntityFactory->InstansiateEntity(PICK_UP);
+	TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(pickup);
 	translate.myOrientation.SetPos(CE_Vector3f(5.f, 1.f, 5.f));
-	render.myColor = CE_Vector4f(1.f, 0.f, 0.f, 1.f);
-	collision.myRadius = 1.f;
-	pickup.myItemType = eItemType::STONE;
 
-
-	CE_Entity player = myWorld->CreateEntity();
-	TranslationComponent& playerTranslate = myWorld->AddComponent<TranslationComponent>(player);
-	RenderComponent& playerRender = myWorld->AddComponent<RenderComponent>(player);
-	InputComponent& input = myWorld->AddComponent<InputComponent>(player);
-	CollisionComponent& playerCollision = myWorld->AddComponent<CollisionComponent>(player);
-	myWorld->AddComponent<InventoryComponent>(player);
-
+	CE_Entity player = myEntityFactory->InstansiateEntity(PLAYER);
+	TranslationComponent& playerTranslate = myWorld->GetComponent<TranslationComponent>(player);
 	playerTranslate.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 1.f));
-	playerRender.myColor = CE_Vector4f(0.f, 0.f, 0.56f, 1.f);
-	input.mySpeed = 10.f;
-	playerCollision.myRadius = 1.f;
 }
 
 void Game::Update(float aDelta)
@@ -87,19 +75,15 @@ void Game::Render(CE_RendererProxy& /*anRendererProxy*/)
 void Game::CreateGrid()
 {
 	const int gridSize = 10;
-	float color = 0.58f;
 	for (int z = 0; z < gridSize; ++z)
 	{
 		for (int x = 0; x < gridSize; ++x)
 		{
 			CE_Vector3f pos(static_cast<float>(x), 0.f, static_cast<float>(z));
 
-			CE_Entity entity = myWorld->CreateEntity();
-			TranslationComponent& translate = myWorld->AddComponent<TranslationComponent>(entity);
-			RenderComponent& render = myWorld->AddComponent<RenderComponent>(entity);
-
+			CE_Entity entity = myEntityFactory->InstansiateEntity(GROUND);
+			TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(entity);
 			translate.myOrientation.SetPos(pos);
-			render.myColor = CE_Vector4f(color, color, color, 1.f);
 		}
 	}
 }

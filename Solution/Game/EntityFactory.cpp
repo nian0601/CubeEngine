@@ -1,0 +1,91 @@
+#include "stdafx.h"
+#include "EntityFactory.h"
+#include "TranslationComponent.h"
+#include "RenderComponent.h"
+#include "InputComponent.h"
+#include "CollisionComponent.h"
+#include "InventoryComponent.h"
+#include "PickUpComponent.h"
+#include "RotationComponent.h"
+
+
+EntityFactory::EntityFactory(CE_World& anRealWorld, CE_World& anTemplateWorld)
+	: myRealWorld(anRealWorld)
+	, myTemplateWorld(anTemplateWorld)
+{
+	LoadTemplateEntities();
+}
+
+
+EntityFactory::~EntityFactory()
+{
+}
+
+void EntityFactory::LoadTemplateEntities()
+{
+	myTemplateEntityMap[GROUND] = myTemplateWorld.CreateEmptyEntity();
+	myTemplateEntityMap[PLAYER] = myTemplateWorld.CreateEmptyEntity();
+	myTemplateEntityMap[PICK_UP] = myTemplateWorld.CreateEmptyEntity();
+
+	LoadGround();
+	LoadPlayer();
+	LoadPickUp();
+}
+
+CE_Entity EntityFactory::InstansiateEntity(int anIdentifier)
+{
+	CE_ASSERT(myTemplateEntityMap.KeyExists(anIdentifier), "Couldnt find Entity %i to Instansiate");
+
+	CE_Entity templateEntity = myTemplateEntityMap[anIdentifier];
+	CE_Entity newEntity = myRealWorld.CreateEmptyEntity();
+
+	CopyComponent<CollisionComponent>(templateEntity, newEntity);
+	CopyComponent<InputComponent>(templateEntity, newEntity);
+	CopyComponent<InventoryComponent>(templateEntity, newEntity);
+	CopyComponent<PickUpComponent>(templateEntity, newEntity);
+	CopyComponent<RenderComponent>(templateEntity, newEntity);
+	CopyComponent<RotationComponent>(templateEntity, newEntity);
+	CopyComponent<TranslationComponent>(templateEntity, newEntity);
+
+	return newEntity;
+}
+
+void EntityFactory::LoadGround()
+{
+	CE_Entity entity = myTemplateEntityMap[GROUND];
+
+	myTemplateWorld.AddComponent<TranslationComponent>(entity);
+	RenderComponent& render = myTemplateWorld.AddComponent<RenderComponent>(entity);
+
+	float color = 0.58f;
+	render.myColor = CE_Vector4f(color, color, color, 1.f);
+}
+
+void EntityFactory::LoadPlayer()
+{
+	CE_Entity entity = myTemplateEntityMap[PLAYER];
+
+	myTemplateWorld.AddComponent<TranslationComponent>(entity);
+	RenderComponent& playerRender = myTemplateWorld.AddComponent<RenderComponent>(entity);
+	InputComponent& input = myTemplateWorld.AddComponent<InputComponent>(entity);
+	CollisionComponent& playerCollision = myTemplateWorld.AddComponent<CollisionComponent>(entity);
+	myTemplateWorld.AddComponent<InventoryComponent>(entity);
+
+	playerRender.myColor = CE_Vector4f(0.f, 0.f, 0.56f, 1.f);
+	input.mySpeed = 10.f;
+	playerCollision.myRadius = 1.f;
+}
+
+void EntityFactory::LoadPickUp()
+{
+	CE_Entity entity = myTemplateEntityMap[PICK_UP];
+
+	myTemplateWorld.AddComponent<TranslationComponent>(entity);
+	RenderComponent& render = myTemplateWorld.AddComponent<RenderComponent>(entity);
+	CollisionComponent& collision = myTemplateWorld.AddComponent<CollisionComponent>(entity);
+	PickUpComponent& pickup = myTemplateWorld.AddComponent<PickUpComponent>(entity);
+
+	render.myColor = CE_Vector4f(1.f, 0.f, 0.f, 1.f);
+	collision.myRadius = 1.f;
+	pickup.myItemType = eItemType::STONE;
+}

@@ -3,6 +3,8 @@
 #include <CE_Game.h>
 
 class CE_World;
+class EntityFactory;
+
 class Game : public CE_Game
 {
 public:
@@ -17,4 +19,7 @@ private:
 	void CreateGrid();
 
 	CE_World* myWorld;
+	CE_World* myTemplateWorld;
+
+	EntityFactory* myEntityFactory;
 };
