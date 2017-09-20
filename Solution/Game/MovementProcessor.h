@@ -3,10 +3,10 @@
 #include <CE_BaseProcessor.h>
 
 class CE_Input;
-class InputProcessor : public CE_BaseProcessor
+class MovementProcessor : public CE_BaseProcessor
 {
 public:
-	InputProcessor(CE_World& aWorld, CE_Input& aInput);
+	MovementProcessor(CE_World& aWorld, CE_Input& aInput);
 
 	void Update(float aDelta) override;
 

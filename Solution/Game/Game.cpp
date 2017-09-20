@@ -15,7 +15,7 @@
 
 #include "RenderProcessor.h"
 #include "RotationProcessor.h"
-#include "InputProcessor.h"
+#include "MovementProcessor.h"
 #include "CollisionProcessor.h"
 #include "PickUpProcessor.h"
 #include "EntityFactory.h"
@@ -46,7 +46,7 @@ void Game::Init(CE_Engine& anEngine)
 	myWorld->AddProcessor(renderProcessor);
 	myWorld->AddProcessor<RotationProcessor>();
 
-	InputProcessor* inputProcessor = new InputProcessor(*myWorld, anEngine.GetInput());
+	MovementProcessor* inputProcessor = new MovementProcessor(*myWorld, anEngine.GetInput());
 	myWorld->AddProcessor(inputProcessor);
 	myWorld->AddProcessor<CollisionProcessor>();
 	myWorld->AddProcessor<PickUpProcessor>();

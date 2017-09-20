@@ -1,17 +1,17 @@
 #include "stdafx.h"
 
 #include "MovementComponent.h"
-#include "InputProcessor.h"
+#include "MovementProcessor.h"
 #include "TranslationComponent.h"
 #include <CE_Input.h>
 
-InputProcessor::InputProcessor(CE_World& aWorld, CE_Input& aInput)
+MovementProcessor::MovementProcessor(CE_World& aWorld, CE_Input& aInput)
 	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<MovementComponent, TranslationComponent>>())
 	, myInput(aInput)
 {
 }
 
-void InputProcessor::Update(float aDelta)
+void MovementProcessor::Update(float aDelta)
 {
 	CE_GrowingArray<CE_Entity> entities = GetEntities();
 
