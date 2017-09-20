@@ -5,7 +5,7 @@
 #include "CollisionSingletonComponent.h"
 
 PickUpProcessor::PickUpProcessor(CE_World& aWorld)
-	: CE_BaseProcessor(aWorld, CE_CreateFilter())
+	: CE_BaseProcessor(aWorld)
 {
 }
 

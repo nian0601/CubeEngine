@@ -5,7 +5,7 @@
 #include "..\Engine\CE_Input.h"
 
 InputProcessor::InputProcessor(CE_World& aWorld, CE_Input& anInput)
-	: CE_BaseProcessor(aWorld, CE_CreateFilter<>())
+	: CE_BaseProcessor(aWorld)
 	, myInput(anInput)
 {
 	InputSingletonComponent& input = myWorld.GetSingletonComponent<InputSingletonComponent>();
