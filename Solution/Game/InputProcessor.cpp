@@ -14,6 +14,8 @@ InputProcessor::InputProcessor(CE_World& aWorld, CE_Input& anInput)
 	input.myKeyMapping[MOVE_BACKWARD] = DIK_S;
 	input.myKeyMapping[MOVE_LEFT] = DIK_A;
 	input.myKeyMapping[MOVE_RIGHT] = DIK_D;
+
+	input.myKeyMapping[PLACE_ENTITY] = DIK_E;
 }
 
 void InputProcessor::Update(float /*aDelta*/)

@@ -73,7 +73,7 @@ void EntityFactory::LoadPlayer()
 
 	render.myColor = CE_Vector4f(0.f, 0.f, 0.56f, 1.f);
 	input.mySpeed = 10.f;
-	collision.myRadius = 1.f;
+	collision.myRadius = 0.5f;
 }
 
 void EntityFactory::LoadPickUp()
@@ -86,6 +86,6 @@ void EntityFactory::LoadPickUp()
 	PickUpComponent& pickup = myTemplateWorld.AddComponent<PickUpComponent>(entity);
 
 	render.myColor = CE_Vector4f(1.f, 0.f, 0.f, 1.f);
-	collision.myRadius = 1.f;
+	collision.myRadius = 0.5f;
 	pickup.myItemType = eItemType::STONE;
 }

@@ -13,6 +13,9 @@
     <Filter Include="Entity\Component">
       <UniqueIdentifier>{dc52c66c-b288-46a2-aeea-218eb0241c5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Entity\SingletonComponent">
+      <UniqueIdentifier>{c5bd4bf8-12b4-4d01-83be-b287ca6486ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -40,9 +43,6 @@
     <ClInclude Include="CollisionProcessor.h">
       <Filter>Entity\Processor</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionSingletonComponent.h">
-      <Filter>Entity\Component</Filter>
-    </ClInclude>
     <ClInclude Include="InventoryComponent.h">
       <Filter>Entity\Component</Filter>
     </ClInclude>
@@ -64,11 +64,23 @@
     <ClInclude Include="MovementProcessor.h">
       <Filter>Entity\Processor</Filter>
     </ClInclude>
-    <ClInclude Include="InputSingletonComponent.h">
-      <Filter>Entity\Component</Filter>
-    </ClInclude>
     <ClInclude Include="InputProcessor.h">
       <Filter>Entity\Processor</Filter>
+    </ClInclude>
+    <ClInclude Include="PlacingProcessor.h">
+      <Filter>Entity\Processor</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateEntityProcessor.h">
+      <Filter>Entity\Processor</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSingletonComponent.h">
+      <Filter>Entity\SingletonComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateEntitySingletonComponent.h">
+      <Filter>Entity\SingletonComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionSingletonComponent.h">
+      <Filter>Entity\SingletonComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +107,12 @@
       <Filter>Entity\Processor</Filter>
     </ClCompile>
     <ClCompile Include="InputProcessor.cpp">
+      <Filter>Entity\Processor</Filter>
+    </ClCompile>
+    <ClCompile Include="PlacingProcessor.cpp">
+      <Filter>Entity\Processor</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateEntityProcessor.cpp">
       <Filter>Entity\Processor</Filter>
     </ClCompile>
   </ItemGroup>

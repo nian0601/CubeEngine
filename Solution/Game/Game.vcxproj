@@ -128,6 +128,8 @@
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="CollisionProcessor.h" />
     <ClInclude Include="CollisionSingletonComponent.h" />
+    <ClInclude Include="CreateEntityProcessor.h" />
+    <ClInclude Include="CreateEntitySingletonComponent.h" />
     <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InputProcessor.h" />
@@ -137,6 +139,7 @@
     <ClInclude Include="InventoryComponent.h" />
     <ClInclude Include="PickUpComponent.h" />
     <ClInclude Include="PickUpProcessor.h" />
+    <ClInclude Include="PlacingProcessor.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RenderProcessor.h" />
     <ClInclude Include="RotationComponent.h" />
@@ -147,11 +150,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollisionProcessor.cpp" />
+    <ClCompile Include="CreateEntityProcessor.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="MovementProcessor.cpp" />
     <ClCompile Include="PickUpProcessor.cpp" />
+    <ClCompile Include="PlacingProcessor.cpp" />
     <ClCompile Include="RenderProcessor.cpp" />
     <ClCompile Include="RotationProcessor.cpp" />
     <ClCompile Include="stdafx.cpp">

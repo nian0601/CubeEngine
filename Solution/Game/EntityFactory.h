@@ -2,13 +2,7 @@
 
 #include <CE_Map.h>
 #include <CE_World.h>
-
-enum eEntityTypes
-{
-	GROUND,
-	PLAYER,
-	PICK_UP,
-};
+#include "Types.h"
 
 class CE_World;
 class EntityFactory

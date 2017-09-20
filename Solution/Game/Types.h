@@ -7,3 +7,9 @@ enum class eItemType
 	_COUNT,
 };
 
+enum eEntityTypes
+{
+	GROUND,
+	PLAYER,
+	PICK_UP,
+};

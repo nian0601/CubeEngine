@@ -4,12 +4,14 @@
 #include <CE_StaticArray.h>
 #include <CE_Assert.h>
 
+// Update constructor of InputProcessor to map an actual key to the action
 enum eActions
 {
 	MOVE_FORWARD,
 	MOVE_BACKWARD,
 	MOVE_LEFT,
 	MOVE_RIGHT,
+	PLACE_ENTITY,
 	_ACTIONCOUNT,
 };
 

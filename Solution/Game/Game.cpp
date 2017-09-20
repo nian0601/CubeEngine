@@ -13,6 +13,8 @@
 #include "PickUpComponent.h"
 #include "InventoryComponent.h"
 #include "InputProcessor.h"
+#include "CreateEntityProcessor.h"
+#include "PlacingProcessor.h"
 
 #include "RenderProcessor.h"
 #include "RotationProcessor.h"
@@ -52,6 +54,10 @@ void Game::Init(CE_Engine& anEngine)
 
 	InputProcessor* inputProcessor = new InputProcessor(*myWorld, anEngine.GetInput());
 	myWorld->AddProcessor(inputProcessor);
+
+	CreateEntityProcessor* createProcessor = new CreateEntityProcessor(*myWorld, *myEntityFactory);
+	myWorld->AddProcessor(createProcessor);
+	myWorld->AddProcessor<PlacingProcessor>();
 
 	CreateGrid();
 
