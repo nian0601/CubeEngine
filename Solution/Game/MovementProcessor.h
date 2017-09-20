@@ -6,11 +6,8 @@ class CE_Input;
 class MovementProcessor : public CE_BaseProcessor
 {
 public:
-	MovementProcessor(CE_World& aWorld, CE_Input& aInput);
+	MovementProcessor(CE_World& aWorld);
 
 	void Update(float aDelta) override;
-
-private:
-	CE_Input& myInput;
 };
 

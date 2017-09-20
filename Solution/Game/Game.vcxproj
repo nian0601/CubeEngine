@@ -130,6 +130,8 @@
     <ClInclude Include="CollisionSingletonComponent.h" />
     <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="InputProcessor.h" />
+    <ClInclude Include="InputSingletonComponent.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="MovementProcessor.h" />
     <ClInclude Include="InventoryComponent.h" />
@@ -147,6 +149,7 @@
     <ClCompile Include="CollisionProcessor.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="MovementProcessor.cpp" />
     <ClCompile Include="PickUpProcessor.cpp" />
     <ClCompile Include="RenderProcessor.cpp" />

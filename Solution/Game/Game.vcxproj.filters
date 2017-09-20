@@ -64,6 +64,12 @@
     <ClInclude Include="MovementProcessor.h">
       <Filter>Entity\Processor</Filter>
     </ClInclude>
+    <ClInclude Include="InputSingletonComponent.h">
+      <Filter>Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="InputProcessor.h">
+      <Filter>Entity\Processor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -86,6 +92,9 @@
       <Filter>Entity</Filter>
     </ClCompile>
     <ClCompile Include="MovementProcessor.cpp">
+      <Filter>Entity\Processor</Filter>
+    </ClCompile>
+    <ClCompile Include="InputProcessor.cpp">
       <Filter>Entity\Processor</Filter>
     </ClCompile>
   </ItemGroup>

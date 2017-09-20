@@ -12,6 +12,7 @@
 #include "CollisionComponent.h"
 #include "PickUpComponent.h"
 #include "InventoryComponent.h"
+#include "InputProcessor.h"
 
 #include "RenderProcessor.h"
 #include "RotationProcessor.h"
@@ -45,11 +46,12 @@ void Game::Init(CE_Engine& anEngine)
 	RenderProcessor* renderProcessor = new RenderProcessor(*myWorld, anEngine.GetRendererProxy());
 	myWorld->AddProcessor(renderProcessor);
 	myWorld->AddProcessor<RotationProcessor>();
-
-	MovementProcessor* inputProcessor = new MovementProcessor(*myWorld, anEngine.GetInput());
-	myWorld->AddProcessor(inputProcessor);
+	myWorld->AddProcessor<MovementProcessor>();
 	myWorld->AddProcessor<CollisionProcessor>();
 	myWorld->AddProcessor<PickUpProcessor>();
+
+	InputProcessor* inputProcessor = new InputProcessor(*myWorld, anEngine.GetInput());
+	myWorld->AddProcessor(inputProcessor);
 
 	CreateGrid();
 
