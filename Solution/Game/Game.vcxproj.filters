@@ -34,9 +34,6 @@
     <ClInclude Include="RotationProcessor.h">
       <Filter>Entity\Processor</Filter>
     </ClInclude>
-    <ClInclude Include="InputComponent.h">
-      <Filter>Entity\Component</Filter>
-    </ClInclude>
     <ClInclude Include="InputProcessor.h">
       <Filter>Entity\Processor</Filter>
     </ClInclude>
@@ -63,6 +60,9 @@
     </ClInclude>
     <ClInclude Include="EntityFactory.h">
       <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementComponent.h">
+      <Filter>Entity\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,12 +1,12 @@
 #include "stdafx.h"
 
-#include "InputComponent.h"
+#include "MovementComponent.h"
 #include "InputProcessor.h"
 #include "TranslationComponent.h"
 #include <CE_Input.h>
 
 InputProcessor::InputProcessor(CE_World& aWorld, CE_Input& aInput)
-	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<InputComponent, TranslationComponent>>())
+	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<MovementComponent, TranslationComponent>>())
 	, myInput(aInput)
 {
 }
@@ -18,7 +18,7 @@ void InputProcessor::Update(float aDelta)
 	for (const CE_Entity& entity : entities)
 	{
 		TranslationComponent& translation = GetComponent<TranslationComponent>(entity);
-		InputComponent& input = GetComponent<InputComponent>(entity);
+		MovementComponent& input = GetComponent<MovementComponent>(entity);
 
 		CE_Vector3f direction;
 		if (myInput.KeyIsPressed(DIK_W))

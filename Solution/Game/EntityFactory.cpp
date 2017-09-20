@@ -2,7 +2,7 @@
 #include "EntityFactory.h"
 #include "TranslationComponent.h"
 #include "RenderComponent.h"
-#include "InputComponent.h"
+#include "MovementComponent.h"
 #include "CollisionComponent.h"
 #include "InventoryComponent.h"
 #include "PickUpComponent.h"
@@ -40,7 +40,7 @@ CE_Entity EntityFactory::InstansiateEntity(int anIdentifier)
 	CE_Entity newEntity = myRealWorld.CreateEmptyEntity();
 
 	CopyComponent<CollisionComponent>(templateEntity, newEntity);
-	CopyComponent<InputComponent>(templateEntity, newEntity);
+	CopyComponent<MovementComponent>(templateEntity, newEntity);
 	CopyComponent<InventoryComponent>(templateEntity, newEntity);
 	CopyComponent<PickUpComponent>(templateEntity, newEntity);
 	CopyComponent<RenderComponent>(templateEntity, newEntity);
@@ -67,7 +67,7 @@ void EntityFactory::LoadPlayer()
 
 	myTemplateWorld.AddComponent<TranslationComponent>(entity);
 	RenderComponent& render = myTemplateWorld.AddComponent<RenderComponent>(entity);
-	InputComponent& input = myTemplateWorld.AddComponent<InputComponent>(entity);
+	MovementComponent& input = myTemplateWorld.AddComponent<MovementComponent>(entity);
 	CollisionComponent& collision = myTemplateWorld.AddComponent<CollisionComponent>(entity);
 	myTemplateWorld.AddComponent<InventoryComponent>(entity);
 

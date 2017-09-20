@@ -8,7 +8,7 @@
 #include "RenderComponent.h"
 #include "TranslationComponent.h"
 #include "RotationComponent.h"
-#include "InputComponent.h"
+#include "MovementComponent.h"
 #include "CollisionComponent.h"
 #include "PickUpComponent.h"
 #include "InventoryComponent.h"
