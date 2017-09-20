@@ -16,11 +16,6 @@ InputProcessor::InputProcessor(CE_World& aWorld, CE_Input& anInput)
 	input.myKeyMapping[MOVE_RIGHT] = DIK_D;
 }
 
-
-InputProcessor::~InputProcessor()
-{
-}
-
 void InputProcessor::Update(float /*aDelta*/)
 {
 	InputSingletonComponent& input = myWorld.GetSingletonComponent<InputSingletonComponent>();

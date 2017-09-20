@@ -7,7 +7,6 @@ class InputProcessor : public CE_BaseProcessor
 {
 public:
 	InputProcessor(CE_World& aWorld, CE_Input& anInput);
-	~InputProcessor();
 
 	void Update(float aDelta) override;
 
