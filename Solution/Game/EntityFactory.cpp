@@ -7,6 +7,7 @@
 #include "InventoryComponent.h"
 #include "PickUpComponent.h"
 #include "RotationComponent.h"
+#include "MoverComponent.h"
 
 
 EntityFactory::EntityFactory(CE_World& anRealWorld, CE_World& anTemplateWorld)
@@ -26,10 +27,12 @@ void EntityFactory::LoadTemplateEntities()
 	myTemplateEntityMap[GROUND] = myTemplateWorld.CreateEmptyEntity();
 	myTemplateEntityMap[PLAYER] = myTemplateWorld.CreateEmptyEntity();
 	myTemplateEntityMap[PICK_UP] = myTemplateWorld.CreateEmptyEntity();
+	myTemplateEntityMap[MOVER] = myTemplateWorld.CreateEmptyEntity();
 
 	LoadGround();
 	LoadPlayer();
 	LoadPickUp();
+	LoadMover();
 }
 
 CE_Entity EntityFactory::InstansiateEntity(int anIdentifier)
@@ -46,6 +49,7 @@ CE_Entity EntityFactory::InstansiateEntity(int anIdentifier)
 	CopyComponent<RenderComponent>(templateEntity, newEntity);
 	CopyComponent<RotationComponent>(templateEntity, newEntity);
 	CopyComponent<TranslationComponent>(templateEntity, newEntity);
+	CopyComponent<MoverComponent>(templateEntity, newEntity);
 
 	return newEntity;
 }
@@ -88,4 +92,19 @@ void EntityFactory::LoadPickUp()
 	render.myColor = CE_Vector4f(1.f, 0.f, 0.f, 1.f);
 	collision.myRadius = 0.5f;
 	pickup.myItemType = eItemType::STONE;
+}
+
+void EntityFactory::LoadMover()
+{
+	CE_Entity entity = myTemplateEntityMap[MOVER];
+
+	myTemplateWorld.AddComponent<TranslationComponent>(entity);
+	RenderComponent& render = myTemplateWorld.AddComponent<RenderComponent>(entity);
+	CollisionComponent& collision = myTemplateWorld.AddComponent<CollisionComponent>(entity);
+	MoverComponent& mover = myTemplateWorld.AddComponent<MoverComponent>(entity);
+
+	render.myColor = CE_Vector4f(0.f, 0.34f, 0.f, 1.f);
+	collision.myRadius = 0.5f;
+	mover.mySpeed = 2.f;
+	mover.myDirection = CE_Vector3f(0.f, 0.f, -1.f);
 }

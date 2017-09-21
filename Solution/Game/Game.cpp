@@ -15,6 +15,7 @@
 #include "InputProcessor.h"
 #include "CreateEntityProcessor.h"
 #include "PlacingProcessor.h"
+#include "MoverProcessor.h"
 
 #include "RenderProcessor.h"
 #include "RotationProcessor.h"
@@ -58,6 +59,7 @@ void Game::Init(CE_Engine& anEngine)
 	CreateEntityProcessor* createProcessor = new CreateEntityProcessor(*myWorld, *myEntityFactory);
 	myWorld->AddProcessor(createProcessor);
 	myWorld->AddProcessor<PlacingProcessor>();
+	myWorld->AddProcessor<MoverProcessor>();
 
 	CreateGrid();
 

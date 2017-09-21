@@ -19,6 +19,7 @@ private:
 	void LoadGround();
 	void LoadPlayer();
 	void LoadPickUp();
+	void LoadMover();
 
 	template<typename T>
 	void CopyComponent(CE_Entity aSource, CE_Entity aTarget);

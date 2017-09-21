@@ -32,6 +32,6 @@ void PlacingProcessor::Update(float /*aDelta*/)
 
 		CreateEntitySingletonComponent::Entry& entry = createSingleton.myEntries.Add();
 		entry.myPosition = pos;
-		entry.myEntityType = PICK_UP;
+		entry.myEntityType = MOVER;
 	}
 }

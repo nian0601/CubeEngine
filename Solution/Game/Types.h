@@ -12,4 +12,5 @@ enum eEntityTypes
 	GROUND,
 	PLAYER,
 	PICK_UP,
+	MOVER,
 };

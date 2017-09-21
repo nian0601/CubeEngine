@@ -82,6 +82,12 @@
     <ClInclude Include="CollisionSingletonComponent.h">
       <Filter>Entity\SingletonComponent</Filter>
     </ClInclude>
+    <ClInclude Include="MoverComponent.h">
+      <Filter>Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="MoverProcessor.h">
+      <Filter>Entity\Processor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -113,6 +119,9 @@
       <Filter>Entity\Processor</Filter>
     </ClCompile>
     <ClCompile Include="CreateEntityProcessor.cpp">
+      <Filter>Entity\Processor</Filter>
+    </ClCompile>
+    <ClCompile Include="MoverProcessor.cpp">
       <Filter>Entity\Processor</Filter>
     </ClCompile>
   </ItemGroup>
