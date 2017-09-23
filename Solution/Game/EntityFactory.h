@@ -21,6 +21,8 @@ private:
 	void LoadPickUp();
 	void LoadMover();
 
+	CE_Vector3f CalculateOffset(const CE_Vector3f& aScale) const;
+
 	template<typename T>
 	void CopyComponent(CE_Entity aSource, CE_Entity aTarget);
 

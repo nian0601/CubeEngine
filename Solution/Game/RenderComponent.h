@@ -4,6 +4,12 @@
 
 struct RenderComponent : public CE_BaseComponent
 {
-	CE_Vector4f myColor;
-	CE_Vector3f myScale;
+	struct Entry
+	{
+		CE_Matrix44f myOffsetMatrix;
+		CE_Vector4f myColor;
+		CE_Vector3f myScale;
+	};
+
+	CE_GrowingArray<Entry> myEntries;
 };
