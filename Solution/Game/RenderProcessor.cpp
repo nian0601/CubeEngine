@@ -24,6 +24,6 @@ void RenderProcessor::Update(float /*aDelta*/)
 		TranslationComponent& translation = GetComponent<TranslationComponent>(entity);
 		RenderComponent& render = GetComponent<RenderComponent>(entity);
 
-		myRendererProxy.AddCubeData(translation.myOrientation, render.myColor);
+		myRendererProxy.AddCubeData(translation.myOrientation, render.myScale, render.myColor);
 	}
 }

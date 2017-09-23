@@ -179,6 +179,10 @@ void CE_Model::Render(const CE_GPUContext& aGPUContext)
 	ObjectData* dataPtr = (ObjectData*)mappedResource.pData;
 	dataPtr->myWorld = myOrientation;
 	dataPtr->myColor = myColor;
+	dataPtr->myScale.x = myScale.x;
+	dataPtr->myScale.y = myScale.y;
+	dataPtr->myScale.z = myScale.z;
+	dataPtr->myScale.w = 1.f;
 
 	context->Unmap(myObjectDataBuffer, 0);
 
@@ -214,6 +218,11 @@ void CE_Model::Rotate(const CE_Matrix44f& aRotation)
 	myOrientation.SetPos(CE_Vector3f());
 	myOrientation = myOrientation * aRotation;
 	myOrientation.SetPos(pos);
+}
+
+void CE_Model::SetScale(const CE_Vector3f& aScale)
+{
+	myScale = aScale;
 }
 
 void CE_Model::SetColor(const CE_Vector4f& aColor)

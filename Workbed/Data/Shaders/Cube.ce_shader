@@ -8,6 +8,7 @@ cbuffer ObjectData
 {
 	Matrix World;	
 	float4 Color;
+	float4 Scale;
 };
 
 struct PosNormColorVertex
@@ -30,6 +31,7 @@ PosNormColorPixel VS(PosNormColorVertex aInput)
 	PosNormColorPixel output;
 
 	aInput.Position.w = 1.f;
+	aInput.Position.xyz *= Scale;
 	output.Position = mul(World, aInput.Position);
 	output.Position = mul(View, output.Position);
 	output.Position = mul(Projection, output.Position);

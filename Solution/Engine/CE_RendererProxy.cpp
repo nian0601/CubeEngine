@@ -8,7 +8,7 @@ CE_RendererProxy::CE_RendererProxy(CE_Renderer& aRenderer)
 {
 }
 
-void CE_RendererProxy::AddCubeData(const CE_Matrix44f& anOrientation, const CE_Vector4f& aColor)
+void CE_RendererProxy::AddCubeData(const CE_Matrix44f& anOrientation, const CE_Vector3f& aScale, const CE_Vector4f& aColor)
 {
-	myRenderer.AddCubeData(anOrientation, aColor);
+	myRenderer.AddCubeData(anOrientation, aScale, aColor);
 }

@@ -63,6 +63,7 @@ void EntityFactory::LoadGround()
 
 	float color = 0.58f;
 	render.myColor = CE_Vector4f(color, color, color, 1.f);
+	render.myScale = CE_Vector3f(1.f);
 }
 
 void EntityFactory::LoadPlayer()
@@ -76,6 +77,7 @@ void EntityFactory::LoadPlayer()
 	myTemplateWorld.AddComponent<InventoryComponent>(entity);
 
 	render.myColor = CE_Vector4f(0.f, 0.f, 0.56f, 1.f);
+	render.myScale = CE_Vector3f(0.5f, 1.f, 0.5f);
 	input.mySpeed = 10.f;
 	collision.myRadius = 0.5f;
 }
@@ -90,6 +92,7 @@ void EntityFactory::LoadPickUp()
 	PickUpComponent& pickup = myTemplateWorld.AddComponent<PickUpComponent>(entity);
 
 	render.myColor = CE_Vector4f(1.f, 0.f, 0.f, 1.f);
+	render.myScale = CE_Vector3f(1.f);
 	collision.myRadius = 0.5f;
 	pickup.myItemType = eItemType::STONE;
 }
@@ -104,6 +107,7 @@ void EntityFactory::LoadMover()
 	MoverComponent& mover = myTemplateWorld.AddComponent<MoverComponent>(entity);
 
 	render.myColor = CE_Vector4f(0.f, 0.34f, 0.f, 1.f);
+	render.myScale = CE_Vector3f(1.f);
 	collision.myRadius = 0.5f;
 	mover.mySpeed = 2.f;
 	mover.myDirection = CE_Vector3f(0.f, 0.f, -1.f);

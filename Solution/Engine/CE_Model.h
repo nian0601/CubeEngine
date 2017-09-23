@@ -21,6 +21,7 @@ public:
 	void SetOrientation(const CE_Matrix44f& anOrientation);
 	void SetPosition(const CE_Vector3f& aPosition);
 	void Rotate(const CE_Matrix44f& aRotation);
+	void SetScale(const CE_Vector3f& aScale);
 	void SetColor(const CE_Vector4f& aColor);
 
 private:
@@ -37,6 +38,7 @@ private:
 	{
 		CE_Matrix44f myWorld;
 		CE_Vector4f myColor;
+		CE_Vector4f myScale;
 	};
 	ID3D11Buffer* myObjectDataBuffer;
 
@@ -47,6 +49,7 @@ private:
 	int myIndexCount;
 
 	CE_Matrix44f myOrientation;
+	CE_Vector3f myScale;
 	CE_Vector4f myColor;
 };
 

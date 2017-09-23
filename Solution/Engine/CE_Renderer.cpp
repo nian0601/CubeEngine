@@ -29,6 +29,7 @@ void CE_Renderer::Render(CE_Camera& aCamera)
 	{
 		myCubeModel->SetOrientation(data.myOrientation);
 		myCubeModel->SetColor(data.myColor);
+		myCubeModel->SetScale(data.myScale);
 
 		myCubeModel->Render(myGPUContext);
 	}
@@ -36,9 +37,10 @@ void CE_Renderer::Render(CE_Camera& aCamera)
 	myCubeData.RemoveAll();
 }
 
-void CE_Renderer::AddCubeData(const CE_Matrix44f& anOrientation, const CE_Vector4f& aColor)
+void CE_Renderer::AddCubeData(const CE_Matrix44f& anOrientation, const CE_Vector3f& aScale, const CE_Vector4f& aColor)
 {
 	CubeData& data = myCubeData.Add();
 	data.myOrientation = anOrientation;
+	data.myScale = aScale;
 	data.myColor = aColor;
 }
