@@ -19,6 +19,9 @@ public:
 	void SetRotation2D(T aRadian);
 	void SetPos(const CE_Vector2<T>& aPos);
 	void SetPos(const CE_Vector3<T>& aPos);
+	void SetPos(const T& aX, const T& aY);
+	void SetPos(const T& aX, const T& aY, const T& aZ);
+
 	CE_Vector2<T> GetPos() const;
 	CE_Vector3<T> GetPos3() const;
 

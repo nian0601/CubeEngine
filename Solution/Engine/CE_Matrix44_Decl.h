@@ -24,6 +24,8 @@ public:
 
 	void SetPos(const CE_Vector3<T>& aPos);
 	void SetPos(const CE_Vector4<T>& aPos);
+	void SetPos(const T& aX, const T& aY, const T& aZ);
+	void SetPos(const T& aX, const T& aY, const T& aZ, const T& aW);
 
 	void SetForward(const CE_Vector3<T>& aForward);
 	void SetUp(const CE_Vector3<T>& anUp);

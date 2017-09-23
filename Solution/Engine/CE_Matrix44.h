@@ -623,6 +623,23 @@ void CE_Matrix44<T>::SetPos(const CE_Vector4<T>& aPos)
 }
 
 template <typename T>
+void CE_Matrix44<T>::SetPos(const T& aX, const T& aY, const T& aZ)
+{
+	myMatrix[12] = aX;
+	myMatrix[13] = aY;
+	myMatrix[14] = aZ;
+}
+
+template <typename T>
+void CE_Matrix44<T>::SetPos(const T& aX, const T& aY, const T& aZ, const T& aW)
+{
+	myMatrix[12] = aX;
+	myMatrix[13] = aY;
+	myMatrix[14] = aZ;
+	myMatrix[15] = aW;
+}
+
+template <typename T>
 void CE_Matrix44<T>::SetForward(const CE_Vector3<T>& aForward)
 {
 	myMatrix[8] = aForward.x;

@@ -352,6 +352,21 @@ void CE_Matrix33<T>::SetPos(const CE_Vector3<T>& aPos)
 }
 
 template <typename T>
+void CE_Matrix33<T>::SetPos(const T& aX, const T& aY)
+{
+	myMatrix[6] = aX;
+	myMatrix[7] = aY;
+}
+
+template <typename T>
+void CE_Matrix33<T>::SetPos(const T& aX, const T& aY, const T& aZ)
+{
+	myMatrix[6] = aX;
+	myMatrix[7] = aY;
+	myMatrix[8] = aZ;
+}
+
+template <typename T>
 CE_Vector2<T> CE_Matrix33<T>::GetPos() const
 {
 	return CE_Vector2<T>(myMatrix[6], myMatrix[7]);
