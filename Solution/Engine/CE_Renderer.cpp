@@ -50,16 +50,19 @@ void CE_Renderer::Render(CE_Camera& aCamera)
 	mySprite->SetSize({ 0.25f, 0.25f });
 	mySprite->SetPosition({ 0.5f, 0.5f });
 	mySprite->SetHotspot({ 0.5f, 0.5f });
+	mySprite->SetColor({ 1.f, 0.f, 0.f, 1.f });
 	mySprite->Render(myGPUContext);
 
 	mySprite->SetSize({ 0.10f, 1.f });
 	mySprite->SetPosition({ 0.0f, 0.0f });
 	mySprite->SetHotspot({ 0.0f, 0.0f });
+	mySprite->SetColor({ 0.f, 1.f, 0.f, 1.f });
 	mySprite->Render(myGPUContext);
 
 	mySprite->SetSize({ 0.10f, 1.f });
 	mySprite->SetPosition({ 1.0f, 0.0f });
 	mySprite->SetHotspot({ 1.0f, 0.0f });
+	mySprite->SetColor({ 0.f, 0.f, 1.f, 1.f });
 	mySprite->Render(myGPUContext);
 }
 

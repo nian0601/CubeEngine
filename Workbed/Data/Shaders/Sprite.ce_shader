@@ -18,15 +18,16 @@ struct PosVertex
 	float4 Position : POSITION;
 };
 
-struct PosPixel
+struct PosColorPixel
 {
 	float4 Position : SV_POSITION;
+	float4 Color : COLOR;
 };
 
 
-PosPixel VS(PosVertex aInput)
+PosColorPixel VS(PosVertex aInput)
 {
-	PosPixel output;
+	PosColorPixel output;
 
 	output.Position = aInput.Position;
 
@@ -52,12 +53,12 @@ PosPixel VS(PosVertex aInput)
 	output.Position.x -= 1;
 	output.Position.y += 1;
 
+	output.Color = Color;
 	return output;
 };
 
 
-float4 PS(PosPixel anInput) : SV_TARGET
+float4 PS(PosColorPixel anInput) : SV_TARGET
 {
-	float4 color = float4(1.f, 1.f, 1.f, 1.f);
-	return color;
+	return anInput.Color;
 };
