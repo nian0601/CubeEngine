@@ -45,25 +45,15 @@ void CE_Renderer::Render(CE_Camera& aCamera)
 	myCubeData.RemoveAll();
 
 	mySpriteShader->SetGlobalGPUData(myGPUContext, aCamera);
-
-	
-	mySprite->SetSize({ 0.25f, 0.25f });
-	mySprite->SetPosition({ 0.5f, 0.5f });
-	mySprite->SetHotspot({ 0.5f, 0.5f });
-	mySprite->SetColor({ 1.f, 0.f, 0.f, 1.f });
-	mySprite->Render(myGPUContext);
-
-	mySprite->SetSize({ 0.10f, 1.f });
-	mySprite->SetPosition({ 0.0f, 0.0f });
-	mySprite->SetHotspot({ 0.0f, 0.0f });
-	mySprite->SetColor({ 0.f, 1.f, 0.f, 1.f });
-	mySprite->Render(myGPUContext);
-
-	mySprite->SetSize({ 0.10f, 1.f });
-	mySprite->SetPosition({ 1.0f, 0.0f });
-	mySprite->SetHotspot({ 1.0f, 0.0f });
-	mySprite->SetColor({ 0.f, 0.f, 1.f, 1.f });
-	mySprite->Render(myGPUContext);
+	for (const SpriteData& data : mySpriteData)
+	{
+		mySprite->SetPosition(data.myPosition);
+		mySprite->SetSize(data.mySize);
+		mySprite->SetColor(data.myColor);
+		mySprite->SetHotspot(data.myHotspot);
+		mySprite->Render(myGPUContext);
+	}
+	mySpriteData.RemoveAll();
 }
 
 void CE_Renderer::AddCubeData(const CE_Matrix44f& anOrientation, const CE_Vector3f& aScale, const CE_Vector4f& aColor)
@@ -72,4 +62,13 @@ void CE_Renderer::AddCubeData(const CE_Matrix44f& anOrientation, const CE_Vector
 	data.myOrientation = anOrientation;
 	data.myScale = aScale;
 	data.myColor = aColor;
+}
+
+void CE_Renderer::AddSpriteData(const CE_Vector2f& aPosition, const CE_Vector2f& aSize, const CE_Vector4f& aColor, const CE_Vector2f& aHotspot)
+{
+	SpriteData& data = mySpriteData.Add();
+	data.myPosition = aPosition;
+	data.mySize = aSize;
+	data.myColor = aColor;
+	data.myHotspot = aHotspot;
 }
