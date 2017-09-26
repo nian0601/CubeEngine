@@ -24,6 +24,12 @@
 #include "PickUpProcessor.h"
 #include "EntityFactory.h"
 
+#include <CUI_Manager.h>
+#include <CUI_Image.h>
+#include <CUI_VBox.h>
+#include <CUI_HBox.h>
+#include "..\Engine\CE_Input.h"
+
 Game::Game()
 {
 }
@@ -31,6 +37,7 @@ Game::Game()
 
 Game::~Game()
 {
+	CE_SAFE_DELETE(myUIManager);
 	CE_SAFE_DELETE(myEntityFactory);
 	CE_SAFE_DELETE(myTemplateWorld);
 	CE_SAFE_DELETE(myWorld);
@@ -70,16 +77,49 @@ void Game::Init(CE_Engine& anEngine)
 	CE_Entity player = myEntityFactory->InstansiateEntity(PLAYER);
 	TranslationComponent& playerTranslate = myWorld->GetComponent<TranslationComponent>(player);
 	playerTranslate.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 1.f));
+
+
+
+	CUI_HBox* hbox = new CUI_HBox();
+	hbox->AddWidget(new CUI_Image({ 0.25f, 0.25f }, { 1.f, 0.f, 0.f, 1.f }));
+	hbox->AddWidget(new CUI_Image({ 0.1f, 0.25f }, { 0.f, 1.f, 0.f, 1.f }));
+	myWidget = new CUI_Image({ 0.1f, 0.5f }, { 0.f, 0.f, 1.f, 1.f });
+	hbox->AddWidget(myWidget);
+
+	CUI_HBox* hbox2 = new CUI_HBox();
+	hbox2->AddWidget(new CUI_Image({ 0.4f, 0.4f }, { 0.5f, 1.f, 1.f, 1.f }));
+	hbox2->AddWidget(new CUI_Image({ 0.6f, 0.15f }, { 0.5f, 1.f, 0.5f, 1.f }));
+
+	CUI_VBox* vbox = new CUI_VBox();
+	vbox->AddWidget(hbox);
+	vbox->AddWidget(hbox2);
+
+	myUIManager = new CUI_Manager();
+	myUIManager->AddWidget(vbox);
+
+	myInput = &anEngine.GetInput();
 }
 
 void Game::Update(float aDelta)
 {
 	myWorld->Update(aDelta);
+
+	CE_Vector2f size = myWidget->GetSize();
+	if (myInput->KeyDown(DIK_1))
+		size.y = 0.1f;
+	if (myInput->KeyDown(DIK_2))
+		size.y = 0.3f;
+	if (myInput->KeyDown(DIK_3))
+		size.y = 0.5f;
+	if (myInput->KeyDown(DIK_4))
+		size.y = 0.7f;
+
+	myWidget->SetSize(size);
 }
 
-void Game::Render(CE_RendererProxy& /*anRendererProxy*/)
+void Game::Render(CE_RendererProxy& anRendererProxy)
 {
-
+	myUIManager->Render(anRendererProxy);
 }
 
 void Game::CreateGrid()

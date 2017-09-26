@@ -4,6 +4,9 @@
 
 class CE_World;
 class EntityFactory;
+class CUI_Manager;
+class CUI_Widget;
+class CE_Input;
 
 class Game : public CE_Game
 {
@@ -22,4 +25,8 @@ private:
 	CE_World* myTemplateWorld;
 
 	EntityFactory* myEntityFactory;
+	CUI_Manager* myUIManager;
+	CUI_Widget* myWidget;
+
+	CE_Input* myInput;
 };

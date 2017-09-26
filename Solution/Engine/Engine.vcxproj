@@ -144,12 +144,18 @@
     <ClCompile Include="CE_Murmur.cpp" />
     <ClCompile Include="CE_Sprite.cpp" />
     <ClCompile Include="CE_Time.cpp" />
+    <ClCompile Include="CUI_Container.cpp" />
+    <ClCompile Include="CUI_HBox.cpp" />
+    <ClCompile Include="CUI_Image.cpp" />
+    <ClCompile Include="CUI_Manager.cpp" />
     <ClCompile Include="CE_WindowHandler.cpp" />
     <ClCompile Include="CE_DebugLogger.cpp" />
     <ClCompile Include="CE_GPUContext.cpp" />
     <ClCompile Include="CE_World.cpp" />
     <ClCompile Include="CE_ComponentStorage.cpp" />
     <ClCompile Include="CE_SpriteShader.cpp" />
+    <ClCompile Include="CUI_VBox.cpp" />
+    <ClCompile Include="CUI_Widget.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -185,6 +191,10 @@
     <ClInclude Include="CE_Time.h" />
     <ClInclude Include="CE_TypeID.h" />
     <ClInclude Include="CE_Types.h" />
+    <ClInclude Include="CUI_Container.h" />
+    <ClInclude Include="CUI_HBox.h" />
+    <ClInclude Include="CUI_Image.h" />
+    <ClInclude Include="CUI_Manager.h" />
     <ClInclude Include="CE_Vector2.h" />
     <ClInclude Include="CE_Vector2_Decl.h" />
     <ClInclude Include="CE_Vector3.h" />
@@ -198,6 +208,8 @@
     <ClInclude Include="CE_ComponentStorage.h" />
     <ClInclude Include="CE_Map.h" />
     <ClInclude Include="CE_SpriteShader.h" />
+    <ClInclude Include="CUI_VBox.h" />
+    <ClInclude Include="CUI_Widget.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
