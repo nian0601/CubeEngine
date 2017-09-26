@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CE_Shader.h"
+#include "CE_CubeShader.h"
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include "CE_GPUContext.h"
@@ -7,7 +7,7 @@
 #include "CE_Model.h"
 
 
-CE_Shader::CE_Shader()
+CE_CubeShader::CE_CubeShader()
 	: myVertexShader(nullptr)
 	, myPixelShader(nullptr)
 	, myInputLayout(nullptr)
@@ -16,7 +16,7 @@ CE_Shader::CE_Shader()
 }
 
 
-CE_Shader::~CE_Shader()
+CE_CubeShader::~CE_CubeShader()
 {
 	CE_SAFE_RELEASE(myGlobalDataBuffer);
 	CE_SAFE_RELEASE(myInputLayout);
@@ -24,7 +24,7 @@ CE_Shader::~CE_Shader()
 	CE_SAFE_RELEASE(myVertexShader);
 }
 
-void CE_Shader::Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUContext)
+void CE_CubeShader::Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUContext)
 {
 	HRESULT result;
 	ID3D10Blob* errorMessage = nullptr;
@@ -102,7 +102,7 @@ void CE_Shader::Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUCont
 	result = device->CreateBuffer(&matrixBufferDesc, NULL, &myGlobalDataBuffer);
 }
 
-void CE_Shader::SetGlobalGPUData(const CE_GPUContext& aGPUContext, const CE_Camera& aCamera)
+void CE_CubeShader::SetGlobalGPUData(const CE_GPUContext& aGPUContext, const CE_Camera& aCamera)
 {
 	ID3D11DeviceContext* context = aGPUContext.GetContext();
 
@@ -119,14 +119,13 @@ void CE_Shader::SetGlobalGPUData(const CE_GPUContext& aGPUContext, const CE_Came
 
 	context->VSSetConstantBuffers(0, 1, &myGlobalDataBuffer);
 
-	//Actual draw-call
 	context->IASetInputLayout(myInputLayout);
 
 	context->VSSetShader(myVertexShader, NULL, 0);
 	context->PSSetShader(myPixelShader, NULL, 0);
 }
 
-void CE_Shader::OutputError(ID3D10Blob* aErrorBlob, const WCHAR* aShaderName)
+void CE_CubeShader::OutputError(ID3D10Blob* aErrorBlob, const WCHAR* aShaderName)
 {
 	const char* errorMsg = (const char*)(aErrorBlob->GetBufferPointer());
 	CE_ASSERT_ALWAYS("Shader Error (%s): %s", aShaderName, errorMsg);

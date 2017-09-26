@@ -27,3 +27,8 @@ ID3D11DeviceContext* CE_GPUContext::GetContext() const
 {
 	return myDirectX->GetContext();
 }
+
+const CE_Vector2i& CE_GPUContext::GetWindowSize() const
+{
+	return myDirectX->GetWindowSize();
+}

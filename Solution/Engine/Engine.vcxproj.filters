@@ -17,14 +17,8 @@
     <ClCompile Include="CE_DirextXFactory.cpp">
       <Filter>DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="CE_Shader.cpp">
-      <Filter>Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="CE_GPUContext.cpp">
       <Filter>DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="CE_Model.cpp">
-      <Filter>Rendering</Filter>
     </ClCompile>
     <ClCompile Include="CE_WindowHandler.cpp">
       <Filter>DirectX</Filter>
@@ -53,6 +47,18 @@
     <ClCompile Include="CE_Input.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
+    <ClCompile Include="CE_Model.cpp">
+      <Filter>Rendering\RenderObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_Sprite.cpp">
+      <Filter>Rendering\RenderObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_CubeShader.cpp">
+      <Filter>Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_SpriteShader.cpp">
+      <Filter>Rendering\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -78,6 +84,12 @@
     </Filter>
     <Filter Include="Utility\String">
       <UniqueIdentifier>{76d545d5-1bd8-4bbb-962b-cf6b9983c125}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\RenderObjects">
+      <UniqueIdentifier>{0890ffd0-75cd-4bdf-a876-34da2f40d7d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Shaders">
+      <UniqueIdentifier>{f4dd2e66-3669-4f3e-9459-e39f108fa9c2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -138,14 +150,8 @@
       <Filter>Utility\Math</Filter>
     </ClInclude>
     <ClInclude Include="CE_Types.h" />
-    <ClInclude Include="CE_Shader.h">
-      <Filter>Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="CE_GPUContext.h">
       <Filter>DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_Model.h">
-      <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="CE_WindowHandler.h">
       <Filter>DirectX</Filter>
@@ -195,6 +201,18 @@
     </ClInclude>
     <ClInclude Include="CE_Map.h">
       <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Model.h">
+      <Filter>Rendering\RenderObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Sprite.h">
+      <Filter>Rendering\RenderObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_CubeShader.h">
+      <Filter>Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_SpriteShader.h">
+      <Filter>Rendering\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

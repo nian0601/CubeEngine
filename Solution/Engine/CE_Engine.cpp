@@ -2,7 +2,7 @@
 
 #include "CE_Engine.h"
 #include "CE_WindowHandler.h"
-#include "CE_Shader.h"
+#include "CE_CubeShader.h"
 #include "CE_GPUContext.h"
 #include "CE_Game.h"
 #include "CE_Renderer.h"

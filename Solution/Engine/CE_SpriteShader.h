@@ -10,13 +10,12 @@ struct ID3D10Blob;
 
 class CE_GPUContext;
 class CE_Camera;
-class CE_Model;
 
-class CE_Shader
+class CE_SpriteShader
 {
 public:
-	CE_Shader();
-	~CE_Shader();
+	CE_SpriteShader();
+	~CE_SpriteShader();
 
 	void Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUContext);
 
@@ -27,7 +26,6 @@ private:
 
 	struct GlobalData
 	{
-		CE_Matrix44f myView;
 		CE_Matrix44f myProjection;
 	};
 
@@ -36,3 +34,4 @@ private:
 	ID3D11InputLayout* myInputLayout;
 	ID3D11Buffer* myGlobalDataBuffer;
 };
+

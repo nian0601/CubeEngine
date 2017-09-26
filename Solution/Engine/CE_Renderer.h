@@ -3,7 +3,10 @@
 class CE_Camera;
 class CE_GPUContext;
 class CE_Model;
-class CE_Shader;
+class CE_CubeShader;
+
+class CE_Sprite;
+class CE_SpriteShader;
 
 class CE_Renderer
 {
@@ -24,8 +27,11 @@ private:
 	};
 	CE_GrowingArray<CubeData> myCubeData;
 
-	CE_Shader* myCubeShader;
+	CE_CubeShader* myCubeShader;
 	CE_Model* myCubeModel;
+
+	CE_Sprite* mySprite;
+	CE_SpriteShader* mySpriteShader;
 	CE_GPUContext& myGPUContext;
 };
 

@@ -71,6 +71,11 @@ void CE_DirectX::EndFrame()
 	myDeviceContext->ClearDepthStencilView(myDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 }
 
+const CE_Vector2i& CE_DirectX::GetWindowSize() const
+{
+	return myWindowHandler->GetWindowSize();
+}
+
 void CE_DirectX::SetupSwapChain()
 {
 	int numerator = 0;

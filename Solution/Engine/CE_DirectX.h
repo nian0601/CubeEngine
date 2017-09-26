@@ -24,6 +24,8 @@ public:
 	ID3D11Device* GetDevice() const { return myDevice; }
 	ID3D11DeviceContext* GetContext() const { return myDeviceContext; }
 
+	const CE_Vector2i& GetWindowSize() const;
+
 private:
 	void SetupSwapChain();
 	void SetupDebugInterface();
