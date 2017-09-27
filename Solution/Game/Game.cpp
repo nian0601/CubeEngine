@@ -85,17 +85,21 @@ void Game::Init(CE_Engine& anEngine)
 	hbox->AddWidget(new CUI_Image({ 0.1f, 0.25f }, { 0.f, 1.f, 0.f, 1.f }));
 	myWidget = new CUI_Image({ 0.1f, 0.5f }, { 0.f, 0.f, 1.f, 1.f });
 	hbox->AddWidget(myWidget);
-
+	
 	CUI_HBox* hbox2 = new CUI_HBox();
 	hbox2->AddWidget(new CUI_Image({ 0.4f, 0.4f }, { 0.5f, 1.f, 1.f, 1.f }));
 	hbox2->AddWidget(new CUI_Image({ 0.6f, 0.15f }, { 0.5f, 1.f, 0.5f, 1.f }));
-
+	
 	CUI_VBox* vbox = new CUI_VBox();
 	vbox->AddWidget(hbox);
 	vbox->AddWidget(hbox2);
-
-	myUIManager = new CUI_Manager();
+	
+	myUIManager = new CUI_Manager(anEngine.GetInput());
 	myUIManager->AddWidget(vbox);
+
+	//myWidget = new CUI_Image({ 0.25f, 0.25f }, { 1.f, 0.f, 0.f, 1.f });
+	//myUIManager = new CUI_Manager(anEngine.GetInput());
+	//myUIManager->AddWidget(myWidget);
 
 	myInput = &anEngine.GetInput();
 }
@@ -115,6 +119,7 @@ void Game::Update(float aDelta)
 		size.y = 0.7f;
 
 	myWidget->SetSize(size);
+	myUIManager->Update();
 }
 
 void Game::Render(CE_RendererProxy& anRendererProxy)
