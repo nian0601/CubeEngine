@@ -77,6 +77,9 @@
     <ClCompile Include="CUI_VBox.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="CUI_Button.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -251,6 +254,9 @@
       <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="CUI_VBox.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_Button.h">
       <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>

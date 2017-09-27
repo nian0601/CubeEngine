@@ -33,6 +33,18 @@ CE_Entity CE_World::CreateEmptyEntity()
 	return newEntity;
 }
 
+void CE_World::DestroyAllEntities()
+{
+	myNextEntity -= 1;
+	while (myNextEntity != CE_Invalid_Entity)
+	{
+		myComponentStorage->DestroyEntity(myNextEntity);
+		--myNextEntity;
+	}
+
+	myNextEntity = 0;
+}
+
 void CE_World::QueueEntityForDestruction(CE_Entity anEntity)
 {
 	myEntitiesToDestroy.AddUnique(anEntity);

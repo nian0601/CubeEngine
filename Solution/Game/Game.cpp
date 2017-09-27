@@ -29,6 +29,7 @@
 #include <CUI_VBox.h>
 #include <CUI_HBox.h>
 #include "..\Engine\CE_Input.h"
+#include "..\Engine\CUI_Button.h"
 
 Game::Game()
 {
@@ -48,6 +49,7 @@ void Game::Init(CE_Engine& anEngine)
 	myWorld = new CE_World();
 	myTemplateWorld = new CE_World();
 	myEntityFactory = new EntityFactory(*myWorld, *myTemplateWorld);
+	myInput = &anEngine.GetInput();
 
 	CE_Camera& camera = anEngine.GetCamera();
 	camera.SetPosition(CE_Vector3f(5.f, 10.f, -5.f));
@@ -68,57 +70,14 @@ void Game::Init(CE_Engine& anEngine)
 	myWorld->AddProcessor<PlacingProcessor>();
 	myWorld->AddProcessor<MoverProcessor>();
 
-	CreateGrid();
-
-	CE_Entity pickup = myEntityFactory->InstansiateEntity(PICK_UP);
-	TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(pickup);
-	translate.myOrientation.SetPos(CE_Vector3f(5.f, 1.f, 5.f));
-
-	CE_Entity player = myEntityFactory->InstansiateEntity(PLAYER);
-	TranslationComponent& playerTranslate = myWorld->GetComponent<TranslationComponent>(player);
-	playerTranslate.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 1.f));
-
-
-
-	CUI_HBox* hbox = new CUI_HBox();
-	hbox->AddWidget(new CUI_Image({ 0.25f, 0.25f }, { 1.f, 0.f, 0.f, 1.f }));
-	hbox->AddWidget(new CUI_Image({ 0.1f, 0.25f }, { 0.f, 1.f, 0.f, 1.f }));
-	myWidget = new CUI_Image({ 0.1f, 0.5f }, { 0.f, 0.f, 1.f, 1.f });
-	hbox->AddWidget(myWidget);
-	
-	CUI_HBox* hbox2 = new CUI_HBox();
-	hbox2->AddWidget(new CUI_Image({ 0.4f, 0.4f }, { 0.5f, 1.f, 1.f, 1.f }));
-	hbox2->AddWidget(new CUI_Image({ 0.6f, 0.15f }, { 0.5f, 1.f, 0.5f, 1.f }));
-	
-	CUI_VBox* vbox = new CUI_VBox();
-	vbox->AddWidget(hbox);
-	vbox->AddWidget(hbox2);
-	
-	myUIManager = new CUI_Manager(anEngine.GetInput());
-	myUIManager->AddWidget(vbox);
-
-	//myWidget = new CUI_Image({ 0.25f, 0.25f }, { 1.f, 0.f, 0.f, 1.f });
-	//myUIManager = new CUI_Manager(anEngine.GetInput());
-	//myUIManager->AddWidget(myWidget);
-
-	myInput = &anEngine.GetInput();
+	InitWorld();
+	InitGUI();
 }
 
 void Game::Update(float aDelta)
 {
 	myWorld->Update(aDelta);
 
-	CE_Vector2f size = myWidget->GetSize();
-	if (myInput->KeyDown(DIK_1))
-		size.y = 0.1f;
-	if (myInput->KeyDown(DIK_2))
-		size.y = 0.3f;
-	if (myInput->KeyDown(DIK_3))
-		size.y = 0.5f;
-	if (myInput->KeyDown(DIK_4))
-		size.y = 0.7f;
-
-	myWidget->SetSize(size);
 	myUIManager->Update();
 }
 
@@ -127,7 +86,20 @@ void Game::Render(CE_RendererProxy& anRendererProxy)
 	myUIManager->Render(anRendererProxy);
 }
 
-void Game::CreateGrid()
+void Game::InitWorld()
+{
+	InitGrid();
+
+	CE_Entity pickup = myEntityFactory->InstansiateEntity(PICK_UP);
+	TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(pickup);
+	translate.myOrientation.SetPos(CE_Vector3f(5.f, 1.f, 5.f));
+
+	CE_Entity player = myEntityFactory->InstansiateEntity(PLAYER);
+	TranslationComponent& playerTranslate = myWorld->GetComponent<TranslationComponent>(player);
+	playerTranslate.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 1.f));
+}
+
+void Game::InitGrid()
 {
 	const int gridSize = 10;
 	for (int z = 0; z < gridSize; ++z)
@@ -141,4 +113,22 @@ void Game::CreateGrid()
 			translate.myOrientation.SetPos(pos);
 		}
 	}
+}
+
+void Game::InitGUI()
+{
+	CUI_Button* button = new CUI_Button({ 0.10f, 0.10f }, { 0.7f, 0.7f, 0.7f, 1.f });
+	button->myOnClick = std::bind(&Game::OnClickFunction, this);
+
+	CUI_VBox* vbox = new CUI_VBox();
+	vbox->AddWidget(button);
+
+	myUIManager = new CUI_Manager(*myInput);
+	myUIManager->AddWidget(vbox);
+}
+
+void Game::OnClickFunction()
+{
+	myWorld->DestroyAllEntities();
+	InitWorld();
 }

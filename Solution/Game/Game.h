@@ -19,7 +19,12 @@ public:
 	void Render(CE_RendererProxy& anRendererProxy) override;
 
 private:
-	void CreateGrid();
+	void InitWorld();
+	void InitGrid();
+
+	void InitGUI();
+
+	void OnClickFunction();
 
 	CE_World* myWorld;
 	CE_World* myTemplateWorld;
