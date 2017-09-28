@@ -80,6 +80,15 @@
     <ClCompile Include="CUI_Button.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="CE_Text.cpp">
+      <Filter>Rendering\RenderObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_Font.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_TextShader.cpp">
+      <Filter>Rendering\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -258,6 +267,18 @@
     </ClInclude>
     <ClInclude Include="CUI_Button.h">
       <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Text.h">
+      <Filter>Rendering\RenderObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Font.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_CommonHelper.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_TextShader.h">
+      <Filter>Rendering\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

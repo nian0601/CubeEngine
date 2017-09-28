@@ -8,6 +8,9 @@ class CE_CubeShader;
 class CE_Sprite;
 class CE_SpriteShader;
 
+class CE_Text;
+class CE_TextShader;
+
 class CE_Renderer
 {
 public:
@@ -42,5 +45,8 @@ private:
 	CE_GrowingArray<SpriteData> mySpriteData;
 	CE_Sprite* mySprite;
 	CE_SpriteShader* mySpriteShader;
+
+	CE_Text* myText;
+	CE_TextShader* myTextShader;
 };
 

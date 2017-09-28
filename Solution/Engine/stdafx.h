@@ -14,3 +14,7 @@
 
 #include "CE_GrowingArray.h"
 #include "CE_StaticArray.h"
+#include "CE_Map.h"
+
+#include "CE_String.h"
+#include "CE_CommonHelper.h"

@@ -4,6 +4,8 @@
 #include "CE_Model.h"
 #include "CE_SpriteShader.h"
 #include "CE_Sprite.h"
+#include "CE_TextShader.h"
+#include "CE_Text.h"
 
 
 CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
@@ -20,11 +22,23 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 
 	mySprite = new CE_Sprite();
 	mySprite->Init(myGPUContext);
+
+	myTextShader = new CE_TextShader();
+	myTextShader->Init(L"Data/Shaders/Text.ce_shader", myGPUContext);
+
+	myText = new CE_Text();
+	myText->Init(myGPUContext);
 }
 
 
 CE_Renderer::~CE_Renderer()
 {
+	CE_SAFE_DELETE(myText);
+	CE_SAFE_DELETE(myTextShader);
+
+	CE_SAFE_DELETE(mySprite);
+	CE_SAFE_DELETE(mySpriteShader);
+
 	CE_SAFE_DELETE(myCubeModel);
 	CE_SAFE_DELETE(myCubeShader);
 }
@@ -54,6 +68,9 @@ void CE_Renderer::Render(CE_Camera& aCamera)
 		mySprite->Render(myGPUContext);
 	}
 	mySpriteData.RemoveAll();
+
+	myTextShader->SetGlobalGPUData(myGPUContext, aCamera);
+	myText->Render(myGPUContext);
 }
 
 void CE_Renderer::AddCubeData(const CE_Matrix44f& anOrientation, const CE_Vector3f& aScale, const CE_Vector4f& aColor)

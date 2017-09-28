@@ -1,0 +1,58 @@
+cbuffer GlobalData
+{
+	Matrix Projection;
+};
+
+cbuffer ObjectData
+{
+	Matrix World;	
+	float4 Color;
+	float2 Position;
+	float2 Size;
+};
+
+struct PosVertex
+{
+	float4 Position : POSITION;
+};
+
+struct PosColorPixel
+{
+	float4 Position : SV_POSITION;
+	float4 Color : COLOR;
+};
+
+
+PosColorPixel VS(PosVertex aInput)
+{
+	PosColorPixel output;
+
+	output.Position = aInput.Position;
+
+	//Scale it up from 1x1 to SizeX x SizeY
+	output.Position.xy *= Size;
+
+	//Move 0,0 to TopLeft
+	//output.Position.x += Size.x;
+	//output.Position.y -= Size.y;
+
+	//Movement
+	//output.Position.x += Position.x;
+	//output.Position.y -= Position.y;
+
+	output.Position = mul(Projection, output.Position);
+
+	//output.Position.x -= 1;
+	//output.Position.y += 1;
+
+	output.Color = Color;
+	return output;
+};
+
+
+float4 PS(PosColorPixel anInput) : SV_TARGET
+{
+	float4 color = float4(1.f, 1.f, 1.f, 1.f);
+	return color;
+	//return anInput.Color;
+};
