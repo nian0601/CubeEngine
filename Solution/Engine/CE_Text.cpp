@@ -4,21 +4,25 @@
 #include <d3d11.h>
 #include "CE_GPUContext.h"
 #include "CE_Font.h"
+#include "CE_Texture.h"
+#include "CE_MSDFFont.h"
 
 CE_Text::CE_Text()
+	: myFont(nullptr)
+	, myMSDFFont(nullptr)
 {
-	myFont = new CE_Font();
-	myFont->LoadFromFile("Data/Font/Decent_Font.png");
 }
-
 
 CE_Text::~CE_Text()
 {
 	CE_SAFE_DELETE(myFont);
 }
 
-void CE_Text::Init(const CE_GPUContext& aGPUContext)
+void CE_Text::Init(CE_GPUContext& aGPUContext)
 {
+	myFont = new CE_Font();
+	myFont->LoadFromFile("Data/Font/Decent_Font.png", aGPUContext);
+
 	CE_String testString = "Herp Derp";
 	int numOfLetters = testString.Lenght() + 1;
 	float drawX = 0;
@@ -48,19 +52,93 @@ void CE_Text::Init(const CE_GPUContext& aGPUContext)
 		bottom = static_cast<float>(static_cast<int>(bottom + 0.5f));
 
 		vert.myPosition = CE_Vector3f(left, top, z);
-		//vert.myUV = charData.myTopLeftUV;
+		vert.myUV = charData.myTopLeftUV;
 		vertices.Add(vert);
 
 		vert.myPosition = CE_Vector3f(right, bottom, z);
-		//vert.myUV = charData.myBottomRightUV;
+		vert.myUV = charData.myBottomRightUV;
 		vertices.Add(vert);
 
 		vert.myPosition = CE_Vector3f(left, bottom, z);
-		//vert.myUV = { charData.myTopLeftUV.x, charData.myBottomRightUV.y };
+		vert.myUV = { charData.myTopLeftUV.x, charData.myBottomRightUV.y };
 		vertices.Add(vert);
 
 		vert.myPosition = CE_Vector3f(right, top, z);
-		//vert.myUV = { charData.myBottomRightUV.x, charData.myTopLeftUV.y };
+		vert.myUV = { charData.myBottomRightUV.x, charData.myTopLeftUV.y };
+		vertices.Add(vert);
+
+
+		int startIndex = i * 4;
+		indices.Add(startIndex + 0);
+		indices.Add(startIndex + 1);
+		indices.Add(startIndex + 2);
+
+		indices.Add(startIndex + 0);
+		indices.Add(startIndex + 3);
+		indices.Add(startIndex + 1);
+
+
+		drawX += charData.myXAdvance;
+		z -= 0.001f;
+	}
+
+	myVertexCount = vertices.Size();
+	myIndexCount = indices.Size();
+
+	SetupVertexAndIndexBuffers(aGPUContext, vertices.GetArrayAsPointer(), indices.GetArrayAsPointer());
+	SetupObjectBuffer(aGPUContext);
+}
+
+void CE_Text::InitMSDF(CE_GPUContext& aGPUContext)
+{
+	myMSDFFont = new CE_MSDFFont();
+	myMSDFFont->LoadFromFile("Data/Font/Consolas.ttf", aGPUContext);
+
+	//CE_String testString = "ABCDEFGHI";
+	//CE_String testString = "AAAAA";
+	CE_String testString = "BBBBB";
+	//CE_String testString = "123456789";
+	int numOfLetters = testString.Lenght() + 1;
+	float drawX = 0;
+	float drawY = 0;
+	float z = 1.f;
+	float height = 0.f;
+
+	CE_GrowingArray<VertexType> vertices;
+	CE_GrowingArray<int> indices;
+
+	VertexType vert;
+	for (int i = 0; i < numOfLetters; ++i)
+	{
+		CE_MSDFGlyphData charData = myMSDFFont->GetGlyphData(testString[i]);
+		if (charData.myHeight > height)
+			height = static_cast<float>(charData.myHeight);
+
+
+		float left = drawX;// +charData.myXOffset;
+		float right = left + charData.myWidth;
+		float top = drawY;// +charData.myYOffset;
+		float bottom = top - charData.myHeight;
+
+		left = static_cast<float>(static_cast<int>(left + 0.5f));
+		right = static_cast<float>(static_cast<int>(right + 0.5f));
+		top = static_cast<float>(static_cast<int>(top + 0.5f));
+		bottom = static_cast<float>(static_cast<int>(bottom + 0.5f));
+
+		vert.myPosition = CE_Vector3f(left, top, z);
+		vert.myUV = charData.myTopLeftUV;
+		vertices.Add(vert);
+
+		vert.myPosition = CE_Vector3f(right, bottom, z);
+		vert.myUV = charData.myBottomRightUV;
+		vertices.Add(vert);
+
+		vert.myPosition = CE_Vector3f(left, bottom, z);
+		vert.myUV = { charData.myTopLeftUV.x, charData.myBottomRightUV.y };
+		vertices.Add(vert);
+
+		vert.myPosition = CE_Vector3f(right, top, z);
+		vert.myUV = { charData.myBottomRightUV.x, charData.myTopLeftUV.y };
 		vertices.Add(vert);
 
 
@@ -115,7 +193,13 @@ void CE_Text::Render(const CE_GPUContext& aGPUContext)
 
 	context->VSSetConstantBuffers(1, 1, &myObjectDataBuffer);
 
+	ID3D11ShaderResourceView* shaderResource = nullptr;
+	if(myMSDFFont != nullptr)
+		shaderResource = myMSDFFont->GetTexture()->GetShaderView();
+	else
+		shaderResource = myFont->GetTexture()->GetShaderView();
 
+	aGPUContext.GetContext()->PSSetShaderResources(0, 1, &shaderResource);
 	// Set Vertex/Indexbuffers and Topology
 	unsigned int stride = sizeof(VertexType);
 	unsigned int offset = 0;

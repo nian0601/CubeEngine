@@ -5,7 +5,7 @@ struct ID3D11VertexShader;
 struct ID3D11PixelShader;
 struct ID3D11InputLayout;
 struct ID3D11Buffer;
-
+struct ID3D11SamplerState;
 struct ID3D10Blob;
 
 class CE_GPUContext;
@@ -33,5 +33,6 @@ private:
 	ID3D11PixelShader* myPixelShader;
 	ID3D11InputLayout* myInputLayout;
 	ID3D11Buffer* myGlobalDataBuffer;
+	ID3D11SamplerState* mySamplerState;
 };
 

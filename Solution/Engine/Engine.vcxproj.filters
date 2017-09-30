@@ -83,11 +83,20 @@
     <ClCompile Include="CE_Text.cpp">
       <Filter>Rendering\RenderObjects</Filter>
     </ClCompile>
-    <ClCompile Include="CE_Font.cpp">
-      <Filter>Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="CE_TextShader.cpp">
       <Filter>Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_Texture.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_Font.cpp">
+      <Filter>Rendering\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_MSDFFont.cpp">
+      <Filter>Rendering\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_MSDFGenerator.cpp">
+      <Filter>Rendering\Text</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +132,9 @@
     </Filter>
     <Filter Include="GUI">
       <UniqueIdentifier>{e6732010-64ad-4151-809a-ebea9f735a3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Text">
+      <UniqueIdentifier>{5bd03dcc-bc75-4eda-94f1-7d55dd48f625}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -271,14 +283,23 @@
     <ClInclude Include="CE_Text.h">
       <Filter>Rendering\RenderObjects</Filter>
     </ClInclude>
-    <ClInclude Include="CE_Font.h">
-      <Filter>Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="CE_CommonHelper.h">
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="CE_TextShader.h">
       <Filter>Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Texture.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Font.h">
+      <Filter>Rendering\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_MSDFFont.h">
+      <Filter>Rendering\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_MSDFGenerator.h">
+      <Filter>Rendering\Text</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

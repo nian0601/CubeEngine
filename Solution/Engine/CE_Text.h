@@ -4,6 +4,7 @@ struct ID3D11Buffer;
 
 class CE_GPUContext;
 class CE_Font;
+class CE_MSDFFont;
 
 class CE_Text
 {
@@ -11,7 +12,8 @@ public:
 	CE_Text();
 	~CE_Text();
 
-	void Init(const CE_GPUContext& aGPUContext);
+	void Init(CE_GPUContext& aGPUContext);
+	void InitMSDF(CE_GPUContext& aGPUContext);
 
 	void Render(const CE_GPUContext& aGPUContext);
 
@@ -29,6 +31,7 @@ private:
 	struct VertexType
 	{
 		CE_Vector3f myPosition;
+		CE_Vector2f myUV;
 	};
 
 	struct ObjectData
@@ -37,6 +40,9 @@ private:
 		CE_Vector4f myColor;
 		CE_Vector2f myPosition;
 		CE_Vector2f mySize;
+		//CE_Vector2f myTextureSize;
+		//float myPXRange;
+		//float padding;
 	};
 	ID3D11Buffer* myObjectDataBuffer;
 
@@ -52,5 +58,5 @@ private:
 	CE_Vector2f mySize;
 
 	CE_Font* myFont;
+	CE_MSDFFont* myMSDFFont;
 };
-

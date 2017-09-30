@@ -18,15 +18,18 @@ struct CE_CharData
 	CE_Vector2f myBottomRightUV;
 };
 
+class CE_GPUContext;
+class CE_Texture;
+
 class CE_Font
 {
 public:
 	CE_Font();
 
-	void LoadFromFile(const CE_String& aFilePath);
+	void LoadFromFile(const CE_String& aFilePath, CE_GPUContext& aContext);
 
 	const CE_CharData& GetCharData(char aCharacter) const;
-	//Texture* GetTexture() { return myTexture; }
+	CE_Texture* GetTexture() { return myTexture; }
 
 	float GetScale() const { return myScale; }
 	void SetScale(float aScale) { myScale = aScale; }
@@ -37,7 +40,7 @@ private:
 
 	CE_Map<char, CE_CharData> myCharacters;
 	CE_CharData myEmptyCharData;
-	//Texture* myTexture;
+	CE_Texture* myTexture;
 	float myScale;
 	float myMaxHeight;
 };

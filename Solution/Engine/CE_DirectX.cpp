@@ -24,11 +24,6 @@ CE_DirectX::CE_DirectX(const CE_WindowHandler* aWindowHandler)
 
 	SetupDebugInterface();
 	SetupBackbuffer();
-
-	CE_DirextXFactory* factory = CE_DirextXFactory::GetInstance();
-	factory->SetRasterizerState(CULL_BACK);
-	factory->SetDepthStencilState(ENABLED);
-	factory->SetBlendState(NO_BLEND);
 }
 
 CE_DirectX::~CE_DirectX()

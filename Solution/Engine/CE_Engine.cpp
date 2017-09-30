@@ -14,6 +14,9 @@
 CE_Engine::CE_Engine(CE_Game* aGame)
 	: myGame(aGame)
 {
+	HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+	CE_ASSERT(FAILED(hr) == false, "Failed to CoInitializeEx");
+
 	myWindowHandler = new CE_WindowHandler(1280, 720);
 	myGPUContext = new CE_GPUContext(myWindowHandler);
 

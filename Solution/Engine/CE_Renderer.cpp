@@ -6,6 +6,7 @@
 #include "CE_Sprite.h"
 #include "CE_TextShader.h"
 #include "CE_Text.h"
+#include "CE_DirextXFactory.h"
 
 
 CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
@@ -28,11 +29,21 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 
 	myText = new CE_Text();
 	myText->Init(myGPUContext);
+
+
+	//myMSDFTextShader = new CE_TextShader();
+	//myMSDFTextShader->Init(L"Data/Shaders/MSDFText.ce_shader", myGPUContext);
+	//
+	//myMSDFText = new CE_Text();
+	//myMSDFText->InitMSDF(myGPUContext);
 }
 
 
 CE_Renderer::~CE_Renderer()
 {
+	CE_SAFE_DELETE(myMSDFText);
+	CE_SAFE_DELETE(myMSDFTextShader);
+
 	CE_SAFE_DELETE(myText);
 	CE_SAFE_DELETE(myTextShader);
 
@@ -45,6 +56,11 @@ CE_Renderer::~CE_Renderer()
 
 void CE_Renderer::Render(CE_Camera& aCamera)
 {
+	CE_DirextXFactory* factory = CE_DirextXFactory::GetInstance();
+	factory->SetRasterizerState(CULL_BACK);
+	factory->SetDepthStencilState(ENABLED);
+	factory->SetBlendState(NO_BLEND);
+
 	myCubeShader->SetGlobalGPUData(myGPUContext, aCamera);
 
 	for (const CubeData& data : myCubeData)
@@ -58,6 +74,7 @@ void CE_Renderer::Render(CE_Camera& aCamera)
 
 	myCubeData.RemoveAll();
 
+	factory->SetBlendState(ALPHA_BLEND);
 	mySpriteShader->SetGlobalGPUData(myGPUContext, aCamera);
 	for (const SpriteData& data : mySpriteData)
 	{
@@ -69,8 +86,18 @@ void CE_Renderer::Render(CE_Camera& aCamera)
 	}
 	mySpriteData.RemoveAll();
 
-	myTextShader->SetGlobalGPUData(myGPUContext, aCamera);
-	myText->Render(myGPUContext);
+	
+
+	if (myMSDFTextShader != nullptr)
+	{
+		myMSDFTextShader->SetGlobalGPUData(myGPUContext, aCamera);
+		myMSDFText->Render(myGPUContext);
+	}
+	else
+	{
+		myTextShader->SetGlobalGPUData(myGPUContext, aCamera);
+		myText->Render(myGPUContext);
+	}
 }
 
 void CE_Renderer::AddCubeData(const CE_Matrix44f& anOrientation, const CE_Vector3f& aScale, const CE_Vector4f& aColor)

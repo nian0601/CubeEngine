@@ -48,5 +48,8 @@ private:
 
 	CE_Text* myText;
 	CE_TextShader* myTextShader;
+
+	CE_Text* myMSDFText;
+	CE_TextShader* myMSDFTextShader;
 };
 

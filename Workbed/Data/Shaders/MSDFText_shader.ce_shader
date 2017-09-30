@@ -33,7 +33,6 @@ PosColorPixel VS(PosVertex aInput)
 	PosColorPixel output;
 
 	output.Position = aInput.Position;
-
 	//Scale it up from 1x1 to SizeX x SizeY
 	output.Position.xy *= Size;
 
@@ -42,7 +41,7 @@ PosColorPixel VS(PosVertex aInput)
 	//output.Position.y -= Size.y;
 
 	//Movement
-	//output.Position.x += Position.x;
+	output.Position.x -= 200;//Position.x;
 	//output.Position.y -= Position.y;
 
 	output.Position = mul(Projection, output.Position);
@@ -52,24 +51,23 @@ PosColorPixel VS(PosVertex aInput)
 
 	output.Color = Color;
 	output.Tex = aInput.Tex;
+	//output.TextureSize = TextureSize;
+	//output.PXRange = PXRange;
 	return output;
 };
 
-static const float OUTLINE_MIN_VALUE0 = 0.3;
-static const float OUTLINE_MIN_VALUE1 = 0.4;
-static const float OUTLINE_MAX_VALUE0 = 0.6;
-static const float OUTLINE_MAX_VALUE1 = 0.7;
-static const float4 OUTLINE_COLOR = {0.f, 0.f, 0.f, 1.f};
-static const bool USE_OUTLINE = true;
+float median(float r, float g, float b)
+{
+	return max(min(r, g), min(max(r, g), b));	
+};
 
-static const float SMOOTHING = 1.0/32.0;
 float4 PS(PosColorPixel anInput) : SV_TARGET
 {
-	float distAlphaMask = Texture.Sample(Sampler, anInput.Tex).a;
-	
-	float alpha = smoothstep(0.55 - SMOOTHING, 0.55 + SMOOTHING, distAlphaMask);
+	float3 sample = Texture.Sample(Sampler, anInput.Tex).rgb;
+	float sigDist = median(sample.r, sample.g, sample.b) - 0.5f;
 
+	float alpha = clamp(sigDist + 0.5f, 0.f, 1.f);
 	float4 color = float4(1.f, 1.f, 1.f, alpha);
-	//float4 color = Texture.Sample(Sampler, anInput.Tex);
+	
 	return color;
 };
