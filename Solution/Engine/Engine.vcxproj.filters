@@ -98,6 +98,9 @@
     <ClCompile Include="CE_MSDFGenerator.cpp">
       <Filter>Rendering\Text</Filter>
     </ClCompile>
+    <ClCompile Include="CUI_TreeView.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -300,6 +303,9 @@
     </ClInclude>
     <ClInclude Include="CE_MSDFGenerator.h">
       <Filter>Rendering\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_TreeView.h">
+      <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

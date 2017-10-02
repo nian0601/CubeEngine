@@ -55,24 +55,13 @@ void CE_Sprite::Render(const CE_GPUContext& aGPUContext)
 
 	context->Map(myObjectDataBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 
-	const CE_Vector2i& windowSize = aGPUContext.GetWindowSize();
-
-	CE_Vector2f scaledSize;
-	scaledSize.x = windowSize.x * mySize.x;
-	scaledSize.y = windowSize.y * mySize.y;
-	scaledSize *= 0.5f;
-
-	CE_Vector2f scaledPosition;
-	scaledPosition.x = windowSize.x * myPosition.x;
-	scaledPosition.y = windowSize.y * myPosition.y;
-
 	CE_Vector2f scaledHotspot = 2.f * myHotspot;
 
 	ObjectData* dataPtr = (ObjectData*)mappedResource.pData;
 	dataPtr->myWorld = myOrientation;
 	dataPtr->myColor = myColor;
-	dataPtr->mySize = scaledSize;
-	dataPtr->myPosition = scaledPosition;
+	dataPtr->mySize = mySize * 0.5f;;
+	dataPtr->myPosition = myPosition;
 	dataPtr->myHotspot = scaledHotspot;
 
 	context->Unmap(myObjectDataBuffer, 0);

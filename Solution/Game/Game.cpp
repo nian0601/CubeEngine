@@ -28,8 +28,9 @@
 #include <CUI_Image.h>
 #include <CUI_VBox.h>
 #include <CUI_HBox.h>
-#include "..\Engine\CE_Input.h"
-#include "..\Engine\CUI_Button.h"
+#include <CE_Input.h>
+#include <CUI_Button.h>
+#include <CUI_TreeView.h>
 
 Game::Game()
 {
@@ -117,14 +118,32 @@ void Game::InitGrid()
 
 void Game::InitGUI()
 {
-	CUI_Button* button = new CUI_Button({ 0.10f, 0.10f }, { 0.7f, 0.7f, 0.7f, 1.f });
-	button->myOnClick = std::bind(&Game::OnClickFunction, this);
+	//CUI_Button* button = new CUI_Button({ 0.10f, 0.10f }, { 0.7f, 0.7f, 0.7f, 1.f });
+	//button->myOnClick = std::bind(&Game::OnClickFunction, this);
+	//
+	//CUI_VBox* vbox = new CUI_VBox();
+	//vbox->AddWidget(button);
+	//
+	//myUIManager = new CUI_Manager(*myInput);
+	//myUIManager->AddWidget(vbox);
 
-	CUI_VBox* vbox = new CUI_VBox();
-	vbox->AddWidget(button);
+
+
+
+	CUI_TreeView* treeview = new CUI_TreeView();
+
+	CUI_Button* button = new CUI_Button({ 150.f, 50.f }, { 0.7f, 0.7f, 0.7f, 1.f });
+	button->myOnClick = std::bind(&Game::OnClickFunction, this);
+	treeview->AddWidget(button);
+
+	CUI_TreeView* childTree = new CUI_TreeView();
+	CUI_Image* img = new CUI_Image({ 250.f, 85.f }, { 0.1f, 1.f, 0.1f, 1.f });
+	childTree->AddWidget(img);
+
+	treeview->AddWidget(childTree);
 
 	myUIManager = new CUI_Manager(*myInput);
-	myUIManager->AddWidget(vbox);
+	myUIManager->AddWidget(treeview);
 }
 
 void Game::OnClickFunction()

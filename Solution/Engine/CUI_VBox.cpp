@@ -8,21 +8,16 @@ void CUI_VBox::PrepareLayout()
 		return;
 
 	CE_Vector2f position = GetPosition();
+	mySize = CE_Vector2f(0.f);
 
-	myWidgets[0]->SetPosition(position);
-	myWidgets[0]->PrepareLayout();
-
-	mySize = myWidgets[0]->GetSize();
-	position.y += mySize.y;
-
-	for (int i = 1; i < myWidgets.Size(); ++i)
+	for (int i = 0; i < myWidgets.Size(); ++i)
 	{
 		CUI_Widget* child = myWidgets[i];
 		child->SetPosition(position);
 		child->PrepareLayout();
 
 		CE_Vector2f childSize = child->GetSize();
-		position.x += childSize.x;
+		position.y += childSize.y;
 
 		if (childSize.x > mySize.x)
 			mySize.x = childSize.x;

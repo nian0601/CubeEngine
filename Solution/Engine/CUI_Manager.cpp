@@ -24,13 +24,7 @@ void CUI_Manager::Update()
 {
 	for (CUI_Widget* widget : myWidgets)
 	{
-		widget->SetWindowSize(myWindowSize);
 		widget->PrepareLayout();
-	}
-
-	for (CUI_Widget* widget : myWidgets)
-	{
-		widget->FinalizeLayout();
 	}
 
 	if (myInput.MouseDown(0))
