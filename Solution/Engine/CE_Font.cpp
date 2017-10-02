@@ -47,6 +47,7 @@ CE_String CE_CharData::LoadToken(const CE_String& aLine, const CE_String& aToken
 
 
 CE_Font::CE_Font()
+	: myScale(0.33f)
 {
 }
 
@@ -87,4 +88,18 @@ const CE_CharData& CE_Font::GetCharData(char aCharacter) const
 
 	CE_ASSERT_ALWAYS("Failed to GetCharData from Font");
 	return myEmptyCharData;
+}
+
+CE_Vector2f CE_Font::GetSize(const CE_String& aString) const
+{
+	CE_Vector2f size;
+
+	for (int i = 0; i < aString.Lenght(); ++i)
+	{
+		const CE_CharData& data = GetCharData(aString[i]);
+		size.x += data.myXAdvance * myScale;
+	}
+
+	size.y = GetMaxHeight();
+	return size;
 }

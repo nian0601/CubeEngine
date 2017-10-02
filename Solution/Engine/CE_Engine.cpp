@@ -78,7 +78,7 @@ CE_Input& CE_Engine::GetInput()
 	return *myInput;
 }
 
-const CE_GPUContext& CE_Engine::GetGPUContext() const
+CE_GPUContext& CE_Engine::GetGPUContext()
 {
 	return *myGPUContext;
 }

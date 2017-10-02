@@ -157,6 +157,7 @@
     <ClCompile Include="CUI_Container.cpp" />
     <ClCompile Include="CUI_HBox.cpp" />
     <ClCompile Include="CUI_Image.cpp" />
+    <ClCompile Include="CUI_Label.cpp" />
     <ClCompile Include="CUI_Manager.cpp" />
     <ClCompile Include="CE_WindowHandler.cpp" />
     <ClCompile Include="CE_DebugLogger.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="CUI_Container.h" />
     <ClInclude Include="CUI_HBox.h" />
     <ClInclude Include="CUI_Image.h" />
+    <ClInclude Include="CUI_Label.h" />
     <ClInclude Include="CUI_Manager.h" />
     <ClInclude Include="CE_Vector2.h" />
     <ClInclude Include="CE_Vector2_Decl.h" />

@@ -21,8 +21,13 @@ public:
 
 	void AddCubeData(const CE_Matrix44f& anOrientation, const CE_Vector3f& aScale, const CE_Vector4f& aColor);
 	void AddSpriteData(const CE_Vector2f& aPosition, const CE_Vector2f& aSize, const CE_Vector4f& aColor, const CE_Vector2f& aHotspot);
+	void AddTextData(const CE_String& aString, const CE_Vector2f& aPosition);
 
 private:
+	void RenderCubes(CE_Camera& aCamera);
+	void RenderSprites(CE_Camera& aCamera);
+	void RenderTexts(CE_Camera& aCamera);
+
 	CE_GPUContext& myGPUContext;
 
 	struct CubeData
@@ -46,6 +51,13 @@ private:
 	CE_Sprite* mySprite;
 	CE_SpriteShader* mySpriteShader;
 
+
+	struct TextData
+	{
+		CE_String myString;
+		CE_Vector2f myPosition;
+	};
+	CE_GrowingArray<TextData> myTextData;
 	CE_Text* myText;
 	CE_TextShader* myTextShader;
 

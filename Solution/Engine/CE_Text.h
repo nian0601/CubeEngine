@@ -9,24 +9,25 @@ class CE_MSDFFont;
 class CE_Text
 {
 public:
-	CE_Text();
+	CE_Text(CE_GPUContext& aGPUContext);
 	~CE_Text();
 
-	void Init(CE_GPUContext& aGPUContext);
-	void InitMSDF(CE_GPUContext& aGPUContext);
+	void Init();
+	void InitMSDF();
 
-	void Render(const CE_GPUContext& aGPUContext);
+	void Render();
 
 	int GetIndexCount() const { return myIndexCount; }
 	const CE_Matrix44f& GetOrientation() const { return myOrientation; }
 
 	void SetColor(const CE_Vector4f& aColor) { myColor = aColor; }
 	void SetPosition(const CE_Vector2f& aPosition) { myPosition = aPosition; }
-	void SetSize(const CE_Vector2f& aSize) { mySize = aSize; }
+	void SetText(const CE_String& aString);
 
 private:
-	void SetupObjectBuffer(const CE_GPUContext& aGPUContext);
-	void SetupVertexAndIndexBuffers(const CE_GPUContext& aGPUContext, void* aVertexData, void* aIndexData);
+	void SetupObjectBuffer();
+	void SetupVertexAndIndexBuffers(void* aVertexData, void* aIndexData);
+	CE_GPUContext& myGPUContext;
 
 	struct VertexType
 	{
@@ -40,9 +41,6 @@ private:
 		CE_Vector4f myColor;
 		CE_Vector2f myPosition;
 		CE_Vector2f mySize;
-		//CE_Vector2f myTextureSize;
-		//float myPXRange;
-		//float padding;
 	};
 	ID3D11Buffer* myObjectDataBuffer;
 
@@ -55,8 +53,9 @@ private:
 	CE_Matrix44f myOrientation;
 	CE_Vector4f myColor;
 	CE_Vector2f myPosition;
-	CE_Vector2f mySize;
 
 	CE_Font* myFont;
 	CE_MSDFFont* myMSDFFont;
+
+	bool myGotText;
 };

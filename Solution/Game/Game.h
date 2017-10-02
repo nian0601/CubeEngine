@@ -7,7 +7,7 @@ class EntityFactory;
 class CUI_Manager;
 class CUI_Widget;
 class CE_Input;
-
+class CE_Font;
 class Game : public CE_Game
 {
 public:
@@ -34,4 +34,5 @@ private:
 	CUI_Widget* myWidget;
 
 	CE_Input* myInput;
+	CE_Font* myFont;
 };

@@ -28,9 +28,12 @@
 #include <CUI_Image.h>
 #include <CUI_VBox.h>
 #include <CUI_HBox.h>
-#include <CE_Input.h>
 #include <CUI_Button.h>
 #include <CUI_TreeView.h>
+#include <CUI_Label.h>
+
+#include <CE_Input.h>
+#include <CE_Font.h>
 
 Game::Game()
 {
@@ -70,6 +73,9 @@ void Game::Init(CE_Engine& anEngine)
 	myWorld->AddProcessor(createProcessor);
 	myWorld->AddProcessor<PlacingProcessor>();
 	myWorld->AddProcessor<MoverProcessor>();
+
+	myFont = new CE_Font();
+	myFont->LoadFromFile("Data/Font/Decent_Font.png", anEngine.GetGPUContext());
 
 	InitWorld();
 	InitGUI();
@@ -128,13 +134,14 @@ void Game::InitGUI()
 	//myUIManager->AddWidget(vbox);
 
 
-
-
 	CUI_TreeView* treeview = new CUI_TreeView();
 
 	CUI_Button* button = new CUI_Button({ 150.f, 50.f }, { 0.7f, 0.7f, 0.7f, 1.f });
 	button->myOnClick = std::bind(&Game::OnClickFunction, this);
 	treeview->AddWidget(button);
+
+	CUI_Label* lable = new CUI_Label(*myFont, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+	treeview->AddWidget(lable);
 
 	CUI_TreeView* childTree = new CUI_TreeView();
 	CUI_Image* img = new CUI_Image({ 250.f, 85.f }, { 0.1f, 1.f, 0.1f, 1.f });

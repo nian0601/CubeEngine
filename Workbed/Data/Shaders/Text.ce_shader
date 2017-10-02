@@ -37,18 +37,15 @@ PosColorPixel VS(PosVertex aInput)
 	//Scale it up from 1x1 to SizeX x SizeY
 	output.Position.xy *= Size;
 
-	//Move 0,0 to TopLeft
-	//output.Position.x += Size.x;
-	//output.Position.y -= Size.y;
-
 	//Movement
-	//output.Position.x += Position.x;
-	//output.Position.y -= Position.y;
+	output.Position.x += Position.x;
+	output.Position.y -= Position.y;
+	output.Position.y += 3;
 
 	output.Position = mul(Projection, output.Position);
 
-	//output.Position.x -= 1;
-	//output.Position.y += 1;
+	output.Position.x -= 1;
+	output.Position.y += 1;
 
 	output.Color = Color;
 	output.Tex = aInput.Tex;

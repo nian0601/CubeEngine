@@ -101,6 +101,9 @@
     <ClCompile Include="CUI_TreeView.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="CUI_Label.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -305,6 +308,9 @@
       <Filter>Rendering\Text</Filter>
     </ClInclude>
     <ClInclude Include="CUI_TreeView.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_Label.h">
       <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>

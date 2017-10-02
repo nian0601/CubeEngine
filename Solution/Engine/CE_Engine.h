@@ -24,7 +24,7 @@ public:
 	CE_RendererProxy& GetRendererProxy();
 	CE_Input& GetInput();
 
-	const CE_GPUContext& GetGPUContext() const;
+	CE_GPUContext& GetGPUContext();
 	const CE_Vector2i& GetWindowSize() const;
 
 private:

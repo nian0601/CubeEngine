@@ -17,3 +17,8 @@ void CE_RendererProxy::AddSpriteData(const CE_Vector2f& aPosition, const CE_Vect
 {
 	myRenderer.AddSpriteData(aPosition, aSize, aColor, aHotspot);
 }
+
+void CE_RendererProxy::AddTextData(const CE_String& aString, const CE_Vector2f& aPosition)
+{
+	myRenderer.AddTextData(aString, aPosition);
+}

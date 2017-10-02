@@ -35,6 +35,7 @@ public:
 	void SetScale(float aScale) { myScale = aScale; }
 
 	float GetMaxHeight() const { return myMaxHeight * GetScale(); }
+	CE_Vector2f GetSize(const CE_String& aString) const;
 
 private:
 
