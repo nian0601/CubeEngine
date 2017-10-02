@@ -134,9 +134,10 @@ void Game::InitGUI()
 	//myUIManager->AddWidget(vbox);
 
 
-	CUI_TreeView* treeview = new CUI_TreeView();
+	CUI_TreeView* treeview = new CUI_TreeView(*myFont, "+ Debug Menu");
 
-	CUI_Button* button = new CUI_Button({ 150.f, 50.f }, { 0.7f, 0.7f, 0.7f, 1.f });
+	//CUI_Button* button = new CUI_Button({ 150.f, 50.f }, { 0.7f, 0.7f, 0.7f, 1.f });
+	CUI_Button* button = new CUI_Button(*myFont, "Reload World");
 	button->myOnClick = std::bind(&Game::OnClickFunction, this);
 	treeview->AddWidget(button);
 

@@ -1,15 +1,20 @@
 #pragma once
 
-#include "CUI_Image.h"
+#include "CUI_Container.h"
 #include <functional>
 
-class CUI_Button : public CUI_Image
+class CE_Font;
+class CUI_Button : public CUI_Container
 {
 public:
 	CUI_Button(const CE_Vector2f& aSize, const CE_Vector4f& aColor);
+	CUI_Button(const CE_Font& aFont, const CE_String& aText);
 
+	virtual void PrepareLayout() override;
 	virtual bool OnClick(const CE_Vector2f& aMousePosition) override;
 
 	std::function<void()> myOnClick;
+
+
 };
 
