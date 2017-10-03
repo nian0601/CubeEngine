@@ -25,3 +25,8 @@ bool CUI_Container::OnClick(const CE_Vector2f& aMousePosition)
 
 	return false;
 }
+
+void CUI_Container::DeleteAllChildren()
+{
+	myWidgets.DeleteAll();
+}

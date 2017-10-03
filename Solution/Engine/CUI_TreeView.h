@@ -12,6 +12,9 @@ public:
 
 	void PrepareLayout();
 
+	void DeleteAllChildren() override;
+	void SetExpanded(bool aStatus);
+
 private:
 	void UpdateSelfSize(CUI_Widget* aChildWidget);
 	void OnToggleViewClick();

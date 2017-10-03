@@ -41,20 +41,39 @@ void CUI_TreeView::PrepareLayout()
 	for (int i = 1; i < myWidgets.Size(); ++i)
 	{
 		CUI_Widget* child = myWidgets[i];
-		child->SetPosition(position);
-		child->PrepareLayout();
+		child->Show();
+		if (!myIsExpanded)
+			child->Hide();
 
-		childSize = child->GetSize();
-		position.y += childSize.y;
+		if (child->IsVisible())
+		{
+			child->SetPosition(position);
+			child->PrepareLayout();
 
-		UpdateSelfSize(child);
+			childSize = child->GetSize();
+			position.y += childSize.y;
+
+			UpdateSelfSize(child);
+		}
 	}
+}
+
+void CUI_TreeView::DeleteAllChildren()
+{
+	for (int i = myWidgets.Size() - 1; i >= 1; --i)
+		myWidgets.DeleteCyclicAtIndex(i);
+}
+
+void CUI_TreeView::SetExpanded(bool aStatus)
+{
+	myIsExpanded = aStatus;
 }
 
 void CUI_TreeView::UpdateSelfSize(CUI_Widget* aChildWidget)
 {
 	CE_Vector2f posDif = aChildWidget->GetPosition() - GetPosition();
-	CE_Vector2f childSize = aChildWidget->GetSize() + posDif;
+	CE_Vector2f childSize = aChildWidget->GetSize();
+	childSize.x += posDif.x;
 	
 
 	if (childSize.x > mySize.x)
@@ -65,15 +84,5 @@ void CUI_TreeView::UpdateSelfSize(CUI_Widget* aChildWidget)
 
 void CUI_TreeView::OnToggleViewClick()
 {
-	myIsExpanded = !myIsExpanded;
-
-	for (CUI_Widget* widget : myWidgets)
-	{
-		if (myIsExpanded)
-			widget->Show();
-		else
-			widget->Hide();
-	}
-
-	myButton->Show();
+	SetExpanded(!myIsExpanded);
 }

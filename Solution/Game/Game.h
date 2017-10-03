@@ -2,12 +2,17 @@
 
 #include <CE_Game.h>
 
-class CE_World;
-class EntityFactory;
-class CUI_Manager;
-class CUI_Widget;
 class CE_Input;
 class CE_Font;
+class CE_World;
+
+class CUI_Manager;
+class CUI_TreeView;
+class CUI_Widget;
+
+class EntityFactory;
+
+
 class Game : public CE_Game
 {
 public:
@@ -23,6 +28,11 @@ private:
 	void InitGrid();
 
 	void InitGUI();
+	void PopulateEntityTreeView(unsigned int anEntity);
+	void CreatePositionWidget(unsigned int anEntity);
+	void CreateCollisionWidget(unsigned int anEntity);
+	void CreateMovementWidget(unsigned int anEntity);
+
 
 	void OnClickFunction();
 
@@ -31,7 +41,8 @@ private:
 
 	EntityFactory* myEntityFactory;
 	CUI_Manager* myUIManager;
-	CUI_Widget* myWidget;
+	CUI_TreeView* myEntityTreeView;
+
 
 	CE_Input* myInput;
 	CE_Font* myFont;

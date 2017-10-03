@@ -10,38 +10,13 @@ CUI_Manager::CUI_Manager(CE_Input& anInput)
 	myWindowSize.y = 720.f;
 }
 
-CUI_Manager::~CUI_Manager()
-{
-	myWidgets.DeleteAll();
-}
-
-void CUI_Manager::AddWidget(CUI_Widget* anWidget)
-{
-	myWidgets.Add(anWidget);
-}
-
 void CUI_Manager::Update()
 {
-	for (CUI_Widget* widget : myWidgets)
-	{
-		widget->PrepareLayout();
-	}
+	PrepareLayout();
 
 	if (myInput.MouseDown(0))
 	{
 		CE_Vector2f mousePos = myInput.GetMousePosition();
-		for (CUI_Widget* widget : myWidgets)
-		{
-			if (widget->OnClick(mousePos))
-				return;
-		}
-	}
-}
-
-void CUI_Manager::Render(CE_RendererProxy& anRendererProxy)
-{
-	for (CUI_Widget* widget : myWidgets)
-	{
-		widget->Render(anRendererProxy);
+		OnClick(mousePos);
 	}
 }

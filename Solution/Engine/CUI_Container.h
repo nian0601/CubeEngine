@@ -10,6 +10,8 @@ public:
 	virtual bool OnClick(const CE_Vector2f& aMousePosition) override;
 
 	void AddWidget(CUI_Widget* aWidget) { myWidgets.Add(aWidget); }
+	
+	virtual void DeleteAllChildren();
 
 protected:
 	CUI_Container() {};

@@ -31,6 +31,7 @@
 #include <CUI_Button.h>
 #include <CUI_TreeView.h>
 #include <CUI_Label.h>
+#include <CUI_ValueController.h>
 
 #include <CE_Input.h>
 #include <CE_Font.h>
@@ -77,8 +78,8 @@ void Game::Init(CE_Engine& anEngine)
 	myFont = new CE_Font();
 	myFont->LoadFromFile("Data/Font/Decent_Font.png", anEngine.GetGPUContext());
 
-	InitWorld();
 	InitGUI();
+	InitWorld();
 }
 
 void Game::Update(float aDelta)
@@ -104,6 +105,8 @@ void Game::InitWorld()
 	CE_Entity player = myEntityFactory->InstansiateEntity(PLAYER);
 	TranslationComponent& playerTranslate = myWorld->GetComponent<TranslationComponent>(player);
 	playerTranslate.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 1.f));
+
+	PopulateEntityTreeView(player);
 }
 
 void Game::InitGrid()
@@ -124,34 +127,91 @@ void Game::InitGrid()
 
 void Game::InitGUI()
 {
-	//CUI_Button* button = new CUI_Button({ 0.10f, 0.10f }, { 0.7f, 0.7f, 0.7f, 1.f });
-	//button->myOnClick = std::bind(&Game::OnClickFunction, this);
-	//
-	//CUI_VBox* vbox = new CUI_VBox();
-	//vbox->AddWidget(button);
-	//
-	//myUIManager = new CUI_Manager(*myInput);
-	//myUIManager->AddWidget(vbox);
+	CUI_TreeView* debugTree = new CUI_TreeView(*myFont, "+ Debug Menu");
 
+	CUI_Button* reloadWorldButton = new CUI_Button(*myFont, "Reload World");
+	reloadWorldButton->myOnClick = std::bind(&Game::OnClickFunction, this);
+	debugTree->AddWidget(reloadWorldButton);
 
-	CUI_TreeView* treeview = new CUI_TreeView(*myFont, "+ Debug Menu");
-
-	//CUI_Button* button = new CUI_Button({ 150.f, 50.f }, { 0.7f, 0.7f, 0.7f, 1.f });
-	CUI_Button* button = new CUI_Button(*myFont, "Reload World");
-	button->myOnClick = std::bind(&Game::OnClickFunction, this);
-	treeview->AddWidget(button);
-
-	CUI_Label* lable = new CUI_Label(*myFont, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-	treeview->AddWidget(lable);
-
-	CUI_TreeView* childTree = new CUI_TreeView();
-	CUI_Image* img = new CUI_Image({ 250.f, 85.f }, { 0.1f, 1.f, 0.1f, 1.f });
-	childTree->AddWidget(img);
-
-	treeview->AddWidget(childTree);
+	myEntityTreeView = new CUI_TreeView(*myFont, "+ Entity Menu");
+	myEntityTreeView->SetExpanded(false);
 
 	myUIManager = new CUI_Manager(*myInput);
-	myUIManager->AddWidget(treeview);
+	myUIManager->AddWidget(debugTree);
+	myUIManager->AddWidget(myEntityTreeView);
+}
+
+void Game::PopulateEntityTreeView(unsigned int anEntity)
+{
+	myEntityTreeView->DeleteAllChildren();
+
+	CreatePositionWidget(anEntity);
+	CreateCollisionWidget(anEntity);
+	CreateMovementWidget(anEntity);
+}
+
+void Game::CreatePositionWidget(unsigned int anEntity)
+{
+	if (!myWorld->HasComponent<TranslationComponent>(anEntity))
+		return;
+
+	TranslationComponent& translation = myWorld->GetComponent<TranslationComponent>(anEntity);
+
+	CUI_TreeView* positionView = new CUI_TreeView(*myFont, "Position");
+
+	CUI_HBox* xPosBox = new CUI_HBox();
+	xPosBox->AddWidget(new CUI_Label(*myFont, "X:  "));
+	xPosBox->AddWidget(new CUI_Label(*myFont, new CUI_ValueController(&translation.myOrientation.myMatrix[12])));
+
+	CUI_HBox* yPosBox = new CUI_HBox();
+	yPosBox->AddWidget(new CUI_Label(*myFont, "Y:  "));
+	yPosBox->AddWidget(new CUI_Label(*myFont, new CUI_ValueController(&translation.myOrientation.myMatrix[13])));
+
+	CUI_HBox* zPosBox = new CUI_HBox();
+	zPosBox->AddWidget(new CUI_Label(*myFont, "Z:  "));
+	zPosBox->AddWidget(new CUI_Label(*myFont, new CUI_ValueController(&translation.myOrientation.myMatrix[14])));
+
+	positionView->AddWidget(xPosBox);
+	positionView->AddWidget(yPosBox);
+	positionView->AddWidget(zPosBox);
+
+	myEntityTreeView->AddWidget(positionView);
+}
+
+void Game::CreateCollisionWidget(unsigned int anEntity)
+{
+	if (!myWorld->HasComponent<CollisionComponent>(anEntity))
+		return;
+
+	CollisionComponent& collision = myWorld->GetComponent<CollisionComponent>(anEntity);
+
+	CUI_TreeView* collisionView = new CUI_TreeView(*myFont, "Collision");
+
+	CUI_HBox* radiusBox = new CUI_HBox();
+	radiusBox->AddWidget(new CUI_Label(*myFont, "Radius:  "));
+	radiusBox->AddWidget(new CUI_Label(*myFont, new CUI_ValueController(&collision.myRadius)));
+
+	collisionView->AddWidget(radiusBox);
+
+	myEntityTreeView->AddWidget(collisionView);
+}
+
+void Game::CreateMovementWidget(unsigned int anEntity)
+{
+	if (!myWorld->HasComponent<MovementComponent>(anEntity))
+		return;
+
+	MovementComponent& movement = myWorld->GetComponent<MovementComponent>(anEntity);
+
+	CUI_TreeView* movementView = new CUI_TreeView(*myFont, "Movement");
+
+	CUI_HBox* speedBox = new CUI_HBox();
+	speedBox->AddWidget(new CUI_Label(*myFont, "Speed:  "));
+	speedBox->AddWidget(new CUI_Label(*myFont, new CUI_ValueController(&movement.mySpeed)));
+
+	movementView->AddWidget(speedBox);
+
+	myEntityTreeView->AddWidget(movementView);
 }
 
 void Game::OnClickFunction()

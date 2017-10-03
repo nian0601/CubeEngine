@@ -135,6 +135,9 @@ void CE_Renderer::RenderTexts(CE_Camera& aCamera)
 
 	for (const TextData& data : myTextData)
 	{
+		if(data.myString.Empty())
+			continue;
+
 		if (myMSDFTextShader != nullptr)
 		{
 			myMSDFText->SetText(data.myString);

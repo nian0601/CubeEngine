@@ -166,6 +166,7 @@
     <ClCompile Include="CE_ComponentStorage.cpp" />
     <ClCompile Include="CE_SpriteShader.cpp" />
     <ClCompile Include="CUI_TreeView.cpp" />
+    <ClCompile Include="CUI_ValueController.cpp" />
     <ClCompile Include="CUI_VBox.cpp" />
     <ClCompile Include="CUI_Widget.cpp" />
     <ClCompile Include="CE_Text.cpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="CE_Map.h" />
     <ClInclude Include="CE_SpriteShader.h" />
     <ClInclude Include="CUI_TreeView.h" />
+    <ClInclude Include="CUI_ValueController.h" />
     <ClInclude Include="CUI_VBox.h" />
     <ClInclude Include="CUI_Widget.h" />
     <ClInclude Include="CE_Text.h" />

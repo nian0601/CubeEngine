@@ -104,6 +104,9 @@
     <ClCompile Include="CUI_Label.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="CUI_ValueController.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -311,6 +314,9 @@
       <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="CUI_Label.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_ValueController.h">
       <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>
