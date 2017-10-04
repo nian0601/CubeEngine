@@ -18,6 +18,7 @@ public:
 	~CE_Renderer();
 
 	void Render(CE_Camera& aCamera);
+	void Clear();
 
 	void AddCubeData(const CE_Matrix44f& anOrientation, const CE_Vector3f& aScale, const CE_Vector4f& aColor);
 	void AddSpriteData(const CE_Vector2f& aPosition, const CE_Vector2f& aSize, const CE_Vector4f& aColor, const CE_Vector2f& aHotspot);

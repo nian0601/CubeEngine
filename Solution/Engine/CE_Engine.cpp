@@ -22,6 +22,7 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 	myDirectX = new CE_DirectX();
 	CE_WindowManager::Create(*myDirectX);
 	myMainWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 1280, 720 }, "Cube Engine");
+	//CE_WindowManager::GetInstance()->CreateNewWindow({ 1280, 720 }, "Cube Engine 2");
 
 	myGPUContext = new CE_GPUContext(*myDirectX);
 
@@ -62,11 +63,17 @@ void CE_Engine::Run()
 		myGame->Update(myTime->GetFrameTime());
 		myCamera->Update();
 
-		myMainWindow->PrepareForRender();
-		myGame->Render(*myRendererProxy);
+		CE_GrowingArray<CE_Window*> windows = windowManager->GetWindows();
+		for (CE_Window* window : windows)
+		{
+			window->PrepareForRender();
+			myGame->Render(*myRendererProxy);
 
-		myRenderer->Render(*myCamera);
-		myMainWindow->FinishRender();
+			myRenderer->Render(*myCamera);
+			window->FinishRender();
+		}
+
+		myRenderer->Clear();
 	}
 }
 

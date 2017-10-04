@@ -60,6 +60,13 @@ void CE_Renderer::Render(CE_Camera& aCamera)
 	RenderTexts(aCamera);
 }
 
+void CE_Renderer::Clear()
+{
+	myCubeData.RemoveAll();
+	mySpriteData.RemoveAll();
+	myTextData.RemoveAll();
+}
+
 void CE_Renderer::AddCubeData(const CE_Matrix44f& anOrientation, const CE_Vector3f& aScale, const CE_Vector4f& aColor)
 {
 	CubeData& data = myCubeData.Add();
@@ -101,8 +108,6 @@ void CE_Renderer::RenderCubes(CE_Camera& aCamera)
 
 		myCubeModel->Render(myGPUContext);
 	}
-
-	myCubeData.RemoveAll();
 }
 
 void CE_Renderer::RenderSprites(CE_Camera& aCamera)
@@ -119,7 +124,6 @@ void CE_Renderer::RenderSprites(CE_Camera& aCamera)
 		mySprite->SetHotspot(data.myHotspot);
 		mySprite->Render(myGPUContext);
 	}
-	mySpriteData.RemoveAll();
 }
 
 void CE_Renderer::RenderTexts(CE_Camera& aCamera)
@@ -151,6 +155,4 @@ void CE_Renderer::RenderTexts(CE_Camera& aCamera)
 			myText->Render();
 		}
 	}
-
-	myTextData.RemoveAll();
 }
