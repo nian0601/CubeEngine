@@ -1,14 +1,15 @@
 #pragma once
 
-#include "CE_Vector2.h"
-
 class CE_Camera;
 class CE_Input;
-class CE_WindowHandler;
 class CE_GPUContext;
 class CE_Renderer;
 class CE_RendererProxy;
 class CE_Time;
+
+class CE_Window;
+class CE_WindowManager;
+class CE_DirectX;
 
 class CE_Game;
 
@@ -28,7 +29,9 @@ public:
 	const CE_Vector2i& GetWindowSize() const;
 
 private:
-	CE_WindowHandler* myWindowHandler;
+	CE_Window* myMainWindow;
+	CE_DirectX* myDirectX;
+
 	CE_GPUContext* myGPUContext;
 
 	CE_Game* myGame;

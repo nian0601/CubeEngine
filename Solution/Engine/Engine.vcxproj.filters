@@ -20,9 +20,6 @@
     <ClCompile Include="CE_GPUContext.cpp">
       <Filter>DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="CE_WindowHandler.cpp">
-      <Filter>DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="CE_Camera.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
@@ -211,9 +208,6 @@
     </ClInclude>
     <ClInclude Include="CE_Types.h" />
     <ClInclude Include="CE_GPUContext.h">
-      <Filter>DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_WindowHandler.h">
       <Filter>DirectX</Filter>
     </ClInclude>
     <ClInclude Include="CE_Camera.h">

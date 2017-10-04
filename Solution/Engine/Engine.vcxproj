@@ -160,7 +160,6 @@
     <ClCompile Include="CUI_Image.cpp" />
     <ClCompile Include="CUI_Label.cpp" />
     <ClCompile Include="CUI_Manager.cpp" />
-    <ClCompile Include="CE_WindowHandler.cpp" />
     <ClCompile Include="CE_DebugLogger.cpp" />
     <ClCompile Include="CE_GPUContext.cpp" />
     <ClCompile Include="CE_World.cpp" />
@@ -226,7 +225,6 @@
     <ClInclude Include="CE_Vector3_Decl.h" />
     <ClInclude Include="CE_Vector4.h" />
     <ClInclude Include="CE_Vector4_Decl.h" />
-    <ClInclude Include="CE_WindowHandler.h" />
     <ClInclude Include="CE_DebugLogger.h" />
     <ClInclude Include="CE_GPUContext.h" />
     <ClInclude Include="CE_World.h" />

@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
 #include "CE_Engine.h"
-#include "CE_WindowHandler.h"
 #include "CE_CubeShader.h"
 #include "CE_GPUContext.h"
 #include "CE_Game.h"
@@ -10,6 +9,9 @@
 #include "CE_RendererProxy.h"
 #include "CE_Time.h"
 #include "CE_Input.h"
+#include "CE_WindowManager.h"
+#include "CE_DirectX.h"
+#include "CE_Window.h"
 
 CE_Engine::CE_Engine(CE_Game* aGame)
 	: myGame(aGame)
@@ -17,16 +19,19 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 	HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 	CE_ASSERT(FAILED(hr) == false, "Failed to CoInitializeEx");
 
-	myWindowHandler = new CE_WindowHandler(1280, 720);
-	myGPUContext = new CE_GPUContext(myWindowHandler);
+	myDirectX = new CE_DirectX();
+	CE_WindowManager::Create(*myDirectX);
+	myMainWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 1280, 720 }, "Cube Engine");
+
+	myGPUContext = new CE_GPUContext(*myDirectX);
 
 	myRenderer = new CE_Renderer(*myGPUContext);
 	myRendererProxy = new CE_RendererProxy(*myRenderer);
 
-	myCamera = new CE_Camera(myWindowHandler->GetWindowSize());
+	myCamera = new CE_Camera(myMainWindow->GetWindowSize());
 
 	myTime = new CE_Time();
-	myInput = new CE_Input(myWindowHandler->GetHWND(), GetModuleHandle(NULL), DISCL_NONEXCLUSIVE | DISCL_FOREGROUND, DISCL_NONEXCLUSIVE | DISCL_FOREGROUND);
+	myInput = new CE_Input(myMainWindow->GetHWND(), GetModuleHandle(NULL), DISCL_NONEXCLUSIVE | DISCL_FOREGROUND, DISCL_NONEXCLUSIVE | DISCL_FOREGROUND);
 
 	myGame->Init(*this);
 }
@@ -40,12 +45,13 @@ CE_Engine::~CE_Engine()
 	CE_SAFE_DELETE(myRendererProxy);
 	CE_SAFE_DELETE(myRenderer);
 	CE_SAFE_DELETE(myGPUContext);
-	CE_SAFE_DELETE(myWindowHandler);
+	CE_WindowManager::Destory();
 }
 
 void CE_Engine::Run()
 {
-	while (myWindowHandler->PumpEvent())
+	CE_WindowManager* windowManager = CE_WindowManager::GetInstance();
+	while (windowManager->PumpEvent())
 	{
 		myTime->Update();
 		myInput->Update();
@@ -56,10 +62,11 @@ void CE_Engine::Run()
 		myGame->Update(myTime->GetFrameTime());
 		myCamera->Update();
 
+		myMainWindow->PrepareForRender();
 		myGame->Render(*myRendererProxy);
 
 		myRenderer->Render(*myCamera);
-		myGPUContext->EndFrame();
+		myMainWindow->FinishRender();
 	}
 }
 
@@ -85,5 +92,5 @@ CE_GPUContext& CE_Engine::GetGPUContext()
 
 const CE_Vector2i& CE_Engine::GetWindowSize() const
 {
-	return myWindowHandler->GetWindowSize();
+	return myMainWindow->GetWindowSize();
 }

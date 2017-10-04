@@ -3,32 +3,26 @@
 #include "CE_GPUContext.h"
 #include "CE_DirectX.h"
 
-CE_GPUContext::CE_GPUContext(const CE_WindowHandler* aWindowHandler)
+CE_GPUContext::CE_GPUContext(const CE_DirectX& aDirectX)
+	: myDirectX(aDirectX)
 {
-	myDirectX = new CE_DirectX(aWindowHandler);
 }
 
 CE_GPUContext::~CE_GPUContext()
 {
-	CE_SAFE_DELETE(myDirectX);
-}
-
-void CE_GPUContext::EndFrame()
-{
-	myDirectX->EndFrame();
 }
 
 ID3D11Device* CE_GPUContext::GetDevice() const
 {
-	return myDirectX->GetDevice();
+	return myDirectX.GetDevice();
 }
 
 ID3D11DeviceContext* CE_GPUContext::GetContext() const
 {
-	return myDirectX->GetContext();
+	return myDirectX.GetContext();
 }
 
-const CE_Vector2i& CE_GPUContext::GetWindowSize() const
+CE_Vector2i CE_GPUContext::GetWindowSize() const
 {
-	return myDirectX->GetWindowSize();
+	return CE_Vector2i(1280, 720);
 }
