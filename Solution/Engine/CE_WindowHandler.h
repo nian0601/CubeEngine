@@ -23,6 +23,7 @@ struct CE_WindowMessage
 	int myHighWordWParam;
 };
 
+class CE_Window;
 class CE_WindowHandler
 {
 public:
@@ -30,13 +31,11 @@ public:
 
 	bool PumpEvent();
 
-	void HandleWindowMessage(const CE_WindowMessage& aMessage);
+	void HandleWindowMessage(HWND aHWND, const CE_WindowMessage& aMessage);
 
-	const CE_Vector2i& GetWindowSize() const { return myWindowSize; }
-	const HWND& GetHWND() const { return myHWND; }
+	const CE_Vector2i& GetWindowSize() const;
+	const HWND& GetHWND() const;
 
 private:
-	CE_Vector2i myWindowSize;
-	HWND myHWND;
+	CE_Window* myWindow;
 };
-

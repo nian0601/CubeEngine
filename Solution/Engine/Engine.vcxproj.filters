@@ -107,6 +107,12 @@
     <ClCompile Include="CUI_ValueController.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="CE_Window.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_WindowManager.cpp">
+      <Filter>DirectX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -318,6 +324,12 @@
     </ClInclude>
     <ClInclude Include="CUI_ValueController.h">
       <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Window.h">
+      <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_WindowManager.h">
+      <Filter>DirectX</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

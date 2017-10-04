@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CE_WindowHandler.h"
-
+#include "CE_Window.h"
 
 #include <WinUser.h>
 
@@ -47,7 +47,7 @@ LRESULT CALLBACK CE_WindowHandler_StaticWndProc(HWND hWnd, UINT message, WPARAM 
 		msg.myLowWordWParam = LOWORD(wParam);
 		msg.myHighWordWParam = HIWORD(wParam);
 
-		windowHandler->HandleWindowMessage(msg);
+		windowHandler->HandleWindowMessage(hWnd, msg);
 		return 0;
 	}
 
@@ -56,49 +56,8 @@ LRESULT CALLBACK CE_WindowHandler_StaticWndProc(HWND hWnd, UINT message, WPARAM 
 
 CE_WindowHandler::CE_WindowHandler(int aWidth, int aHeight)
 {
-	myWindowSize.x = aWidth;
-	myWindowSize.y = aHeight;
-
-	const char* windowTitle = "Cube Engine";
-
-	WNDCLASSEX wcex;
-	wcex.cbSize = sizeof(WNDCLASSEX);
-
-	wcex.style = CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc = CE_WindowHandler_StaticWndProc;
-	wcex.cbClsExtra = 0;
-	wcex.cbWndExtra = 0;
-	wcex.hInstance = GetModuleHandle(NULL);
-	wcex.hIcon = LoadIcon(wcex.hInstance, NULL);
-	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-	wcex.lpszMenuName = NULL;
-	wcex.lpszClassName = windowTitle;
-	wcex.hIconSm = LoadIcon(wcex.hInstance, NULL);
-
-	CE_ASSERT(RegisterClassEx(&wcex) != FALSE, "Failed to RegisterClassEx");
-
-	RECT rc = { 0, 0, aWidth, aHeight };
-	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
-
-	myHWND = CreateWindowEx(
-		WS_EX_CLIENTEDGE,
-		windowTitle,
-		windowTitle,
-		WS_OVERLAPPEDWINDOW,
-		0,
-		0,
-		rc.right - rc.left,
-		rc.bottom - rc.top,
-		NULL,
-		NULL,
-		GetModuleHandle(NULL),
-		this);
-
-	CE_ASSERT(myHWND != nullptr, "Failed to CreateWindowEx");
-
-	ShowWindow(myHWND, 10);
-	UpdateWindow(myHWND);
+	myWindow = new CE_Window();
+	myWindow->Setup(CE_Vector2i(aWidth, aHeight), "Cube Engine", CE_WindowHandler_StaticWndProc);
 }
 
 bool CE_WindowHandler::PumpEvent()
@@ -116,14 +75,14 @@ bool CE_WindowHandler::PumpEvent()
 	return true;
 }
 
-void CE_WindowHandler::HandleWindowMessage(const CE_WindowMessage& aMessage)
+void CE_WindowHandler::HandleWindowMessage(HWND aHWND, const CE_WindowMessage& aMessage)
 {
 	switch (aMessage.myType)
 	{
 	case CE_WindowMessage::PAINT:
 		PAINTSTRUCT ps;
-		BeginPaint(myHWND, &ps);
-		EndPaint(myHWND, &ps);
+		BeginPaint(aHWND, &ps);
+		EndPaint(aHWND, &ps);
 		break;
 	case CE_WindowMessage::DESTROY:
 		PostQuitMessage(0);
@@ -139,5 +98,15 @@ void CE_WindowHandler::HandleWindowMessage(const CE_WindowMessage& aMessage)
 	case CE_WindowMessage::EXIT_SIZE_MOVE:
 		break;
 	}
+}
+
+const CE_Vector2i& CE_WindowHandler::GetWindowSize() const
+{
+	return myWindow->GetWindowSize();
+}
+
+const HWND& CE_WindowHandler::GetHWND() const
+{
+	return myWindow->GetHWND();
 }
 

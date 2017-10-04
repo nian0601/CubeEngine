@@ -153,6 +153,7 @@
     <ClCompile Include="CE_TextShader.cpp" />
     <ClCompile Include="CE_Texture.cpp" />
     <ClCompile Include="CE_Time.cpp" />
+    <ClCompile Include="CE_Window.cpp" />
     <ClCompile Include="CUI_Button.cpp" />
     <ClCompile Include="CUI_Container.cpp" />
     <ClCompile Include="CUI_HBox.cpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="CUI_VBox.cpp" />
     <ClCompile Include="CUI_Widget.cpp" />
     <ClCompile Include="CE_Text.cpp" />
+    <ClCompile Include="CE_WindowManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -211,6 +213,7 @@
     <ClInclude Include="CE_Time.h" />
     <ClInclude Include="CE_TypeID.h" />
     <ClInclude Include="CE_Types.h" />
+    <ClInclude Include="CE_Window.h" />
     <ClInclude Include="CUI_Button.h" />
     <ClInclude Include="CUI_Container.h" />
     <ClInclude Include="CUI_HBox.h" />
@@ -235,6 +238,7 @@
     <ClInclude Include="CUI_VBox.h" />
     <ClInclude Include="CUI_Widget.h" />
     <ClInclude Include="CE_Text.h" />
+    <ClInclude Include="CE_WindowManager.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
