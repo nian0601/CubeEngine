@@ -7,6 +7,7 @@
 #include "CE_TextShader.h"
 #include "CE_Text.h"
 #include "CE_DirextXFactory.h"
+#include "CE_RendererProxy.h"
 
 
 CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
@@ -53,45 +54,14 @@ CE_Renderer::~CE_Renderer()
 	CE_SAFE_DELETE(myCubeShader);
 }
 
-void CE_Renderer::Render(CE_Camera& aCamera)
+void CE_Renderer::Render(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
 {
-	RenderCubes(aCamera);
-	RenderSprites(aCamera);
-	RenderTexts(aCamera);
+	RenderCubes(aCamera, aRendererProxy);
+	RenderSprites(aCamera, aRendererProxy);
+	RenderTexts(aCamera, aRendererProxy);
 }
 
-void CE_Renderer::Clear()
-{
-	myCubeData.RemoveAll();
-	mySpriteData.RemoveAll();
-	myTextData.RemoveAll();
-}
-
-void CE_Renderer::AddCubeData(const CE_Matrix44f& anOrientation, const CE_Vector3f& aScale, const CE_Vector4f& aColor)
-{
-	CubeData& data = myCubeData.Add();
-	data.myOrientation = anOrientation;
-	data.myScale = aScale;
-	data.myColor = aColor;
-}
-
-void CE_Renderer::AddSpriteData(const CE_Vector2f& aPosition, const CE_Vector2f& aSize, const CE_Vector4f& aColor, const CE_Vector2f& aHotspot)
-{
-	SpriteData& data = mySpriteData.Add();
-	data.myPosition = aPosition;
-	data.mySize = aSize;
-	data.myColor = aColor;
-	data.myHotspot = aHotspot;
-}
-
-void CE_Renderer::AddTextData(const CE_String& aString, const CE_Vector2f& aPosition)
-{
-	TextData& data = myTextData.Add();
-	data.myString = aString;
-	data.myPosition = aPosition;
-}
-
-void CE_Renderer::RenderCubes(CE_Camera& aCamera)
+void CE_Renderer::RenderCubes(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
 {
 	CE_DirextXFactory* factory = CE_DirextXFactory::GetInstance();
 	factory->SetRasterizerState(CULL_BACK);
@@ -100,7 +70,7 @@ void CE_Renderer::RenderCubes(CE_Camera& aCamera)
 
 	myCubeShader->SetGlobalGPUData(myGPUContext, aCamera);
 
-	for (const CubeData& data : myCubeData)
+	for (const CE_CubeData& data : aRendererProxy.GetCubeData())
 	{
 		myCubeModel->SetOrientation(data.myOrientation);
 		myCubeModel->SetColor(data.myColor);
@@ -110,13 +80,13 @@ void CE_Renderer::RenderCubes(CE_Camera& aCamera)
 	}
 }
 
-void CE_Renderer::RenderSprites(CE_Camera& aCamera)
+void CE_Renderer::RenderSprites(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
 {
 	CE_DirextXFactory* factory = CE_DirextXFactory::GetInstance();
 	factory->SetBlendState(ALPHA_BLEND);
 
 	mySpriteShader->SetGlobalGPUData(myGPUContext, aCamera);
-	for (const SpriteData& data : mySpriteData)
+	for (const CE_SpriteData& data : aRendererProxy.GetSpriteData())
 	{
 		mySprite->SetPosition(data.myPosition);
 		mySprite->SetSize(data.mySize);
@@ -126,7 +96,7 @@ void CE_Renderer::RenderSprites(CE_Camera& aCamera)
 	}
 }
 
-void CE_Renderer::RenderTexts(CE_Camera& aCamera)
+void CE_Renderer::RenderTexts(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
 {
 	CE_DirextXFactory* factory = CE_DirextXFactory::GetInstance();
 	factory->SetBlendState(ALPHA_BLEND);
@@ -137,7 +107,7 @@ void CE_Renderer::RenderTexts(CE_Camera& aCamera)
 		myTextShader->SetGlobalGPUData(myGPUContext, aCamera);
 
 
-	for (const TextData& data : myTextData)
+	for (const CE_TextData& data : aRendererProxy.GetTextData())
 	{
 		if(data.myString.Empty())
 			continue;

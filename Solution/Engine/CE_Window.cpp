@@ -8,6 +8,7 @@
 #include <dxgi1_2.h>
 #include "CE_DirextXFactory.h"
 #include "CE_WindowManager.h"
+#include "CE_RendererProxy.h"
 
 CE_Window::CE_Window()
 {
@@ -16,6 +17,7 @@ CE_Window::CE_Window()
 
 CE_Window::~CE_Window()
 {
+	CE_SAFE_DELETE(myRendererProxy);
 }
 
 void CE_Window::Setup(const CE_Vector2i& aSize, const char* aTitle, CE_WindowManager* aWindowManager, WNDPROC aWinProc)
@@ -64,6 +66,8 @@ void CE_Window::Setup(const CE_Vector2i& aSize, const char* aTitle, CE_WindowMan
 
 	CreateSwapchain();
 	CreateBackbuffer();
+
+	myRendererProxy = new CE_RendererProxy();
 }
 
 void CE_Window::PrepareForRender()
@@ -85,6 +89,7 @@ void CE_Window::PrepareForRender()
 void CE_Window::FinishRender()
 {
 	mySwapChain->Present(0, 0);
+	myRendererProxy->Clear();
 }
 
 void CE_Window::CreateSwapchain()

@@ -35,6 +35,8 @@
 
 #include <CE_Input.h>
 #include <CE_Font.h>
+#include <CE_Window.h>
+#include <CE_WindowManager.h>
 
 Game::Game()
 {
@@ -80,6 +82,8 @@ void Game::Init(CE_Engine& anEngine)
 
 	InitGUI();
 	InitWorld();
+
+	myGUIWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 320, 320}, "GUI Window");
 }
 
 void Game::Update(float aDelta)
@@ -89,9 +93,9 @@ void Game::Update(float aDelta)
 	myUIManager->Update();
 }
 
-void Game::Render(CE_RendererProxy& anRendererProxy)
+void Game::Render()
 {
-	myUIManager->Render(anRendererProxy);
+	myUIManager->Render(myGUIWindow->GetRendererProxy());
 }
 
 void Game::InitWorld()

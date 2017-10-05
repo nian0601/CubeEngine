@@ -11,7 +11,9 @@ struct ID3D11Texture2D;
 struct D3D11_VIEWPORT;
 
 class CE_DirectX;
+class CE_RendererProxy;
 class CE_WindowManager;
+
 class CE_Window
 {
 public:
@@ -27,6 +29,8 @@ public:
 
 	void FinishRender();
 
+	CE_RendererProxy& GetRendererProxy() { return *myRendererProxy; }
+
 private:
 	void CreateSwapchain();
 	void CreateBackbuffer();
@@ -34,8 +38,8 @@ private:
 	CE_Vector2i myWindowSize;
 	HWND myHWND;
 	CE_WindowManager* myWindowManager;
+	CE_RendererProxy* myRendererProxy;
 
-	//IDXGISwapChain* mySwapChain;
 	IDXGISwapChain1* mySwapChain;
 
 	ID3D11Texture2D* myBackbuffer;

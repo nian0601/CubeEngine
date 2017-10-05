@@ -22,12 +22,10 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 	myDirectX = new CE_DirectX();
 	CE_WindowManager::Create(*myDirectX);
 	myMainWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 1280, 720 }, "Cube Engine");
-	//CE_WindowManager::GetInstance()->CreateNewWindow({ 1280, 720 }, "Cube Engine 2");
 
 	myGPUContext = new CE_GPUContext(*myDirectX);
 
 	myRenderer = new CE_Renderer(*myGPUContext);
-	myRendererProxy = new CE_RendererProxy(*myRenderer);
 
 	myCamera = new CE_Camera(myMainWindow->GetWindowSize());
 
@@ -43,7 +41,6 @@ CE_Engine::~CE_Engine()
 	CE_SAFE_DELETE(myInput);
 	CE_SAFE_DELETE(myTime);
 	CE_SAFE_DELETE(myCamera);
-	CE_SAFE_DELETE(myRendererProxy);
 	CE_SAFE_DELETE(myRenderer);
 	CE_SAFE_DELETE(myGPUContext);
 	CE_WindowManager::Destory();
@@ -63,17 +60,16 @@ void CE_Engine::Run()
 		myGame->Update(myTime->GetFrameTime());
 		myCamera->Update();
 
+		myGame->Render();
+
 		CE_GrowingArray<CE_Window*> windows = windowManager->GetWindows();
 		for (CE_Window* window : windows)
 		{
 			window->PrepareForRender();
-			myGame->Render(*myRendererProxy);
 
-			myRenderer->Render(*myCamera);
+			myRenderer->Render(*myCamera, window->GetRendererProxy());
 			window->FinishRender();
 		}
-
-		myRenderer->Clear();
 	}
 }
 
@@ -84,7 +80,7 @@ CE_Camera& CE_Engine::GetCamera()
 
 CE_RendererProxy& CE_Engine::GetRendererProxy()
 {
-	return *myRendererProxy;
+	return myMainWindow->GetRendererProxy();
 }
 
 CE_Input& CE_Engine::GetInput()

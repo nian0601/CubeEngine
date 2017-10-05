@@ -40,6 +40,5 @@ private:
 
 	CE_Camera* myCamera;
 	CE_Renderer* myRenderer;
-	CE_RendererProxy* myRendererProxy;
 };
 

@@ -5,6 +5,7 @@
 class CE_Input;
 class CE_Font;
 class CE_World;
+class CE_Window;
 
 class CUI_Manager;
 class CUI_TreeView;
@@ -21,7 +22,7 @@ public:
 
 	void Init(CE_Engine& anEngine) override;
 	void Update(float aDelta) override;
-	void Render(CE_RendererProxy& anRendererProxy) override;
+	void Render() override;
 
 private:
 	void InitWorld();
@@ -46,4 +47,6 @@ private:
 
 	CE_Input* myInput;
 	CE_Font* myFont;
+
+	CE_Window* myGUIWindow;
 };
