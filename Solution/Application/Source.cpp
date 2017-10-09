@@ -5,8 +5,8 @@
 
 int main()
 {
-	Game myGame;
-	CE_Engine myEngine(&myGame);
+	Game* myGame = new Game();
+	CE_Engine myEngine(myGame);
 
 	myEngine.Run();
 }

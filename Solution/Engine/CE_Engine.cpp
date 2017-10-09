@@ -38,6 +38,7 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 
 CE_Engine::~CE_Engine()
 {
+	CE_SAFE_DELETE(myGame);
 	CE_SAFE_DELETE(myInput);
 	CE_SAFE_DELETE(myTime);
 	CE_SAFE_DELETE(myCamera);
@@ -91,9 +92,4 @@ CE_Input& CE_Engine::GetInput()
 CE_GPUContext& CE_Engine::GetGPUContext()
 {
 	return *myGPUContext;
-}
-
-const CE_Vector2i& CE_Engine::GetWindowSize() const
-{
-	return myMainWindow->GetWindowSize();
 }

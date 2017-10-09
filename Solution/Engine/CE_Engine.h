@@ -26,7 +26,6 @@ public:
 	CE_Input& GetInput();
 
 	CE_GPUContext& GetGPUContext();
-	const CE_Vector2i& GetWindowSize() const;
 
 private:
 	CE_Window* myMainWindow;
