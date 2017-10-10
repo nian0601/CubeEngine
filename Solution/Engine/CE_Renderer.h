@@ -19,12 +19,13 @@ public:
 	CE_Renderer(CE_GPUContext& anGPUContext);
 	~CE_Renderer();
 
-	void Render(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
+	void Render3D(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
+	void Render2D(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy);
 
 private:
 	void RenderCubes(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
-	void RenderSprites(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
-	void RenderTexts(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
+	void RenderSprites(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy);
+	void RenderTexts(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy);
 
 	CE_GPUContext& myGPUContext;
 

@@ -116,7 +116,7 @@ void CE_TextShader::Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPU
 	CE_ASSERT(FAILED(result) == false, "Failed to CreateSamplerState");
 }
 
-void CE_TextShader::SetGlobalGPUData(const CE_GPUContext& aGPUContext, const CE_Camera& aCamera)
+void CE_TextShader::SetGlobalGPUData(const CE_GPUContext& aGPUContext, const CE_Matrix44f& aOrthagonalMatrix)
 {
 	ID3D11DeviceContext* context = aGPUContext.GetContext();
 
@@ -126,7 +126,7 @@ void CE_TextShader::SetGlobalGPUData(const CE_GPUContext& aGPUContext, const CE_
 	context->Map(myGlobalDataBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 
 	GlobalData* dataPtr = (GlobalData*)mappedResource.pData;
-	dataPtr->myProjection = aCamera.GetOrthagonalProjection();
+	dataPtr->myProjection = aOrthagonalMatrix;
 
 	context->Unmap(myGlobalDataBuffer, 0);
 

@@ -30,11 +30,13 @@ public:
 	void FinishRender();
 
 	CE_RendererProxy& GetRendererProxy() { return *myRendererProxy; }
+	const CE_Matrix44f& GetOrthagonalProjection() const { return myOrthagonalProjection; }
 
 private:
 	void CreateSwapchain();
 	void CreateBackbuffer();
 
+	CE_Matrix44f myOrthagonalProjection;
 	CE_Vector2i myWindowSize;
 	HWND myHWND;
 	CE_WindowManager* myWindowManager;

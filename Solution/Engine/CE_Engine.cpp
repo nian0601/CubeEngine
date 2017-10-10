@@ -68,7 +68,8 @@ void CE_Engine::Run()
 		{
 			window->PrepareForRender();
 
-			myRenderer->Render(*myCamera, window->GetRendererProxy());
+			myRenderer->Render3D(*myCamera, window->GetRendererProxy());
+			myRenderer->Render2D(window->GetOrthagonalProjection(), window->GetRendererProxy());
 			window->FinishRender();
 		}
 	}

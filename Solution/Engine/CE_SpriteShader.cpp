@@ -87,7 +87,7 @@ void CE_SpriteShader::Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aG
 	result = device->CreateBuffer(&matrixBufferDesc, NULL, &myGlobalDataBuffer);
 }
 
-void CE_SpriteShader::SetGlobalGPUData(const CE_GPUContext& aGPUContext, const CE_Camera& aCamera)
+void CE_SpriteShader::SetGlobalGPUData(const CE_GPUContext& aGPUContext, const CE_Matrix44f& aOrthagonalMatrix)
 {
 	ID3D11DeviceContext* context = aGPUContext.GetContext();
 
@@ -97,7 +97,7 @@ void CE_SpriteShader::SetGlobalGPUData(const CE_GPUContext& aGPUContext, const C
 	context->Map(myGlobalDataBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 
 	GlobalData* dataPtr = (GlobalData*)mappedResource.pData;
-	dataPtr->myProjection = aCamera.GetOrthagonalProjection();
+	dataPtr->myProjection = aOrthagonalMatrix;
 
 	context->Unmap(myGlobalDataBuffer, 0);
 

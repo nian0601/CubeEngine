@@ -19,7 +19,7 @@ public:
 
 	void Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUContext);
 
-	void SetGlobalGPUData(const CE_GPUContext& aGPUContext, const CE_Camera& aCamera);
+	void SetGlobalGPUData(const CE_GPUContext& aGPUContext, const CE_Matrix44f& aOrthagonalMatrix);
 
 private:
 	void OutputError(ID3D10Blob* aErrorBlob, const WCHAR* aShaderName);

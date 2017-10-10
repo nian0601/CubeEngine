@@ -54,11 +54,15 @@ CE_Renderer::~CE_Renderer()
 	CE_SAFE_DELETE(myCubeShader);
 }
 
-void CE_Renderer::Render(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
+void CE_Renderer::Render3D(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
 {
 	RenderCubes(aCamera, aRendererProxy);
-	RenderSprites(aCamera, aRendererProxy);
-	RenderTexts(aCamera, aRendererProxy);
+}
+
+void CE_Renderer::Render2D(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy)
+{
+	RenderSprites(aOrthagonalMatrix, aRendererProxy);
+	RenderTexts(aOrthagonalMatrix, aRendererProxy);
 }
 
 void CE_Renderer::RenderCubes(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
@@ -80,12 +84,12 @@ void CE_Renderer::RenderCubes(CE_Camera& aCamera, const CE_RendererProxy& aRende
 	}
 }
 
-void CE_Renderer::RenderSprites(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
+void CE_Renderer::RenderSprites(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy)
 {
 	CE_DirextXFactory* factory = CE_DirextXFactory::GetInstance();
 	factory->SetBlendState(ALPHA_BLEND);
 
-	mySpriteShader->SetGlobalGPUData(myGPUContext, aCamera);
+	mySpriteShader->SetGlobalGPUData(myGPUContext, aOrthagonalMatrix);
 	for (const CE_SpriteData& data : aRendererProxy.GetSpriteData())
 	{
 		mySprite->SetPosition(data.myPosition);
@@ -96,15 +100,15 @@ void CE_Renderer::RenderSprites(CE_Camera& aCamera, const CE_RendererProxy& aRen
 	}
 }
 
-void CE_Renderer::RenderTexts(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
+void CE_Renderer::RenderTexts(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy)
 {
 	CE_DirextXFactory* factory = CE_DirextXFactory::GetInstance();
 	factory->SetBlendState(ALPHA_BLEND);
 
 	if (myMSDFTextShader != nullptr)
-		myMSDFTextShader->SetGlobalGPUData(myGPUContext, aCamera);
+		myMSDFTextShader->SetGlobalGPUData(myGPUContext, aOrthagonalMatrix);
 	else
-		myTextShader->SetGlobalGPUData(myGPUContext, aCamera);
+		myTextShader->SetGlobalGPUData(myGPUContext, aOrthagonalMatrix);
 
 
 	for (const CE_TextData& data : aRendererProxy.GetTextData())
