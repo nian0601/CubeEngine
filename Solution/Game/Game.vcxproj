@@ -125,6 +125,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AABBProcessor.h" />
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="CollisionProcessor.h" />
     <ClInclude Include="CollisionSingletonComponent.h" />
@@ -146,11 +147,13 @@
     <ClInclude Include="RenderProcessor.h" />
     <ClInclude Include="RotationComponent.h" />
     <ClInclude Include="RotationProcessor.h" />
+    <ClInclude Include="SelectionProcessor.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TranslationComponent.h" />
     <ClInclude Include="Types.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AABBProcessor.cpp" />
     <ClCompile Include="CollisionProcessor.cpp" />
     <ClCompile Include="CreateEntityProcessor.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
@@ -162,6 +165,7 @@
     <ClCompile Include="PlacingProcessor.cpp" />
     <ClCompile Include="RenderProcessor.cpp" />
     <ClCompile Include="RotationProcessor.cpp" />
+    <ClCompile Include="SelectionProcessor.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

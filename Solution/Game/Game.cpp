@@ -16,6 +16,8 @@
 #include "CreateEntityProcessor.h"
 #include "PlacingProcessor.h"
 #include "MoverProcessor.h"
+#include "AABBProcessor.h"
+#include "SelectionProcessor.h"
 
 #include "RenderProcessor.h"
 #include "RotationProcessor.h"
@@ -64,18 +66,24 @@ void Game::Init(CE_Engine& anEngine)
 
 	RenderProcessor* renderProcessor = new RenderProcessor(*myWorld, anEngine.GetRendererProxy());
 	myWorld->AddProcessor(renderProcessor);
-	myWorld->AddProcessor<RotationProcessor>();
-	myWorld->AddProcessor<MovementProcessor>();
-	myWorld->AddProcessor<CollisionProcessor>();
-	myWorld->AddProcessor<PickUpProcessor>();
 
 	InputProcessor* inputProcessor = new InputProcessor(*myWorld, anEngine.GetInput());
 	myWorld->AddProcessor(inputProcessor);
 
 	CreateEntityProcessor* createProcessor = new CreateEntityProcessor(*myWorld, *myEntityFactory);
 	myWorld->AddProcessor(createProcessor);
+
+	SelectionProcessor* selectionProcessor = new SelectionProcessor(*myWorld, camera);
+	myWorld->AddProcessor(selectionProcessor);
+
+	myWorld->AddProcessor<RotationProcessor>();
+	myWorld->AddProcessor<MovementProcessor>();
+	myWorld->AddProcessor<CollisionProcessor>();
+	myWorld->AddProcessor<PickUpProcessor>();
 	myWorld->AddProcessor<PlacingProcessor>();
 	myWorld->AddProcessor<MoverProcessor>();
+	myWorld->AddProcessor<AABBProcessor>();
+	
 
 	myFont = new CE_Font();
 	myFont->LoadFromFile("Data/Font/Decent_Font.png", anEngine.GetGPUContext());
@@ -102,15 +110,15 @@ void Game::InitWorld()
 {
 	InitGrid();
 
-	CE_Entity pickup = myEntityFactory->InstansiateEntity(PICK_UP);
-	TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(pickup);
-	translate.myOrientation.SetPos(CE_Vector3f(5.f, 1.f, 5.f));
+	//CE_Entity pickup = myEntityFactory->InstansiateEntity(PICK_UP);
+	//TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(pickup);
+	//translate.myOrientation.SetPos(CE_Vector3f(5.f, 1.f, 5.f));
+	//
+	//CE_Entity player = myEntityFactory->InstansiateEntity(PLAYER);
+	//TranslationComponent& playerTranslate = myWorld->GetComponent<TranslationComponent>(player);
+	//playerTranslate.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 1.f));
 
-	CE_Entity player = myEntityFactory->InstansiateEntity(PLAYER);
-	TranslationComponent& playerTranslate = myWorld->GetComponent<TranslationComponent>(player);
-	playerTranslate.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 1.f));
-
-	PopulateEntityTreeView(player);
+	//PopulateEntityTreeView(player);
 }
 
 void Game::InitGrid()
@@ -121,7 +129,7 @@ void Game::InitGrid()
 		for (int x = 0; x < gridSize; ++x)
 		{
 			CE_Vector3f pos(static_cast<float>(x), 0.f, static_cast<float>(z));
-
+	
 			CE_Entity entity = myEntityFactory->InstansiateEntity(GROUND);
 			TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(entity);
 			translate.myOrientation.SetPos(pos);

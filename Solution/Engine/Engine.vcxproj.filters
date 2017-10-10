@@ -148,6 +148,9 @@
     <Filter Include="Rendering\Text">
       <UniqueIdentifier>{5bd03dcc-bc75-4eda-94f1-7d55dd48f625}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{6d41f349-67ba-4125-ab3f-21892fa1d24a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -324,6 +327,15 @@
     </ClInclude>
     <ClInclude Include="CE_WindowManager.h">
       <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="CPY_AABB.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="CPY_Line3D.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="CPY_Intersection.h">
+      <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

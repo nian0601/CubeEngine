@@ -88,6 +88,12 @@
     <ClInclude Include="MoverProcessor.h">
       <Filter>Entity\Processor</Filter>
     </ClInclude>
+    <ClInclude Include="AABBProcessor.h">
+      <Filter>Entity\Processor</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectionProcessor.h">
+      <Filter>Entity\Processor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -122,6 +128,12 @@
       <Filter>Entity\Processor</Filter>
     </ClCompile>
     <ClCompile Include="MoverProcessor.cpp">
+      <Filter>Entity\Processor</Filter>
+    </ClCompile>
+    <ClCompile Include="AABBProcessor.cpp">
+      <Filter>Entity\Processor</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectionProcessor.cpp">
       <Filter>Entity\Processor</Filter>
     </ClCompile>
   </ItemGroup>

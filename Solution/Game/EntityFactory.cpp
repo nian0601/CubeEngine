@@ -58,7 +58,10 @@ void EntityFactory::LoadGround()
 {
 	CE_Entity entity = myTemplateEntityMap[GROUND];
 
-	myTemplateWorld.AddComponent<TranslationComponent>(entity);
+	myTemplateWorld.AddComponent<CollisionComponent>(entity);
+	TranslationComponent& translate = myTemplateWorld.AddComponent<TranslationComponent>(entity);
+	translate.myScale = CE_Vector3f(1.f);
+
 	RenderComponent& render = myTemplateWorld.AddComponent<RenderComponent>(entity);
 
 	float color = 0.58f;

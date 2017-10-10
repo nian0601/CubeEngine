@@ -12,6 +12,10 @@ enum eActions
 	MOVE_LEFT,
 	MOVE_RIGHT,
 	PLACE_ENTITY,
+
+	LBUTTON,
+	RBUTTON,
+
 	_ACTIONCOUNT,
 };
 
@@ -28,12 +32,17 @@ struct InputSingletonComponent : public CE_BaseComponent
 	bool ActionUp(eActions anAction) const;
 	bool ActionIsPressed(eActions anAction) const;
 
+	CE_Vector2f myMousePosition;
+
 	CE_StaticArray<int, static_cast<int>(_ACTIONCOUNT)> myKeyStates;
-	CE_StaticArray<unsigned int, static_cast<int>(_ACTIONCOUNT)> myKeyMapping;
+	CE_StaticArray<unsigned int, static_cast<int>(_ACTIONCOUNT)> myKeyboardMapping;
+	CE_StaticArray<unsigned int, static_cast<int>(_ACTIONCOUNT)> myMouseMappings;
 
 	const int myDownFlag = 1 << DOWN;
 	const int myUpFlag = 1 << UP;
 	const int myPressedFlag = 1 << PRESSED;
+
+	const unsigned int Invalid = static_cast<unsigned int>(-1);
 };
 
 inline bool InputSingletonComponent::ActionDown(eActions anAction) const

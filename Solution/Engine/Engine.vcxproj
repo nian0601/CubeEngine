@@ -213,6 +213,9 @@
     <ClInclude Include="CE_TypeID.h" />
     <ClInclude Include="CE_Types.h" />
     <ClInclude Include="CE_Window.h" />
+    <ClInclude Include="CPY_AABB.h" />
+    <ClInclude Include="CPY_Intersection.h" />
+    <ClInclude Include="CPY_Line3D.h" />
     <ClInclude Include="CUI_Button.h" />
     <ClInclude Include="CUI_Container.h" />
     <ClInclude Include="CUI_HBox.h" />
