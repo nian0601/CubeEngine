@@ -148,6 +148,7 @@
     <ClInclude Include="RenderProcessor.h" />
     <ClInclude Include="RotationComponent.h" />
     <ClInclude Include="RotationProcessor.h" />
+    <ClInclude Include="SelectedEntitySingletonComponent.h" />
     <ClInclude Include="SelectionProcessor.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TranslationComponent.h" />

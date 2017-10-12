@@ -1,12 +1,12 @@
 #include "stdafx.h"
 
+#include "AABBComponent.h"
 #include "SelectionProcessor.h"
-#include "RenderComponent.h"
+#include "SelectedEntitySingletonComponent.h"
 #include "InputSingletonComponent.h"
 
 #include <CE_Camera.h>
 #include <CPY_Intersection.h>
-#include "AABBComponent.h"
 
 SelectionProcessor::SelectionProcessor(CE_World& aWorld, const CE_Camera& aCamera)
 	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<AABBComponent>>())
@@ -17,23 +17,18 @@ SelectionProcessor::SelectionProcessor(CE_World& aWorld, const CE_Camera& aCamer
 void SelectionProcessor::Update(float /*aDelta*/)
 {
 	InputSingletonComponent& input = myWorld.GetSingletonComponent<InputSingletonComponent>();
+	SelectedEntitySingletonComponent& selectedEntity = myWorld.GetSingletonComponent<SelectedEntitySingletonComponent>();
 
-	bool leftClick = input.ActionDown(LBUTTON);
-	bool rightClick = input.ActionDown(RBUTTON);
+	CE_Entity entityUnderMouse = FindEntityUnderMouse(input.myMousePosition);
+	selectedEntity.myHoveredEntity = entityUnderMouse;
 
-	if (leftClick || rightClick)
+	if (input.ActionDown(LBUTTON))
 	{
-		CE_Entity entityUnderMouse = FindEntityUnderMouse(input.myMousePosition);
-
-		if (entityUnderMouse != CE_Invalid_Entity && HasComponent<RenderComponent>(entityUnderMouse))
-		{
-			RenderComponent& render = GetComponent<RenderComponent>(entityUnderMouse);
-
-			if (leftClick)
-				render.myEntries[0].myColor = CE_Vector4f(1.f);
-			else if(rightClick)
-				render.myEntries[0].myColor = CE_Vector4f(1.f, 0.f, 0.f, 1.f);
-		}
+		//selectedEntity.mySelectedEntity = CE_Invalid_Entity;
+	}
+	else if (input.ActionDown(RBUTTON))
+	{
+		selectedEntity.mySelectedEntity = CE_Invalid_Entity;
 	}
 }
 

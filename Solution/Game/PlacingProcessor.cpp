@@ -4,6 +4,7 @@
 #include "TranslationComponent.h"
 #include "InputSingletonComponent.h"
 #include "CreateEntitySingletonComponent.h"
+#include "SelectedEntitySingletonComponent.h"
 
 PlacingProcessor::PlacingProcessor(CE_World& aWorld)
 	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<TranslationComponent, InventoryComponent>>())
@@ -12,6 +13,10 @@ PlacingProcessor::PlacingProcessor(CE_World& aWorld)
 
 void PlacingProcessor::Update(float /*aDelta*/)
 {
+	SelectedEntitySingletonComponent& selectedEntity = myWorld.GetSingletonComponent<SelectedEntitySingletonComponent>();
+	if (selectedEntity.myHoveredEntity == CE_Invalid_Entity)
+		return;
+
 	CE_GrowingArray<CE_Entity> entities = GetEntities();
 
 	if (entities.Size() == 0)
@@ -23,12 +28,12 @@ void PlacingProcessor::Update(float /*aDelta*/)
 
 	CreateEntitySingletonComponent& createSingleton = myWorld.GetSingletonComponent<CreateEntitySingletonComponent>();
 
-	for (CE_Entity& entity : entities)
-	{
-		TranslationComponent& translation = GetComponent<TranslationComponent>(entity);
+	TranslationComponent& placeLocation = GetComponent<TranslationComponent>(selectedEntity.myHoveredEntity);
 
-		CE_Vector3f pos = translation.myOrientation.GetPos();
-		pos.z += 1.4f;
+	for (int i = 0; i < entities.Size(); ++i)
+	{
+		CE_Vector3f pos = placeLocation.myOrientation.GetPos();
+		pos.y += 1.f;
 
 		CreateEntitySingletonComponent::Entry& entry = createSingleton.myEntries.Add();
 		entry.myPosition = pos;
