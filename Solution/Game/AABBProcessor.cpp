@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "AABBProcessor.h"
 #include "TranslationComponent.h"
-#include "CollisionComponent.h"
+#include "AABBComponent.h"
 
 
 AABBProcessor::AABBProcessor(CE_World& aWorld)
-	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<CollisionComponent, TranslationComponent>>())
+	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<AABBComponent, TranslationComponent>>())
 {
 }
 
@@ -15,8 +15,8 @@ void AABBProcessor::Update(float /*aDelta*/)
 	for (const CE_Entity& entity : entities)
 	{
 		TranslationComponent& translation = GetComponent<TranslationComponent>(entity);
-		CollisionComponent& collision = GetComponent<CollisionComponent>(entity);
+		AABBComponent& aabb = GetComponent<AABBComponent>(entity);
 
-		collision.myAABB = CPY_AABB(translation.myOrientation.GetPos(), translation.myScale);
+		aabb.myAABB = CPY_AABB(translation.myOrientation.GetPos(), translation.myScale);
 	}
 }

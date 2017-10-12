@@ -94,6 +94,9 @@
     <ClInclude Include="SelectionProcessor.h">
       <Filter>Entity\Processor</Filter>
     </ClInclude>
+    <ClInclude Include="AABBComponent.h">
+      <Filter>Entity\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

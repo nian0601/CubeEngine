@@ -125,6 +125,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AABBComponent.h" />
     <ClInclude Include="AABBProcessor.h" />
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="CollisionProcessor.h" />

@@ -8,6 +8,7 @@
 #include "PickUpComponent.h"
 #include "RotationComponent.h"
 #include "MoverComponent.h"
+#include "AABBComponent.h"
 
 
 EntityFactory::EntityFactory(CE_World& anRealWorld, CE_World& anTemplateWorld)
@@ -50,6 +51,7 @@ CE_Entity EntityFactory::InstansiateEntity(int anIdentifier)
 	CopyComponent<RotationComponent>(templateEntity, newEntity);
 	CopyComponent<TranslationComponent>(templateEntity, newEntity);
 	CopyComponent<MoverComponent>(templateEntity, newEntity);
+	CopyComponent<AABBComponent>(templateEntity, newEntity);
 
 	return newEntity;
 }
@@ -58,7 +60,8 @@ void EntityFactory::LoadGround()
 {
 	CE_Entity entity = myTemplateEntityMap[GROUND];
 
-	myTemplateWorld.AddComponent<CollisionComponent>(entity);
+	myTemplateWorld.AddComponent<AABBComponent>(entity);
+
 	TranslationComponent& translate = myTemplateWorld.AddComponent<TranslationComponent>(entity);
 	translate.myScale = CE_Vector3f(1.f);
 

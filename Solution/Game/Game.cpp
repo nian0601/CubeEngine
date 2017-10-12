@@ -91,7 +91,7 @@ void Game::Init(CE_Engine& anEngine)
 	InitGUI();
 	InitWorld();
 
-	myGUIWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 320, 320}, "GUI Window");
+	//myGUIWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 320, 320}, "GUI Window");
 }
 
 void Game::Update(float aDelta)
@@ -103,22 +103,22 @@ void Game::Update(float aDelta)
 
 void Game::Render()
 {
-	myUIManager->Render(myGUIWindow->GetRendererProxy());
+	//myUIManager->Render(myGUIWindow->GetRendererProxy());
 }
 
 void Game::InitWorld()
 {
 	InitGrid();
 
-	//CE_Entity pickup = myEntityFactory->InstansiateEntity(PICK_UP);
-	//TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(pickup);
-	//translate.myOrientation.SetPos(CE_Vector3f(5.f, 1.f, 5.f));
-	//
-	//CE_Entity player = myEntityFactory->InstansiateEntity(PLAYER);
-	//TranslationComponent& playerTranslate = myWorld->GetComponent<TranslationComponent>(player);
-	//playerTranslate.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 1.f));
+	CE_Entity pickup = myEntityFactory->InstansiateEntity(PICK_UP);
+	TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(pickup);
+	translate.myOrientation.SetPos(CE_Vector3f(5.f, 1.f, 5.f));
+	
+	CE_Entity player = myEntityFactory->InstansiateEntity(PLAYER);
+	TranslationComponent& playerTranslate = myWorld->GetComponent<TranslationComponent>(player);
+	playerTranslate.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 1.f));
 
-	//PopulateEntityTreeView(player);
+	PopulateEntityTreeView(player);
 }
 
 void Game::InitGrid()

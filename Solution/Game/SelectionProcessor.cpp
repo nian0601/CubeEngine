@@ -1,15 +1,15 @@
 #include "stdafx.h"
 
 #include "SelectionProcessor.h"
-#include "CollisionComponent.h"
 #include "RenderComponent.h"
 #include "InputSingletonComponent.h"
 
 #include <CE_Camera.h>
 #include <CPY_Intersection.h>
+#include "AABBComponent.h"
 
 SelectionProcessor::SelectionProcessor(CE_World& aWorld, const CE_Camera& aCamera)
-	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<CollisionComponent>>())
+	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<AABBComponent>>())
 	, myCamera(aCamera)
 {
 }
@@ -51,9 +51,9 @@ CE_Entity SelectionProcessor::FindEntityUnderMouse(const CE_Vector2f& aMousePosi
 	CE_GrowingArray<CE_Entity> entities = GetEntities();
 	for (const CE_Entity& entity : entities)
 	{
-		CollisionComponent& collision = GetComponent<CollisionComponent>(entity);
+		AABBComponent& aabb = GetComponent<AABBComponent>(entity);
 
-		if (CPY_Intersection::LineVSAABB(collision.myAABB, line, &intersectionPoint))
+		if (CPY_Intersection::LineVSAABB(aabb.myAABB, line, &intersectionPoint))
 		{
 			float dist = CE_Length2(intersectionPoint - lineStart);
 			if (dist < bestDist)
