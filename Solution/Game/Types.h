@@ -9,6 +9,7 @@ enum class eItemType
 
 enum eEntityTypes
 {
+	NONE,
 	GROUND,
 	PLAYER,
 	PICK_UP,

@@ -16,6 +16,12 @@ enum eActions
 	LBUTTON,
 	RBUTTON,
 
+	TOOL_BTN_1,
+	TOOL_BTN_2,
+	TOOL_BTN_3,
+	TOOL_BTN_4,
+	TOOL_BTN_5,
+
 	_ACTIONCOUNT,
 };
 

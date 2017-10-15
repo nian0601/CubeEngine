@@ -30,6 +30,9 @@ void PlacingProcessor::Update(float /*aDelta*/)
 
 	TranslationComponent& placeLocation = GetComponent<TranslationComponent>(selectedEntity.myHoveredEntity);
 
+	if (selectedEntity.myEntityTypeOnMouse == NONE)
+		return;
+
 	for (int i = 0; i < entities.Size(); ++i)
 	{
 		CE_Vector3f pos = placeLocation.myOrientation.GetPos();
@@ -37,6 +40,6 @@ void PlacingProcessor::Update(float /*aDelta*/)
 
 		CreateEntitySingletonComponent::Entry& entry = createSingleton.myEntries.Add();
 		entry.myPosition = pos;
-		entry.myEntityType = MOVER;
+		entry.myEntityType = selectedEntity.myEntityTypeOnMouse;
 	}
 }

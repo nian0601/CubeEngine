@@ -22,6 +22,15 @@ void SelectionProcessor::Update(float /*aDelta*/)
 	CE_Entity entityUnderMouse = FindEntityUnderMouse(input.myMousePosition);
 	selectedEntity.myHoveredEntity = entityUnderMouse;
 
+	if (input.ActionDown(TOOL_BTN_1))
+		selectedEntity.myEntityTypeOnMouse = NONE;
+	else if (input.ActionDown(TOOL_BTN_2))
+		selectedEntity.myEntityTypeOnMouse = MOVER;
+	else if (input.ActionDown(TOOL_BTN_3))
+		selectedEntity.myEntityTypeOnMouse = PICK_UP;
+	else if (input.ActionDown(TOOL_BTN_4))
+		selectedEntity.myEntityTypeOnMouse = PLAYER;
+
 	if (input.ActionDown(LBUTTON))
 	{
 		//selectedEntity.mySelectedEntity = CE_Invalid_Entity;
