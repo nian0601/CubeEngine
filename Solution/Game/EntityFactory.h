@@ -4,7 +4,9 @@
 #include <CE_World.h>
 #include "Types.h"
 
+class CE_FileParser;
 class CE_World;
+
 class EntityFactory
 {
 public:
@@ -16,6 +18,14 @@ public:
 	CE_Entity InstansiateEntity(int anIdentifier);
 
 private:
+	void LoadFromDisk();
+	void LoadComponents(CE_FileParser& aFileParser);
+	void LoadRenderComponent(CE_FileParser& aFileParser);
+	void LoadMovementComponent(CE_FileParser& aFileParser);
+	void LoadCollisionComponent(CE_FileParser& aFileParser);
+	void LoadTranslateComponent(CE_FileParser& aFileParser);
+	void LoadInventoryComponent(CE_FileParser& aFileParser);
+
 	void LoadGround();
 	void LoadPlayer();
 	void LoadPickUp();

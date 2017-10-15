@@ -110,6 +110,9 @@
     <ClCompile Include="CE_WindowManager.cpp">
       <Filter>DirectX</Filter>
     </ClCompile>
+    <ClCompile Include="CE_FileParser.cpp">
+      <Filter>Utility\Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -150,6 +153,9 @@
     </Filter>
     <Filter Include="Physics">
       <UniqueIdentifier>{6d41f349-67ba-4125-ab3f-21892fa1d24a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Files">
+      <UniqueIdentifier>{70e53c6f-81ae-41e1-a7b2-e91af36d9bd9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -336,6 +342,9 @@
     </ClInclude>
     <ClInclude Include="CPY_Intersection.h">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_FileParser.h">
+      <Filter>Utility\Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

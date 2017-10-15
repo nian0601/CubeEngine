@@ -1,0 +1,20 @@
+#components
+	#render
+		#color 0 0 0.56 1
+		#scale 1 1 1
+	#end
+
+	#movement
+		#speed 10
+	#end
+
+	#collision
+		#radius 0.5
+	#end
+
+	#translate
+	#end
+
+	#inventory
+	#end
+#end

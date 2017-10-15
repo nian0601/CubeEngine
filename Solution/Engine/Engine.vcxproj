@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="CE_BaseProcessor.cpp" />
     <ClCompile Include="CE_Camera.cpp" />
+    <ClCompile Include="CE_FileParser.cpp" />
     <ClCompile Include="CE_Font.cpp" />
     <ClCompile Include="CE_Input.cpp" />
     <ClCompile Include="CE_MSDFFont.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="CE_CommonHelper.h" />
     <ClInclude Include="CE_ComponentFilter.h" />
     <ClInclude Include="CE_CustomEntityTypes.h" />
+    <ClInclude Include="CE_FileParser.h" />
     <ClInclude Include="CE_Font.h" />
     <ClInclude Include="CE_Game.h" />
     <ClInclude Include="CE_GrowingArray.h" />

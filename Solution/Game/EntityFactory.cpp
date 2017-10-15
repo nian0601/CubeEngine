@@ -9,12 +9,14 @@
 #include "RotationComponent.h"
 #include "MoverComponent.h"
 #include "AABBComponent.h"
+#include "..\Engine\CE_FileParser.h"
 
 
 EntityFactory::EntityFactory(CE_World& anRealWorld, CE_World& anTemplateWorld)
 	: myRealWorld(anRealWorld)
 	, myTemplateWorld(anTemplateWorld)
 {
+	LoadFromDisk();
 	LoadTemplateEntities();
 }
 
@@ -54,6 +56,181 @@ CE_Entity EntityFactory::InstansiateEntity(int anIdentifier)
 	CopyComponent<AABBComponent>(templateEntity, newEntity);
 
 	return newEntity;
+}
+
+void EntityFactory::LoadFromDisk()
+{
+	CE_FileParser parser("Data/Entities/player.ce_entity");
+
+	CE_String line;
+	CE_GrowingArray<CE_String> words;
+
+	while (parser.ReadLine(line))
+	{
+		parser.TrimBeginAndEnd(line);
+		parser.SplitLine(line, words);
+
+		if (words[0] == "#components")
+			LoadComponents(parser);
+	}
+	
+}
+
+void EntityFactory::LoadComponents(CE_FileParser& aFileParser)
+{
+	CE_String line;
+	CE_GrowingArray<CE_String> words;
+
+	while (aFileParser.ReadLine(line))
+	{
+		aFileParser.TrimBeginAndEnd(line);
+		aFileParser.SplitLine(line, words);
+
+		if (words[0] == "#render")
+			LoadRenderComponent(aFileParser);
+		if (words[0] == "#movement")
+			LoadMovementComponent(aFileParser);
+		if (words[0] == "#collision")
+			LoadCollisionComponent(aFileParser);
+		if (words[0] == "#translate")
+			LoadTranslateComponent(aFileParser);
+		if (words[0] == "#inventory")
+			LoadInventoryComponent(aFileParser);
+	}
+
+}
+
+void EntityFactory::LoadRenderComponent(CE_FileParser& aFileParser)
+{
+	CE_Vector4f color;
+	CE_Vector3f scale;
+
+	CE_String line;
+	CE_GrowingArray<CE_String> words;
+
+	while (aFileParser.ReadLine(line))
+	{
+		aFileParser.TrimBeginAndEnd(line);
+		aFileParser.SplitLine(line, words);
+
+		if (words[0] == "#color")
+		{
+			color.x = aFileParser.GetFloat(words[1]);
+			color.y = aFileParser.GetFloat(words[2]);
+			color.z = aFileParser.GetFloat(words[3]);
+			color.w = aFileParser.GetFloat(words[4]);
+		}
+		else if (words[0] == "#scale")
+		{
+			scale.x = aFileParser.GetFloat(words[1]);
+			scale.y = aFileParser.GetFloat(words[2]);
+			scale.z = aFileParser.GetFloat(words[3]);
+		}
+		else if (words[0] == "#end")
+		{
+			return;
+		}
+		else
+		{
+			CE_ASSERT_ALWAYS("Unsupported Component-data");
+		}
+	}
+}
+
+void EntityFactory::LoadMovementComponent(CE_FileParser& aFileParser)
+{
+	float speed; 
+
+	CE_String line;
+	CE_GrowingArray<CE_String> words;
+
+	while (aFileParser.ReadLine(line))
+	{
+		aFileParser.TrimBeginAndEnd(line);
+		aFileParser.SplitLine(line, words);
+
+		if (words[0] == "#speed")
+		{
+			speed = aFileParser.GetFloat(words[1]);
+		}
+		else if (words[0] == "#end")
+		{
+			return;
+		}
+		else
+		{
+			CE_ASSERT_ALWAYS("Unsupported Component-data");
+		}
+	}
+}
+
+void EntityFactory::LoadCollisionComponent(CE_FileParser& aFileParser)
+{
+	float radius;
+
+	CE_String line;
+	CE_GrowingArray<CE_String> words;
+
+	while (aFileParser.ReadLine(line))
+	{
+		aFileParser.TrimBeginAndEnd(line);
+		aFileParser.SplitLine(line, words);
+
+		if (words[0] == "#radius")
+		{
+			radius = aFileParser.GetFloat(words[1]);
+		}
+		else if (words[0] == "#end")
+		{
+			return;
+		}
+		else
+		{
+			CE_ASSERT_ALWAYS("Unsupported Component-data");
+		}
+	}
+}
+
+void EntityFactory::LoadTranslateComponent(CE_FileParser& aFileParser)
+{
+	CE_String line;
+	CE_GrowingArray<CE_String> words;
+
+	while (aFileParser.ReadLine(line))
+	{
+		aFileParser.TrimBeginAndEnd(line);
+		aFileParser.SplitLine(line, words);
+
+		if (words[0] == "#end")
+		{
+			return;
+		}
+		else
+		{
+			CE_ASSERT_ALWAYS("Unsupported Component-data");
+		}
+	}
+}
+
+void EntityFactory::LoadInventoryComponent(CE_FileParser& aFileParser)
+{
+	CE_String line;
+	CE_GrowingArray<CE_String> words;
+
+	while (aFileParser.ReadLine(line))
+	{
+		aFileParser.TrimBeginAndEnd(line);
+		aFileParser.SplitLine(line, words);
+
+		if (words[0] == "#end")
+		{
+			return;
+		}
+		else
+		{
+			CE_ASSERT_ALWAYS("Unsupported Component-data");
+		}
+	}
 }
 
 void EntityFactory::LoadGround()
