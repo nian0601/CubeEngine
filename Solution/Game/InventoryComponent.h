@@ -7,11 +7,4 @@
 
 struct InventoryComponent : public CE_BaseComponent
 {
-	InventoryComponent()
-	{
-		for (int i = 0; i < static_cast<int>(eItemType::_COUNT); ++i)
-			myItems[i] = 0;
-	}
-
-	CE_StaticArray<int, static_cast<int>(eItemType::_COUNT)> myItems;
 };

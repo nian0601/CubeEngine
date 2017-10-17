@@ -1,0 +1,14 @@
+#components
+	#translate
+	#end
+
+	#render
+		#entry
+			#color 0.58 0.58 0.58 1
+			#scale 1 1 1
+		#end
+	#end
+
+	#aabb
+	#end
+#end

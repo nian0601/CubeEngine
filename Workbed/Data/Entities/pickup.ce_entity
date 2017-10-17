@@ -1,22 +1,18 @@
 #components
-	#render
-		#entry
-			#color 0 0 0.56 1
-			#scale 1 1 1
-		#end
+	#translate
 	#end
 
-	#movement
-		#speed 10
+	#render
+		#entry
+			#color 1 0 0 1
+			#scale 1 1 1
+		#end
 	#end
 
 	#collision
 		#radius 0.5
 	#end
 
-	#translate
-	#end
-
-	#inventory
+	#pickup
 	#end
 #end

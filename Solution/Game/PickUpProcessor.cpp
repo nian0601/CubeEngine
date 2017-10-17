@@ -32,10 +32,8 @@ void PickUpProcessor::Update(float /*aDelta*/)
 		if(inventoryEntity == CE_Invalid_Entity || pickupEntity == CE_Invalid_Entity)
 			continue;
 
-		InventoryComponent& inventory = GetComponent<InventoryComponent>(inventoryEntity);
-		PickUpComponent& pickup = GetComponent<PickUpComponent>(pickupEntity);
-
-		inventory.myItems[static_cast<int>(pickup.myItemType)]++;
+		//InventoryComponent& inventory = GetComponent<InventoryComponent>(inventoryEntity);
+		//PickUpComponent& pickup = GetComponent<PickUpComponent>(pickupEntity);
 
 		myWorld.QueueEntityForDestruction(pickupEntity);
 	}

@@ -16,7 +16,6 @@ EntityFactory::EntityFactory(CE_World& anRealWorld, CE_World& anTemplateWorld)
 	: myRealWorld(anRealWorld)
 	, myTemplateWorld(anTemplateWorld)
 {
-	LoadFromDisk();
 	LoadTemplateEntities();
 }
 
@@ -27,15 +26,10 @@ EntityFactory::~EntityFactory()
 
 void EntityFactory::LoadTemplateEntities()
 {
-	myTemplateEntityMap[GROUND] = myTemplateWorld.CreateEmptyEntity();
-	myTemplateEntityMap[PLAYER] = myTemplateWorld.CreateEmptyEntity();
-	myTemplateEntityMap[PICK_UP] = myTemplateWorld.CreateEmptyEntity();
-	myTemplateEntityMap[MOVER] = myTemplateWorld.CreateEmptyEntity();
-
-	LoadGround();
-	LoadPlayer();
-	LoadPickUp();
-	LoadMover();
+	myTemplateEntityMap[GROUND] = LoadFromDisk("Data/Entities/ground.ce_entity");
+	myTemplateEntityMap[PLAYER] = LoadFromDisk("Data/Entities/player.ce_entity");
+	myTemplateEntityMap[PICK_UP] = LoadFromDisk("Data/Entities/pickup.ce_entity");
+	myTemplateEntityMap[MOVER] = LoadFromDisk("Data/Entities/mover.ce_entity");
 }
 
 CE_Entity EntityFactory::InstansiateEntity(int anIdentifier)
@@ -58,9 +52,11 @@ CE_Entity EntityFactory::InstansiateEntity(int anIdentifier)
 	return newEntity;
 }
 
-void EntityFactory::LoadFromDisk()
+CE_Entity EntityFactory::LoadFromDisk(const char* aFilePath)
 {
-	CE_FileParser parser("Data/Entities/player.ce_entity");
+	CE_Entity entity = myTemplateWorld.CreateEmptyEntity();
+
+	CE_FileParser parser(aFilePath);
 
 	CE_String line;
 	CE_GrowingArray<CE_String> words;
@@ -71,12 +67,13 @@ void EntityFactory::LoadFromDisk()
 		parser.SplitLine(line, words);
 
 		if (words[0] == "#components")
-			LoadComponents(parser);
+			LoadComponents(entity, parser);
 	}
 	
+	return entity;
 }
 
-void EntityFactory::LoadComponents(CE_FileParser& aFileParser)
+void EntityFactory::LoadComponents(CE_Entity anEntity, CE_FileParser& aFileParser)
 {
 	CE_String line;
 	CE_GrowingArray<CE_String> words;
@@ -87,23 +84,29 @@ void EntityFactory::LoadComponents(CE_FileParser& aFileParser)
 		aFileParser.SplitLine(line, words);
 
 		if (words[0] == "#render")
-			LoadRenderComponent(aFileParser);
+			LoadRenderComponent(anEntity, aFileParser);
 		if (words[0] == "#movement")
-			LoadMovementComponent(aFileParser);
+			LoadMovementComponent(anEntity, aFileParser);
 		if (words[0] == "#collision")
-			LoadCollisionComponent(aFileParser);
+			LoadCollisionComponent(anEntity, aFileParser);
 		if (words[0] == "#translate")
-			LoadTranslateComponent(aFileParser);
+			LoadTranslateComponent(anEntity, aFileParser);
 		if (words[0] == "#inventory")
-			LoadInventoryComponent(aFileParser);
+			LoadInventoryComponent(anEntity, aFileParser);
+		if (words[0] == "#aabb")
+			LoadAABBComponent(anEntity, aFileParser);
+		if (words[0] == "#pickup")
+			LoadPickupComponent(anEntity, aFileParser);
+		if (words[0] == "#mover")
+			LoadMoverComponent(anEntity, aFileParser);
 	}
 
 }
 
-void EntityFactory::LoadRenderComponent(CE_FileParser& aFileParser)
+void EntityFactory::LoadRenderComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
 {
-	CE_Vector4f color;
-	CE_Vector3f scale;
+	CE_GrowingArray<RenderComponent::Entry> entries;
+	bool openEntry = false;
 
 	CE_String line;
 	CE_GrowingArray<CE_String> words;
@@ -115,31 +118,51 @@ void EntityFactory::LoadRenderComponent(CE_FileParser& aFileParser)
 
 		if (words[0] == "#color")
 		{
-			color.x = aFileParser.GetFloat(words[1]);
-			color.y = aFileParser.GetFloat(words[2]);
-			color.z = aFileParser.GetFloat(words[3]);
-			color.w = aFileParser.GetFloat(words[4]);
+			CE_ASSERT(openEntry == true, "Need '#entry' before you can specify a color");
+
+			RenderComponent::Entry& entry = entries.GetLast();
+			entry.myColor.x = aFileParser.GetFloat(words[1]);
+			entry.myColor.y = aFileParser.GetFloat(words[2]);
+			entry.myColor.z = aFileParser.GetFloat(words[3]);
+			entry.myColor.w = aFileParser.GetFloat(words[4]);
 		}
 		else if (words[0] == "#scale")
 		{
-			scale.x = aFileParser.GetFloat(words[1]);
-			scale.y = aFileParser.GetFloat(words[2]);
-			scale.z = aFileParser.GetFloat(words[3]);
+			CE_ASSERT(openEntry == true, "Need '#entry' before you can specify a scale");
+
+			RenderComponent::Entry& entry = entries.GetLast();
+			entry.myScale.x = aFileParser.GetFloat(words[1]);
+			entry.myScale.y = aFileParser.GetFloat(words[2]);
+			entry.myScale.z = aFileParser.GetFloat(words[3]);
+		}
+		else if (words[0] == "#entry")
+		{
+			CE_ASSERT(openEntry == false, "Dont support nested '#entry' yet");
+			openEntry = true;
+			entries.Add();
 		}
 		else if (words[0] == "#end")
 		{
-			return;
+			if (openEntry)
+			{
+				openEntry = false;
+				continue;
+			}
+			break;
 		}
 		else
 		{
 			CE_ASSERT_ALWAYS("Unsupported Component-data");
 		}
 	}
+
+	RenderComponent& render = myTemplateWorld.AddComponent<RenderComponent>(anEntity);
+	render.myEntries = entries;
 }
 
-void EntityFactory::LoadMovementComponent(CE_FileParser& aFileParser)
+void EntityFactory::LoadMovementComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
 {
-	float speed; 
+	float speed = 0.f;;
 
 	CE_String line;
 	CE_GrowingArray<CE_String> words;
@@ -155,18 +178,21 @@ void EntityFactory::LoadMovementComponent(CE_FileParser& aFileParser)
 		}
 		else if (words[0] == "#end")
 		{
-			return;
+			break;
 		}
 		else
 		{
 			CE_ASSERT_ALWAYS("Unsupported Component-data");
 		}
 	}
+
+	MovementComponent& movement = myTemplateWorld.AddComponent<MovementComponent>(anEntity);
+	movement.mySpeed = speed;
 }
 
-void EntityFactory::LoadCollisionComponent(CE_FileParser& aFileParser)
+void EntityFactory::LoadCollisionComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
 {
-	float radius;
+	float radius = 0.f;
 
 	CE_String line;
 	CE_GrowingArray<CE_String> words;
@@ -182,16 +208,109 @@ void EntityFactory::LoadCollisionComponent(CE_FileParser& aFileParser)
 		}
 		else if (words[0] == "#end")
 		{
-			return;
+			break;
 		}
 		else
 		{
 			CE_ASSERT_ALWAYS("Unsupported Component-data");
 		}
 	}
+
+	CollisionComponent& collision = myTemplateWorld.AddComponent<CollisionComponent>(anEntity);
+	collision.myRadius = radius;
 }
 
-void EntityFactory::LoadTranslateComponent(CE_FileParser& aFileParser)
+void EntityFactory::LoadTranslateComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
+{
+	CE_String line;
+	CE_GrowingArray<CE_String> words;
+
+	CE_Vector3f scale(1.f);
+	while (aFileParser.ReadLine(line))
+	{
+		aFileParser.TrimBeginAndEnd(line);
+		aFileParser.SplitLine(line, words);
+
+		if (words[0] == "#scale")
+		{
+			scale.x = aFileParser.GetFloat(words[1]);
+			scale.y = aFileParser.GetFloat(words[2]);
+			scale.z = aFileParser.GetFloat(words[3]);
+		}
+		else if (words[0] == "#end")
+		{
+			break;
+		}
+		else
+		{
+			CE_ASSERT_ALWAYS("Unsupported Component-data");
+		}
+	}
+
+	TranslationComponent& translation = myTemplateWorld.AddComponent<TranslationComponent>(anEntity);
+	translation.myScale = scale;
+}
+
+void EntityFactory::LoadInventoryComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
+{
+	LoadEmptyComponent(aFileParser);
+
+	myTemplateWorld.AddComponent<InventoryComponent>(anEntity);
+}
+
+void EntityFactory::LoadAABBComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
+{
+	LoadEmptyComponent(aFileParser);
+
+	myTemplateWorld.AddComponent<AABBComponent>(anEntity);
+}
+
+void EntityFactory::LoadPickupComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
+{
+	LoadEmptyComponent(aFileParser);
+
+	myTemplateWorld.AddComponent<PickUpComponent>(anEntity);
+}
+
+void EntityFactory::LoadMoverComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
+{
+	float speed = 0.f;
+	CE_Vector3f direction;
+
+	CE_String line;
+	CE_GrowingArray<CE_String> words;
+
+	while (aFileParser.ReadLine(line))
+	{
+		aFileParser.TrimBeginAndEnd(line);
+		aFileParser.SplitLine(line, words);
+
+		if (words[0] == "#speed")
+		{
+			speed = aFileParser.GetFloat(words[1]);
+		}
+		else if (words[0] == "#direction")
+		{
+			direction.x = aFileParser.GetFloat(words[1]);
+			direction.y = aFileParser.GetFloat(words[2]);
+			direction.z = aFileParser.GetFloat(words[3]);
+		}
+		else if (words[0] == "#end")
+		{
+			break;
+		}
+		else
+		{
+			CE_ASSERT_ALWAYS("Unsupported Component-data");
+		}
+	}
+
+	MoverComponent& mover = myTemplateWorld.AddComponent<MoverComponent>(anEntity);
+	mover.mySpeed = speed;
+	mover.myDirection = direction;
+}
+
+void EntityFactory::LoadEmptyComponent(CE_FileParser& aFileParser)
 {
 	CE_String line;
 	CE_GrowingArray<CE_String> words;
@@ -203,126 +322,11 @@ void EntityFactory::LoadTranslateComponent(CE_FileParser& aFileParser)
 
 		if (words[0] == "#end")
 		{
-			return;
+			break;
 		}
 		else
 		{
 			CE_ASSERT_ALWAYS("Unsupported Component-data");
 		}
 	}
-}
-
-void EntityFactory::LoadInventoryComponent(CE_FileParser& aFileParser)
-{
-	CE_String line;
-	CE_GrowingArray<CE_String> words;
-
-	while (aFileParser.ReadLine(line))
-	{
-		aFileParser.TrimBeginAndEnd(line);
-		aFileParser.SplitLine(line, words);
-
-		if (words[0] == "#end")
-		{
-			return;
-		}
-		else
-		{
-			CE_ASSERT_ALWAYS("Unsupported Component-data");
-		}
-	}
-}
-
-void EntityFactory::LoadGround()
-{
-	CE_Entity entity = myTemplateEntityMap[GROUND];
-
-	myTemplateWorld.AddComponent<AABBComponent>(entity);
-
-	TranslationComponent& translate = myTemplateWorld.AddComponent<TranslationComponent>(entity);
-	translate.myScale = CE_Vector3f(1.f);
-
-	RenderComponent& render = myTemplateWorld.AddComponent<RenderComponent>(entity);
-
-	float color = 0.58f;
-	RenderComponent::Entry& entry = render.myEntries.Add();
-	entry.myColor = CE_Vector4f(color, color, color, 1.f);
-	entry.myScale = CE_Vector3f(1.f);
-}
-
-void EntityFactory::LoadPlayer()
-{
-	CE_Entity entity = myTemplateEntityMap[PLAYER];
-
-	myTemplateWorld.AddComponent<TranslationComponent>(entity);
-	RenderComponent& render = myTemplateWorld.AddComponent<RenderComponent>(entity);
-	MovementComponent& input = myTemplateWorld.AddComponent<MovementComponent>(entity);
-	CollisionComponent& collision = myTemplateWorld.AddComponent<CollisionComponent>(entity);
-	myTemplateWorld.AddComponent<InventoryComponent>(entity);
-
-	RenderComponent::Entry& entry = render.myEntries.Add();
-	entry.myColor = CE_Vector4f(0.f, 0.f, 0.56f, 1.f);
-	entry.myScale = CE_Vector3f(1.f);
-
-	input.mySpeed = 10.f;
-	collision.myRadius = 0.5f;
-}
-
-void EntityFactory::LoadPickUp()
-{
-	CE_Entity entity = myTemplateEntityMap[PICK_UP];
-
-	myTemplateWorld.AddComponent<TranslationComponent>(entity);
-	RenderComponent& render = myTemplateWorld.AddComponent<RenderComponent>(entity);
-	CollisionComponent& collision = myTemplateWorld.AddComponent<CollisionComponent>(entity);
-	PickUpComponent& pickup = myTemplateWorld.AddComponent<PickUpComponent>(entity);
-
-	RenderComponent::Entry& entry = render.myEntries.Add();
-	entry.myColor = CE_Vector4f(1.f, 0.f, 0.f, 1.f);
-	entry.myScale = CE_Vector3f(1.f);
-	collision.myRadius = 0.5f;
-	pickup.myItemType = eItemType::STONE;
-}
-
-void EntityFactory::LoadMover()
-{
-	CE_Entity entity = myTemplateEntityMap[MOVER];
-
-	myTemplateWorld.AddComponent<TranslationComponent>(entity);
-	RenderComponent& render = myTemplateWorld.AddComponent<RenderComponent>(entity);
-	CollisionComponent& collision = myTemplateWorld.AddComponent<CollisionComponent>(entity);
-	MoverComponent& mover = myTemplateWorld.AddComponent<MoverComponent>(entity);
-
-	RenderComponent::Entry& entry = render.myEntries.Add();
-	entry.myColor = CE_Vector4f(0.f, 0.34f, 0.f, 1.f);
-	entry.myScale = CE_Vector3f(0.15f, 0.3f, 1.f);
-
-	CE_Vector3f offset = CalculateOffset(entry.myScale);
-	entry.myOffsetMatrix.SetPos(-offset.x, -offset.y, offset.z);
-
-	RenderComponent::Entry& entry2 = render.myEntries.Add();
-	entry2.myColor = CE_Vector4f(0.f, 0.34f, 0.f, 1.f);
-	entry2.myScale = CE_Vector3f(0.15f, 0.3f, 1.f);
-
-	offset = CalculateOffset(entry2.myScale);
-	entry2.myOffsetMatrix.SetPos(offset.x, -offset.y, offset.z);
-
-	RenderComponent::Entry& entry3 = render.myEntries.Add();
-	entry3.myColor = CE_Vector4f(0.f, 0.14f, 0.f, 1.f);
-	entry3.myScale = CE_Vector3f(1.f, 0.15f, 1.f);
-
-	offset = CalculateOffset(entry3.myScale);
-	entry3.myOffsetMatrix.SetPos(offset.x, -offset.y, offset.z);
-
-	collision.myRadius = 0.5f;
-	mover.mySpeed = 2.f;
-	mover.myDirection = CE_Vector3f(0.f, 0.f, -1.f);
-}
-
-CE_Vector3f EntityFactory::CalculateOffset(const CE_Vector3f& aScale) const
-{
-	CE_Vector3f offset = CE_Vector3f(1.f);
-	offset -= aScale;
-	offset *= 0.5f;
-	return offset;
 }

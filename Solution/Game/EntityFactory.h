@@ -18,20 +18,18 @@ public:
 	CE_Entity InstansiateEntity(int anIdentifier);
 
 private:
-	void LoadFromDisk();
-	void LoadComponents(CE_FileParser& aFileParser);
-	void LoadRenderComponent(CE_FileParser& aFileParser);
-	void LoadMovementComponent(CE_FileParser& aFileParser);
-	void LoadCollisionComponent(CE_FileParser& aFileParser);
-	void LoadTranslateComponent(CE_FileParser& aFileParser);
-	void LoadInventoryComponent(CE_FileParser& aFileParser);
+	CE_Entity LoadFromDisk(const char* aFilePath);
+	void LoadComponents(CE_Entity anEntity, CE_FileParser& aFileParser);
+	void LoadRenderComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
+	void LoadMovementComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
+	void LoadCollisionComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
+	void LoadTranslateComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
+	void LoadInventoryComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
+	void LoadAABBComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
+	void LoadPickupComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
+	void LoadMoverComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
 
-	void LoadGround();
-	void LoadPlayer();
-	void LoadPickUp();
-	void LoadMover();
-
-	CE_Vector3f CalculateOffset(const CE_Vector3f& aScale) const;
+	void LoadEmptyComponent(CE_FileParser& aFileParser);
 
 	template<typename T>
 	void CopyComponent(CE_Entity aSource, CE_Entity aTarget);

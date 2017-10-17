@@ -5,5 +5,4 @@
 
 struct PickUpComponent : public CE_BaseComponent
 {
-	eItemType myItemType;
 };
