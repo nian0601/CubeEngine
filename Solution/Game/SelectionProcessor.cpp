@@ -57,6 +57,9 @@ CE_Entity SelectionProcessor::FindEntityUnderMouse(const CE_Vector2f& aMousePosi
 	{
 		AABBComponent& aabb = GetComponent<AABBComponent>(entity);
 
+		if((aabb.myCollisionLayers & eCollisionLayer::CLICKABLE) == 0)
+			continue;
+
 		if (CPY_Intersection::LineVSAABB(aabb.myAABB, line, &intersectionPoint))
 		{
 			float dist = CE_Length2(intersectionPoint - lineStart);

@@ -31,7 +31,6 @@ private:
 	void InitGUI();
 	void PopulateEntityTreeView(unsigned int anEntity);
 	void CreatePositionWidget(unsigned int anEntity);
-	void CreateCollisionWidget(unsigned int anEntity);
 	void CreateMovementWidget(unsigned int anEntity);
 
 

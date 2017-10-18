@@ -3,7 +3,6 @@
 #include "TranslationComponent.h"
 #include "RenderComponent.h"
 #include "MovementComponent.h"
-#include "CollisionComponent.h"
 #include "InventoryComponent.h"
 #include "PickUpComponent.h"
 #include "MoverComponent.h"
@@ -39,7 +38,6 @@ CE_Entity EntityFactory::InstansiateEntity(eEntityTypes anIdentifier)
 	CE_Entity templateEntity = myTemplateEntityMap[intID];
 	CE_Entity newEntity = myRealWorld.CreateEmptyEntity();
 
-	CopyComponent<CollisionComponent>(templateEntity, newEntity);
 	CopyComponent<MovementComponent>(templateEntity, newEntity);
 	CopyComponent<InventoryComponent>(templateEntity, newEntity);
 	CopyComponent<PickUpComponent>(templateEntity, newEntity);
@@ -86,8 +84,6 @@ void EntityFactory::LoadComponents(CE_Entity anEntity, CE_FileParser& aFileParse
 			LoadRenderComponent(anEntity, aFileParser);
 		if (words[0] == "#movement")
 			LoadMovementComponent(anEntity, aFileParser);
-		if (words[0] == "#collision")
-			LoadCollisionComponent(anEntity, aFileParser);
 		if (words[0] == "#translate")
 			LoadTranslateComponent(anEntity, aFileParser);
 		if (words[0] == "#inventory")
@@ -189,36 +185,6 @@ void EntityFactory::LoadMovementComponent(CE_Entity anEntity, CE_FileParser& aFi
 	movement.mySpeed = speed;
 }
 
-void EntityFactory::LoadCollisionComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
-{
-	float radius = 0.f;
-
-	CE_String line;
-	CE_GrowingArray<CE_String> words;
-
-	while (aFileParser.ReadLine(line))
-	{
-		aFileParser.TrimBeginAndEnd(line);
-		aFileParser.SplitLine(line, words);
-
-		if (words[0] == "#radius")
-		{
-			radius = aFileParser.GetFloat(words[1]);
-		}
-		else if (words[0] == "#end")
-		{
-			break;
-		}
-		else
-		{
-			CE_ASSERT_ALWAYS("Unsupported Component-data");
-		}
-	}
-
-	CollisionComponent& collision = myTemplateWorld.AddComponent<CollisionComponent>(anEntity);
-	collision.myRadius = radius;
-}
-
 void EntityFactory::LoadTranslateComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
 {
 	CE_String line;
@@ -259,9 +225,38 @@ void EntityFactory::LoadInventoryComponent(CE_Entity anEntity, CE_FileParser& aF
 
 void EntityFactory::LoadAABBComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
 {
-	LoadEmptyComponent(aFileParser);
+	eCollisionLayer layers = eCollisionLayer::NONE;
+	eCollisionLayer collidesWith = eCollisionLayer::NONE;
 
-	myTemplateWorld.AddComponent<AABBComponent>(anEntity);
+	CE_String line;
+	CE_GrowingArray<CE_String> words;
+
+	while (aFileParser.ReadLine(line))
+	{
+		aFileParser.TrimBeginAndEnd(line);
+		aFileParser.SplitLine(line, words);
+
+		if (words[0] == "#layer")
+		{
+			layers = ConvertStringToCollisionLayer(words[1]);
+		}
+		else if (words[0] == "#collideswith")
+		{
+			collidesWith = ConvertStringToCollisionLayer(words[1]);
+		}
+		else if (words[0] == "#end")
+		{
+			break;
+		}
+		else
+		{
+			CE_ASSERT_ALWAYS("Unsupported Component-data");
+		}
+	}
+
+	AABBComponent& aabb = myTemplateWorld.AddComponent<AABBComponent>(anEntity);
+	aabb.myCollisionLayers = layers;
+	aabb.myCollidesWith = collidesWith;
 }
 
 void EntityFactory::LoadPickupComponent(CE_Entity anEntity, CE_FileParser& aFileParser)

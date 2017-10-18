@@ -127,8 +127,6 @@
   <ItemGroup>
     <ClInclude Include="AABBComponent.h" />
     <ClInclude Include="AABBProcessor.h" />
-    <ClInclude Include="CollisionComponent.h" />
-    <ClInclude Include="CollisionProcessor.h" />
     <ClInclude Include="CollisionSingletonComponent.h" />
     <ClInclude Include="CreateEntityProcessor.h" />
     <ClInclude Include="CreateEntitySingletonComponent.h" />
@@ -154,7 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABBProcessor.cpp" />
-    <ClCompile Include="CollisionProcessor.cpp" />
     <ClCompile Include="CreateEntityProcessor.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />

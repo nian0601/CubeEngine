@@ -10,10 +10,12 @@
 		#speed 10
 	#end
 
-	#collision
-		#radius 0.5
-	#end
 
+
+	#aabb
+		#layer PLAYER
+		#collideswith PICKUP
+	#end
 	#translate
 	#end
 

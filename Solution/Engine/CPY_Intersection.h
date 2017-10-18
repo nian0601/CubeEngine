@@ -6,8 +6,7 @@
 namespace CPY_Intersection
 {
 	bool LineVSAABB(const CPY_AABB& anAABB, const CPY_Line3D& aLine, CE_Vector3f* aOutIntersectionPoint = nullptr);
-
-
+	bool AABBvsAABB(const CPY_AABB& anFirst, const CPY_AABB& anSecond);
 
 
 
@@ -181,6 +180,18 @@ namespace CPY_Intersection
 
 		if (aOutIntersectionPoint)
 			*aOutIntersectionPoint = aLine.myStart + rayDelta * t;
+
+		return true;
+	}
+
+	inline bool AABBvsAABB(const CPY_AABB& anFirst, const CPY_AABB& anSecond)
+	{
+		if (anFirst.myMaxPos.x < anSecond.myMinPos.x) return false;
+		if (anFirst.myMaxPos.y < anSecond.myMinPos.y) return false;
+		if (anFirst.myMaxPos.z < anSecond.myMinPos.z) return false;
+		if (anFirst.myMinPos.x > anSecond.myMaxPos.x) return false;
+		if (anFirst.myMinPos.y > anSecond.myMaxPos.y) return false;
+		if (anFirst.myMinPos.z > anSecond.myMaxPos.z) return false;
 
 		return true;
 	}

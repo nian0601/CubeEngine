@@ -10,5 +10,6 @@
 	#end
 
 	#aabb
+		#layer CLICKABLE
 	#end
 #end

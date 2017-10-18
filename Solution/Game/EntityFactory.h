@@ -22,7 +22,6 @@ private:
 	void LoadComponents(CE_Entity anEntity, CE_FileParser& aFileParser);
 	void LoadRenderComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
 	void LoadMovementComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
-	void LoadCollisionComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
 	void LoadTranslateComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
 	void LoadInventoryComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
 	void LoadAABBComponent(CE_Entity anEntity, CE_FileParser& aFileParser);

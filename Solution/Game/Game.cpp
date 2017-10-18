@@ -8,7 +8,6 @@
 #include "RenderComponent.h"
 #include "TranslationComponent.h"
 #include "MovementComponent.h"
-#include "CollisionComponent.h"
 #include "PickUpComponent.h"
 #include "InventoryComponent.h"
 #include "InputProcessor.h"
@@ -20,7 +19,6 @@
 
 #include "RenderProcessor.h"
 #include "MovementProcessor.h"
-#include "CollisionProcessor.h"
 #include "PickUpProcessor.h"
 #include "EntityFactory.h"
 
@@ -75,7 +73,7 @@ void Game::Init(CE_Engine& anEngine)
 	myWorld->AddProcessor(selectionProcessor);
 
 	myWorld->AddProcessor<MovementProcessor>();
-	myWorld->AddProcessor<CollisionProcessor>();
+	//myWorld->AddProcessor<CollisionProcessor>();
 	myWorld->AddProcessor<PickUpProcessor>();
 	myWorld->AddProcessor<PlacingProcessor>();
 	myWorld->AddProcessor<MoverProcessor>();
@@ -155,7 +153,6 @@ void Game::PopulateEntityTreeView(unsigned int anEntity)
 	myEntityTreeView->DeleteAllChildren();
 
 	CreatePositionWidget(anEntity);
-	CreateCollisionWidget(anEntity);
 	CreateMovementWidget(anEntity);
 }
 
@@ -185,24 +182,6 @@ void Game::CreatePositionWidget(unsigned int anEntity)
 	positionView->AddWidget(zPosBox);
 
 	myEntityTreeView->AddWidget(positionView);
-}
-
-void Game::CreateCollisionWidget(unsigned int anEntity)
-{
-	if (!myWorld->HasComponent<CollisionComponent>(anEntity))
-		return;
-
-	CollisionComponent& collision = myWorld->GetComponent<CollisionComponent>(anEntity);
-
-	CUI_TreeView* collisionView = new CUI_TreeView(*myFont, "Collision");
-
-	CUI_HBox* radiusBox = new CUI_HBox();
-	radiusBox->AddWidget(new CUI_Label(*myFont, "Radius:  "));
-	radiusBox->AddWidget(new CUI_Label(*myFont, new CUI_ValueController(&collision.myRadius)));
-
-	collisionView->AddWidget(radiusBox);
-
-	myEntityTreeView->AddWidget(collisionView);
 }
 
 void Game::CreateMovementWidget(unsigned int anEntity)
