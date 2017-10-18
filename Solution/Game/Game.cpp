@@ -73,7 +73,6 @@ void Game::Init(CE_Engine& anEngine)
 	myWorld->AddProcessor(selectionProcessor);
 
 	myWorld->AddProcessor<MovementProcessor>();
-	//myWorld->AddProcessor<CollisionProcessor>();
 	myWorld->AddProcessor<PickUpProcessor>();
 	myWorld->AddProcessor<PlacingProcessor>();
 	myWorld->AddProcessor<MoverProcessor>();
@@ -103,15 +102,40 @@ void Game::Render()
 
 void Game::InitWorld()
 {
-	InitGrid();
-
-	CE_Entity pickup = myEntityFactory->InstansiateEntity(eEntityTypes::PICK_UP);
-	TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(pickup);
-	translate.myOrientation.SetPos(CE_Vector3f(5.f, 1.f, 5.f));
-	
 	CE_Entity player = myEntityFactory->InstansiateEntity(eEntityTypes::PLAYER);
 	TranslationComponent& playerTranslate = myWorld->GetComponent<TranslationComponent>(player);
 	playerTranslate.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 1.f));
+
+	CE_Entity water = myEntityFactory->InstansiateEntity(eEntityTypes::RESOURCE_WATER);
+	TranslationComponent& waterTranslate1 = myWorld->GetComponent<TranslationComponent>(water);
+	waterTranslate1.myOrientation.SetPos(CE_Vector3f(5.f, 1.f, 5.f));
+
+	water = myEntityFactory->InstansiateEntity(eEntityTypes::RESOURCE_WATER);
+	TranslationComponent& waterTranslate2 = myWorld->GetComponent<TranslationComponent>(water);
+	waterTranslate2.myOrientation.SetPos(CE_Vector3f(5.f, 1.f, 4.f));
+
+	water = myEntityFactory->InstansiateEntity(eEntityTypes::RESOURCE_WATER);
+	TranslationComponent& waterTranslate3 = myWorld->GetComponent<TranslationComponent>(water);
+	waterTranslate3.myOrientation.SetPos(CE_Vector3f(4.f, 1.f, 4.f));
+
+
+	CE_Entity stone = myEntityFactory->InstansiateEntity(eEntityTypes::RESOURCE_STONE);
+	TranslationComponent& stoneTranslate1 = myWorld->GetComponent<TranslationComponent>(stone);
+	stoneTranslate1.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 5.f));
+
+	stone = myEntityFactory->InstansiateEntity(eEntityTypes::RESOURCE_STONE);
+	TranslationComponent& stoneTranslate2 = myWorld->GetComponent<TranslationComponent>(stone);
+	stoneTranslate2.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 4.f));
+
+	stone = myEntityFactory->InstansiateEntity(eEntityTypes::RESOURCE_STONE);
+	TranslationComponent& stoneTranslate3 = myWorld->GetComponent<TranslationComponent>(stone);
+	stoneTranslate3.myOrientation.SetPos(CE_Vector3f(2.f, 1.f, 4.f));
+
+	InitGrid();
+
+	
+	
+	
 
 	PopulateEntityTreeView(player);
 }

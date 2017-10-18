@@ -88,6 +88,9 @@
     <ClInclude Include="SelectedEntitySingletonComponent.h">
       <Filter>Entity\SingletonComponent</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceComponent.h">
+      <Filter>Entity\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

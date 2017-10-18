@@ -27,6 +27,7 @@ private:
 	void LoadAABBComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
 	void LoadPickupComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
 	void LoadMoverComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
+	void LoadResourceComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
 
 	void LoadEmptyComponent(CE_FileParser& aFileParser);
 

@@ -30,12 +30,12 @@ void RenderProcessor::Update(float /*aDelta*/)
 		if (selectedEntity.myHoveredEntity == entity)
 		{
 			for (const RenderComponent::Entry& entry : render.myEntries)
-				myRendererProxy.AddCubeData(entry.myOffsetMatrix * translation.myOrientation, entry.myScale, CE_Vector4f(0.78f, 0.78f, 0.78f, 1.f));
+				myRendererProxy.AddCubeData(entry.myOffsetMatrix * translation.myOrientation, entry.myScale * translation.myScale, CE_Vector4f(0.78f, 0.78f, 0.78f, 1.f));
 		}
 		else
 		{
 			for (const RenderComponent::Entry& entry : render.myEntries)
-				myRendererProxy.AddCubeData(entry.myOffsetMatrix * translation.myOrientation, entry.myScale, entry.myColor);
+				myRendererProxy.AddCubeData(entry.myOffsetMatrix * translation.myOrientation, entry.myScale * translation.myScale, entry.myColor);
 		}
 	}
 }

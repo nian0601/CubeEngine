@@ -144,6 +144,7 @@
     <ClInclude Include="PlacingProcessor.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RenderProcessor.h" />
+    <ClInclude Include="ResourceComponent.h" />
     <ClInclude Include="SelectedEntitySingletonComponent.h" />
     <ClInclude Include="SelectionProcessor.h" />
     <ClInclude Include="stdafx.h" />

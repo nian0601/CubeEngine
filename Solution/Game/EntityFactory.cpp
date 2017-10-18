@@ -7,6 +7,7 @@
 #include "PickUpComponent.h"
 #include "MoverComponent.h"
 #include "AABBComponent.h"
+#include "ResourceComponent.h"
 #include <CE_FileParser.h>
 
 
@@ -28,6 +29,8 @@ void EntityFactory::LoadTemplateEntities()
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::PLAYER)] = LoadFromDisk("Data/Entities/player.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::PICK_UP)] = LoadFromDisk("Data/Entities/pickup.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::MOVER)] = LoadFromDisk("Data/Entities/mover.ce_entity");
+	myTemplateEntityMap[static_cast<int>(eEntityTypes::RESOURCE_STONE)] = LoadFromDisk("Data/Entities/stone_resource.ce_entity");
+	myTemplateEntityMap[static_cast<int>(eEntityTypes::RESOURCE_WATER)] = LoadFromDisk("Data/Entities/water_resource.ce_entity");
 }
 
 CE_Entity EntityFactory::InstansiateEntity(eEntityTypes anIdentifier)
@@ -94,6 +97,8 @@ void EntityFactory::LoadComponents(CE_Entity anEntity, CE_FileParser& aFileParse
 			LoadPickupComponent(anEntity, aFileParser);
 		if (words[0] == "#mover")
 			LoadMoverComponent(anEntity, aFileParser);
+		if (words[0] == "#resource")
+			LoadResourceComponent(anEntity, aFileParser);
 	}
 
 }
@@ -302,6 +307,38 @@ void EntityFactory::LoadMoverComponent(CE_Entity anEntity, CE_FileParser& aFileP
 	MoverComponent& mover = myTemplateWorld.AddComponent<MoverComponent>(anEntity);
 	mover.mySpeed = speed;
 	mover.myDirection = direction;
+}
+
+void EntityFactory::LoadResourceComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
+{
+	eResourceType resource = eResourceType::INVALID;
+
+	CE_String line;
+	CE_GrowingArray<CE_String> words;
+
+	while (aFileParser.ReadLine(line))
+	{
+		aFileParser.TrimBeginAndEnd(line);
+		aFileParser.SplitLine(line, words);
+
+		if (words[0] == "#type")
+		{
+			resource = ConvertStringToResourceType(words[1]);
+		}
+		else if (words[0] == "#end")
+		{
+			break;
+		}
+		else
+		{
+			CE_ASSERT_ALWAYS("Unsupported Component-data");
+		}
+	}
+
+	CE_ASSERT(resource != eResourceType::INVALID, "Invalid Resource type");
+
+	ResourceComponent& resourceComponent = myTemplateWorld.AddComponent<ResourceComponent>(anEntity);
+	resourceComponent.myResourceType = resource;
 }
 
 void EntityFactory::LoadEmptyComponent(CE_FileParser& aFileParser)

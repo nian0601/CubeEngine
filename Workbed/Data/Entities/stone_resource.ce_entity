@@ -4,15 +4,16 @@
 
 	#render
 		#entry
-			#color 1 0 0 1
+			#color 0.01 0.03 0.04 1
 			#scale 1 1 1
 		#end
 	#end
 
 	#aabb
-		#layer PICKUP
+		#layer CLICKABLE
 	#end
 
-	#pickup
+	#resource
+		#type STONE
 	#end
 #end

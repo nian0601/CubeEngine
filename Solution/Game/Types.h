@@ -7,7 +7,12 @@ enum class eEntityTypes
 	PLAYER,
 	PICK_UP,
 	MOVER,
+	RESOURCE_STONE,
+	RESOURCE_WATER,
 };
+
+//////////////////////////////////////////////////////////////////////////
+// Collision
 
 enum eCollisionLayer
 {
@@ -27,4 +32,25 @@ inline eCollisionLayer ConvertStringToCollisionLayer(const CE_String& aString)
 		return eCollisionLayer::PICKUP;
 
 	return eCollisionLayer::NONE;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Resource
+
+enum class eResourceType
+{
+	INVALID = -1,
+	STONE,
+	WATER
+};
+
+inline eResourceType ConvertStringToResourceType(const CE_String& aString)
+{
+	if (aString == "STONE")
+		return eResourceType::STONE;
+	else if (aString == "WATER")
+		return eResourceType::WATER;
+
+	CE_ASSERT_ALWAYS("Invalid Resource type");
+	return eResourceType::INVALID;
 }
