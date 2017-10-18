@@ -15,7 +15,7 @@ public:
 
 	void LoadTemplateEntities();
 
-	CE_Entity InstansiateEntity(int anIdentifier);
+	CE_Entity InstansiateEntity(eEntityTypes anIdentifier);
 
 private:
 	CE_Entity LoadFromDisk(const char* aFilePath);

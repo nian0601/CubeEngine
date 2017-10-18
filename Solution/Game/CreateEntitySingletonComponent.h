@@ -4,11 +4,13 @@
 #include <CE_Vector3.h>
 #include <CE_GrowingArray.h>
 
+#include "Types.h"
+
 struct CreateEntitySingletonComponent : public CE_BaseComponent
 {
 	struct Entry
 	{
-		int myEntityType;
+		eEntityTypes myEntityType;
 		CE_Vector3f myPosition;
 	};
 

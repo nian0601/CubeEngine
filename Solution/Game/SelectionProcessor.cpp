@@ -23,13 +23,13 @@ void SelectionProcessor::Update(float /*aDelta*/)
 	selectedEntity.myHoveredEntity = entityUnderMouse;
 
 	if (input.ActionDown(TOOL_BTN_1))
-		selectedEntity.myEntityTypeOnMouse = NONE;
+		selectedEntity.myEntityTypeOnMouse = eEntityTypes::NONE;
 	else if (input.ActionDown(TOOL_BTN_2))
-		selectedEntity.myEntityTypeOnMouse = MOVER;
+		selectedEntity.myEntityTypeOnMouse = eEntityTypes::MOVER;
 	else if (input.ActionDown(TOOL_BTN_3))
-		selectedEntity.myEntityTypeOnMouse = PICK_UP;
+		selectedEntity.myEntityTypeOnMouse = eEntityTypes::PICK_UP;
 	else if (input.ActionDown(TOOL_BTN_4))
-		selectedEntity.myEntityTypeOnMouse = PLAYER;
+		selectedEntity.myEntityTypeOnMouse = eEntityTypes::PLAYER;
 
 	if (input.ActionDown(LBUTTON))
 	{

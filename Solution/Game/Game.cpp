@@ -110,11 +110,11 @@ void Game::InitWorld()
 {
 	InitGrid();
 
-	CE_Entity pickup = myEntityFactory->InstansiateEntity(PICK_UP);
+	CE_Entity pickup = myEntityFactory->InstansiateEntity(eEntityTypes::PICK_UP);
 	TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(pickup);
 	translate.myOrientation.SetPos(CE_Vector3f(5.f, 1.f, 5.f));
 	
-	CE_Entity player = myEntityFactory->InstansiateEntity(PLAYER);
+	CE_Entity player = myEntityFactory->InstansiateEntity(eEntityTypes::PLAYER);
 	TranslationComponent& playerTranslate = myWorld->GetComponent<TranslationComponent>(player);
 	playerTranslate.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 1.f));
 
@@ -130,7 +130,7 @@ void Game::InitGrid()
 		{
 			CE_Vector3f pos(static_cast<float>(x), 0.f, static_cast<float>(z));
 	
-			CE_Entity entity = myEntityFactory->InstansiateEntity(GROUND);
+			CE_Entity entity = myEntityFactory->InstansiateEntity(eEntityTypes::GROUND);
 			TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(entity);
 			translate.myOrientation.SetPos(pos);
 		}

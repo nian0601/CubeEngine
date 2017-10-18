@@ -26,17 +26,18 @@ EntityFactory::~EntityFactory()
 
 void EntityFactory::LoadTemplateEntities()
 {
-	myTemplateEntityMap[GROUND] = LoadFromDisk("Data/Entities/ground.ce_entity");
-	myTemplateEntityMap[PLAYER] = LoadFromDisk("Data/Entities/player.ce_entity");
-	myTemplateEntityMap[PICK_UP] = LoadFromDisk("Data/Entities/pickup.ce_entity");
-	myTemplateEntityMap[MOVER] = LoadFromDisk("Data/Entities/mover.ce_entity");
+	myTemplateEntityMap[static_cast<int>(eEntityTypes::GROUND)] = LoadFromDisk("Data/Entities/ground.ce_entity");
+	myTemplateEntityMap[static_cast<int>(eEntityTypes::PLAYER)] = LoadFromDisk("Data/Entities/player.ce_entity");
+	myTemplateEntityMap[static_cast<int>(eEntityTypes::PICK_UP)] = LoadFromDisk("Data/Entities/pickup.ce_entity");
+	myTemplateEntityMap[static_cast<int>(eEntityTypes::MOVER)] = LoadFromDisk("Data/Entities/mover.ce_entity");
 }
 
-CE_Entity EntityFactory::InstansiateEntity(int anIdentifier)
+CE_Entity EntityFactory::InstansiateEntity(eEntityTypes anIdentifier)
 {
-	CE_ASSERT(myTemplateEntityMap.KeyExists(anIdentifier), "Couldnt find Entity %i to Instansiate");
+	int intID = static_cast<int>(anIdentifier);
+	CE_ASSERT(myTemplateEntityMap.KeyExists(intID), "Couldnt find Entity %i to Instansiate");
 
-	CE_Entity templateEntity = myTemplateEntityMap[anIdentifier];
+	CE_Entity templateEntity = myTemplateEntityMap[intID];
 	CE_Entity newEntity = myRealWorld.CreateEmptyEntity();
 
 	CopyComponent<CollisionComponent>(templateEntity, newEntity);

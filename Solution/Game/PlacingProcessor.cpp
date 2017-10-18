@@ -30,7 +30,7 @@ void PlacingProcessor::Update(float /*aDelta*/)
 
 	TranslationComponent& placeLocation = GetComponent<TranslationComponent>(selectedEntity.myHoveredEntity);
 
-	if (selectedEntity.myEntityTypeOnMouse == NONE)
+	if (selectedEntity.myEntityTypeOnMouse == eEntityTypes::NONE)
 		return;
 
 	for (int i = 0; i < entities.Size(); ++i)
