@@ -146,8 +146,6 @@
     <ClInclude Include="PlacingProcessor.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RenderProcessor.h" />
-    <ClInclude Include="RotationComponent.h" />
-    <ClInclude Include="RotationProcessor.h" />
     <ClInclude Include="SelectedEntitySingletonComponent.h" />
     <ClInclude Include="SelectionProcessor.h" />
     <ClInclude Include="stdafx.h" />
@@ -166,7 +164,6 @@
     <ClCompile Include="PickUpProcessor.cpp" />
     <ClCompile Include="PlacingProcessor.cpp" />
     <ClCompile Include="RenderProcessor.cpp" />
-    <ClCompile Include="RotationProcessor.cpp" />
     <ClCompile Include="SelectionProcessor.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

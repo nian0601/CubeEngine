@@ -6,10 +6,9 @@
 #include "CollisionComponent.h"
 #include "InventoryComponent.h"
 #include "PickUpComponent.h"
-#include "RotationComponent.h"
 #include "MoverComponent.h"
 #include "AABBComponent.h"
-#include "..\Engine\CE_FileParser.h"
+#include <CE_FileParser.h>
 
 
 EntityFactory::EntityFactory(CE_World& anRealWorld, CE_World& anTemplateWorld)
@@ -45,7 +44,6 @@ CE_Entity EntityFactory::InstansiateEntity(eEntityTypes anIdentifier)
 	CopyComponent<InventoryComponent>(templateEntity, newEntity);
 	CopyComponent<PickUpComponent>(templateEntity, newEntity);
 	CopyComponent<RenderComponent>(templateEntity, newEntity);
-	CopyComponent<RotationComponent>(templateEntity, newEntity);
 	CopyComponent<TranslationComponent>(templateEntity, newEntity);
 	CopyComponent<MoverComponent>(templateEntity, newEntity);
 	CopyComponent<AABBComponent>(templateEntity, newEntity);

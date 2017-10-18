@@ -31,12 +31,6 @@
     <ClInclude Include="RenderProcessor.h">
       <Filter>Entity\Processor</Filter>
     </ClInclude>
-    <ClInclude Include="RotationComponent.h">
-      <Filter>Entity\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="RotationProcessor.h">
-      <Filter>Entity\Processor</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionComponent.h">
       <Filter>Entity\Component</Filter>
     </ClInclude>
@@ -107,9 +101,6 @@
     </ClCompile>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="RenderProcessor.cpp">
-      <Filter>Entity\Processor</Filter>
-    </ClCompile>
-    <ClCompile Include="RotationProcessor.cpp">
       <Filter>Entity\Processor</Filter>
     </ClCompile>
     <ClCompile Include="CollisionProcessor.cpp">

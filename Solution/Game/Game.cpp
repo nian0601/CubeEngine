@@ -7,7 +7,6 @@
 
 #include "RenderComponent.h"
 #include "TranslationComponent.h"
-#include "RotationComponent.h"
 #include "MovementComponent.h"
 #include "CollisionComponent.h"
 #include "PickUpComponent.h"
@@ -20,7 +19,6 @@
 #include "SelectionProcessor.h"
 
 #include "RenderProcessor.h"
-#include "RotationProcessor.h"
 #include "MovementProcessor.h"
 #include "CollisionProcessor.h"
 #include "PickUpProcessor.h"
@@ -76,7 +74,6 @@ void Game::Init(CE_Engine& anEngine)
 	SelectionProcessor* selectionProcessor = new SelectionProcessor(*myWorld, camera);
 	myWorld->AddProcessor(selectionProcessor);
 
-	myWorld->AddProcessor<RotationProcessor>();
 	myWorld->AddProcessor<MovementProcessor>();
 	myWorld->AddProcessor<CollisionProcessor>();
 	myWorld->AddProcessor<PickUpProcessor>();
