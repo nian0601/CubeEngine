@@ -113,6 +113,15 @@
     <ClCompile Include="CE_FileParser.cpp">
       <Filter>Utility\Files</Filter>
     </ClCompile>
+    <ClCompile Include="CE_BehaviorTree.cpp">
+      <Filter>Behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_BTNode.cpp">
+      <Filter>Behavior\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_BTInitNode.cpp">
+      <Filter>Behavior\Nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -156,6 +165,12 @@
     </Filter>
     <Filter Include="Utility\Files">
       <UniqueIdentifier>{70e53c6f-81ae-41e1-a7b2-e91af36d9bd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behavior">
+      <UniqueIdentifier>{c9255e17-687f-4dee-9510-64a1c801d060}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Behavior\Nodes">
+      <UniqueIdentifier>{98b49910-69a8-41c6-a79c-76add0f2b623}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -345,6 +360,15 @@
     </ClInclude>
     <ClInclude Include="CE_FileParser.h">
       <Filter>Utility\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_BehaviorTree.h">
+      <Filter>Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_BTNode.h">
+      <Filter>Behavior\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_BTInitNode.h">
+      <Filter>Behavior\Nodes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

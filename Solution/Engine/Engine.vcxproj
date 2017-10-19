@@ -136,6 +136,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CE_BaseProcessor.cpp" />
+    <ClCompile Include="CE_BTNode.cpp" />
     <ClCompile Include="CE_Camera.cpp" />
     <ClCompile Include="CE_FileParser.cpp" />
     <ClCompile Include="CE_Font.cpp" />
@@ -172,6 +173,8 @@
     <ClCompile Include="CUI_Widget.cpp" />
     <ClCompile Include="CE_Text.cpp" />
     <ClCompile Include="CE_WindowManager.cpp" />
+    <ClCompile Include="CE_BehaviorTree.cpp" />
+    <ClCompile Include="CE_BTInitNode.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -181,6 +184,7 @@
     <ClInclude Include="CE_Assert.h" />
     <ClInclude Include="CE_BaseComponent.h" />
     <ClInclude Include="CE_BaseProcessor.h" />
+    <ClInclude Include="CE_BTNode.h" />
     <ClInclude Include="CE_Camera.h" />
     <ClInclude Include="CE_CommonHelper.h" />
     <ClInclude Include="CE_ComponentFilter.h" />
@@ -242,6 +246,8 @@
     <ClInclude Include="CUI_Widget.h" />
     <ClInclude Include="CE_Text.h" />
     <ClInclude Include="CE_WindowManager.h" />
+    <ClInclude Include="CE_BehaviorTree.h" />
+    <ClInclude Include="CE_BTInitNode.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
