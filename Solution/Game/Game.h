@@ -13,7 +13,7 @@ class CUI_Widget;
 
 class EntityFactory;
 
-
+class CE_BehaviorTree;
 class Game : public CE_Game
 {
 public:
@@ -48,4 +48,7 @@ private:
 	CE_Font* myFont;
 
 	CE_Window* myGUIWindow;
+
+	unsigned int myPlayer;
+	CE_BehaviorTree* myBehavior;
 };

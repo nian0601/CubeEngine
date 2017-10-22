@@ -6,12 +6,14 @@ enum eBTActionState
 	FINISHED,
 	FAILED,
 };
+
+class CE_Blackboard;
 class CE_BTNode
 {
 public:
 	virtual ~CE_BTNode() {};
 
-	virtual eBTActionState Update() = 0;
+	virtual eBTActionState Update(CE_Blackboard& aBlackboard, float aDelta) = 0;
 
 protected:
 	CE_BTNode() {};

@@ -116,10 +116,10 @@
     <ClCompile Include="CE_BehaviorTree.cpp">
       <Filter>Behavior</Filter>
     </ClCompile>
-    <ClCompile Include="CE_BTNode.cpp">
+    <ClCompile Include="CE_BTInitNode.cpp">
       <Filter>Behavior\Nodes</Filter>
     </ClCompile>
-    <ClCompile Include="CE_BTInitNode.cpp">
+    <ClCompile Include="CE_BTMoveToNode.cpp">
       <Filter>Behavior\Nodes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -368,6 +368,12 @@
       <Filter>Behavior\Nodes</Filter>
     </ClInclude>
     <ClInclude Include="CE_BTInitNode.h">
+      <Filter>Behavior\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Blackboard.h">
+      <Filter>Behavior\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_BTMoveToNode.h">
       <Filter>Behavior\Nodes</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,15 +3,26 @@
 
 
 CE_BTInitNode::CE_BTInitNode()
+	: myChildNode(nullptr)
 {
 }
 
 
 CE_BTInitNode::~CE_BTInitNode()
 {
+	CE_SAFE_DELETE(myChildNode);
 }
 
-eBTActionState CE_BTInitNode::Update()
+eBTActionState CE_BTInitNode::Update(CE_Blackboard& aBlackboard, float aDelta)
 {
-	throw std::logic_error("The method or operation is not implemented.");
+	if (!myChildNode)
+		return eBTActionState::FINISHED;
+
+	return myChildNode->Update(aBlackboard, aDelta);
+}
+
+void CE_BTInitNode::SetChildNode(CE_BTNode* aNode)
+{
+	CE_ASSERT(myChildNode == nullptr, "Tried to SetChildNode multiple times");
+	myChildNode = aNode;
 }
