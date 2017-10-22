@@ -28,6 +28,7 @@ private:
 	void LoadPickupComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
 	void LoadMoverComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
 	void LoadResourceComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
+	void LoadBehaviorComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
 
 	void LoadEmptyComponent(CE_FileParser& aFileParser);
 

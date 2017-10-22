@@ -48,7 +48,4 @@ private:
 	CE_Font* myFont;
 
 	CE_Window* myGUIWindow;
-
-	unsigned int myPlayer;
-	CE_BehaviorTree* myBehavior;
 };

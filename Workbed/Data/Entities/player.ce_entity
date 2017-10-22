@@ -7,7 +7,7 @@
 	#end
 
 	#movement
-		#speed 10
+		#speed 2
 	#end
 
 
@@ -20,5 +20,9 @@
 	#end
 
 	#inventory
+	#end
+
+	#behavior
+		#speed 2
 	#end
 #end

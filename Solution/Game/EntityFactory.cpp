@@ -9,6 +9,12 @@
 #include "AABBComponent.h"
 #include "ResourceComponent.h"
 #include <CE_FileParser.h>
+#include "BehaviorComponent.h"
+
+#include <CE_BehaviorTree.h>
+#include <CE_BTMoveToNode.h>
+#include <CE_BlackBoard.h>
+#include <CE_BTInitNode.h>
 
 
 EntityFactory::EntityFactory(CE_World& anRealWorld, CE_World& anTemplateWorld)
@@ -48,6 +54,8 @@ CE_Entity EntityFactory::InstansiateEntity(eEntityTypes anIdentifier)
 	CopyComponent<TranslationComponent>(templateEntity, newEntity);
 	CopyComponent<MoverComponent>(templateEntity, newEntity);
 	CopyComponent<AABBComponent>(templateEntity, newEntity);
+	CopyComponent<ResourceComponent>(templateEntity, newEntity);
+	CopyComponent<BehaviorComponent>(templateEntity, newEntity);
 
 	return newEntity;
 }
@@ -99,6 +107,8 @@ void EntityFactory::LoadComponents(CE_Entity anEntity, CE_FileParser& aFileParse
 			LoadMoverComponent(anEntity, aFileParser);
 		if (words[0] == "#resource")
 			LoadResourceComponent(anEntity, aFileParser);
+		if (words[0] == "#behavior")
+			LoadBehaviorComponent(anEntity, aFileParser);
 	}
 
 }
@@ -339,6 +349,44 @@ void EntityFactory::LoadResourceComponent(CE_Entity anEntity, CE_FileParser& aFi
 
 	ResourceComponent& resourceComponent = myTemplateWorld.AddComponent<ResourceComponent>(anEntity);
 	resourceComponent.myResourceType = resource;
+}
+
+void EntityFactory::LoadBehaviorComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
+{
+	CE_String line;
+	CE_GrowingArray<CE_String> words;
+
+	float speed = 0.f;
+
+	while (aFileParser.ReadLine(line))
+	{
+		aFileParser.TrimBeginAndEnd(line);
+		aFileParser.SplitLine(line, words);
+
+		if (words[0] == "#speed")
+		{
+			speed = aFileParser.GetFloat(words[1]);
+		}
+		else if (words[0] == "#end")
+		{
+			break;
+		}
+		else
+		{
+			CE_ASSERT_ALWAYS("Unsupported Component-data");
+		}
+	}
+
+	BehaviorComponent& behavior = myTemplateWorld.AddComponent<BehaviorComponent>(anEntity);
+
+	behavior.myBehaviorTree = new CE_BehaviorTree();
+	CE_BTInitNode& initNode = behavior.myBehaviorTree->GetInitNode();
+
+	CE_BTMoveToNode* moveNode = new CE_BTMoveToNode();
+	initNode.SetChildNode(moveNode);
+
+	CE_Blackboard& blackboard = behavior.myBehaviorTree->GetBlackboard();
+	blackboard.mySpeed = speed;
 }
 
 void EntityFactory::LoadEmptyComponent(CE_FileParser& aFileParser)

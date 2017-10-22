@@ -36,10 +36,7 @@
 #include <CE_Window.h>
 #include <CE_WindowManager.h>
 
-#include <CE_BehaviorTree.h>
-#include "..\Engine\CE_BTInitNode.h"
-#include "..\Engine\CE_BTMoveToNode.h"
-#include "..\Engine\CE_BlackBoard.h"
+#include "BehaviorProcessor.h"
 
 Game::Game()
 {
@@ -82,6 +79,7 @@ void Game::Init(CE_Engine& anEngine)
 	myWorld->AddProcessor<PlacingProcessor>();
 	myWorld->AddProcessor<MoverProcessor>();
 	myWorld->AddProcessor<AABBProcessor>();
+	myWorld->AddProcessor<BehaviorProcessor>();
 	
 
 	myFont = new CE_Font();
@@ -91,35 +89,11 @@ void Game::Init(CE_Engine& anEngine)
 	InitWorld();
 
 	//myGUIWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 320, 320}, "GUI Window");
-
-	myBehavior = new CE_BehaviorTree();
-	CE_BTInitNode& initNode = myBehavior->GetInitNode();
-
-	CE_BTMoveToNode* moveNode = new CE_BTMoveToNode();
-	initNode.SetChildNode(moveNode);
-
-	CE_Blackboard& blackboard = myBehavior->GetBlackboard();
-	blackboard.mySpeed = 2.f;
-	blackboard.myTargetPosition = CE_Vector3f(9.f, 1.f, 9.f);
 }
 
 void Game::Update(float aDelta)
 {
 	myWorld->Update(aDelta);
-
-	TranslationComponent& playerTranslate = myWorld->GetComponent<TranslationComponent>(myPlayer);
-
-	CE_Blackboard& blackboard = myBehavior->GetBlackboard();
-	blackboard.myPosition = playerTranslate.myOrientation.GetPos();
-
-	myBehavior->Update(aDelta);
-
-	playerTranslate.myOrientation.SetPos(blackboard.myPosition);
-	if (myBehavior->IsFinished())
-	{
-		blackboard.myTargetPosition = CE_Vector3f(0.f, 1.f, 0.f);
-		myBehavior->Restart();
-	}
 
 	myUIManager->Update();
 }
@@ -131,8 +105,8 @@ void Game::Render()
 
 void Game::InitWorld()
 {
-	myPlayer = myEntityFactory->InstansiateEntity(eEntityTypes::PLAYER);
-	TranslationComponent& playerTranslate = myWorld->GetComponent<TranslationComponent>(myPlayer);
+	CE_Entity player = myEntityFactory->InstansiateEntity(eEntityTypes::PLAYER);
+	TranslationComponent& playerTranslate = myWorld->GetComponent<TranslationComponent>(player);
 	playerTranslate.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 1.f));
 
 	CE_Entity water = myEntityFactory->InstansiateEntity(eEntityTypes::RESOURCE_WATER);
@@ -162,7 +136,7 @@ void Game::InitWorld()
 
 	InitGrid();
 
-	PopulateEntityTreeView(myPlayer);
+	PopulateEntityTreeView(player);
 }
 
 void Game::InitGrid()

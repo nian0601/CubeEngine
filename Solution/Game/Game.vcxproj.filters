@@ -91,6 +91,12 @@
     <ClInclude Include="ResourceComponent.h">
       <Filter>Entity\Component</Filter>
     </ClInclude>
+    <ClInclude Include="BehaviorComponent.h">
+      <Filter>Entity\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorProcessor.h">
+      <Filter>Entity\Processor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -125,6 +131,9 @@
       <Filter>Entity\Processor</Filter>
     </ClCompile>
     <ClCompile Include="SelectionProcessor.cpp">
+      <Filter>Entity\Processor</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorProcessor.cpp">
       <Filter>Entity\Processor</Filter>
     </ClCompile>
   </ItemGroup>
