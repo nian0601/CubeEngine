@@ -14,7 +14,7 @@ public:
 	virtual ~CE_BTNode() {};
 
 	virtual eBTActionState Update(CE_Blackboard& aBlackboard, float aDelta) = 0;
-
+	virtual void Restart() {};
 protected:
 	CE_BTNode() {};
 };

@@ -21,6 +21,12 @@ eBTActionState CE_BTInitNode::Update(CE_Blackboard& aBlackboard, float aDelta)
 	return myChildNode->Update(aBlackboard, aDelta);
 }
 
+void CE_BTInitNode::Restart()
+{
+	if(myChildNode)
+		myChildNode->Restart();
+}
+
 void CE_BTInitNode::SetChildNode(CE_BTNode* aNode)
 {
 	CE_ASSERT(myChildNode == nullptr, "Tried to SetChildNode multiple times");

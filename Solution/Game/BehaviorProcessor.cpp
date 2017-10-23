@@ -5,7 +5,7 @@
 #include "TranslationComponent.h"
 #include "InputSingletonComponent.h"
 #include "SelectedEntitySingletonComponent.h"
-#include "..\Engine\CE_BlackBoard.h"
+#include <CE_BlackBoard.h>
 
 BehaviorProcessor::BehaviorProcessor(CE_World& aWorld)
 	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<BehaviorComponent, TranslationComponent>>())
@@ -42,6 +42,7 @@ void BehaviorProcessor::Update(float aDelta)
 			blackboard.myTargetPosition.y += 1.f;
 
 			behavior.myBehaviorTree->Restart();
+			behavior.myBehaviorTree->Start();
 		}
 
 		behavior.myBehaviorTree->Update(aDelta);

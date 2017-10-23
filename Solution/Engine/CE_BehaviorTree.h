@@ -17,10 +17,12 @@ public:
 
 	bool IsFinished();
 	void Restart();
+	void Start();
 
 private:
 	CE_BTNode* myRootNode;
 	bool myIsFinished;
+	bool myIsStarted;
 
 	CE_Blackboard* myBlackboard;
 };

@@ -129,6 +129,8 @@
     <ClInclude Include="AABBProcessor.h" />
     <ClInclude Include="BehaviorComponent.h" />
     <ClInclude Include="BehaviorProcessor.h" />
+    <ClInclude Include="BT_FindStockpileNode.h" />
+    <ClInclude Include="BT_GatherResourceNode.h" />
     <ClInclude Include="CollisionSingletonComponent.h" />
     <ClInclude Include="CreateEntityProcessor.h" />
     <ClInclude Include="CreateEntitySingletonComponent.h" />
@@ -156,6 +158,8 @@
   <ItemGroup>
     <ClCompile Include="AABBProcessor.cpp" />
     <ClCompile Include="BehaviorProcessor.cpp" />
+    <ClCompile Include="BT_FindStockpileNode.cpp" />
+    <ClCompile Include="BT_GatherResourceNode.cpp" />
     <ClCompile Include="CreateEntityProcessor.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />

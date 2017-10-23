@@ -7,7 +7,8 @@ public:
 	CE_BTInitNode();
 	~CE_BTInitNode();
 
-	virtual eBTActionState Update(CE_Blackboard& aBlackboard, float aDelta) override;
+	eBTActionState Update(CE_Blackboard& aBlackboard, float aDelta) override;
+	void Restart() override;
 
 	void SetChildNode(CE_BTNode* aNode);
 

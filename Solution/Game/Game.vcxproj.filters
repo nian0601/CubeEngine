@@ -16,6 +16,9 @@
     <Filter Include="Entity\SingletonComponent">
       <UniqueIdentifier>{c5bd4bf8-12b4-4d01-83be-b287ca6486ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Behavior">
+      <UniqueIdentifier>{087dbb66-3dc6-4d7f-8062-6ee006aff25d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -97,6 +100,12 @@
     <ClInclude Include="BehaviorProcessor.h">
       <Filter>Entity\Processor</Filter>
     </ClInclude>
+    <ClInclude Include="BT_FindStockpileNode.h">
+      <Filter>Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="BT_GatherResourceNode.h">
+      <Filter>Behavior</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -135,6 +144,12 @@
     </ClCompile>
     <ClCompile Include="BehaviorProcessor.cpp">
       <Filter>Entity\Processor</Filter>
+    </ClCompile>
+    <ClCompile Include="BT_FindStockpileNode.cpp">
+      <Filter>Behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="BT_GatherResourceNode.cpp">
+      <Filter>Behavior</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

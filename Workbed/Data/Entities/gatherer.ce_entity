@@ -12,10 +12,7 @@
 
 	#translate
 	#end
-
-	#inventory
-	#end
-
+	
 	#behavior
 		#speed 2
 	#end

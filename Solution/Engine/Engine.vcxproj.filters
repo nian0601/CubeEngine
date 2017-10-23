@@ -122,6 +122,9 @@
     <ClCompile Include="CE_BTMoveToNode.cpp">
       <Filter>Behavior\Nodes</Filter>
     </ClCompile>
+    <ClCompile Include="CE_BTSequenceNode.cpp">
+      <Filter>Behavior\Nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -374,6 +377,9 @@
       <Filter>Behavior\Nodes</Filter>
     </ClInclude>
     <ClInclude Include="CE_BTMoveToNode.h">
+      <Filter>Behavior\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_BTSequenceNode.h">
       <Filter>Behavior\Nodes</Filter>
     </ClInclude>
   </ItemGroup>

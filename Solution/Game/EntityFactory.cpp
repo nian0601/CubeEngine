@@ -15,7 +15,10 @@
 #include <CE_BTMoveToNode.h>
 #include <CE_BlackBoard.h>
 #include <CE_BTInitNode.h>
+#include <CE_BTSequenceNode.h>
 
+#include "BT_FindStockpileNode.h"
+#include "BT_GatherResourceNode.h"
 
 EntityFactory::EntityFactory(CE_World& anRealWorld, CE_World& anTemplateWorld)
 	: myRealWorld(anRealWorld)
@@ -383,8 +386,13 @@ void EntityFactory::LoadBehaviorComponent(CE_Entity anEntity, CE_FileParser& aFi
 	behavior.myBehaviorTree = new CE_BehaviorTree();
 	CE_BTInitNode& initNode = behavior.myBehaviorTree->GetInitNode();
 
-	CE_BTMoveToNode* moveNode = new CE_BTMoveToNode();
-	initNode.SetChildNode(moveNode);
+	CE_BTSequenceNode* sequence = new CE_BTSequenceNode();
+	initNode.SetChildNode(sequence);
+
+	sequence->AddChild(new CE_BTMoveToNode());
+	sequence->AddChild(new BT_GatherResourceNode());
+	sequence->AddChild(new BT_FindStockpileNode(myRealWorld));
+	sequence->AddChild(new CE_BTMoveToNode());
 
 	CE_Blackboard& blackboard = behavior.myBehaviorTree->GetBlackboard();
 	blackboard.mySpeed = speed;
