@@ -9,48 +9,56 @@ enum class eEntityTypes
 	MOVER,
 	RESOURCE_STONE,
 	RESOURCE_WATER,
+	GATHERER,
 };
 
 //////////////////////////////////////////////////////////////////////////
 // Collision
 
-enum eCollisionLayer
+namespace CollisionLayer
 {
-	NONE = 0,
-	CLICKABLE = 1 << 1,
-	PLAYER = 1 << 2,
-	PICKUP = 1 << 3,
+	enum eLayer
+	{
+		NONE = 0,
+		CLICKABLE = 1 << 1,
+		PLAYER = 1 << 2,
+		PICKUP = 1 << 3,
+	};
+
+	inline eLayer FromString(const CE_String& aString)
+	{
+		if (aString == "CLICKABLE")
+			return eLayer::CLICKABLE;
+		else if (aString == "PLAYER")
+			return eLayer::PLAYER;
+		else if (aString == "PICKUP")
+			return eLayer::PICKUP;
+
+		return eLayer::NONE;
+	}
 };
 
-inline eCollisionLayer ConvertStringToCollisionLayer(const CE_String& aString)
-{
-	if (aString == "CLICKABLE")
-		return eCollisionLayer::CLICKABLE;
-	else if (aString == "PLAYER")
-		return eCollisionLayer::PLAYER;
-	else if (aString == "PICKUP")
-		return eCollisionLayer::PICKUP;
-
-	return eCollisionLayer::NONE;
-}
 
 //////////////////////////////////////////////////////////////////////////
 // Resource
 
-enum class eResourceType
+namespace ResourceType
 {
-	INVALID = -1,
-	STONE,
-	WATER
+	enum class eType
+	{
+		INVALID = -1,
+		STONE,
+		WATER
+	};
+
+	inline eType FromString(const CE_String& aString)
+	{
+		if (aString == "STONE")
+			return eType::STONE;
+		else if (aString == "WATER")
+			return eType::WATER;
+
+		CE_ASSERT_ALWAYS("Invalid Resource type");
+		return eType::INVALID;
+	}
 };
-
-inline eResourceType ConvertStringToResourceType(const CE_String& aString)
-{
-	if (aString == "STONE")
-		return eResourceType::STONE;
-	else if (aString == "WATER")
-		return eResourceType::WATER;
-
-	CE_ASSERT_ALWAYS("Invalid Resource type");
-	return eResourceType::INVALID;
-}

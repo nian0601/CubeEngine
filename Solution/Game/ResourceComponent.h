@@ -5,5 +5,5 @@
 
 struct ResourceComponent : public CE_BaseComponent
 {
-	eResourceType myResourceType;
+	ResourceType::eType myResourceType;
 };

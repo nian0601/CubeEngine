@@ -8,6 +8,6 @@
 struct AABBComponent : public CE_BaseComponent
 {
 	CPY_AABB myAABB;
-	eCollisionLayer myCollisionLayers;
-	eCollisionLayer myCollidesWith;
+	CollisionLayer::eLayer myCollisionLayers;
+	CollisionLayer::eLayer myCollidesWith;
 };

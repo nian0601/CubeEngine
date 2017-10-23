@@ -240,8 +240,8 @@ void EntityFactory::LoadInventoryComponent(CE_Entity anEntity, CE_FileParser& aF
 
 void EntityFactory::LoadAABBComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
 {
-	eCollisionLayer layers = eCollisionLayer::NONE;
-	eCollisionLayer collidesWith = eCollisionLayer::NONE;
+	CollisionLayer::eLayer layers = CollisionLayer::eLayer::NONE;
+	CollisionLayer::eLayer collidesWith = CollisionLayer::eLayer::NONE;
 
 	CE_String line;
 	CE_GrowingArray<CE_String> words;
@@ -253,11 +253,11 @@ void EntityFactory::LoadAABBComponent(CE_Entity anEntity, CE_FileParser& aFilePa
 
 		if (words[0] == "#layer")
 		{
-			layers = ConvertStringToCollisionLayer(words[1]);
+			layers = CollisionLayer::FromString(words[1]);
 		}
 		else if (words[0] == "#collideswith")
 		{
-			collidesWith = ConvertStringToCollisionLayer(words[1]);
+			collidesWith = CollisionLayer::FromString(words[1]);
 		}
 		else if (words[0] == "#end")
 		{
@@ -321,7 +321,7 @@ void EntityFactory::LoadMoverComponent(CE_Entity anEntity, CE_FileParser& aFileP
 
 void EntityFactory::LoadResourceComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
 {
-	eResourceType resource = eResourceType::INVALID;
+	ResourceType::eType resource = ResourceType::eType::INVALID;
 
 	CE_String line;
 	CE_GrowingArray<CE_String> words;
@@ -333,7 +333,7 @@ void EntityFactory::LoadResourceComponent(CE_Entity anEntity, CE_FileParser& aFi
 
 		if (words[0] == "#type")
 		{
-			resource = ConvertStringToResourceType(words[1]);
+			resource = ResourceType::FromString(words[1]);
 		}
 		else if (words[0] == "#end")
 		{
@@ -345,7 +345,7 @@ void EntityFactory::LoadResourceComponent(CE_Entity anEntity, CE_FileParser& aFi
 		}
 	}
 
-	CE_ASSERT(resource != eResourceType::INVALID, "Invalid Resource type");
+	CE_ASSERT(resource != ResourceType::eType::INVALID, "Invalid Resource type");
 
 	ResourceComponent& resourceComponent = myTemplateWorld.AddComponent<ResourceComponent>(anEntity);
 	resourceComponent.myResourceType = resource;

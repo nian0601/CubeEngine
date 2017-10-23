@@ -1,0 +1,22 @@
+#components
+	#render
+		#entry
+			#color 0.5 0.5 0 1
+			#scale 0.75 1 0.75
+		#end
+	#end
+
+	#aabb
+		#layer CLICKABLE
+	#end
+
+	#translate
+	#end
+
+	#inventory
+	#end
+
+	#behavior
+		#speed 2
+	#end
+#end
