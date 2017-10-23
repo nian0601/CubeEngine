@@ -37,6 +37,7 @@ void EntityFactory::LoadTemplateEntities()
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::MOVER)] = LoadFromDisk("Data/Entities/mover.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::RESOURCE_STONE)] = LoadFromDisk("Data/Entities/stone_resource.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::RESOURCE_WATER)] = LoadFromDisk("Data/Entities/water_resource.ce_entity");
+	myTemplateEntityMap[static_cast<int>(eEntityTypes::GATHERER)] = LoadFromDisk("Data/Entities/gatherer.ce_entity");
 }
 
 CE_Entity EntityFactory::InstansiateEntity(eEntityTypes anIdentifier)

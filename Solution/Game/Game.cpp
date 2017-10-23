@@ -109,6 +109,10 @@ void Game::InitWorld()
 	TranslationComponent& playerTranslate = myWorld->GetComponent<TranslationComponent>(player);
 	playerTranslate.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 1.f));
 
+	CE_Entity gatherer = myEntityFactory->InstansiateEntity(eEntityTypes::GATHERER);
+	TranslationComponent& gathererTranslate = myWorld->GetComponent<TranslationComponent>(gatherer);
+	gathererTranslate.myOrientation.SetPos(CE_Vector3f(7.f, 1.f, 1.f));
+
 	CE_Entity water = myEntityFactory->InstansiateEntity(eEntityTypes::RESOURCE_WATER);
 	TranslationComponent& waterTranslate1 = myWorld->GetComponent<TranslationComponent>(water);
 	waterTranslate1.myOrientation.SetPos(CE_Vector3f(5.f, 1.f, 5.f));
