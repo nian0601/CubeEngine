@@ -2,7 +2,7 @@
 
 #include "AABBComponent.h"
 #include "SelectionProcessor.h"
-#include "SelectedEntitySingletonComponent.h"
+#include "CursorSingletonComponent.h"
 #include "InputSingletonComponent.h"
 
 #include <CE_Camera.h>
@@ -17,24 +17,10 @@ SelectionProcessor::SelectionProcessor(CE_World& aWorld, const CE_Camera& aCamer
 void SelectionProcessor::Update(float /*aDelta*/)
 {
 	InputSingletonComponent& input = myWorld.GetSingletonComponent<InputSingletonComponent>();
-	SelectedEntitySingletonComponent& selectedEntity = myWorld.GetSingletonComponent<SelectedEntitySingletonComponent>();
+	CursorSingletonComponent& selectedEntity = myWorld.GetSingletonComponent<CursorSingletonComponent>();
 
 	CE_Entity entityUnderMouse = FindEntityUnderMouse(input.myMousePosition);
 	selectedEntity.myHoveredEntity = entityUnderMouse;
-
-	if (input.ActionDown(TOOL_BTN_1))
-		selectedEntity.myEntityTypeOnMouse = eEntityTypes::NONE;
-	else if (input.ActionDown(TOOL_BTN_2))
-		selectedEntity.myEntityTypeOnMouse = eEntityTypes::PLAYER;
-
-	if (input.ActionDown(LBUTTON))
-	{
-		//selectedEntity.mySelectedEntity = CE_Invalid_Entity;
-	}
-	else if (input.ActionDown(RBUTTON))
-	{
-		selectedEntity.mySelectedEntity = CE_Invalid_Entity;
-	}
 }
 
 CE_Entity SelectionProcessor::FindEntityUnderMouse(const CE_Vector2f& aMousePosition)

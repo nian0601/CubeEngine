@@ -144,7 +144,7 @@
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RenderProcessor.h" />
     <ClInclude Include="ResourceComponent.h" />
-    <ClInclude Include="SelectedEntitySingletonComponent.h" />
+    <ClInclude Include="CursorSingletonComponent.h" />
     <ClInclude Include="SelectionProcessor.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TranslationComponent.h" />

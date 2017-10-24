@@ -4,7 +4,7 @@
 #include "BehaviorProcessor.h"
 #include "TranslationComponent.h"
 #include "InputSingletonComponent.h"
-#include "SelectedEntitySingletonComponent.h"
+#include "CursorSingletonComponent.h"
 #include <CE_BlackBoard.h>
 
 BehaviorProcessor::BehaviorProcessor(CE_World& aWorld)
@@ -19,7 +19,7 @@ void BehaviorProcessor::Update(float aDelta)
 
 	CE_Vector3f selectedPosition;
 	bool hasSelected = false;
-	SelectedEntitySingletonComponent& selected = myWorld.GetSingletonComponent<SelectedEntitySingletonComponent>();
+	CursorSingletonComponent& selected = myWorld.GetSingletonComponent<CursorSingletonComponent>();
 
 	if (selected.myHoveredEntity != CE_Invalid_Entity)
 	{

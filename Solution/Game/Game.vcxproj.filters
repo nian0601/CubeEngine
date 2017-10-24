@@ -73,9 +73,6 @@
     <ClInclude Include="AABBComponent.h">
       <Filter>Entity\Component</Filter>
     </ClInclude>
-    <ClInclude Include="SelectedEntitySingletonComponent.h">
-      <Filter>Entity\SingletonComponent</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceComponent.h">
       <Filter>Entity\Component</Filter>
     </ClInclude>
@@ -90,6 +87,9 @@
     </ClInclude>
     <ClInclude Include="BT_GatherResourceNode.h">
       <Filter>Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="CursorSingletonComponent.h">
+      <Filter>Entity\SingletonComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
