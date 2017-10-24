@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CE_Map.h"
+
 struct CE_CharData
 {
 	void LoadFromLine(const CE_String& aLine, const CE_Vector2f& aTextureSize);

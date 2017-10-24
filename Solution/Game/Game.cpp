@@ -5,19 +5,6 @@
 #include <CE_Engine.h>
 #include <CE_World.h>
 
-#include "RenderComponent.h"
-#include "TranslationComponent.h"
-#include "MovementComponent.h"
-#include "InventoryComponent.h"
-#include "InputProcessor.h"
-#include "CreateEntityProcessor.h"
-#include "AABBProcessor.h"
-#include "SelectionProcessor.h"
-
-#include "RenderProcessor.h"
-#include "MovementProcessor.h"
-#include "EntityFactory.h"
-
 #include <CUI_Manager.h>
 #include <CUI_Image.h>
 #include <CUI_VBox.h>
@@ -27,12 +14,23 @@
 #include <CUI_Label.h>
 #include <CUI_ValueController.h>
 
-#include <CE_Input.h>
 #include <CE_Font.h>
+#include <CE_Input.h>
 #include <CE_Window.h>
 #include <CE_WindowManager.h>
 
+#include "MovementComponent.h"
+#include "TranslationComponent.h"
+
+#include "AABBProcessor.h"
 #include "BehaviorProcessor.h"
+#include "CreateEntityProcessor.h"
+#include "InputProcessor.h"
+#include "MovementProcessor.h"
+#include "RenderProcessor.h"
+#include "SelectionProcessor.h"
+
+#include "EntityFactory.h"
 
 Game::Game()
 {
