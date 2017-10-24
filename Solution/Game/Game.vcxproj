@@ -141,11 +141,6 @@
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="MovementProcessor.h" />
     <ClInclude Include="InventoryComponent.h" />
-    <ClInclude Include="MoverComponent.h" />
-    <ClInclude Include="MoverProcessor.h" />
-    <ClInclude Include="PickUpComponent.h" />
-    <ClInclude Include="PickUpProcessor.h" />
-    <ClInclude Include="PlacingProcessor.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RenderProcessor.h" />
     <ClInclude Include="ResourceComponent.h" />
@@ -165,9 +160,6 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="MovementProcessor.cpp" />
-    <ClCompile Include="MoverProcessor.cpp" />
-    <ClCompile Include="PickUpProcessor.cpp" />
-    <ClCompile Include="PlacingProcessor.cpp" />
     <ClCompile Include="RenderProcessor.cpp" />
     <ClCompile Include="SelectionProcessor.cpp" />
     <ClCompile Include="stdafx.cpp">

@@ -5,8 +5,6 @@ enum class eEntityTypes
 	NONE,
 	GROUND,
 	PLAYER,
-	PICK_UP,
-	MOVER,
 	RESOURCE_STONE,
 	RESOURCE_WATER,
 	GATHERER,

@@ -8,18 +8,14 @@
 #include "RenderComponent.h"
 #include "TranslationComponent.h"
 #include "MovementComponent.h"
-#include "PickUpComponent.h"
 #include "InventoryComponent.h"
 #include "InputProcessor.h"
 #include "CreateEntityProcessor.h"
-#include "PlacingProcessor.h"
-#include "MoverProcessor.h"
 #include "AABBProcessor.h"
 #include "SelectionProcessor.h"
 
 #include "RenderProcessor.h"
 #include "MovementProcessor.h"
-#include "PickUpProcessor.h"
 #include "EntityFactory.h"
 
 #include <CUI_Manager.h>
@@ -75,9 +71,6 @@ void Game::Init(CE_Engine& anEngine)
 	myWorld->AddProcessor(selectionProcessor);
 
 	myWorld->AddProcessor<MovementProcessor>();
-	myWorld->AddProcessor<PickUpProcessor>();
-	myWorld->AddProcessor<PlacingProcessor>();
-	myWorld->AddProcessor<MoverProcessor>();
 	myWorld->AddProcessor<AABBProcessor>();
 	myWorld->AddProcessor<BehaviorProcessor>();
 	

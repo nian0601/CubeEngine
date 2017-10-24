@@ -37,14 +37,8 @@
     <ClInclude Include="InventoryComponent.h">
       <Filter>Entity\Component</Filter>
     </ClInclude>
-    <ClInclude Include="PickUpComponent.h">
-      <Filter>Entity\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Types.h">
       <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="PickUpProcessor.h">
-      <Filter>Entity\Processor</Filter>
     </ClInclude>
     <ClInclude Include="EntityFactory.h">
       <Filter>Entity</Filter>
@@ -58,9 +52,6 @@
     <ClInclude Include="InputProcessor.h">
       <Filter>Entity\Processor</Filter>
     </ClInclude>
-    <ClInclude Include="PlacingProcessor.h">
-      <Filter>Entity\Processor</Filter>
-    </ClInclude>
     <ClInclude Include="CreateEntityProcessor.h">
       <Filter>Entity\Processor</Filter>
     </ClInclude>
@@ -72,12 +63,6 @@
     </ClInclude>
     <ClInclude Include="CollisionSingletonComponent.h">
       <Filter>Entity\SingletonComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="MoverComponent.h">
-      <Filter>Entity\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="MoverProcessor.h">
-      <Filter>Entity\Processor</Filter>
     </ClInclude>
     <ClInclude Include="AABBProcessor.h">
       <Filter>Entity\Processor</Filter>
@@ -115,9 +100,6 @@
     <ClCompile Include="RenderProcessor.cpp">
       <Filter>Entity\Processor</Filter>
     </ClCompile>
-    <ClCompile Include="PickUpProcessor.cpp">
-      <Filter>Entity\Processor</Filter>
-    </ClCompile>
     <ClCompile Include="EntityFactory.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
@@ -127,13 +109,7 @@
     <ClCompile Include="InputProcessor.cpp">
       <Filter>Entity\Processor</Filter>
     </ClCompile>
-    <ClCompile Include="PlacingProcessor.cpp">
-      <Filter>Entity\Processor</Filter>
-    </ClCompile>
     <ClCompile Include="CreateEntityProcessor.cpp">
-      <Filter>Entity\Processor</Filter>
-    </ClCompile>
-    <ClCompile Include="MoverProcessor.cpp">
       <Filter>Entity\Processor</Filter>
     </ClCompile>
     <ClCompile Include="AABBProcessor.cpp">

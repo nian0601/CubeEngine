@@ -25,10 +25,6 @@ void SelectionProcessor::Update(float /*aDelta*/)
 	if (input.ActionDown(TOOL_BTN_1))
 		selectedEntity.myEntityTypeOnMouse = eEntityTypes::NONE;
 	else if (input.ActionDown(TOOL_BTN_2))
-		selectedEntity.myEntityTypeOnMouse = eEntityTypes::MOVER;
-	else if (input.ActionDown(TOOL_BTN_3))
-		selectedEntity.myEntityTypeOnMouse = eEntityTypes::PICK_UP;
-	else if (input.ActionDown(TOOL_BTN_4))
 		selectedEntity.myEntityTypeOnMouse = eEntityTypes::PLAYER;
 
 	if (input.ActionDown(LBUTTON))

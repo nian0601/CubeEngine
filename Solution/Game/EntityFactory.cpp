@@ -4,8 +4,6 @@
 #include "RenderComponent.h"
 #include "MovementComponent.h"
 #include "InventoryComponent.h"
-#include "PickUpComponent.h"
-#include "MoverComponent.h"
 #include "AABBComponent.h"
 #include "ResourceComponent.h"
 #include <CE_FileParser.h>
@@ -36,8 +34,6 @@ void EntityFactory::LoadTemplateEntities()
 {
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::GROUND)] = LoadFromDisk("Data/Entities/ground.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::PLAYER)] = LoadFromDisk("Data/Entities/player.ce_entity");
-	myTemplateEntityMap[static_cast<int>(eEntityTypes::PICK_UP)] = LoadFromDisk("Data/Entities/pickup.ce_entity");
-	myTemplateEntityMap[static_cast<int>(eEntityTypes::MOVER)] = LoadFromDisk("Data/Entities/mover.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::RESOURCE_STONE)] = LoadFromDisk("Data/Entities/stone_resource.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::RESOURCE_WATER)] = LoadFromDisk("Data/Entities/water_resource.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::GATHERER)] = LoadFromDisk("Data/Entities/gatherer.ce_entity");
@@ -53,10 +49,8 @@ CE_Entity EntityFactory::InstansiateEntity(eEntityTypes anIdentifier)
 
 	CopyComponent<MovementComponent>(templateEntity, newEntity);
 	CopyComponent<InventoryComponent>(templateEntity, newEntity);
-	CopyComponent<PickUpComponent>(templateEntity, newEntity);
 	CopyComponent<RenderComponent>(templateEntity, newEntity);
 	CopyComponent<TranslationComponent>(templateEntity, newEntity);
-	CopyComponent<MoverComponent>(templateEntity, newEntity);
 	CopyComponent<AABBComponent>(templateEntity, newEntity);
 	CopyComponent<ResourceComponent>(templateEntity, newEntity);
 	CopyComponent<BehaviorComponent>(templateEntity, newEntity);
@@ -105,10 +99,6 @@ void EntityFactory::LoadComponents(CE_Entity anEntity, CE_FileParser& aFileParse
 			LoadInventoryComponent(anEntity, aFileParser);
 		if (words[0] == "#aabb")
 			LoadAABBComponent(anEntity, aFileParser);
-		if (words[0] == "#pickup")
-			LoadPickupComponent(anEntity, aFileParser);
-		if (words[0] == "#mover")
-			LoadMoverComponent(anEntity, aFileParser);
 		if (words[0] == "#resource")
 			LoadResourceComponent(anEntity, aFileParser);
 		if (words[0] == "#behavior")
@@ -276,51 +266,6 @@ void EntityFactory::LoadAABBComponent(CE_Entity anEntity, CE_FileParser& aFilePa
 	AABBComponent& aabb = myTemplateWorld.AddComponent<AABBComponent>(anEntity);
 	aabb.myCollisionLayers = layers;
 	aabb.myCollidesWith = collidesWith;
-}
-
-void EntityFactory::LoadPickupComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
-{
-	LoadEmptyComponent(aFileParser);
-
-	myTemplateWorld.AddComponent<PickUpComponent>(anEntity);
-}
-
-void EntityFactory::LoadMoverComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
-{
-	float speed = 0.f;
-	CE_Vector3f direction;
-
-	CE_String line;
-	CE_GrowingArray<CE_String> words;
-
-	while (aFileParser.ReadLine(line))
-	{
-		aFileParser.TrimBeginAndEnd(line);
-		aFileParser.SplitLine(line, words);
-
-		if (words[0] == "#speed")
-		{
-			speed = aFileParser.GetFloat(words[1]);
-		}
-		else if (words[0] == "#direction")
-		{
-			direction.x = aFileParser.GetFloat(words[1]);
-			direction.y = aFileParser.GetFloat(words[2]);
-			direction.z = aFileParser.GetFloat(words[3]);
-		}
-		else if (words[0] == "#end")
-		{
-			break;
-		}
-		else
-		{
-			CE_ASSERT_ALWAYS("Unsupported Component-data");
-		}
-	}
-
-	MoverComponent& mover = myTemplateWorld.AddComponent<MoverComponent>(anEntity);
-	mover.mySpeed = speed;
-	mover.myDirection = direction;
 }
 
 void EntityFactory::LoadResourceComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
