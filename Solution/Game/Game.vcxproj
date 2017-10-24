@@ -127,6 +127,8 @@
   <ItemGroup>
     <ClInclude Include="AABBComponent.h" />
     <ClInclude Include="AABBProcessor.h" />
+    <ClInclude Include="AIEventProcessor.h" />
+    <ClInclude Include="AIEventSingletonComponent.h" />
     <ClInclude Include="BehaviorComponent.h" />
     <ClInclude Include="BehaviorProcessor.h" />
     <ClInclude Include="BT_FindStockpileNode.h" />
@@ -152,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABBProcessor.cpp" />
+    <ClCompile Include="AIEventProcessor.cpp" />
     <ClCompile Include="BehaviorProcessor.cpp" />
     <ClCompile Include="BT_FindStockpileNode.cpp" />
     <ClCompile Include="BT_GatherResourceNode.cpp" />

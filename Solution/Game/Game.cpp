@@ -29,6 +29,7 @@
 #include "MovementProcessor.h"
 #include "RenderProcessor.h"
 #include "SelectionProcessor.h"
+#include "AIEventProcessor.h"
 
 #include "EntityFactory.h"
 
@@ -71,7 +72,7 @@ void Game::Init(CE_Engine& anEngine)
 	myWorld->AddProcessor<MovementProcessor>();
 	myWorld->AddProcessor<AABBProcessor>();
 	myWorld->AddProcessor<BehaviorProcessor>();
-	
+	myWorld->AddProcessor<AIEventProcessor>();
 
 	myFont = new CE_Font();
 	myFont->LoadFromFile("Data/Font/Decent_Font.png", anEngine.GetGPUContext());

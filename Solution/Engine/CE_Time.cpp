@@ -26,7 +26,7 @@ void CE_Time::Update()
 
 float CE_Time::GetFrameTime() const
 {
-	return static_cast<float>(myCurrentTime - myLastTime) / 1000000.f;
+	return min(0.1f, static_cast<float>(myCurrentTime - myLastTime) / 1000000.f);
 }
 
 CE_TimeUnit CE_Time::GetCurrent() const

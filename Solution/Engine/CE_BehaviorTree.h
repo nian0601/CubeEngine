@@ -15,14 +15,12 @@ public:
 
 	CE_BTInitNode& GetInitNode();
 
-	bool IsFinished();
+	bool IsRunning();
 	void Restart();
-	void Start();
 
 private:
 	CE_BTNode* myRootNode;
-	bool myIsFinished;
-	bool myIsStarted;
+	bool myIsRunning;
 
 	CE_Blackboard* myBlackboard;
 };

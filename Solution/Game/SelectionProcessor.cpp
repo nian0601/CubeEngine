@@ -7,9 +7,11 @@
 
 #include <CE_Camera.h>
 #include <CPY_Intersection.h>
+#include "TranslationComponent.h"
+#include "AIEventSingletonComponent.h"
 
 SelectionProcessor::SelectionProcessor(CE_World& aWorld, const CE_Camera& aCamera)
-	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<AABBComponent>>())
+	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<AABBComponent, TranslationComponent>>())
 	, myCamera(aCamera)
 {
 }
@@ -17,10 +19,22 @@ SelectionProcessor::SelectionProcessor(CE_World& aWorld, const CE_Camera& aCamer
 void SelectionProcessor::Update(float /*aDelta*/)
 {
 	InputSingletonComponent& input = myWorld.GetSingletonComponent<InputSingletonComponent>();
-	CursorSingletonComponent& selectedEntity = myWorld.GetSingletonComponent<CursorSingletonComponent>();
+	CursorSingletonComponent& cursorComponent = myWorld.GetSingletonComponent<CursorSingletonComponent>();
 
 	CE_Entity entityUnderMouse = FindEntityUnderMouse(input.myMousePosition);
-	selectedEntity.myHoveredEntity = entityUnderMouse;
+	cursorComponent.myHoveredEntity = entityUnderMouse;
+
+	if (entityUnderMouse == CE_Invalid_Entity)
+		return;
+
+	if (input.ActionDown(LBUTTON))
+	{
+		AIEventSingletonComponent& aiEvents = myWorld.GetSingletonComponent<AIEventSingletonComponent>();
+		TranslationComponent& selectedTranslation = GetComponent<TranslationComponent>(entityUnderMouse);
+
+		AIEventSingletonComponent::AIEvent& event = aiEvents.myEvents.Add();
+		event.myPosition = selectedTranslation.myOrientation.GetPos();
+	}
 }
 
 CE_Entity SelectionProcessor::FindEntityUnderMouse(const CE_Vector2f& aMousePosition)

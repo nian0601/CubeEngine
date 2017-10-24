@@ -8,8 +8,7 @@
 CE_BehaviorTree::CE_BehaviorTree()
 {
 	myRootNode = new CE_BTInitNode();
-	myIsFinished = false;
-	myIsStarted = false;
+	myIsRunning = false;
 
 	myBlackboard = new CE_Blackboard();
 }
@@ -23,14 +22,13 @@ CE_BehaviorTree::~CE_BehaviorTree()
 
 void CE_BehaviorTree::Update(float aDelta)
 {
-	if (myIsFinished || !myIsStarted)
+	if(!myIsRunning)
 		return;
 
 	eBTActionState status = myRootNode->Update(*myBlackboard, aDelta);
 	if (status != eBTActionState::IN_PROGRESS)
 	{
-		myIsFinished = true;
-		myIsStarted = false;
+		myIsRunning = false;
 	}
 }
 
@@ -39,18 +37,13 @@ CE_BTInitNode& CE_BehaviorTree::GetInitNode()
 	return static_cast<CE_BTInitNode&>(*myRootNode);
 }
 
-bool CE_BehaviorTree::IsFinished()
+bool CE_BehaviorTree::IsRunning()
 {
-	return myIsFinished;
+	return myIsRunning;
 }
 
 void CE_BehaviorTree::Restart()
 {
 	myRootNode->Restart();
-	myIsFinished = false;
-}
-
-void CE_BehaviorTree::Start()
-{
-	myIsStarted = true;
+	myIsRunning = true;
 }

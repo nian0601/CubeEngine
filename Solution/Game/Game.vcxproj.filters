@@ -91,6 +91,12 @@
     <ClInclude Include="CursorSingletonComponent.h">
       <Filter>Entity\SingletonComponent</Filter>
     </ClInclude>
+    <ClInclude Include="AIEventProcessor.h">
+      <Filter>Entity\Processor</Filter>
+    </ClInclude>
+    <ClInclude Include="AIEventSingletonComponent.h">
+      <Filter>Entity\SingletonComponent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -126,6 +132,9 @@
     </ClCompile>
     <ClCompile Include="BT_GatherResourceNode.cpp">
       <Filter>Behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="AIEventProcessor.cpp">
+      <Filter>Entity\Processor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
