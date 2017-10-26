@@ -27,6 +27,9 @@ public:
 private:
 	void InitWorld();
 	void InitGrid();
+	void InitWater();
+	void InitStone();
+	void InitStockpile();
 
 	void InitGUI();
 	void PopulateEntityTreeView(unsigned int anEntity);
