@@ -125,6 +125,10 @@
     <ClCompile Include="CE_BTSequenceNode.cpp">
       <Filter>Behavior\Nodes</Filter>
     </ClCompile>
+    <ClCompile Include="CE_Blackboard.cpp">
+      <Filter>Behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_TypeID.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -268,9 +272,6 @@
     <ClInclude Include="CE_StaticArray.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="CE_TypeID.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
     <ClInclude Include="CE_ComponentStorage.h">
       <Filter>Entity</Filter>
     </ClInclude>
@@ -373,14 +374,15 @@
     <ClInclude Include="CE_BTInitNode.h">
       <Filter>Behavior\Nodes</Filter>
     </ClInclude>
-    <ClInclude Include="CE_Blackboard.h">
-      <Filter>Behavior\Nodes</Filter>
-    </ClInclude>
     <ClInclude Include="CE_BTMoveToNode.h">
       <Filter>Behavior\Nodes</Filter>
     </ClInclude>
     <ClInclude Include="CE_BTSequenceNode.h">
       <Filter>Behavior\Nodes</Filter>
     </ClInclude>
+    <ClInclude Include="CE_Blackboard.h">
+      <Filter>Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_TypeID.h" />
   </ItemGroup>
 </Project>

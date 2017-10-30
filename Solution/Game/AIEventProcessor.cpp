@@ -33,10 +33,11 @@ void AIEventProcessor::Update(float /*aDelta*/)
 		CE_Blackboard& blackboard = behavior.myBehaviorTree->GetBlackboard();
 
 		TranslationComponent& translation = myWorld.GetComponent<TranslationComponent>(agent);
-		blackboard.myPosition = translation.myOrientation.GetPos();
+		blackboard.Set("selfPosition", translation.myOrientation.GetPos());
 
-		blackboard.myTargetPosition = event.myPosition;
-		blackboard.myTargetPosition.y += 1.f;
+		CE_Vector3f targetPosition = event.myPosition;
+		targetPosition.y += 1.f;
+		blackboard.Set("targetPosition", targetPosition);
 
 		aiEvents.myEvents.RemoveNonCyclicAtIndex(0);
 

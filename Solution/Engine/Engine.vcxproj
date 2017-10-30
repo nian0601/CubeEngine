@@ -136,6 +136,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CE_BaseProcessor.cpp" />
+    <ClCompile Include="CE_Blackboard.cpp" />
     <ClCompile Include="CE_BTMoveToNode.cpp" />
     <ClCompile Include="CE_BTSequenceNode.cpp" />
     <ClCompile Include="CE_Camera.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="CE_TextShader.cpp" />
     <ClCompile Include="CE_Texture.cpp" />
     <ClCompile Include="CE_Time.cpp" />
+    <ClCompile Include="CE_TypeID.cpp" />
     <ClCompile Include="CE_Window.cpp" />
     <ClCompile Include="CUI_Button.cpp" />
     <ClCompile Include="CUI_Container.cpp" />

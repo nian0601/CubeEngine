@@ -23,9 +23,13 @@ void BehaviorProcessor::Update(float aDelta)
 		if (behavior.myBehaviorTree->IsRunning())
 		{
 			CE_Blackboard& blackboard = behavior.myBehaviorTree->GetBlackboard();
+			CE_Vector3f selfPosition;
+
+			if(blackboard.Get("selfPosition", selfPosition) == false)
+				continue;
 
 			TranslationComponent& translation = GetComponent<TranslationComponent>(entity);
-			translation.myOrientation.SetPos(blackboard.myPosition);
+			translation.myOrientation.SetPos(selfPosition);
 		}
 	}
 }

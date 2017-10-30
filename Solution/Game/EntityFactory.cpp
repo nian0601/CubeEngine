@@ -337,11 +337,12 @@ void EntityFactory::LoadBehaviorComponent(CE_Entity anEntity, CE_FileParser& aFi
 
 	sequence->AddChild(new CE_BTMoveToNode());
 	sequence->AddChild(new BT_GatherResourceNode());
-	sequence->AddChild(new BT_FindStockpileNode(myRealWorld));
+	sequence->AddChild(new BT_FindStockpileNode());
 	sequence->AddChild(new CE_BTMoveToNode());
 
 	CE_Blackboard& blackboard = behavior.myBehaviorTree->GetBlackboard();
-	blackboard.mySpeed = speed;
+	blackboard.Set("speed", speed);
+	blackboard.Set("world", &myRealWorld);
 }
 
 void EntityFactory::LoadEmptyComponent(CE_FileParser& aFileParser)

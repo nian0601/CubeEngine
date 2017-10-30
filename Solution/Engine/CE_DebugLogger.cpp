@@ -36,9 +36,9 @@ void CE_DebugLogger::Assert(bool anExpression, char* aFile, char* aFunction, int
 
 	//Combine VA_ARGS string with general debug-output
 	myTempString.Clear();
-	myTempString += "\nError:\n";
+	myTempString += "\n\nError: ";
 	myTempString += buffer;
-	myTempString += "\n\nFunction: ";
+	myTempString += "\nFunction: ";
 	myTempString += aFunction;
 	myTempString += "\n";
 

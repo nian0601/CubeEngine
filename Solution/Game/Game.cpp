@@ -33,6 +33,9 @@
 
 #include "EntityFactory.h"
 
+
+#include <CE_Blackboard.h>
+
 Game::Game()
 {
 }
@@ -48,6 +51,10 @@ Game::~Game()
 
 void Game::Init(CE_Engine& anEngine)
 {
+	CE_REGISTER_TYPE(float);
+	CE_REGISTER_TYPE(CE_Vector4f);
+	CE_REGISTER_TYPE(CE_World*);
+
 	myWorld = new CE_World();
 	myTemplateWorld = new CE_World();
 	myEntityFactory = new EntityFactory(*myWorld, *myTemplateWorld);
@@ -81,6 +88,26 @@ void Game::Init(CE_Engine& anEngine)
 	InitWorld();
 
 	//myGUIWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 320, 320}, "GUI Window");
+
+	
+
+	//CE_Blackboard blackboard;
+	//
+	//float float1 = 123.f;
+	//CE_Vector4f vector1(4.f, 5.f, 6.f, 7.f);
+	//
+	//blackboard.Set("float1", float1);
+	//blackboard.Set("vector1", vector1);
+	//blackboard.Set("world", myWorld);
+	//
+	//float float2;
+	//blackboard.Get("float1", float2);
+	//
+	//CE_Vector4f vector2;
+	//blackboard.Get("vector1", vector2);
+	//
+	//CE_World* tempWorld = nullptr;
+	//blackboard.Get("vector1", tempWorld);
 }
 
 void Game::Update(float aDelta)
