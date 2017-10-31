@@ -51,9 +51,11 @@ Game::~Game()
 
 void Game::Init(CE_Engine& anEngine)
 {
-	CE_REGISTER_TYPE(float);
-	CE_REGISTER_TYPE(CE_Vector4f);
-	CE_REGISTER_TYPE(CE_World*);
+	CE_TYPE_REGISTER(float);
+	CE_TYPE_REGISTER(CE_Vector3f);
+	CE_TYPE_REGISTER(CE_Vector4f);
+	CE_TYPE_REGISTER(CE_World*);
+	CE_TYPE_REGISTER(double);
 
 	myWorld = new CE_World();
 	myTemplateWorld = new CE_World();
@@ -92,6 +94,8 @@ void Game::Init(CE_Engine& anEngine)
 
 
 	//CE_Blackboard blackboard;
+	//double test = 1.0;
+	//blackboard.Set("double", test);
 	//
 	//float float1 = 123.f;
 	//CE_Vector4f vector1(4.f, 5.f, 6.f, 7.f);

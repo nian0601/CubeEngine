@@ -27,30 +27,45 @@ template <typename BaseType>
 unsigned int CE_TypeID<BaseType>::myNextID = 0;
 
 
-struct CE_Dummy_Type_Parent
-{};
-
 class CE_TypeReflection
 {
 public:
 	template <typename T>
 	static const char* GetName()
 	{
-		unsigned int typeID = CE_TypeID<CE_Dummy_Type_Parent>::GetID<T>();
-		return myNames[typeID];
+		bool isRegistered = IsRegistered<T>();
+		CE_ASSERT(isRegistered, "Tried to GetName() of a unregistered type");
+		
+		if (isRegistered)
+		{
+			unsigned int typeID = CE_TypeID<CE_Dummy_Type_Parent>::GetID<T>();
+			return myNames[typeID];
+		}
+
+		return nullptr;
 	}
 
-	static void RegisterType(unsigned int anID, const char* aName)
+	template <typename T>
+	static bool IsRegistered()
 	{
-		myNames[anID] = aName;
+		unsigned int typeID = CE_TypeID<CE_Dummy_Type_Parent>::GetID<T>();
+		return myNames.KeyExists(typeID);
+	}
+
+	template <typename T>
+	static void RegisterType(const char* aName)
+	{
+		unsigned int typeID = CE_TypeID<CE_Dummy_Type_Parent>::GetID<T>();
+		myNames[typeID] = aName;
 	}
 
 private:
+	struct CE_Dummy_Type_Parent
+	{};
+
 	static CE_Map<unsigned int, const char*> myNames;
 };
 
-
-
-
-#define CE_GET_TYPE_NAME(type) CE_TypeReflection::GetName<type>()
-#define CE_REGISTER_TYPE(type) CE_TypeReflection::RegisterType(CE_TypeID<CE_Dummy_Type_Parent>::GetID<type>(), #type)
+#define CE_TYPE_GET_NAME(type) CE_TypeReflection::GetName<type>()
+#define CE_TYPE_IS_REGISTERED(type) CE_TypeReflection::IsRegistered<type>()
+#define CE_TYPE_REGISTER(type) CE_TypeReflection::RegisterType<type>(#type)
