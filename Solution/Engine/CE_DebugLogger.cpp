@@ -2,10 +2,10 @@
 
 #include "CE_DebugLogger.h"
 
-
 #include <ctime>
 #include <cstdarg>
 #include <windows.h>
+#include <iostream>
 
 CE_DebugLogger* CE_DebugLogger::ourInstance = nullptr;
 
@@ -29,37 +29,31 @@ void CE_DebugLogger::Assert(bool anExpression, char* aFile, char* aFunction, int
 
 	char buffer[1024];
 	va_list args;
-	va_start(args, localFormated);
-	vsprintf_s(buffer, localFormated, args);
-	perror(buffer);
+	va_start(args, aFormattedString);
+	if (vsprintf_s(buffer, aFormattedString, args) < 0)
+	{
+		perror(buffer);
+	}
 	va_end(args);
 
 	//Combine VA_ARGS string with general debug-output
 	myTempString.Clear();
-	myTempString += "\n\nError: ";
+	myTempString += "!! ASSERTION !!\n";
+	myTempString += "Error: ";
 	myTempString += buffer;
+	myTempString += "\nFile: ";
+	myTempString += aFile;
 	myTempString += "\nFunction: ";
 	myTempString += aFunction;
-	myTempString += "\n";
+	myTempString += " (Line: ";
+	myTempString += aLine;
+	myTempString += ")\n";
 
 	myDebugFile << myTempString.c_str();
-
-	//Convert assert-message into wchar
-	const int messageTotalSize = strlen(myTempString.c_str()) + 1;
-	wchar_t* wcharMessage = new wchar_t[messageTotalSize];
-	size_t tempSize;
-	mbstowcs_s(&tempSize, wcharMessage, messageTotalSize, myTempString.c_str(), messageTotalSize);
-
-	//Convert file-name into wchar
-	const int filenameTotalSize = strlen(aFile) + 1;
-	wchar_t* wcharFile = new wchar_t[filenameTotalSize];
-	mbstowcs_s(&tempSize, wcharFile, filenameTotalSize, aFile, filenameTotalSize);
-
-	_wassert(wcharMessage, wcharFile, aLine);
-
-	CE_SAFE_DELETE_ARRAY(wcharMessage);
-	CE_SAFE_DELETE_ARRAY(wcharFile);
-
+	
+	std::cout << myTempString.c_str();
+	int* assertPtr = nullptr;
+	*assertPtr = 1;
 }
 
 CE_DebugLogger::CE_DebugLogger()

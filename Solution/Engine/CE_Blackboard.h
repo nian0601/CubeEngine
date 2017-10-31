@@ -20,7 +20,7 @@ private:
 		unsigned int myTypeID;
 
 #ifdef _DEBUG
-		CE_String myTypeName;
+		const char* myTypeName;
 #endif
 	};
 
@@ -41,9 +41,9 @@ void CE_Blackboard::Set(const CE_String& aName, const T& someData)
 		Data& data = myData[aName];
 		data.myTypeID = typeID;
 
-		//#ifdef _DEBUG
-		//		data.myTypeName = CE_GET_TYPE_NAME(T);
-		//#endif
+		#ifdef _DEBUG
+			data.myTypeName = CE_GET_TYPE_NAME(T);
+		#endif
 	}
 
 	Data& data = myData[aName];
@@ -72,15 +72,15 @@ void CE_Blackboard::AssertDataType(const CE_String& aName, const Data& someData)
 	unsigned int requestedTypeID = CE_TypeID<Data>::GetID<T>();
 	aName;
 	
-	//#ifdef _DEBUG
-	//	if (someData.myTypeID != requestedTypeID)
-	//	{
-	//		const char* requestedTypeName = CE_GET_TYPE_NAME(T);
-	//		CE_ASSERT_ALWAYS("Missmatching datatype in Blackboard. Name: %s, Stored Type: %s, Requested Type: %s", aName.c_str(), someData.myTypeName.c_str(), requestedTypeName);
-	//	}
-	//#else
-	//	CE_ASSERT(someData.myTypeID == requestedTypeID, "Missmatching typeID in blackboard");
-	//#endif
+	#ifdef _DEBUG
+		if (someData.myTypeID != requestedTypeID)
+		{
+			const char* requestedTypeName = CE_GET_TYPE_NAME(T);
+			CE_ASSERT_ALWAYS("Missmatching datatype in Blackboard. Name: %s, Stored Type: %s, Requested Type: %s", aName.c_str(), someData.myTypeName, requestedTypeName);
+		}
+	#else
+		CE_ASSERT(someData.myTypeID == requestedTypeID, "Missmatching typeID in blackboard");
+	#endif
 
 	CE_ASSERT(someData.myTypeID == requestedTypeID, "Missmatching typeID in blackboard");
 }

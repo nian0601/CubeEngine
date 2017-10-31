@@ -89,7 +89,7 @@ void Game::Init(CE_Engine& anEngine)
 
 	//myGUIWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 320, 320}, "GUI Window");
 
-	
+
 
 	//CE_Blackboard blackboard;
 	//
