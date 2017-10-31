@@ -11,14 +11,6 @@ public:
 		static const unsigned int id = myNextID++;
 		return id;
 	}
-
-	template <typename T>
-	static const char* GetName(const char* aName)
-	{
-		static const char* name = aName;
-		return name;
-	}
-
 private:
 	static unsigned int myNextID;
 };
@@ -38,7 +30,7 @@ public:
 		
 		if (isRegistered)
 		{
-			unsigned int typeID = CE_TypeID<CE_Dummy_Type_Parent>::GetID<T>();
+			unsigned int typeID = CE_TypeID<CE_Type_Dummy_Parent>::GetID<T>();
 			return myNames[typeID];
 		}
 
@@ -48,20 +40,19 @@ public:
 	template <typename T>
 	static bool IsRegistered()
 	{
-		unsigned int typeID = CE_TypeID<CE_Dummy_Type_Parent>::GetID<T>();
+		unsigned int typeID = CE_TypeID<CE_Type_Dummy_Parent>::GetID<T>();
 		return myNames.KeyExists(typeID);
 	}
 
 	template <typename T>
 	static void RegisterType(const char* aName)
 	{
-		unsigned int typeID = CE_TypeID<CE_Dummy_Type_Parent>::GetID<T>();
+		unsigned int typeID = CE_TypeID<CE_Type_Dummy_Parent>::GetID<T>();
 		myNames[typeID] = aName;
 	}
 
 private:
-	struct CE_Dummy_Type_Parent
-	{};
+	struct CE_Type_Dummy_Parent {};
 
 	static CE_Map<unsigned int, const char*> myNames;
 };
