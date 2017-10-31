@@ -26,3 +26,15 @@ void CUI_ValueController::AsString(CE_String& outString) const
 	outString += myCachedValue;
 	outString += " ";
 }
+
+float CUI_ValueController::Get() const
+{
+	return myCachedValue;
+}
+
+void CUI_ValueController::Set(float aValue)
+{
+	CE_ASSERT(myValuePtr != nullptr, "Invalid ValuePtr in CUI_ValueController");
+
+	*myValuePtr = aValue;
+}

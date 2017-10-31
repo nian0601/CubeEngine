@@ -3,8 +3,19 @@
 
 #include <CE_Engine.h>
 #include <CE_Font.h>
+#include <CE_World.h>
+#include <CE_Camera.h>
+
+#include "RenderProcessor.h"
+#include "RenderComponent.h"
+#include "TranslationComponent.h"
 
 #include <CUI_Manager.h>
+#include <CUI_TreeView.h>
+#include <CUI_HBox.h>
+#include <CUI_Label.h>
+#include <CUI_Button.h>
+#include <CUI_ValueController.h>
 
 EntityEditorContext::EntityEditorContext()
 {
@@ -18,19 +29,27 @@ EntityEditorContext::~EntityEditorContext()
 
 void EntityEditorContext::Init(CE_Engine& anEngine)
 {
+	CE_Camera& camera = anEngine.GetCamera();
+	camera.SetPosition(CE_Vector3f(5.f, 10.f, -5.f));
+	camera.Rotate(CE_Matrix44f::CreateRotateAroundX(3.14f * 0.25));
+
 	myInput = &anEngine.GetInput();
 	myRendererProxy = &anEngine.GetRendererProxy();
 
 	myFont = new CE_Font();
 	myFont->LoadFromFile("Data/Font/Decent_Font.png", anEngine.GetGPUContext());
 
+	myWorld = new CE_World();
+
+	RenderProcessor* renderProcessor = new RenderProcessor(*myWorld, anEngine.GetRendererProxy());
+	myWorld->AddProcessor(renderProcessor);
+
 	InitGUI();
 }
 
 void EntityEditorContext::Update(float aDelta)
 {
-	aDelta;
-
+	myWorld->Update(aDelta);
 	myUIManager->Update();
 }
 
@@ -41,80 +60,83 @@ void EntityEditorContext::Render()
 
 void EntityEditorContext::InitGUI()
 {
-	//CUI_TreeView* debugTree = new CUI_TreeView(*myFont, "+ Debug Menu");
-	//
-	//CUI_Button* reloadWorldButton = new CUI_Button(*myFont, "Reload World");
-	//reloadWorldButton->myOnClick = std::bind(&Game::OnClickFunction, this);
-	//debugTree->AddWidget(reloadWorldButton);
-	//
-	//myEntityTreeView = new CUI_TreeView(*myFont, "+ Entity Menu");
-	//myEntityTreeView->SetExpanded(false);
-	//
-	//myUIManager = new CUI_Manager(*myInput);
-	//myUIManager->AddWidget(debugTree);
-	//myUIManager->AddWidget(myEntityTreeView);
+	myTreeView = new CUI_TreeView(*myFont, "Components");
+	myUIManager = new CUI_Manager(*myInput);
+	myUIManager->AddWidget(myTreeView);
+
+	CE_Entity entity = myWorld->CreateEmptyEntity();
+	myWorld->AddComponent<TranslationComponent>(entity);
+
+	RenderComponent& renderComponent = myWorld->AddComponent<RenderComponent>(entity);
+	CreateRenderComponentWidget(renderComponent);
 }
 
-void EntityEditorContext::PopulateEntityTreeView(unsigned int anEntity)
+void EntityEditorContext::CreateRenderComponentWidget(RenderComponent& aComponent)
 {
-	anEntity;
-	//myEntityTreeView->DeleteAllChildren();
-	//
-	//CreatePositionWidget(anEntity);
-	//CreateMovementWidget(anEntity);
+	RenderComponent::Entry& entry = aComponent.myEntries.Add();
+	entry.myScale = CE_Vector3f(1.f);
+
+	entry.myColor = CE_Vector4f(0.25f, 0.5f, 0.75f, 1.f);
+	myTreeView->AddWidget(CreateVectorWidget("Scale", entry.myScale));
+	myTreeView->AddWidget(CreateColorWidget("Color", entry.myColor));
 }
 
-void EntityEditorContext::CreatePositionWidget(unsigned int anEntity)
+CUI_TreeView* EntityEditorContext::CreateVectorWidget(const char* aText, CE_Vector3f& aVector)
 {
-	anEntity;
-	//if (!myWorld->HasComponent<TranslationComponent>(anEntity))
-	//	return;
-	//
-	//TranslationComponent& translation = myWorld->GetComponent<TranslationComponent>(anEntity);
-	//
-	//CUI_TreeView* positionView = new CUI_TreeView(*myFont, "Position");
-	//
-	//CUI_HBox* xPosBox = new CUI_HBox();
-	//xPosBox->AddWidget(new CUI_Label(*myFont, "X:  "));
-	//xPosBox->AddWidget(new CUI_Label(*myFont, new CUI_ValueController(&translation.myOrientation.myMatrix[12])));
-	//
-	//CUI_HBox* yPosBox = new CUI_HBox();
-	//yPosBox->AddWidget(new CUI_Label(*myFont, "Y:  "));
-	//yPosBox->AddWidget(new CUI_Label(*myFont, new CUI_ValueController(&translation.myOrientation.myMatrix[13])));
-	//
-	//CUI_HBox* zPosBox = new CUI_HBox();
-	//zPosBox->AddWidget(new CUI_Label(*myFont, "Z:  "));
-	//zPosBox->AddWidget(new CUI_Label(*myFont, new CUI_ValueController(&translation.myOrientation.myMatrix[14])));
-	//
-	//positionView->AddWidget(xPosBox);
-	//positionView->AddWidget(yPosBox);
-	//positionView->AddWidget(zPosBox);
-	//
-	//myEntityTreeView->AddWidget(positionView);
+	CUI_HBox* xBox = CreateFloatController("X:   ", aVector.x);
+	CUI_HBox* yBox = CreateFloatController("Y:   ", aVector.y);
+	CUI_HBox* zBox = CreateFloatController("Z:   ", aVector.z);
+
+	CUI_TreeView* view = new CUI_TreeView(*myFont, aText);
+	view->AddWidget(xBox);
+	view->AddWidget(yBox);
+	view->AddWidget(zBox);
+	return view;
 }
 
-void EntityEditorContext::CreateMovementWidget(unsigned int anEntity)
+CUI_TreeView* EntityEditorContext::CreateColorWidget(const char* aText, CE_Vector4f& aVector)
 {
-	anEntity;
+	CUI_HBox* rBox = CreateFloatController("R:   ", aVector.x);
+	CUI_HBox* gBox = CreateFloatController("G:   ", aVector.y);
+	CUI_HBox* bBox = CreateFloatController("B:   ", aVector.z);
 
-	//if (!myWorld->HasComponent<MovementComponent>(anEntity))
-	//	return;
-	//
-	//MovementComponent& movement = myWorld->GetComponent<MovementComponent>(anEntity);
-	//
-	//CUI_TreeView* movementView = new CUI_TreeView(*myFont, "Movement");
-	//
-	//CUI_HBox* speedBox = new CUI_HBox();
-	//speedBox->AddWidget(new CUI_Label(*myFont, "Speed:  "));
-	//speedBox->AddWidget(new CUI_Label(*myFont, new CUI_ValueController(&movement.mySpeed)));
-	//
-	//movementView->AddWidget(speedBox);
-	//
-	//myEntityTreeView->AddWidget(movementView);
+	CUI_TreeView* view = new CUI_TreeView(*myFont, aText);
+	view->AddWidget(rBox);
+	view->AddWidget(gBox);
+	view->AddWidget(bBox);
+	return view;
 }
 
-void EntityEditorContext::OnClickFunction()
+CUI_HBox* EntityEditorContext::CreateFloatController(const char* aText, float& aValue)
 {
-	//myWorld->DestroyAllEntities();
-	//InitWorld();
+	CUI_HBox* box = new CUI_HBox();
+	box->AddWidget(new CUI_Label(*myFont, aText));
+
+	CUI_ValueController* controller = new CUI_ValueController(&aValue);
+	box->AddWidget(new CUI_Label(*myFont, controller));
+	AddModifyButtons(controller, box);
+
+	return box;
+}
+
+void EntityEditorContext::AddModifyButtons(CUI_ValueController* aController, CUI_HBox* aParent)
+{
+	CUI_Button* incrementButton = new CUI_Button(*myFont, " + ");
+	incrementButton->myOnClick = std::bind(&EntityEditorContext::ModifyValueController, this, aController, 0.1f);
+	aParent->AddWidget(incrementButton);
+
+	CUI_Button* decrementButton = new CUI_Button(*myFont, " - ");
+	decrementButton->myOnClick = std::bind(&EntityEditorContext::ModifyValueController, this, aController, -0.1f);
+	aParent->AddWidget(decrementButton);
+}
+
+void EntityEditorContext::ModifyValueController(CUI_ValueController* aController, float aModifier)
+{
+	float value = aController->Get();
+
+	value += aModifier;
+	value = CE_Min(value, 1.f);
+	value = CE_Max(value, 0.f);
+
+	aController->Set(value);
 }

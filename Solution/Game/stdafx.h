@@ -13,3 +13,4 @@
 #include <CE_String.h>
 
 #include <CE_CustomEntityTypes.h>
+#include <CE_CommonHelper.h>

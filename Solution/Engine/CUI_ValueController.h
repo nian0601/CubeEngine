@@ -9,6 +9,9 @@ public:
 
 	bool IsValid() const { return myValuePtr != nullptr; }
 
+	float Get() const;
+	void Set(float aValue);
+
 private:
 	float myCachedValue;
 	float* myValuePtr;

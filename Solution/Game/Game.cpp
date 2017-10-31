@@ -17,7 +17,8 @@ Game::~Game()
 
 void Game::Init(CE_Engine& anEngine)
 {
-	myGameContext = new InGameContext();
+	//myGameContext = new InGameContext();
+	myGameContext = new EntityEditorContext();
 	myGameContext->Init(anEngine);
 }
 

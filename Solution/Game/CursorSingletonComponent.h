@@ -6,5 +6,8 @@
 
 struct CursorSingletonComponent : public CE_BaseComponent
 {
+	CursorSingletonComponent()
+		: myHoveredEntity(CE_Invalid_Entity)
+	{}
 	CE_Entity myHoveredEntity;
 };
