@@ -19,6 +19,9 @@
     <Filter Include="Behavior">
       <UniqueIdentifier>{087dbb66-3dc6-4d7f-8062-6ee006aff25d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Contexts">
+      <UniqueIdentifier>{d8cc10a0-2462-4b9f-a9d2-4f42ab53f429}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -97,6 +100,15 @@
     <ClInclude Include="AIEventSingletonComponent.h">
       <Filter>Entity\SingletonComponent</Filter>
     </ClInclude>
+    <ClInclude Include="GameContext.h">
+      <Filter>Contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="InGameContext.h">
+      <Filter>Contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityEditorContext.h">
+      <Filter>Contexts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -135,6 +147,12 @@
     </ClCompile>
     <ClCompile Include="AIEventProcessor.cpp">
       <Filter>Entity\Processor</Filter>
+    </ClCompile>
+    <ClCompile Include="InGameContext.cpp">
+      <Filter>Contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityEditorContext.cpp">
+      <Filter>Contexts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

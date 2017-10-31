@@ -138,6 +138,9 @@
     <ClInclude Include="CreateEntitySingletonComponent.h" />
     <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameContext.h" />
+    <ClInclude Include="EntityEditorContext.h" />
+    <ClInclude Include="InGameContext.h" />
     <ClInclude Include="InputProcessor.h" />
     <ClInclude Include="InputSingletonComponent.h" />
     <ClInclude Include="MovementComponent.h" />
@@ -161,6 +164,8 @@
     <ClCompile Include="CreateEntityProcessor.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="EntityEditorContext.cpp" />
+    <ClCompile Include="InGameContext.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="MovementProcessor.cpp" />
     <ClCompile Include="RenderProcessor.cpp" />

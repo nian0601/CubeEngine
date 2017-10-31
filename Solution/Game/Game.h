@@ -4,16 +4,13 @@
 
 class CE_Input;
 class CE_Font;
-class CE_World;
 class CE_Window;
 
 class CUI_Manager;
 class CUI_TreeView;
-class CUI_Widget;
 
-class EntityFactory;
+class GameContext;
 
-class CE_BehaviorTree;
 class Game : public CE_Game
 {
 public:
@@ -25,24 +22,14 @@ public:
 	void Render() override;
 
 private:
-	void InitWorld();
-	void InitGrid();
-	void InitWater();
-	void InitStone();
-	void InitStockpile();
-
 	void InitGUI();
 	void PopulateEntityTreeView(unsigned int anEntity);
 	void CreatePositionWidget(unsigned int anEntity);
 	void CreateMovementWidget(unsigned int anEntity);
 
-
 	void OnClickFunction();
 
-	CE_World* myWorld;
-	CE_World* myTemplateWorld;
-
-	EntityFactory* myEntityFactory;
+	
 	CUI_Manager* myUIManager;
 	CUI_TreeView* myEntityTreeView;
 
@@ -51,4 +38,6 @@ private:
 	CE_Font* myFont;
 
 	CE_Window* myGUIWindow;
+
+	GameContext* myGameContext;
 };
