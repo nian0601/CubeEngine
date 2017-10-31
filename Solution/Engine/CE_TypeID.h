@@ -47,6 +47,8 @@ public:
 	template <typename T>
 	static void RegisterType(const char* aName)
 	{
+		CE_ASSERT(IsRegistered<T>() == false, "Tried to register type [%s] more than once", aName);
+
 		unsigned int typeID = CE_TypeID<CE_Type_Dummy_Parent>::GetID<T>();
 		myNames[typeID] = aName;
 	}
