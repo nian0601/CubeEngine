@@ -30,8 +30,8 @@ EntityEditorContext::~EntityEditorContext()
 void EntityEditorContext::Init(CE_Engine& anEngine)
 {
 	CE_Camera& camera = anEngine.GetCamera();
-	camera.SetPosition(CE_Vector3f(5.f, 10.f, -5.f));
-	camera.Rotate(CE_Matrix44f::CreateRotateAroundX(3.14f * 0.25));
+	camera.SetPosition(CE_Vector3f(0.f, 10.f, -5.f));
+	camera.Rotate(CE_Matrix44f::CreateRotateAroundX(3.14f * 0.30f));
 
 	myInput = &anEngine.GetInput();
 	myRendererProxy = &anEngine.GetRendererProxy();
@@ -44,6 +44,7 @@ void EntityEditorContext::Init(CE_Engine& anEngine)
 	RenderProcessor* renderProcessor = new RenderProcessor(*myWorld, anEngine.GetRendererProxy());
 	myWorld->AddProcessor(renderProcessor);
 
+	myNumEntries = 0;
 	InitGUI();
 }
 
@@ -61,24 +62,53 @@ void EntityEditorContext::Render()
 void EntityEditorContext::InitGUI()
 {
 	myTreeView = new CUI_TreeView(*myFont, "Components");
+	myTreeView->SetExpanded(true);
+
 	myUIManager = new CUI_Manager(*myInput);
 	myUIManager->AddWidget(myTreeView);
 
 	CE_Entity entity = myWorld->CreateEmptyEntity();
 	myWorld->AddComponent<TranslationComponent>(entity);
 
-	RenderComponent& renderComponent = myWorld->AddComponent<RenderComponent>(entity);
-	CreateRenderComponentWidget(renderComponent);
+	myRenderComponent = &myWorld->AddComponent<RenderComponent>(entity);
+	myRenderComponent->myEntries.Respace(128);
+	CreateRenderComponentWidget();
 }
 
-void EntityEditorContext::CreateRenderComponentWidget(RenderComponent& aComponent)
+void EntityEditorContext::CreateRenderComponentWidget()
 {
-	RenderComponent::Entry& entry = aComponent.myEntries.Add();
-	entry.myScale = CE_Vector3f(1.f);
+	myRenderComponentView = new CUI_TreeView(*myFont, "Render Component");
+	myRenderComponentView->SetExpanded(true);
+	myTreeView->AddWidget(myRenderComponentView);
+	
 
+	CUI_Button* addEntryButton = new CUI_Button(*myFont, "Add Entry");
+	addEntryButton->myOnClick = std::bind(&EntityEditorContext::AddRenderEntry, this);
+	myRenderComponentView->AddWidget(addEntryButton);
+
+	CUI_Button* clearEntriesButton = new CUI_Button(*myFont, "Clear Entries");
+	clearEntriesButton->myOnClick = std::bind(&EntityEditorContext::ClearRenderEntries, this);
+	myRenderComponentView->AddWidget(clearEntriesButton);
+
+
+	AddRenderEntry();
+	AddRenderEntry();
+}
+
+void EntityEditorContext::AddRenderEntry()
+{
+	RenderComponent::Entry& entry = myRenderComponent->myEntries.Add();
+	entry.myScale = CE_Vector3f(1.f);
 	entry.myColor = CE_Vector4f(0.25f, 0.5f, 0.75f, 1.f);
-	myTreeView->AddWidget(CreateVectorWidget("Scale", entry.myScale));
-	myTreeView->AddWidget(CreateColorWidget("Color", entry.myColor));
+
+	CE_String text = "Entry ";
+	text += myNumEntries++;
+	CUI_TreeView* entryView = new CUI_TreeView(*myFont, text);
+
+	entryView->AddWidget(CreateVectorWidget("Scale", entry.myScale));
+	entryView->AddWidget(CreateColorWidget("Color", entry.myColor));
+
+	myRenderComponentView->AddWidget(entryView);
 }
 
 CUI_TreeView* EntityEditorContext::CreateVectorWidget(const char* aText, CE_Vector3f& aVector)
@@ -139,4 +169,10 @@ void EntityEditorContext::ModifyValueController(CUI_ValueController* aController
 	value = CE_Max(value, 0.f);
 
 	aController->Set(value);
+}
+
+void EntityEditorContext::ClearRenderEntries()
+{
+	myRenderComponentView->DeleteChildren(2);
+	myRenderComponent->myEntries.RemoveAll();
 }

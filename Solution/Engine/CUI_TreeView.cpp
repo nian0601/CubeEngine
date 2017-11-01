@@ -4,7 +4,7 @@
 #include "CUI_TreeView.h"
 
 CUI_TreeView::CUI_TreeView()
-	: myIsExpanded(true)
+	: myIsExpanded(false)
 {
 	myButton = new CUI_Button({ 30.f, 30.f }, { 0.37f, 0.37f, 0.37f, 1.f });
 	myButton->myOnClick = std::bind(&CUI_TreeView::OnToggleViewClick, this);
@@ -13,7 +13,7 @@ CUI_TreeView::CUI_TreeView()
 }
 
 CUI_TreeView::CUI_TreeView(const CE_Font& aFont, const CE_String& aString)
-	: myIsExpanded(true)
+	: myIsExpanded(false)
 {
 	myButton = new CUI_Button(aFont, aString);
 	myButton->myOnClick = std::bind(&CUI_TreeView::OnToggleViewClick, this);
@@ -61,6 +61,12 @@ void CUI_TreeView::PrepareLayout()
 void CUI_TreeView::DeleteAllChildren()
 {
 	for (int i = myWidgets.Size() - 1; i >= 1; --i)
+		myWidgets.DeleteCyclicAtIndex(i);
+}
+
+void CUI_TreeView::DeleteChildren(int aStartIndex)
+{
+	for (int i = myWidgets.Size() - 1; i >= 1 + aStartIndex; --i)
 		myWidgets.DeleteCyclicAtIndex(i);
 }
 

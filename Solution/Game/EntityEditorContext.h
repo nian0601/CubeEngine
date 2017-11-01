@@ -27,7 +27,8 @@ public:
 private:
 	void InitGUI();
 	
-	void CreateRenderComponentWidget(RenderComponent& aComponent);
+	void CreateRenderComponentWidget();
+	void AddRenderEntry();
 	CUI_TreeView* CreateVectorWidget(const char* aText, CE_Vector3f& aVector);
 	CUI_TreeView* CreateColorWidget(const char* aText, CE_Vector4f& aVector);
 
@@ -35,14 +36,20 @@ private:
 	void AddModifyButtons(CUI_ValueController* aController, CUI_HBox* aParent);
 
 	void ModifyValueController(CUI_ValueController* aController, float aModifier);
+	void ClearRenderEntries();
+
+	RenderComponent* myRenderComponent;
 
 	CUI_Manager* myUIManager;
 	CUI_TreeView* myTreeView;
+	CUI_TreeView* myRenderComponentView;
 
 	CE_Input* myInput;
 	CE_Font* myFont;
 	CE_RendererProxy* myRendererProxy;
 
 	CE_World* myWorld;
+
+	int myNumEntries;
 };
 

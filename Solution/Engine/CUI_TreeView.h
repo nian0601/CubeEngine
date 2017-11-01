@@ -13,6 +13,7 @@ public:
 	void PrepareLayout();
 
 	void DeleteAllChildren() override;
+	void DeleteChildren(int aStartIndex);
 	void SetExpanded(bool aStatus);
 
 private:
