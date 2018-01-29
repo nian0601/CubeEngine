@@ -17,7 +17,7 @@ public:
 	CE_CubeShader();
 	~CE_CubeShader();
 
-	void Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUContext);
+	void Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUContext, bool aOnlyPosition);
 
 	void SetGlobalGPUData(const CE_GPUContext& aGPUContext, const CE_Camera& aCamera);
 

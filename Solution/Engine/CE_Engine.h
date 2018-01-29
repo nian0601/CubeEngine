@@ -1,6 +1,7 @@
 #pragma once
 
 class CE_Camera;
+class CE_DebugRenderManager;
 class CE_Input;
 class CE_GPUContext;
 class CE_Renderer;
@@ -27,6 +28,8 @@ public:
 
 	CE_GPUContext& GetGPUContext();
 
+	static CE_DebugRenderManager& GetDebugRenderManager();
+
 private:
 	CE_Window* myMainWindow;
 	CE_DirectX* myDirectX;
@@ -39,5 +42,7 @@ private:
 
 	CE_Camera* myCamera;
 	CE_Renderer* myRenderer;
+
+	static CE_DebugRenderManager* myDebugRenderManager;
 };
 

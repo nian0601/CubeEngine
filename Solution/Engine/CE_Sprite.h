@@ -14,9 +14,6 @@ public:
 
 	void Render(const CE_GPUContext& aGPUContext);
 
-	int GetIndexCount() const { return myIndexCount; }
-	const CE_Matrix44f& GetOrientation() const { return myOrientation; }
-
 	void SetColor(const CE_Vector4f& aColor);
 	void SetPosition(const CE_Vector2f& aPosition);
 	void SetSize(const CE_Vector2f& aSize);

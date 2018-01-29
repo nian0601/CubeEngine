@@ -1,0 +1,34 @@
+#pragma once
+
+#include "CE_DebugPrimitives.h"
+
+struct ID3D11Buffer;
+
+class CE_GPUContext;
+
+class CE_LineRenderObject
+{
+public:
+	CE_LineRenderObject();
+	~CE_LineRenderObject();
+
+	void SetLines(const CE_GrowingArray<CE_Line>& someLines, const CE_GPUContext& aGPUContext);
+
+	void Render(const CE_GPUContext& aGPUContext);
+
+private:
+	void InitVertexAndIndexBuffers(const CE_GPUContext& aGPUContext, void* aVertexData, void* aIndexData);
+
+	struct VertexType
+	{
+		CE_Vector3f myPosition;
+		CE_Vector4f myColor;
+	};
+
+	ID3D11Buffer* myVertexBuffer;
+	int myVertexCount;
+
+	ID3D11Buffer* myIndexBuffer;
+	int myIndexCount;
+};
+

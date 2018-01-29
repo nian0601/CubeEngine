@@ -11,7 +11,11 @@ class CE_SpriteShader;
 class CE_Text;
 class CE_TextShader;
 
+class CE_LineRenderObject;
+
 class CE_RendererProxy;
+
+#include "CE_DebugPrimitives.h"
 
 class CE_Renderer
 {
@@ -21,6 +25,7 @@ public:
 
 	void Render3D(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
 	void Render2D(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy);
+	void RenderLines(CE_Camera& aCamera, const CE_GrowingArray<CE_Line>& someLines);
 
 private:
 	void RenderCubes(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
@@ -40,5 +45,8 @@ private:
 
 	CE_Text* myMSDFText;
 	CE_TextShader* myMSDFTextShader;
+
+	CE_LineRenderObject* myLineObject;
+	CE_CubeShader* myLineShader;
 };
 

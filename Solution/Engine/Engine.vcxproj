@@ -143,6 +143,7 @@
     <ClCompile Include="CE_FileParser.cpp" />
     <ClCompile Include="CE_Font.cpp" />
     <ClCompile Include="CE_Input.cpp" />
+    <ClCompile Include="CE_LineRenderObject.cpp" />
     <ClCompile Include="CE_MSDFFont.cpp" />
     <ClCompile Include="CE_MSDFGenerator.cpp" />
     <ClCompile Include="CE_Renderer.cpp" />
@@ -178,6 +179,7 @@
     <ClCompile Include="CE_WindowManager.cpp" />
     <ClCompile Include="CE_BehaviorTree.cpp" />
     <ClCompile Include="CE_BTInitNode.cpp" />
+    <ClCompile Include="CE_DebugRenderManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -195,11 +197,13 @@
     <ClInclude Include="CE_CommonHelper.h" />
     <ClInclude Include="CE_ComponentFilter.h" />
     <ClInclude Include="CE_CustomEntityTypes.h" />
+    <ClInclude Include="CE_DebugDraw.h" />
     <ClInclude Include="CE_FileParser.h" />
     <ClInclude Include="CE_Font.h" />
     <ClInclude Include="CE_Game.h" />
     <ClInclude Include="CE_GrowingArray.h" />
     <ClInclude Include="CE_Input.h" />
+    <ClInclude Include="CE_LineRenderObject.h" />
     <ClInclude Include="CE_MSDFFont.h" />
     <ClInclude Include="CE_MSDFGenerator.h" />
     <ClInclude Include="CE_Renderer.h" />
@@ -254,6 +258,8 @@
     <ClInclude Include="CE_WindowManager.h" />
     <ClInclude Include="CE_BehaviorTree.h" />
     <ClInclude Include="CE_BTInitNode.h" />
+    <ClInclude Include="CE_DebugRenderManager.h" />
+    <ClInclude Include="CE_DebugPrimitives.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

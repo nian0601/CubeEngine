@@ -8,13 +8,14 @@
 #include "CE_Text.h"
 #include "CE_DirextXFactory.h"
 #include "CE_RendererProxy.h"
+#include "CE_LineRenderObject.h"
 
 
 CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 	: myGPUContext(anGPUContext)
 {
 	myCubeShader = new CE_CubeShader();
-	myCubeShader->Init(L"Data/Shaders/Cube.ce_shader", myGPUContext);
+	myCubeShader->Init(L"Data/Shaders/Cube.ce_shader", myGPUContext, false);
 
 	myCubeModel = new CE_Model();
 	myCubeModel->InitCube(myGPUContext);
@@ -36,11 +37,20 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 	//
 	//myMSDFText = new CE_Text();
 	//myMSDFText->InitMSDF(myGPUContext);
+
+
+	myLineShader = new CE_CubeShader();
+	myLineShader->Init(L"Data/Shaders/Line.ce_shader", myGPUContext, true);
+
+	myLineObject = new CE_LineRenderObject();
 }
 
 
 CE_Renderer::~CE_Renderer()
 {
+	CE_SAFE_DELETE(myLineObject);
+	CE_SAFE_DELETE(myLineShader);
+
 	CE_SAFE_DELETE(myMSDFText);
 	CE_SAFE_DELETE(myMSDFTextShader);
 
@@ -63,6 +73,21 @@ void CE_Renderer::Render2D(const CE_Matrix44f& aOrthagonalMatrix, const CE_Rende
 {
 	RenderSprites(aOrthagonalMatrix, aRendererProxy);
 	RenderTexts(aOrthagonalMatrix, aRendererProxy);
+}
+
+void CE_Renderer::RenderLines(CE_Camera& aCamera, const CE_GrowingArray<CE_Line>& someLines)
+{
+	if (someLines.Size() == 0)
+		return;
+
+	CE_DirextXFactory* factory = CE_DirextXFactory::GetInstance();
+	factory->SetBlendState(ALPHA_BLEND);
+	factory->SetDepthStencilState(ENABLED);
+
+	myLineShader->SetGlobalGPUData(myGPUContext, aCamera);
+	
+	myLineObject->SetLines(someLines, myGPUContext);
+	myLineObject->Render(myGPUContext);
 }
 
 void CE_Renderer::RenderCubes(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)

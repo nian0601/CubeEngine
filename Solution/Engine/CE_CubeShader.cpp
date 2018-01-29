@@ -24,7 +24,7 @@ CE_CubeShader::~CE_CubeShader()
 	CE_SAFE_RELEASE(myVertexShader);
 }
 
-void CE_CubeShader::Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUContext)
+void CE_CubeShader::Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPUContext, bool aOnlyPosition)
 {
 	HRESULT result;
 	ID3D10Blob* errorMessage = nullptr;
@@ -59,34 +59,60 @@ void CE_CubeShader::Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPU
 	result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &myVertexShader);
 	result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &myPixelShader);
 
-	D3D11_INPUT_ELEMENT_DESC vertexLayout[3];
-	vertexLayout[0].SemanticName = "POSITION";
-	vertexLayout[0].SemanticIndex = 0;
-	vertexLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	vertexLayout[0].InputSlot = 0;
-	vertexLayout[0].AlignedByteOffset = 0;
-	vertexLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-	vertexLayout[0].InstanceDataStepRate = 0;
+	if (!aOnlyPosition)
+	{
+		const unsigned int numElements = 3;
+		D3D11_INPUT_ELEMENT_DESC vertexLayout[numElements];
 
-	vertexLayout[1].SemanticName = "NORMAL";
-	vertexLayout[1].SemanticIndex = 0;
-	vertexLayout[1].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	vertexLayout[1].InputSlot = 0;
-	vertexLayout[1].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
-	vertexLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-	vertexLayout[1].InstanceDataStepRate = 0;
+		vertexLayout[0].SemanticName = "POSITION";
+		vertexLayout[0].SemanticIndex = 0;
+		vertexLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		vertexLayout[0].InputSlot = 0;
+		vertexLayout[0].AlignedByteOffset = 0;
+		vertexLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		vertexLayout[0].InstanceDataStepRate = 0;
 
-	vertexLayout[2].SemanticName = "COLOR";
-	vertexLayout[2].SemanticIndex = 0;
-	vertexLayout[2].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	vertexLayout[2].InputSlot = 0;
-	vertexLayout[2].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
-	vertexLayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-	vertexLayout[2].InstanceDataStepRate = 0;
+		vertexLayout[1].SemanticName = "NORMAL";
+		vertexLayout[1].SemanticIndex = 0;
+		vertexLayout[1].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		vertexLayout[1].InputSlot = 0;
+		vertexLayout[1].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+		vertexLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		vertexLayout[1].InstanceDataStepRate = 0;
 
-	unsigned int numElements = sizeof(vertexLayout) / sizeof(vertexLayout[0]);
+		vertexLayout[2].SemanticName = "COLOR";
+		vertexLayout[2].SemanticIndex = 0;
+		vertexLayout[2].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		vertexLayout[2].InputSlot = 0;
+		vertexLayout[2].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+		vertexLayout[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		vertexLayout[2].InstanceDataStepRate = 0;
 
-	result = device->CreateInputLayout(vertexLayout, numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), &myInputLayout);
+		result = device->CreateInputLayout(vertexLayout, numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), &myInputLayout);
+	}
+	else
+	{
+		const unsigned int numElements = 2;
+		D3D11_INPUT_ELEMENT_DESC vertexLayout[numElements];
+
+		vertexLayout[0].SemanticName = "POSITION";
+		vertexLayout[0].SemanticIndex = 0;
+		vertexLayout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		vertexLayout[0].InputSlot = 0;
+		vertexLayout[0].AlignedByteOffset = 0;
+		vertexLayout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		vertexLayout[0].InstanceDataStepRate = 0;
+
+		vertexLayout[1].SemanticName = "COLOR";
+		vertexLayout[1].SemanticIndex = 0;
+		vertexLayout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		vertexLayout[1].InputSlot = 0;
+		vertexLayout[1].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+		vertexLayout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		vertexLayout[1].InstanceDataStepRate = 0;
+
+		result = device->CreateInputLayout(vertexLayout, numElements, vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), &myInputLayout);
+	}
 
 	CE_SAFE_RELEASE(vertexShaderBuffer);
 	CE_SAFE_RELEASE(pixelShaderBuffer);

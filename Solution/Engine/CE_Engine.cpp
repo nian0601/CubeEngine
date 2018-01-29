@@ -12,6 +12,9 @@
 #include "CE_WindowManager.h"
 #include "CE_DirectX.h"
 #include "CE_Window.h"
+#include "CE_DebugRenderManager.h"
+
+CE_DebugRenderManager* CE_Engine::myDebugRenderManager = nullptr;
 
 CE_Engine::CE_Engine(CE_Game* aGame)
 	: myGame(aGame)
@@ -32,6 +35,8 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 	myTime = new CE_Time();
 	myInput = new CE_Input(myMainWindow->GetHWND(), GetModuleHandle(NULL), DISCL_NONEXCLUSIVE | DISCL_FOREGROUND, DISCL_NONEXCLUSIVE | DISCL_FOREGROUND);
 
+	myDebugRenderManager = new CE_DebugRenderManager();
+
 	myGame->Init(*this);
 }
 
@@ -39,6 +44,7 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 CE_Engine::~CE_Engine()
 {
 	CE_SAFE_DELETE(myGame);
+	CE_SAFE_DELETE(myDebugRenderManager);
 	CE_SAFE_DELETE(myInput);
 	CE_SAFE_DELETE(myTime);
 	CE_SAFE_DELETE(myCamera);
@@ -70,6 +76,7 @@ void CE_Engine::Run()
 
 			myRenderer->Render3D(*myCamera, window->GetRendererProxy());
 			myRenderer->Render2D(window->GetOrthagonalProjection(), window->GetRendererProxy());
+			myRenderer->RenderLines(*myCamera, myDebugRenderManager->myLines);
 			window->FinishRender();
 		}
 	}
@@ -88,6 +95,11 @@ CE_RendererProxy& CE_Engine::GetRendererProxy()
 CE_Input& CE_Engine::GetInput()
 {
 	return *myInput;
+}
+
+CE_DebugRenderManager& CE_Engine::GetDebugRenderManager()
+{
+	return *myDebugRenderManager;
 }
 
 CE_GPUContext& CE_Engine::GetGPUContext()

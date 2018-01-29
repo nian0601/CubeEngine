@@ -129,6 +129,12 @@
       <Filter>Behavior</Filter>
     </ClCompile>
     <ClCompile Include="CE_TypeID.cpp" />
+    <ClCompile Include="CE_DebugRenderManager.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_LineRenderObject.cpp">
+      <Filter>Rendering\RenderObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -384,5 +390,17 @@
       <Filter>Behavior</Filter>
     </ClInclude>
     <ClInclude Include="CE_TypeID.h" />
+    <ClInclude Include="CE_DebugRenderManager.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_DebugPrimitives.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_LineRenderObject.h">
+      <Filter>Rendering\RenderObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_DebugDraw.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

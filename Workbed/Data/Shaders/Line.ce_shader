@@ -1,0 +1,36 @@
+cbuffer GlobalData
+{
+	Matrix View;
+	Matrix Projection;
+};
+
+struct PosNormColorVertex
+{
+	float4 Position : POSITION;
+	float4 Color : COLOR;
+};
+
+struct PosNormColorPixel
+{
+	float4 Position : SV_POSITION;
+	float4 Color : COLOR;
+};
+
+
+PosNormColorPixel VS(PosNormColorVertex aInput)
+{
+	PosNormColorPixel output;
+
+	aInput.Position.w = 1.f;
+	output.Position = mul(View, aInput.Position);
+	output.Position = mul(Projection, output.Position);
+
+	output.Color = aInput.Color;
+	return output;
+};
+
+
+float4 PS(PosNormColorPixel anInput) : SV_TARGET
+{
+	return anInput.Color;
+};

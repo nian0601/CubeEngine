@@ -79,7 +79,7 @@ void CE_Sprite::Render(const CE_GPUContext& aGPUContext)
 
 
 	// Actually render
-	context->DrawIndexed(GetIndexCount(), 0, 0);
+	context->DrawIndexed(myIndexCount, 0, 0);
 }
 
 void CE_Sprite::SetPosition(const CE_Vector2f& aPosition)

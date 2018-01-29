@@ -17,9 +17,6 @@ public:
 
 	void Render();
 
-	int GetIndexCount() const { return myIndexCount; }
-	const CE_Matrix44f& GetOrientation() const { return myOrientation; }
-
 	void SetColor(const CE_Vector4f& aColor) { myColor = aColor; }
 	void SetPosition(const CE_Vector2f& aPosition) { myPosition = aPosition; }
 	void SetText(const CE_String& aString);

@@ -149,7 +149,7 @@ void CE_Text::Render()
 
 
 	// Actually render
-	context->DrawIndexed(GetIndexCount(), 0, 0);
+	context->DrawIndexed(myIndexCount, 0, 0);
 }
 
 void CE_Text::SetText(const CE_String& aString)

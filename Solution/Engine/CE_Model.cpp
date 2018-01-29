@@ -199,7 +199,7 @@ void CE_Model::Render(const CE_GPUContext& aGPUContext)
 
 
 	// Actually render
-	context->DrawIndexed(GetIndexCount(), 0, 0);
+	context->DrawIndexed(myIndexCount, 0, 0);
 }
 
 void CE_Model::SetOrientation(const CE_Matrix44f& anOrientation)

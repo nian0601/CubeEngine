@@ -18,6 +18,8 @@
 #include "RenderProcessor.h"
 #include "SelectionProcessor.h"
 
+#include <CE_DebugDraw.h>
+
 InGameContext::InGameContext()
 {
 	CE_TYPE_REGISTER(float);
@@ -63,6 +65,8 @@ void InGameContext::Init(CE_Engine& anEngine)
 	myWorld->AddProcessor<AIEventProcessor>();
 
 	InitWorld();
+
+	CE_DRAW_LINE_TWO_COLOR(CE_Vector3f(0.f, 2.f, 0.f), CE_Vector3f(5.f, 2.f, 5.f), CE_Vector4f(1.f, 0.f, 0.f, 1.f), CE_Vector4f(0.f, 0.f, 1.f, 0.5f));
 }
 
 void InGameContext::Update(float aDelta)
