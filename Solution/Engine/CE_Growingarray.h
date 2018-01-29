@@ -9,11 +9,13 @@ enum eGrowingArray_Errors
 	_GROWINGARRAY_ERROR_COUNT,
 };
 
+#ifdef CE_ARRAY_BOUNDS_CHECK
 static const char* locGrowingArray_ErrorStrings[_GROWINGARRAY_ERROR_COUNT] = {
 	"Invalid size of growingarray",
 	"Index has to be 0 or more.",
 	"a index out of bounds!"
 };
+#endif
 
 template<typename ObjectType>
 class CE_GrowingArray
@@ -130,7 +132,10 @@ inline CE_GrowingArray<ObjectType>& CE_GrowingArray<ObjectType>::operator=(const
 template<typename ObjectType>
 inline void CE_GrowingArray<ObjectType>::Respace(int aNewSize)
 {
+#ifdef CE_ARRAY_BOUNDS_CHECK
 	CE_ASSERT(aNewSize > 0, locGrowingArray_ErrorStrings[INVALID_SIZE]);
+#endif
+
 	ObjectType* newData = new ObjectType[aNewSize];
 	if (myUseSafeModeFlag == true)
 	{
@@ -158,16 +163,22 @@ inline void CE_GrowingArray<ObjectType>::Reserve(int aNrOfItems)
 template<typename ObjectType>
 inline ObjectType& CE_GrowingArray<ObjectType>::operator[](const int& aIndex)
 {
+#ifdef CE_ARRAY_BOUNDS_CHECK
 	CE_ASSERT(aIndex >= 0, locGrowingArray_ErrorStrings[LOW_INDEX]);
 	CE_ASSERT(aIndex < myCurrentSize, locGrowingArray_ErrorStrings[HIGH_INDEX]);
+#endif
+
 	return myData[aIndex];
 }
 
 template<typename ObjectType>
 inline const ObjectType& CE_GrowingArray<ObjectType>::operator[](const int& aIndex) const
 {
+#ifdef CE_ARRAY_BOUNDS_CHECK
 	CE_ASSERT(aIndex >= 0, locGrowingArray_ErrorStrings[LOW_INDEX]);
 	CE_ASSERT(aIndex < myCurrentSize, locGrowingArray_ErrorStrings[HIGH_INDEX]);
+#endif
+
 	return myData[aIndex];
 }
 
@@ -221,8 +232,10 @@ inline bool CE_GrowingArray<ObjectType>::AddUnique(const ObjectType& aObject)
 template<typename ObjectType>
 inline void CE_GrowingArray<ObjectType>::Insert(int aIndex, const ObjectType& aObject)
 {
+#ifdef CE_ARRAY_BOUNDS_CHECK
 	CE_ASSERT(aIndex >= 0, locGrowingArray_ErrorStrings[LOW_INDEX]);
 	CE_ASSERT(aIndex < myCurrentSize, locGrowingArray_ErrorStrings[HIGH_INDEX]);
+#endif
 
 	if (myCurrentSize >= myMaxSize)
 	{
@@ -270,8 +283,10 @@ inline void CE_GrowingArray<ObjectType>::DeleteCyclic(ObjectType& aObject)
 template<typename ObjectType>
 inline void CE_GrowingArray<ObjectType>::DeleteCyclicAtIndex(int aItemNumber)
 {
+#ifdef CE_ARRAY_BOUNDS_CHECK
 	CE_ASSERT(aItemNumber >= 0, locGrowingArray_ErrorStrings[LOW_INDEX]);
 	CE_ASSERT(aItemNumber < myCurrentSize, locGrowingArray_ErrorStrings[HIGH_INDEX]);
+#endif
 
 	delete myData[aItemNumber];
 	myData[aItemNumber] = nullptr;
@@ -281,8 +296,10 @@ inline void CE_GrowingArray<ObjectType>::DeleteCyclicAtIndex(int aItemNumber)
 template<typename ObjectType>
 inline void CE_GrowingArray<ObjectType>::DeleteNonCyclicAtIndex(int aItemNumber)
 {
+#ifdef CE_ARRAY_BOUNDS_CHECK
 	CE_ASSERT(aItemNumber >= 0, locGrowingArray_ErrorStrings[LOW_INDEX]);
 	CE_ASSERT(aItemNumber < myCurrentSize, locGrowingArray_ErrorStrings[HIGH_INDEX]);
+#endif
 
 	delete myData[aItemNumber];
 	myData[aItemNumber] = nullptr;
@@ -312,8 +329,10 @@ inline void CE_GrowingArray<ObjectType>::RemoveCyclic(const ObjectType& aObject)
 template<typename ObjectType>
 inline void CE_GrowingArray<ObjectType>::RemoveCyclicAtIndex(int aItemNumber)
 {
+#ifdef CE_ARRAY_BOUNDS_CHECK
 	CE_ASSERT(aItemNumber >= 0, locGrowingArray_ErrorStrings[LOW_INDEX]);
 	CE_ASSERT(aItemNumber < myCurrentSize, locGrowingArray_ErrorStrings[HIGH_INDEX]);
+#endif
 
 	myData[aItemNumber] = myData[--myCurrentSize];
 }
@@ -336,8 +355,10 @@ inline void CE_GrowingArray<ObjectType>::RemoveNonCyclic(const ObjectType& aObje
 template<typename ObjectType>
 inline void CE_GrowingArray<ObjectType>::RemoveNonCyclicAtIndex(int aItemNumber)
 {
+#ifdef CE_ARRAY_BOUNDS_CHECK
 	CE_ASSERT(aItemNumber >= 0, locGrowingArray_ErrorStrings[LOW_INDEX]);
 	CE_ASSERT(aItemNumber < myCurrentSize, locGrowingArray_ErrorStrings[HIGH_INDEX]);
+#endif
 
 	for (int i = aItemNumber; i < myCurrentSize - 1; ++i)
 	{

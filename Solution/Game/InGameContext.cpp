@@ -63,26 +63,6 @@ void InGameContext::Init(CE_Engine& anEngine)
 	myWorld->AddProcessor<AIEventProcessor>();
 
 	InitWorld();
-
-	//CE_Blackboard blackboard;
-	//double test = 1.0;
-	//blackboard.Set("double", test);
-	//
-	//float float1 = 123.f;
-	//CE_Vector4f vector1(4.f, 5.f, 6.f, 7.f);
-	//
-	//blackboard.Set("float1", float1);
-	//blackboard.Set("vector1", vector1);
-	//blackboard.Set("world", myWorld);
-	//
-	//float float2;
-	//blackboard.Get("float1", float2);
-	//
-	//CE_Vector4f vector2;
-	//blackboard.Get("vector1", vector2);
-	//
-	//CE_World* tempWorld = nullptr;
-	//blackboard.Get("vector1", tempWorld);
 }
 
 void InGameContext::Update(float aDelta)
@@ -110,7 +90,7 @@ void InGameContext::InitWorld()
 
 void InGameContext::InitGrid()
 {
-	const int gridSize = 10;
+	const int gridSize = 20;
 	for (int z = 0; z < gridSize; ++z)
 	{
 		for (int x = 0; x < gridSize; ++x)

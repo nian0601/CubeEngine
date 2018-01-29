@@ -60,24 +60,33 @@ CE_StaticArray<Type, Size>& CE_StaticArray<Type, Size>::operator=(const CE_Stati
 template<typename Type, int Size>
 inline const Type& CE_StaticArray<Type, Size>::operator[](const int& aIndex) const
 {
+#ifdef CE_ARRAY_BOUNDS_CHECK
 	CE_ASSERT(aIndex >= 0, "Index has to be 0 or more.");
 	CE_ASSERT(aIndex < Size, "a index out of bounds!");
+#endif
+
 	return myData[aIndex];
 }
 
 template<typename Type, int Size>
 inline Type& CE_StaticArray<Type, Size>::operator[](const int& aIndex)
 {
+#ifdef CE_ARRAY_BOUNDS_CHECK
 	CE_ASSERT(aIndex >= 0, "Index has to be 0 or more.");
 	CE_ASSERT(aIndex < Size, "a index out of bounds!");
+#endif
+
 	return myData[aIndex];
 }
 
 template<typename Type, int Size>
 inline void CE_StaticArray<Type, Size>::Insert(int aIndex, Type& aObject)
 {
+#ifdef CE_ARRAY_BOUNDS_CHECK
 	CE_ASSERT(aIndex >= 0, "Index has to be 0 or more.");
 	CE_ASSERT(aIndex < Size, "a index out of bounds!");
+#endif
+
 	for (int i = Size - 2; i >= aIndex; --i)
 	{
 		myData[i + 1] = myData[i];
