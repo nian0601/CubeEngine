@@ -61,3 +61,5 @@ Release/
 # VS2015 bullshit
 *.VC.opendb
 *.VC.db
+/Workbed/Application_Release.ipdb
+/Workbed/Application_Release.iobj

@@ -52,29 +52,27 @@ void CE_ComponentStorage::AddComponent(CE_Entity aEntity, CE_BaseComponent* aCom
 
 void CE_ComponentStorage::RemoveComponent(CE_Entity aEntity, unsigned int aComponentID)
 {
-	CE_ASSERT(HasComponent(aEntity, aComponentID), "Tried to Remove an invalid component");
-
-	int index = myEntityComponents[aEntity][aComponentID];
+	int index = HasComponent(aEntity, aComponentID);
+	CE_ASSERT(index != -1, "Tried to Remove an invalid component");
 	CE_SAFE_DELETE(myComponents[aComponentID][index]);
 	myEntityComponents[aEntity][aComponentID] = -1;
 }
 
 CE_BaseComponent& CE_ComponentStorage::GetComponent(CE_Entity aEntity, unsigned int aComponentID)
 {
-	CE_ASSERT(HasComponent(aEntity, aComponentID), "Tried to Get an invalid component");
-
-	int componentIndex = myEntityComponents[aEntity][aComponentID];
-	return *myComponents[aComponentID][componentIndex];
+	int index = HasComponent(aEntity, aComponentID);
+	CE_ASSERT(index != -1, "Tried to Get an invalid component");
+	return *myComponents[aComponentID][index];
 }
 
-bool CE_ComponentStorage::HasComponent(CE_Entity aEntity, unsigned int aComponentID)
+int CE_ComponentStorage::HasComponent(CE_Entity aEntity, unsigned int aComponentID)
 {
 	if (myEntityComponents.Size() <= static_cast<int>(aEntity))
 	{
-		return false;
+		return -1;
 	}
 
-	return myEntityComponents[aEntity][aComponentID] != -1;
+	return myEntityComponents[aEntity][aComponentID];
 }
 
 const CE_GrowingArray<CE_Entity>& CE_ComponentStorage::GetEntities(const CE_ComponentFilter& aFilter)

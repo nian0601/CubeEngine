@@ -41,7 +41,7 @@ private:
 template<typename T>
 void EntityFactory::CopyComponent(CE_Entity aSource, CE_Entity aTarget)
 {
-	if (myTemplateWorld.HasComponent<T>(aSource))
+	if (myTemplateWorld.HasComponent<T>(aSource) != -1)
 	{
 		T& templateComponent = myTemplateWorld.GetComponent<T>(aSource);
 

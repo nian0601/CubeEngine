@@ -33,7 +33,7 @@ public:
 	T& GetComponent(CE_Entity aEntity);
 
 	template<typename T>
-	bool HasComponent(CE_Entity aEntity);
+	int HasComponent(CE_Entity aEntity);
 
 	template<typename T>
 	void AddProcessor();
@@ -84,7 +84,7 @@ T& CE_World::GetComponent(CE_Entity aEntity)
 }
 
 template<typename T>
-bool CE_World::HasComponent(CE_Entity aEntity)
+int CE_World::HasComponent(CE_Entity aEntity)
 {
 	return myComponentStorage->HasComponent(aEntity, CE_TypeID<CE_BaseComponent>::GetID<T>());
 }
