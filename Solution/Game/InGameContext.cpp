@@ -36,6 +36,7 @@ InGameContext::~InGameContext()
 	CE_SAFE_DELETE(myEntityFactory);
 	CE_SAFE_DELETE(myTemplateWorld);
 	CE_SAFE_DELETE(myWorld);
+	CE_SAFE_DELETE(myNavMesh);
 }
 
 void InGameContext::Init(CE_Engine& anEngine)
