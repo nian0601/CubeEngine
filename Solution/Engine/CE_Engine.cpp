@@ -77,6 +77,7 @@ void CE_Engine::Run()
 			myRenderer->Render3D(*myCamera, window->GetRendererProxy());
 			myRenderer->Render2D(window->GetOrthagonalProjection(), window->GetRendererProxy());
 			myRenderer->RenderLines(*myCamera, myDebugRenderManager->myLines);
+			myDebugRenderManager->myLines.RemoveAll();
 			window->FinishRender();
 		}
 	}

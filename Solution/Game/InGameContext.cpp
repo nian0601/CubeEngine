@@ -19,6 +19,7 @@
 #include "SelectionProcessor.h"
 
 #include <CE_DebugDraw.h>
+#include <CE_NavMesh.h>
 
 InGameContext::InGameContext()
 {
@@ -66,7 +67,7 @@ void InGameContext::Init(CE_Engine& anEngine)
 
 	InitWorld();
 
-	CE_DRAW_LINE_TWO_COLOR(CE_Vector3f(0.f, 2.f, 0.f), CE_Vector3f(5.f, 2.f, 5.f), CE_Vector4f(1.f, 0.f, 0.f, 1.f), CE_Vector4f(0.f, 0.f, 1.f, 0.5f));
+	myNavMesh = new CE_NavMesh();
 }
 
 void InGameContext::Update(float aDelta)
@@ -76,7 +77,7 @@ void InGameContext::Update(float aDelta)
 
 void InGameContext::Render()
 {
-
+	myNavMesh->DebugDraw();
 }
 
 void InGameContext::InitWorld()

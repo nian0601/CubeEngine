@@ -146,6 +146,7 @@
     <ClCompile Include="CE_LineRenderObject.cpp" />
     <ClCompile Include="CE_MSDFFont.cpp" />
     <ClCompile Include="CE_MSDFGenerator.cpp" />
+    <ClCompile Include="CE_NavMesh.cpp" />
     <ClCompile Include="CE_Renderer.cpp" />
     <ClCompile Include="CE_RendererProxy.cpp" />
     <ClCompile Include="CE_CubeShader.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="CE_LineRenderObject.h" />
     <ClInclude Include="CE_MSDFFont.h" />
     <ClInclude Include="CE_MSDFGenerator.h" />
+    <ClInclude Include="CE_NavMesh.h" />
     <ClInclude Include="CE_Renderer.h" />
     <ClInclude Include="CE_RendererProxy.h" />
     <ClInclude Include="CE_CubeShader.h" />

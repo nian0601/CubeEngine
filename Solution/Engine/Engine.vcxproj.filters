@@ -113,20 +113,14 @@
     <ClCompile Include="CE_FileParser.cpp">
       <Filter>Utility\Files</Filter>
     </ClCompile>
-    <ClCompile Include="CE_BehaviorTree.cpp">
-      <Filter>Behavior</Filter>
-    </ClCompile>
     <ClCompile Include="CE_BTInitNode.cpp">
-      <Filter>Behavior\Nodes</Filter>
+      <Filter>AI\Behavior\Nodes</Filter>
     </ClCompile>
     <ClCompile Include="CE_BTMoveToNode.cpp">
-      <Filter>Behavior\Nodes</Filter>
+      <Filter>AI\Behavior\Nodes</Filter>
     </ClCompile>
     <ClCompile Include="CE_BTSequenceNode.cpp">
-      <Filter>Behavior\Nodes</Filter>
-    </ClCompile>
-    <ClCompile Include="CE_Blackboard.cpp">
-      <Filter>Behavior</Filter>
+      <Filter>AI\Behavior\Nodes</Filter>
     </ClCompile>
     <ClCompile Include="CE_TypeID.cpp" />
     <ClCompile Include="CE_DebugRenderManager.cpp">
@@ -134,6 +128,15 @@
     </ClCompile>
     <ClCompile Include="CE_LineRenderObject.cpp">
       <Filter>Rendering\RenderObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_BehaviorTree.cpp">
+      <Filter>AI\Behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_Blackboard.cpp">
+      <Filter>AI\Behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_NavMesh.cpp">
+      <Filter>AI\Navigation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -179,11 +182,17 @@
     <Filter Include="Utility\Files">
       <UniqueIdentifier>{70e53c6f-81ae-41e1-a7b2-e91af36d9bd9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Behavior">
+    <Filter Include="AI">
       <UniqueIdentifier>{c9255e17-687f-4dee-9510-64a1c801d060}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Behavior\Nodes">
+    <Filter Include="AI\Behavior">
+      <UniqueIdentifier>{c87478c5-d8ca-4715-9a3d-c3432108ab0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Behavior\Nodes">
       <UniqueIdentifier>{98b49910-69a8-41c6-a79c-76add0f2b623}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Navigation">
+      <UniqueIdentifier>{ab08ca7a-d77f-47b3-aba5-a045b7e01335}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -371,23 +380,17 @@
     <ClInclude Include="CE_FileParser.h">
       <Filter>Utility\Files</Filter>
     </ClInclude>
-    <ClInclude Include="CE_BehaviorTree.h">
-      <Filter>Behavior</Filter>
-    </ClInclude>
     <ClInclude Include="CE_BTNode.h">
-      <Filter>Behavior\Nodes</Filter>
+      <Filter>AI\Behavior\Nodes</Filter>
     </ClInclude>
     <ClInclude Include="CE_BTInitNode.h">
-      <Filter>Behavior\Nodes</Filter>
+      <Filter>AI\Behavior\Nodes</Filter>
     </ClInclude>
     <ClInclude Include="CE_BTMoveToNode.h">
-      <Filter>Behavior\Nodes</Filter>
+      <Filter>AI\Behavior\Nodes</Filter>
     </ClInclude>
     <ClInclude Include="CE_BTSequenceNode.h">
-      <Filter>Behavior\Nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_Blackboard.h">
-      <Filter>Behavior</Filter>
+      <Filter>AI\Behavior\Nodes</Filter>
     </ClInclude>
     <ClInclude Include="CE_TypeID.h" />
     <ClInclude Include="CE_DebugRenderManager.h">
@@ -401,6 +404,15 @@
     </ClInclude>
     <ClInclude Include="CE_DebugDraw.h">
       <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_BehaviorTree.h">
+      <Filter>AI\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Blackboard.h">
+      <Filter>AI\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_NavMesh.h">
+      <Filter>AI\Navigation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

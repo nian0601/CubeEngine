@@ -7,6 +7,10 @@
 CE_LineRenderObject::CE_LineRenderObject()
 	: myVertexBuffer(nullptr)
 	, myIndexBuffer(nullptr)
+	, myVertexCount(0)
+	, myIndexCount(0)
+	, myVertices(nullptr)
+	, myIndices(nullptr)
 {
 }
 
@@ -19,32 +23,35 @@ CE_LineRenderObject::~CE_LineRenderObject()
 
 void CE_LineRenderObject::SetLines(const CE_GrowingArray<CE_Line>& someLines, const CE_GPUContext& aGPUContext)
 {
-	myVertexCount = someLines.Size() * 2;
-	myIndexCount = myVertexCount;
+	if (myVertexCount < someLines.Size() * 2)
+	{
+		myVertexCount = someLines.Size() * 2;
+		myIndexCount = myVertexCount;
 
-	VertexType* vertices = new VertexType[myVertexCount];
-	UINT* indices = new UINT[myIndexCount];
+		CE_SAFE_DELETE_ARRAY(myVertices);
+		CE_SAFE_DELETE_ARRAY(myIndices);
+
+		myVertices = new VertexType[myVertexCount];
+		myIndices = new UINT[myIndexCount];
+	}
 
 
 	int realIndex = 0;
 	for (int i = 0; i < someLines.Size(); ++i)
 	{
-		vertices[realIndex].myPosition = someLines[i].myStart;
-		vertices[realIndex].myColor = someLines[i].myStartColor;
+		myVertices[realIndex].myPosition = someLines[i].myStart;
+		myVertices[realIndex].myColor = someLines[i].myStartColor;
 
-		vertices[realIndex + 1].myPosition = someLines[i].myEnd;
-		vertices[realIndex + 1].myColor = someLines[i].myEndColor;
+		myVertices[realIndex + 1].myPosition = someLines[i].myEnd;
+		myVertices[realIndex + 1].myColor = someLines[i].myEndColor;
 
-		indices[realIndex] = realIndex;  // Bottom left.
-		indices[realIndex + 1] = realIndex + 1;  // Top middle.
+		myIndices[realIndex] = realIndex;  // Bottom left.
+		myIndices[realIndex + 1] = realIndex + 1;  // Top middle.
 
 		realIndex += 2;
 	}
 
-	InitVertexAndIndexBuffers(aGPUContext, vertices, indices);
-
-	CE_SAFE_DELETE_ARRAY(vertices);
-	CE_SAFE_DELETE_ARRAY(indices);
+	InitVertexAndIndexBuffers(aGPUContext, myVertices, myIndices);
 }
 
 void CE_LineRenderObject::Render(const CE_GPUContext& aGPUContext)

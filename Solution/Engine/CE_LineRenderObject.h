@@ -25,6 +25,9 @@ private:
 		CE_Vector4f myColor;
 	};
 
+	VertexType* myVertices;
+	unsigned int* myIndices;
+
 	ID3D11Buffer* myVertexBuffer;
 	int myVertexCount;
 

@@ -3,6 +3,7 @@
 #include "GameContext.h"
 
 class CE_World;
+class CE_NavMesh;
 
 class EntityFactory;
 class InGameContext : public GameContext
@@ -26,5 +27,7 @@ private:
 	CE_World* myTemplateWorld;
 
 	EntityFactory* myEntityFactory;
+
+	CE_NavMesh* myNavMesh;
 };
 
