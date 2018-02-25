@@ -20,6 +20,8 @@
 
 #include <CE_DebugDraw.h>
 #include <CE_NavMesh.h>
+#include <CE_PathFinder.h>
+#include <CE_Input.h>
 
 InGameContext::InGameContext()
 {
@@ -36,6 +38,7 @@ InGameContext::~InGameContext()
 	CE_SAFE_DELETE(myEntityFactory);
 	CE_SAFE_DELETE(myTemplateWorld);
 	CE_SAFE_DELETE(myWorld);
+	CE_SAFE_DELETE(myPathFinder);
 	CE_SAFE_DELETE(myNavMesh);
 }
 
@@ -69,6 +72,13 @@ void InGameContext::Init(CE_Engine& anEngine)
 	InitWorld();
 
 	myNavMesh = new CE_NavMesh();
+	myPathFinder = new CE_PathFinder(*myNavMesh);
+
+	CE_Vector3f start(0.5f, 0.f, 0.5f);
+	CE_Vector3f end(5.5f, 0.f, 5.5f);
+	myPathFinder->FindPath(start, end, myPath);
+
+	myInput = &anEngine.GetInput();
 }
 
 void InGameContext::Update(float aDelta)
@@ -79,6 +89,7 @@ void InGameContext::Update(float aDelta)
 void InGameContext::Render()
 {
 	myNavMesh->DebugDraw();
+	myPath.DebugDraw();
 }
 
 void InGameContext::InitWorld()

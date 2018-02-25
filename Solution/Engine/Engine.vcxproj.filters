@@ -138,6 +138,15 @@
     <ClCompile Include="CE_NavMesh.cpp">
       <Filter>AI\Navigation</Filter>
     </ClCompile>
+    <ClCompile Include="CE_PathFinder.cpp">
+      <Filter>AI\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_NavMeshPrimitives.cpp">
+      <Filter>AI\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_Path.cpp">
+      <Filter>AI\Navigation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -412,6 +421,18 @@
       <Filter>AI\Behavior</Filter>
     </ClInclude>
     <ClInclude Include="CE_NavMesh.h">
+      <Filter>AI\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_PathFinder.h">
+      <Filter>AI\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_NavMeshPrimitives.h">
+      <Filter>AI\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Heap.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Path.h">
       <Filter>AI\Navigation</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,10 +1,11 @@
 #pragma once
 
 #include "GameContext.h"
-
+#include <CE_Path.h>
 class CE_World;
 class CE_NavMesh;
-
+class CE_PathFinder;
+class CE_Input;
 class EntityFactory;
 class InGameContext : public GameContext
 {
@@ -29,5 +30,8 @@ private:
 	EntityFactory* myEntityFactory;
 
 	CE_NavMesh* myNavMesh;
+	CE_PathFinder* myPathFinder;
+	CE_Input* myInput;
+	CE_Path myPath;
 };
 

@@ -47,7 +47,11 @@ public:
 	inline void RemoveCyclicAtIndex(int aItemNumber);
 	inline void RemoveNonCyclic(const ObjectType& aObject);
 	inline void RemoveNonCyclicAtIndex(int aItemNumber);
+
 	inline int Find(const ObjectType& aObject) const;
+
+	template<typename T>
+	inline int Find(const T& aObject) const;
 
 	inline ObjectType& GetLast();
 	inline const ObjectType& GetLast() const;
@@ -369,6 +373,20 @@ inline void CE_GrowingArray<ObjectType>::RemoveNonCyclicAtIndex(int aItemNumber)
 
 template<typename ObjectType>
 inline int CE_GrowingArray<ObjectType>::Find(const ObjectType& aObject) const
+{
+	for (int i = 0; i < myCurrentSize; ++i)
+	{
+		if (myData[i] == aObject)
+		{
+			return i;
+		}
+	}
+	return FoundNone;
+}
+
+template<typename ObjectType>
+template<typename T>
+inline int CE_GrowingArray<ObjectType>::Find(const T& aObject) const
 {
 	for (int i = 0; i < myCurrentSize; ++i)
 	{

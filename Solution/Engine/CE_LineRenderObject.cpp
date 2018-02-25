@@ -51,7 +51,7 @@ void CE_LineRenderObject::SetLines(const CE_GrowingArray<CE_Line>& someLines, co
 		realIndex += 2;
 	}
 
-	InitVertexAndIndexBuffers(aGPUContext, myVertices, myIndices);
+	InitVertexAndIndexBuffers(aGPUContext, myVertices, myIndices, realIndex);
 }
 
 void CE_LineRenderObject::Render(const CE_GPUContext& aGPUContext)
@@ -69,14 +69,14 @@ void CE_LineRenderObject::Render(const CE_GPUContext& aGPUContext)
 	context->DrawIndexed(myIndexCount, 0, 0);
 }
 
-void CE_LineRenderObject::InitVertexAndIndexBuffers(const CE_GPUContext& aGPUContext, void* aVertexData, void* aIndexData)
+void CE_LineRenderObject::InitVertexAndIndexBuffers(const CE_GPUContext& aGPUContext, void* aVertexData, void* aIndexData, int aVertexCount)
 {
 	CE_SAFE_RELEASE(myIndexBuffer);
 	CE_SAFE_RELEASE(myVertexBuffer);
 
 	D3D11_BUFFER_DESC vertexBufferDesc;
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(VertexType) * myVertexCount;
+	vertexBufferDesc.ByteWidth = sizeof(VertexType) * aVertexCount;
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -94,7 +94,7 @@ void CE_LineRenderObject::InitVertexAndIndexBuffers(const CE_GPUContext& aGPUCon
 
 	D3D11_BUFFER_DESC indexBufferDesc;
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexBufferDesc.ByteWidth = sizeof(UINT) * myIndexCount;
+	indexBufferDesc.ByteWidth = sizeof(UINT) * aVertexCount;
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.CPUAccessFlags = 0;
 	indexBufferDesc.MiscFlags = 0;

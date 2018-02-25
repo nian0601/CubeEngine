@@ -17,7 +17,7 @@ public:
 	void Render(const CE_GPUContext& aGPUContext);
 
 private:
-	void InitVertexAndIndexBuffers(const CE_GPUContext& aGPUContext, void* aVertexData, void* aIndexData);
+	void InitVertexAndIndexBuffers(const CE_GPUContext& aGPUContext, void* aVertexData, void* aIndexData, int aVertexCount);
 
 	struct VertexType
 	{

@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "CE_NavMesh.h"
-
+#include "CE_NavMeshPrimitives.h"
 
 namespace CE_NavMesh_private
 {
-	const int locNumQuadsPerSide = 1;
+	const int locNumQuadsPerSide = 4;
 	const float locQuadSize = 2.f;
 
 	const CE_Vector3f locMoveX = CE_Vector3f(locQuadSize, 0.f, 0.f);
@@ -49,6 +49,17 @@ CE_NavMesh::~CE_NavMesh()
 	myTriangles.DeleteAll();
 }
 
+const CE_NavTriangle* CE_NavMesh::FindTriangle(const CE_Vector3f& aPosition) const
+{
+	for (const CE_NavTriangle* triangle : myTriangles)
+	{
+		if (TriangleVsPointCollision(triangle, aPosition))
+			return triangle;
+	}
+		
+	return nullptr;
+}
+
 void CE_NavMesh::DebugDraw()
 {
 	for (const CE_NavTriangle* triangle : myTriangles)
@@ -57,9 +68,12 @@ void CE_NavMesh::DebugDraw()
 
 void CE_NavMesh::DebugDrawTriangle(const CE_NavTriangle& aTriangle) const
 {
-	CE_DRAW_LINE(aTriangle.myEdge1->myVertex1->myPosition, aTriangle.myEdge1->myVertex2->myPosition);
-	CE_DRAW_LINE(aTriangle.myEdge2->myVertex1->myPosition, aTriangle.myEdge2->myVertex2->myPosition);
-	CE_DRAW_LINE(aTriangle.myEdge3->myVertex1->myPosition, aTriangle.myEdge3->myVertex2->myPosition);
+	const CE_Vector4f color(0.3f, 0.3f, 0.3f, 1.f);
+	for (int i = 0; i < 3; ++i)
+	{
+		const CE_NavEdge* edge = aTriangle.myEdges[i];
+		CE_DRAW_LINE_COLOR(edge->myVertex1->myPosition, edge->myVertex2->myPosition, color);
+	}
 }
 
 void CE_NavMesh::CreateQuad(CE_NavEdge* aLeftEdge, CE_NavEdge* aBottomEdge, CE_NavEdge*& aRightEdgeOut, CE_NavEdge*& aTopEdgeOut)
@@ -80,4 +94,21 @@ void CE_NavMesh::CreateQuad(CE_NavEdge* aLeftEdge, CE_NavEdge* aBottomEdge, CE_N
 
 	aRightEdgeOut = rightEdge;
 	aTopEdgeOut = topEdge;
+}
+
+bool CE_NavMesh::TriangleVsPointCollision(const CE_NavTriangle* aTriangle, const CE_Vector3f& aPosition) const
+{
+	const CE_Vector3f& p = aPosition;
+	const CE_Vector3f p0(aTriangle->myEdges[0]->myVertex1->myPosition);
+	const CE_Vector3f p1(aTriangle->myEdges[0]->myVertex2->myPosition);
+
+	const CE_NavVertex* opposite = aTriangle->GetOppositeVertex(aTriangle->myEdges[0]);
+	const CE_Vector3f p2(opposite->myPosition);
+
+	float A = 0.5f * (-p1.z * p2.x + p0.z * (-p1.x + p2.x) + p0.x * (p1.z - p2.z) + p1.x * p2.z);
+	float sign = A < 0 ? -1.f : 1.f;
+	float s = (p0.z * p2.x - p0.x * p2.z + (p2.z - p0.z) * p.x + (p0.x - p2.x) * p.z) * sign;
+	float t = (p0.x * p1.z - p0.z * p1.x + (p0.z - p1.z) * p.x + (p1.x - p0.x) * p.z) * sign;
+
+	return s > 0 && t > 0 && (s + t) < 2 * A * sign;
 }
