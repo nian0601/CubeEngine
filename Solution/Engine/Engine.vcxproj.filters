@@ -147,6 +147,9 @@
     <ClCompile Include="CE_Path.cpp">
       <Filter>AI\Navigation</Filter>
     </ClCompile>
+    <ClCompile Include="CE_BTActionNode.cpp">
+      <Filter>AI\Behavior\Nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -434,6 +437,9 @@
     </ClInclude>
     <ClInclude Include="CE_Path.h">
       <Filter>AI\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_BTActionNode.h">
+      <Filter>AI\Behavior\Nodes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

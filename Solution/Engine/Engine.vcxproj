@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="CE_BaseProcessor.cpp" />
     <ClCompile Include="CE_Blackboard.cpp" />
+    <ClCompile Include="CE_BTActionNode.cpp" />
     <ClCompile Include="CE_BTMoveToNode.cpp" />
     <ClCompile Include="CE_BTSequenceNode.cpp" />
     <ClCompile Include="CE_Camera.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="CE_BaseComponent.h" />
     <ClInclude Include="CE_BaseProcessor.h" />
     <ClInclude Include="CE_Blackboard.h" />
+    <ClInclude Include="CE_BTActionNode.h" />
     <ClInclude Include="CE_BTMoveToNode.h" />
     <ClInclude Include="CE_BTNode.h" />
     <ClInclude Include="CE_BTSequenceNode.h" />

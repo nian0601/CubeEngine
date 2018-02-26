@@ -13,6 +13,9 @@ public:
 	template <typename T>
 	bool Get(const CE_String& aName, T& someData);
 
+	template <typename T>
+	T Get(const CE_String& aName);
+
 private:
 	struct Data
 	{
@@ -67,6 +70,18 @@ bool CE_Blackboard::Get(const CE_String& aName, T& someData)
 	someData = *(T*)data.myData;
 
 	return true;
+}
+
+template <typename T>
+T CE_Blackboard::Get(const CE_String& aName)
+{
+	CE_ASSERT(myData.KeyExists(aName), "Blackboard tried to get variable [%s] that wasnt set.", aName.c_str());
+	CE_ASSERT(CE_TYPE_IS_REGISTERED(T), "Blackboard tried to use type that wasnt registered, thats not safe!");
+
+	Data& data = myData[aName];
+	AssertDataType<T>(aName, data);
+
+	return *(T*)data.myData;
 }
 
 template <typename T>

@@ -44,6 +44,5 @@ bool CE_BehaviorTree::IsRunning()
 
 void CE_BehaviorTree::Restart()
 {
-	myRootNode->Restart();
 	myIsRunning = true;
 }

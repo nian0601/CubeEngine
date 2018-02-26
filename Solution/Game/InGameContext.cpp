@@ -22,6 +22,7 @@
 #include <CE_NavMesh.h>
 #include <CE_PathFinder.h>
 #include <CE_Input.h>
+#include <CE_BlackBoard.h>
 
 InGameContext::InGameContext()
 {
@@ -30,23 +31,27 @@ InGameContext::InGameContext()
 	CE_TYPE_REGISTER(CE_Vector4f);
 	CE_TYPE_REGISTER(CE_World*);
 	CE_TYPE_REGISTER(double);
+	CE_TYPE_REGISTER(CE_PathFinder*);
+	CE_TYPE_REGISTER(CE_Blackboard*);
 }
 
 
 InGameContext::~InGameContext()
 {
-	CE_SAFE_DELETE(myEntityFactory);
-	CE_SAFE_DELETE(myTemplateWorld);
-	CE_SAFE_DELETE(myWorld);
 	CE_SAFE_DELETE(myPathFinder);
 	CE_SAFE_DELETE(myNavMesh);
+	CE_SAFE_DELETE(myEntityFactory);
+	CE_SAFE_DELETE(myWorld);
+	CE_SAFE_DELETE(myGlobalBlackboard);
 }
 
 void InGameContext::Init(CE_Engine& anEngine)
 {
-	myWorld = new CE_World();
-	myTemplateWorld = new CE_World();
-	myEntityFactory = new EntityFactory(*myWorld, *myTemplateWorld);
+	myGlobalBlackboard = new CE_Blackboard();
+	
+
+	myWorld = new CE_World();;
+	myEntityFactory = new EntityFactory(*myWorld, myGlobalBlackboard);
 
 	CE_Camera& camera = anEngine.GetCamera();
 	camera.SetPosition(CE_Vector3f(5.f, 10.f, -5.f));
@@ -73,12 +78,7 @@ void InGameContext::Init(CE_Engine& anEngine)
 
 	myNavMesh = new CE_NavMesh();
 	myPathFinder = new CE_PathFinder(*myNavMesh);
-
-	CE_Vector3f start(0.5f, 0.f, 0.5f);
-	CE_Vector3f end(5.5f, 0.f, 5.5f);
-	myPathFinder->FindPath(start, end, myPath);
-
-	myInput = &anEngine.GetInput();
+	myGlobalBlackboard->Set("pathfinder", myPathFinder);
 }
 
 void InGameContext::Update(float aDelta)
@@ -89,14 +89,13 @@ void InGameContext::Update(float aDelta)
 void InGameContext::Render()
 {
 	myNavMesh->DebugDraw();
-	myPath.DebugDraw();
 }
 
 void InGameContext::InitWorld()
 {
 	CE_Entity gatherer = myEntityFactory->InstansiateEntity(eEntityTypes::GATHERER);
 	TranslationComponent& gathererTranslate = myWorld->GetComponent<TranslationComponent>(gatherer);
-	gathererTranslate.myOrientation.SetPos(CE_Vector3f(7.f, 1.f, 1.f));
+	gathererTranslate.myOrientation.SetPos(CE_Vector3f(6.5f, 1.f, 1.f));
 
 	InitWater();
 	InitStone();

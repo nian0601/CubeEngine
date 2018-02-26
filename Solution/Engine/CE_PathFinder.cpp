@@ -34,12 +34,15 @@ bool CE_PathFinder::FindPath(const CE_Vector3f& aStart, const CE_Vector3f& aEnd,
 
 		if (currNode->myTriangle == endTriangle)
 		{
+			aPathOut.Reset();
 			const CE_PathNode* node = currNode;
 			while (node)
 			{
 				aPathOut.AddWaypoint(node->myTriangle);
 				node = node->myParent;
 			}
+
+			aPathOut.AddFinalWaypoint(aEnd);
 			
 			return true;
 		}

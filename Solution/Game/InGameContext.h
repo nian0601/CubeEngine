@@ -2,11 +2,15 @@
 
 #include "GameContext.h"
 #include <CE_Path.h>
-class CE_World;
+
+class CE_Blackboard;
+class CE_Input;
 class CE_NavMesh;
 class CE_PathFinder;
-class CE_Input;
+class CE_World;
+
 class EntityFactory;
+
 class InGameContext : public GameContext
 {
 public:
@@ -25,13 +29,11 @@ private:
 	void InitStockpile();
 
 	CE_World* myWorld;
-	CE_World* myTemplateWorld;
 
 	EntityFactory* myEntityFactory;
 
+	CE_Blackboard* myGlobalBlackboard;
 	CE_NavMesh* myNavMesh;
 	CE_PathFinder* myPathFinder;
-	CE_Input* myInput;
-	CE_Path myPath;
 };
 

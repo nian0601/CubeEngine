@@ -5,10 +5,8 @@
 class BT_GatherResourceNode : public CE_BTNode
 {
 public:
-	BT_GatherResourceNode();
-
+	eBTActionState Init(CE_Blackboard& aBlackboard) override;
 	eBTActionState Update(CE_Blackboard& aBlackboard, float aDelta) override;
-	void Restart() override;
 
 private:
 	float myTimer;

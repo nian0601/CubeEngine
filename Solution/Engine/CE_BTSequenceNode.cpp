@@ -13,26 +13,24 @@ CE_BTSequenceNode::~CE_BTSequenceNode()
 	myChildren.DeleteAll();
 }
 
+eBTActionState CE_BTSequenceNode::Init(CE_Blackboard& aBlackboard)
+{
+	myCurrentIndex = 0;
+	return CE_BTNode::Init(aBlackboard);
+}
+
 eBTActionState CE_BTSequenceNode::Update(CE_Blackboard& aBlackboard, float aDelta)
 {
-	eBTActionState childState = myChildren[myCurrentIndex]->Update(aBlackboard, aDelta);
+	eBTActionState childState = UpdateChild(myChildren[myCurrentIndex], aBlackboard, aDelta);
 
-	if (childState == FINISHED)
+	if (childState == eBTActionState::FINISHED)
 	{
 		++myCurrentIndex;
 		if (myCurrentIndex >= myChildren.Size())
-			return FINISHED;
+			return eBTActionState::FINISHED;
 
-		return IN_PROGRESS;
+		return eBTActionState::IN_PROGRESS;
 	}
 
 	return childState;
-}
-
-void CE_BTSequenceNode::Restart()
-{
-	for (CE_BTNode* child : myChildren)
-		child->Restart();
-
-	myCurrentIndex = 0;
 }

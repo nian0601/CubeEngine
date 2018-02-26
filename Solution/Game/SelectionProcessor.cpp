@@ -21,7 +21,8 @@ void SelectionProcessor::Update(float /*aDelta*/)
 	InputSingletonComponent& input = myWorld.GetSingletonComponent<InputSingletonComponent>();
 	CursorSingletonComponent& cursorComponent = myWorld.GetSingletonComponent<CursorSingletonComponent>();
 
-	CE_Entity entityUnderMouse = FindEntityUnderMouse(input.myMousePosition);
+	CE_Vector3f intersectionPoint;
+	CE_Entity entityUnderMouse = FindEntityUnderMouse(input.myMousePosition, intersectionPoint);
 	cursorComponent.myHoveredEntity = entityUnderMouse;
 
 	if (entityUnderMouse == CE_Invalid_Entity)
@@ -30,14 +31,15 @@ void SelectionProcessor::Update(float /*aDelta*/)
 	if (input.ActionDown(LBUTTON))
 	{
 		AIEventSingletonComponent& aiEvents = myWorld.GetSingletonComponent<AIEventSingletonComponent>();
-		TranslationComponent& selectedTranslation = GetComponent<TranslationComponent>(entityUnderMouse);
+		//TranslationComponent& selectedTranslation = GetComponent<TranslationComponent>(entityUnderMouse);
 
 		AIEventSingletonComponent::AIEvent& event = aiEvents.myEvents.Add();
-		event.myPosition = selectedTranslation.myOrientation.GetPos();
+		//event.myPosition = selectedTranslation.myOrientation.GetPos();
+		event.myPosition = intersectionPoint;
 	}
 }
 
-CE_Entity SelectionProcessor::FindEntityUnderMouse(const CE_Vector2f& aMousePosition)
+CE_Entity SelectionProcessor::FindEntityUnderMouse(const CE_Vector2f& aMousePosition, CE_Vector3f& aIntersectionPointOut)
 {
 	CE_Vector3f lineStart = Unproject(aMousePosition, 0.f);
 	CE_Vector3f lineEnd = Unproject(aMousePosition, 1.f);
@@ -67,6 +69,7 @@ CE_Entity SelectionProcessor::FindEntityUnderMouse(const CE_Vector2f& aMousePosi
 		}
 	}
 
+	aIntersectionPointOut = intersectionPoint;
 	return bestEntity;
 }
 

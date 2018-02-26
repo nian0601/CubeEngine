@@ -18,13 +18,7 @@ eBTActionState CE_BTInitNode::Update(CE_Blackboard& aBlackboard, float aDelta)
 	if (!myChildNode)
 		return eBTActionState::FINISHED;
 
-	return myChildNode->Update(aBlackboard, aDelta);
-}
-
-void CE_BTInitNode::Restart()
-{
-	if(myChildNode)
-		myChildNode->Restart();
+	return UpdateChild(myChildNode, aBlackboard, aDelta);
 }
 
 void CE_BTInitNode::SetChildNode(CE_BTNode* aNode)

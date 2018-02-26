@@ -18,16 +18,18 @@
 #include "BT_FindStockpileNode.h"
 #include "BT_GatherResourceNode.h"
 
-EntityFactory::EntityFactory(CE_World& anRealWorld, CE_World& anTemplateWorld)
+EntityFactory::EntityFactory(CE_World& anRealWorld, CE_Blackboard* aGlobalBlackboard)
 	: myRealWorld(anRealWorld)
-	, myTemplateWorld(anTemplateWorld)
+	, myGlobalBlackboard(aGlobalBlackboard)
 {
+	myTemplateWorld = new CE_World();
 	LoadTemplateEntities();
 }
 
 
 EntityFactory::~EntityFactory()
 {
+	CE_SAFE_DELETE(myTemplateWorld);
 }
 
 void EntityFactory::LoadTemplateEntities()
@@ -61,7 +63,7 @@ CE_Entity EntityFactory::InstansiateEntity(eEntityTypes anIdentifier)
 
 CE_Entity EntityFactory::LoadFromDisk(const char* aFilePath)
 {
-	CE_Entity entity = myTemplateWorld.CreateEmptyEntity();
+	CE_Entity entity = myTemplateWorld->CreateEmptyEntity();
 
 	CE_FileParser parser(aFilePath);
 
@@ -161,7 +163,7 @@ void EntityFactory::LoadRenderComponent(CE_Entity anEntity, CE_FileParser& aFile
 		}
 	}
 
-	RenderComponent& render = myTemplateWorld.AddComponent<RenderComponent>(anEntity);
+	RenderComponent& render = myTemplateWorld->AddComponent<RenderComponent>(anEntity);
 	render.myEntries = entries;
 }
 
@@ -191,7 +193,7 @@ void EntityFactory::LoadMovementComponent(CE_Entity anEntity, CE_FileParser& aFi
 		}
 	}
 
-	MovementComponent& movement = myTemplateWorld.AddComponent<MovementComponent>(anEntity);
+	MovementComponent& movement = myTemplateWorld->AddComponent<MovementComponent>(anEntity);
 	movement.mySpeed = speed;
 }
 
@@ -222,7 +224,7 @@ void EntityFactory::LoadTranslateComponent(CE_Entity anEntity, CE_FileParser& aF
 		}
 	}
 
-	TranslationComponent& translation = myTemplateWorld.AddComponent<TranslationComponent>(anEntity);
+	TranslationComponent& translation = myTemplateWorld->AddComponent<TranslationComponent>(anEntity);
 	translation.myScale = scale;
 }
 
@@ -230,7 +232,7 @@ void EntityFactory::LoadInventoryComponent(CE_Entity anEntity, CE_FileParser& aF
 {
 	LoadEmptyComponent(aFileParser);
 
-	myTemplateWorld.AddComponent<InventoryComponent>(anEntity);
+	myTemplateWorld->AddComponent<InventoryComponent>(anEntity);
 }
 
 void EntityFactory::LoadAABBComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
@@ -264,7 +266,7 @@ void EntityFactory::LoadAABBComponent(CE_Entity anEntity, CE_FileParser& aFilePa
 		}
 	}
 
-	AABBComponent& aabb = myTemplateWorld.AddComponent<AABBComponent>(anEntity);
+	AABBComponent& aabb = myTemplateWorld->AddComponent<AABBComponent>(anEntity);
 	aabb.myCollisionLayers = layers;
 	aabb.myCollidesWith = collidesWith;
 }
@@ -297,7 +299,7 @@ void EntityFactory::LoadResourceComponent(CE_Entity anEntity, CE_FileParser& aFi
 
 	CE_ASSERT(resource != ResourceType::eType::INVALID, "Invalid Resource type");
 
-	ResourceComponent& resourceComponent = myTemplateWorld.AddComponent<ResourceComponent>(anEntity);
+	ResourceComponent& resourceComponent = myTemplateWorld->AddComponent<ResourceComponent>(anEntity);
 	resourceComponent.myResourceType = resource;
 }
 
@@ -327,7 +329,7 @@ void EntityFactory::LoadBehaviorComponent(CE_Entity anEntity, CE_FileParser& aFi
 		}
 	}
 
-	BehaviorComponent& behavior = myTemplateWorld.AddComponent<BehaviorComponent>(anEntity);
+	BehaviorComponent& behavior = myTemplateWorld->AddComponent<BehaviorComponent>(anEntity);
 
 	behavior.myBehaviorTree = new CE_BehaviorTree();
 	CE_BTInitNode& initNode = behavior.myBehaviorTree->GetInitNode();
@@ -343,6 +345,7 @@ void EntityFactory::LoadBehaviorComponent(CE_Entity anEntity, CE_FileParser& aFi
 	CE_Blackboard& blackboard = behavior.myBehaviorTree->GetBlackboard();
 	blackboard.Set("speed", speed);
 	blackboard.Set("world", &myRealWorld);
+	blackboard.Set("globalblackboard", myGlobalBlackboard);
 }
 
 void EntityFactory::LoadEmptyComponent(CE_FileParser& aFileParser)

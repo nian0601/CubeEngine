@@ -11,11 +11,11 @@ eBTActionState BT_FindStockpileNode::Update(CE_Blackboard& aBlackboard, float /*
 	CE_Vector3f selfPosition;
 
 	if (!aBlackboard.Get("selfPosition", selfPosition))
-		return FAILED;
+		return eBTActionState::FAILED;
 
 	CE_World* world = nullptr;
 	if (!aBlackboard.Get("world", world))
-		return FAILED;
+		return eBTActionState::FAILED;
 
 	CE_GrowingArray<CE_Entity> entities = world->GetEntities(CE_CreateFilter<CE_Requires<InventoryComponent, TranslationComponent>>());
 
@@ -37,8 +37,8 @@ eBTActionState BT_FindStockpileNode::Update(CE_Blackboard& aBlackboard, float /*
 	}
 
 	if (bestDistance == FLT_MAX)
-		return FAILED;
+		return eBTActionState::FAILED;
 
 	aBlackboard.Set("targetPosition", bestPos);
-	return FINISHED;
+	return eBTActionState::FINISHED;
 }

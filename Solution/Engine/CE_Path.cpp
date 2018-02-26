@@ -4,7 +4,31 @@
 
 void CE_Path::AddWaypoint(const CE_NavTriangle* aNavTriangle)
 {
+	if (myWaypoints.Size() > 0)
+		CE_ASSERT(myWaypoints.GetLast().myTriangle != nullptr, "Tried to AddWayPoint after the final waypoint was added");
+
 	myWaypoints.InsertFirst(CE_Waypoint(aNavTriangle, aNavTriangle->myCenter));
+}
+
+void CE_Path::AddFinalWaypoint(const CE_Vector3f& aPosition)
+{
+	myWaypoints.Add(CE_Waypoint(aPosition));
+}
+
+CE_Waypoint* CE_Path::GetNextWaypoint()
+{
+	if (myNextWaypoint >= myWaypoints.Size())
+		return nullptr;
+
+	CE_Waypoint* waypoint = &myWaypoints[myNextWaypoint];
+	++myNextWaypoint;
+	return waypoint;
+}
+
+void CE_Path::Reset()
+{
+	myNextWaypoint = 0;
+	myWaypoints.RemoveAll();
 }
 
 void CE_Path::DebugDraw()
