@@ -9,6 +9,7 @@
 #include <CPY_Intersection.h>
 #include "TranslationComponent.h"
 #include "AIEventSingletonComponent.h"
+#include <CE_DebugDraw.h>
 
 SelectionProcessor::SelectionProcessor(CE_World& aWorld, const CE_Camera& aCamera)
 	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<AABBComponent, TranslationComponent>>())
@@ -28,6 +29,8 @@ void SelectionProcessor::Update(float /*aDelta*/)
 	if (entityUnderMouse == CE_Invalid_Entity)
 		return;
 
+	CE_DRAW_LINE_COLOR(intersectionPoint, intersectionPoint + CE_Vector3f(0.f, 2.f, 0.f), CE_Vector4f(0.f, 0.f, 0.f, 1.f));
+
 	if (input.ActionDown(LBUTTON))
 	{
 		AIEventSingletonComponent& aiEvents = myWorld.GetSingletonComponent<AIEventSingletonComponent>();
@@ -46,6 +49,7 @@ CE_Entity SelectionProcessor::FindEntityUnderMouse(const CE_Vector2f& aMousePosi
 
 	CPY_Line3D line(lineStart, lineEnd);
 	CE_Entity bestEntity = CE_Invalid_Entity;
+	CE_Vector3f bestIntersectionPoint;
 	float bestDist = FLT_MAX;
 
 
@@ -65,11 +69,12 @@ CE_Entity SelectionProcessor::FindEntityUnderMouse(const CE_Vector2f& aMousePosi
 			{
 				bestDist = dist;
 				bestEntity = entity;
+				bestIntersectionPoint = intersectionPoint;
 			}
 		}
 	}
 
-	aIntersectionPointOut = intersectionPoint;
+	aIntersectionPointOut = bestIntersectionPoint;
 	return bestEntity;
 }
 

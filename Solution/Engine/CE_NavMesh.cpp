@@ -79,16 +79,17 @@ void CE_NavMesh::DebugDrawTriangle(const CE_NavTriangle& aTriangle) const
 
 void CE_NavMesh::CreateQuad(CE_NavEdge* aLeftEdge, CE_NavEdge* aBottomEdge, CE_NavEdge*& aRightEdgeOut, CE_NavEdge*& aTopEdgeOut)
 {
-	CE_NavVertex* topLeftVertex = aLeftEdge->myVertex2;
+	CE_NavVertex* bottomLeftVertex = aBottomEdge->myVertex1;
 	CE_NavVertex* bottomRightVertex = aBottomEdge->myVertex2;
+	CE_NavVertex* topLeftVertex = aLeftEdge->myVertex2;
 	CE_NavVertex* topRightVertex = new CE_NavVertex(topLeftVertex->myPosition + CE_NavMesh_private::locMoveX);
 
 	CE_NavEdge* rightEdge = new CE_NavEdge(bottomRightVertex, topRightVertex);
 	CE_NavEdge* topEdge = new CE_NavEdge(topLeftVertex, topRightVertex);
-	CE_NavEdge* middleEdge = new CE_NavEdge(topLeftVertex, bottomRightVertex);
+	CE_NavEdge* middleEdge = new CE_NavEdge(bottomLeftVertex, topRightVertex);
 
-	CE_NavTriangle* triangle1 = new CE_NavTriangle(aLeftEdge, middleEdge, aBottomEdge);
-	CE_NavTriangle* triangle2 = new CE_NavTriangle(topEdge, rightEdge, middleEdge);
+	CE_NavTriangle* triangle1 = new CE_NavTriangle(aBottomEdge, rightEdge, middleEdge);
+	CE_NavTriangle* triangle2 = new CE_NavTriangle(aLeftEdge, topEdge, middleEdge);
 
 	myTriangles.Add(triangle1);
 	myTriangles.Add(triangle2);
