@@ -54,5 +54,7 @@ eBTActionState CE_BTMoveToNode::Update(CE_Blackboard& aBlackboard, float aDelta)
 
 	selfPosition += dir * speed * aDelta;
 	aBlackboard.Set("selfPosition", selfPosition);
+
+	myPath.DebugDraw();
 	return eBTActionState::IN_PROGRESS;
 }

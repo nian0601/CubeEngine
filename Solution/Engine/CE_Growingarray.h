@@ -140,7 +140,8 @@ inline void CE_GrowingArray<ObjectType>::Respace(int aNewSize)
 	CE_ASSERT(aNewSize > 0, locGrowingArray_ErrorStrings[INVALID_SIZE]);
 #endif
 
-	ObjectType* newData = new ObjectType[aNewSize];
+	myMaxSize += aNewSize;
+	ObjectType* newData = new ObjectType[myMaxSize];
 	if (myUseSafeModeFlag == true)
 	{
 		for (int i = 0; i < myCurrentSize; ++i)
@@ -154,14 +155,13 @@ inline void CE_GrowingArray<ObjectType>::Respace(int aNewSize)
 	}
 	delete[] myData;
 	myData = newData;
-	myMaxSize = static_cast<int>(aNewSize);
 }
 
 template<typename ObjectType>
 inline void CE_GrowingArray<ObjectType>::Reserve(int aNrOfItems)
 {
 	Respace(aNrOfItems);
-	myCurrentSize = aNrOfItems;
+	myCurrentSize = myMaxSize;
 }
 
 template<typename ObjectType>

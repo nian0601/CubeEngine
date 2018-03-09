@@ -2,17 +2,14 @@
 #include "CE_Path.h"
 #include "CE_NavMeshPrimitives.h"
 
-void CE_Path::AddWaypoint(const CE_NavTriangle* aNavTriangle)
+void CE_Path::AddWaypoint(const CE_Vector3f& aPosition)
 {
-	if (myWaypoints.Size() > 0)
-		CE_ASSERT(myWaypoints.GetLast().myTriangle != nullptr, "Tried to AddWayPoint after the final waypoint was added");
-
-	myWaypoints.InsertFirst(CE_Waypoint(aNavTriangle, aNavTriangle->myCenter));
+	myWaypoints.InsertFirst(CE_Waypoint(aPosition));
 }
 
-void CE_Path::AddFinalWaypoint(const CE_Vector3f& aPosition)
+void CE_Path::AddTriangleWaypoint(const CE_NavTriangle* aNavTriangle)
 {
-	myWaypoints.Add(CE_Waypoint(aPosition));
+	myTriangleWaypoints.Add(CE_Waypoint(aNavTriangle, aNavTriangle->myCenter));
 }
 
 CE_Waypoint* CE_Path::GetNextWaypoint()
@@ -33,8 +30,38 @@ void CE_Path::Reset()
 
 void CE_Path::DebugDraw()
 {
-	for (const CE_Waypoint& waypoint : myWaypoints)
-		DebugDrawTriangle(waypoint.myTriangle, 0.2f, CE_Vector4f(0.f, 0.f, 1.f, 1.f));
+	for(int i = 0; i < myTriangleWaypoints.Size(); ++i)
+	{
+		const CE_NavTriangle* triangle = myTriangleWaypoints[i].myTriangle;
+		DebugDrawTriangle(triangle, 0.2f, CE_Vector4f(0.f, 0.f, 1.f, 1.f));
+
+		if (i < myTriangleWaypoints.Size() - 1)
+		{
+			const CE_NavTriangle* nextTriangle = myTriangleWaypoints[i+1].myTriangle;
+			const CE_NavEdge* edge = triangle->GetSharedEdge(nextTriangle);
+
+			const CE_NavPortal* portal = edge->GetPortal(triangle);
+
+			CE_Vector3f pos1 = portal->myLeft;
+			CE_Vector3f pos2 = portal->myRight;
+
+			pos1.y += 0.3f;
+			pos2.y += 0.3f;
+
+			CE_DRAW_LINE_TWO_COLOR(pos1, pos2, CE_Vector4f(1.f, 0.f, 0.f, 1.f), CE_Vector4f(0.f, 1.f, 0.f, 1.f));
+		}
+	}
+
+	for (int i = 0; i < myWaypoints.Size() - 1; ++i)
+	{
+		CE_Vector3f pos1 = myWaypoints[i].myPosition;
+		CE_Vector3f pos2 = myWaypoints[i+1].myPosition;
+
+		pos1.y += 0.5f;
+		pos2.y += 0.5f;
+
+		CE_DRAW_LINE_COLOR(pos1, pos2, CE_Vector4f(1.f, 1.f, 0.f, 1.f));
+	}
 }
 
 void CE_Path::DebugDrawTriangle(const CE_NavTriangle* aTriangle, float aHeight, const CE_Vector4f aColor) const

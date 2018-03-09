@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "CE_NavMeshPrimitives.h"
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 CE_NavVertex::CE_NavVertex(const CE_Vector3f& aPostion) 
 	: myPosition(aPostion)
 	, myRefCount(0)
@@ -19,6 +22,7 @@ CE_NavEdge::CE_NavEdge(CE_NavVertex* aVertex1, CE_NavVertex* aVertex2)
 	, myVertex2(aVertex2)
 	, myTriangle1(nullptr)
 	, myTriangle2(nullptr)
+	, myHasPortals(false)
 {
 	++myVertex1->myRefCount;
 	++myVertex2->myRefCount;
@@ -59,6 +63,54 @@ void CE_NavEdge::RemoveTriangle(const CE_NavTriangle* aTriangle)
 		myTriangle2 = nullptr;
 }
 
+#define CU_PI_DIV_2 static_cast<float>(M_PI) / 2.f
+
+void CE_NavEdge::CalcPortals()
+{
+	static CE_Matrix44f rotMatrix = CE_Matrix44f::CreateRotateAroundZ(CU_PI_DIV_2);
+	CE_Vector3f edge = myVertex2->myPosition - myVertex1->myPosition;
+	CE_Vector3f normal = edge * rotMatrix;
+	CE_Vector3f fromCenter = myVertex1->myPosition - myTriangle1->myCenter;
+		
+	if (CE_Dot(normal, fromCenter) > 0)
+	{
+		if (myTriangle1)
+		{
+			myPortal1.myLeft = myVertex1->myPosition;
+			myPortal1.myRight = myVertex2->myPosition;
+		}
+
+		if (myTriangle2)
+		{
+			myPortal2.myLeft = myVertex2->myPosition;
+			myPortal2.myRight = myVertex1->myPosition;
+		}
+	}
+	else
+	{
+		if (myTriangle1)
+		{
+			myPortal1.myLeft = myVertex2->myPosition;
+			myPortal1.myRight = myVertex1->myPosition;
+		}
+
+		if (myTriangle2)
+		{
+			myPortal2.myLeft = myVertex1->myPosition;
+			myPortal2.myRight = myVertex2->myPosition;
+		}
+	}
+}
+
+const CE_NavPortal* CE_NavEdge::GetPortal(const CE_NavTriangle* aTriangle) const
+{
+	if (aTriangle == myTriangle1)
+		return &myPortal1;
+
+	CE_ASSERT(aTriangle == myTriangle2, "Triangle not part of edge!");
+	return &myPortal2;
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 CE_NavTriangle::CE_NavTriangle(CE_NavEdge* aEdge1, CE_NavEdge* aEdge2, CE_NavEdge* aEdge3) 
@@ -67,13 +119,16 @@ CE_NavTriangle::CE_NavTriangle(CE_NavEdge* aEdge1, CE_NavEdge* aEdge2, CE_NavEdg
 	myEdges[1] = aEdge2;
 	myEdges[2] = aEdge3;
 
-	for (int i = 0; i < 3; ++i)
-		myEdges[i]->AddTriangle(this);
-
 	myCenter = myEdges[0]->myVertex1->myPosition;
 	myCenter += myEdges[1]->myVertex2->myPosition;
 	myCenter += GetOppositeVertex(myEdges[2])->myPosition;
 	myCenter /= 3.f;
+
+	for (int i = 0; i < 3; ++i)
+	{
+		myEdges[i]->AddTriangle(this);
+		myEdges[i]->CalcPortals();
+	}
 }
 
 CE_NavTriangle::~CE_NavTriangle()
@@ -123,4 +178,19 @@ const CE_NavTriangle* CE_NavTriangle::GetOtherTriangle(int aIndex) const
 
 	CE_ASSERT(edge->myTriangle2 == this, "Edge not part of triangle");
 	return edge->myTriangle1;
+}
+
+const CE_NavEdge* CE_NavTriangle::GetSharedEdge(const CE_NavTriangle* aTriangle) const
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			if (myEdges[i] == aTriangle->myEdges[j])
+				return myEdges[i];
+		}
+	}
+
+	CE_ASSERT_ALWAYS("No Shared edge between triangles");
+	return nullptr;
 }

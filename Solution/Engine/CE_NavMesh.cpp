@@ -4,9 +4,8 @@
 
 namespace CE_NavMesh_private
 {
-	const int locNumQuadsPerSide = 4;
-	const float locQuadSize = 2.f;
-	const float locNavmeshY = 0.55f;
+	const int locNumQuadsPerSide = 2;
+	const float locQuadSize = 4.f;
 
 	const CE_Vector3f locMoveX = CE_Vector3f(locQuadSize, 0.f, 0.f);
 	const CE_Vector3f locMoveZ = CE_Vector3f(0.f, 0.f, locQuadSize);
@@ -19,7 +18,7 @@ CE_NavMesh::CE_NavMesh()
 		prevTopEdges[i] = nullptr;
 
 	CE_NavEdge* prevRightEdge = nullptr;
-	CE_NavVertex* bottomLeftVertex = new CE_NavVertex(CE_Vector3f(0.f, CE_NavMesh_private::locNavmeshY, 0.f));
+	CE_NavVertex* bottomLeftVertex = new CE_NavVertex(CE_Vector3f(0.f, 0.f, 0.f));
 
 	for (int i = 0; i < CE_NavMesh_private::locNumQuadsPerSide; ++i)
 	{

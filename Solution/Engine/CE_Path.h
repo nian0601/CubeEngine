@@ -23,8 +23,8 @@ struct CE_Waypoint
 class CE_Path
 {
 public:
-	void AddWaypoint(const CE_NavTriangle* aNavTriangle);
-	void AddFinalWaypoint(const CE_Vector3f& aPosition);
+	void AddWaypoint(const CE_Vector3f& aPosition);
+	void AddTriangleWaypoint(const CE_NavTriangle* aNavTriangle);
 	CE_Waypoint* GetNextWaypoint();
 
 	void Reset();
@@ -35,6 +35,7 @@ private:
 	void DebugDrawTriangle(const CE_NavTriangle* aTriangle, float aHeight, const CE_Vector4f aColor) const;
 
 	CE_GrowingArray<CE_Waypoint> myWaypoints;
+	CE_GrowingArray<CE_Waypoint> myTriangleWaypoints;
 	int myNextWaypoint;
 };
 

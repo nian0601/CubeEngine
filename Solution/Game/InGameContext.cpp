@@ -97,9 +97,9 @@ void InGameContext::InitWorld()
 	TranslationComponent& gathererTranslate = myWorld->GetComponent<TranslationComponent>(gatherer);
 	gathererTranslate.myOrientation.SetPos(CE_Vector3f(6.5f, 1.f, 1.f));
 
-	InitWater();
-	InitStone();
-	InitStockpile();
+	//InitWater();
+	//InitStone();
+	//InitStockpile();
 
 	InitGrid();
 }
@@ -111,7 +111,7 @@ void InGameContext::InitGrid()
 	{
 		for (int x = 0; x < gridSize; ++x)
 		{
-			CE_Vector3f pos(static_cast<float>(x), 0.f, static_cast<float>(z));
+			CE_Vector3f pos(static_cast<float>(x), -0.7f, static_cast<float>(z));
 
 			CE_Entity entity = myEntityFactory->InstansiateEntity(eEntityTypes::GROUND);
 			TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(entity);
