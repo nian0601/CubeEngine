@@ -1,13 +1,13 @@
 #pragma once
 
 #include "GameContext.h"
-#include <CE_Path.h>
 
 class CE_Blackboard;
-class CE_Input;
 class CE_NavMesh;
 class CE_PathFinder;
 class CE_World;
+
+class CPY_PhysicsWorld;
 
 class EntityFactory;
 
@@ -35,5 +35,6 @@ private:
 	CE_Blackboard* myGlobalBlackboard;
 	CE_NavMesh* myNavMesh;
 	CE_PathFinder* myPathFinder;
+	CPY_PhysicsWorld* myPhysicsWorld;
 };
 

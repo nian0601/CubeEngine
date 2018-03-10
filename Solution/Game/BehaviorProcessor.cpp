@@ -7,9 +7,16 @@
 #include "CursorSingletonComponent.h"
 #include <CE_BlackBoard.h>
 
-BehaviorProcessor::BehaviorProcessor(CE_World& aWorld)
+BehaviorProcessor::BehaviorProcessor(CE_World& aWorld, CE_Blackboard& aGlobalBlackboard)
 	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<BehaviorComponent, TranslationComponent>>())
+	, myGlobalBlackboard(aGlobalBlackboard)
 {
+}
+
+void BehaviorProcessor::EntityAdded(CE_Entity anEntity)
+{
+	BehaviorComponent& behavior = GetComponent<BehaviorComponent>(anEntity);
+	behavior.myBehaviorTree->GetBlackboard().Set("globalblackboard", &myGlobalBlackboard);
 }
 
 void BehaviorProcessor::Update(float aDelta)

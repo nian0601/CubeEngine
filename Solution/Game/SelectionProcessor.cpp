@@ -10,10 +10,12 @@
 #include "TranslationComponent.h"
 #include "AIEventSingletonComponent.h"
 #include <CE_DebugDraw.h>
+#include <CPY_PhysicsWorld.h>
 
-SelectionProcessor::SelectionProcessor(CE_World& aWorld, const CE_Camera& aCamera)
+SelectionProcessor::SelectionProcessor(CE_World& aWorld, const CE_Camera& aCamera, CPY_PhysicsWorld& aPhysicsWorld)
 	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<AABBComponent, TranslationComponent>>())
 	, myCamera(aCamera)
+	, myPhysicsWorld(aPhysicsWorld)
 {
 }
 
@@ -34,10 +36,7 @@ void SelectionProcessor::Update(float /*aDelta*/)
 	if (input.ActionDown(LBUTTON))
 	{
 		AIEventSingletonComponent& aiEvents = myWorld.GetSingletonComponent<AIEventSingletonComponent>();
-		//TranslationComponent& selectedTranslation = GetComponent<TranslationComponent>(entityUnderMouse);
-
 		AIEventSingletonComponent::AIEvent& event = aiEvents.myEvents.Add();
-		//event.myPosition = selectedTranslation.myOrientation.GetPos();
 		event.myPosition = intersectionPoint;
 	}
 }
@@ -47,35 +46,11 @@ CE_Entity SelectionProcessor::FindEntityUnderMouse(const CE_Vector2f& aMousePosi
 	CE_Vector3f lineStart = Unproject(aMousePosition, 0.f);
 	CE_Vector3f lineEnd = Unproject(aMousePosition, 1.f);
 
-	CPY_Line3D line(lineStart, lineEnd);
-	CE_Entity bestEntity = CE_Invalid_Entity;
-	CE_Vector3f bestIntersectionPoint;
-	float bestDist = FLT_MAX;
+	const CPY_CollisionEntity* collisionEntity = myPhysicsWorld.RayCast(lineStart, lineEnd, CollisionLayer::CLICKABLE, aIntersectionPointOut);
+	if (collisionEntity)
+		return collisionEntity->myEntity;
 
-
-	CE_Vector3f intersectionPoint;
-	CE_GrowingArray<CE_Entity> entities = GetEntities();
-	for (const CE_Entity& entity : entities)
-	{
-		AABBComponent& aabb = GetComponent<AABBComponent>(entity);
-
-		if((aabb.myCollisionLayers & CollisionLayer::CLICKABLE) == 0)
-			continue;
-
-		if (CPY_Intersection::LineVSAABB(aabb.myAABB, line, &intersectionPoint))
-		{
-			float dist = CE_Length2(intersectionPoint - lineStart);
-			if (dist < bestDist)
-			{
-				bestDist = dist;
-				bestEntity = entity;
-				bestIntersectionPoint = intersectionPoint;
-			}
-		}
-	}
-
-	aIntersectionPointOut = bestIntersectionPoint;
-	return bestEntity;
+	return CE_Invalid_Entity;
 }
 
 CE_Vector3f SelectionProcessor::Unproject(const CE_Vector2f& aPosition, float aDepth) const

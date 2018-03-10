@@ -27,6 +27,7 @@
 #include <CE_PathFinder.h>
 #include <CE_Input.h>
 #include <CE_BlackBoard.h>
+#include <CPY_PhysicsWorld.h>
 
 InGameContext::InGameContext()
 {
@@ -46,16 +47,17 @@ InGameContext::~InGameContext()
 	CE_SAFE_DELETE(myNavMesh);
 	CE_SAFE_DELETE(myEntityFactory);
 	CE_SAFE_DELETE(myWorld);
+	CE_SAFE_DELETE(myPhysicsWorld);
 	CE_SAFE_DELETE(myGlobalBlackboard);
 }
 
 void InGameContext::Init(CE_Engine& anEngine)
 {
 	myGlobalBlackboard = new CE_Blackboard();
-	
+	myPhysicsWorld = new CPY_PhysicsWorld();
 
 	myWorld = new CE_World();;
-	myEntityFactory = new EntityFactory(*myWorld, myGlobalBlackboard);
+	myEntityFactory = new EntityFactory(*myWorld);
 
 	CE_Camera& camera = anEngine.GetCamera();
 	camera.SetPosition(CE_Vector3f(5.f, 10.f, -5.f));
@@ -70,12 +72,16 @@ void InGameContext::Init(CE_Engine& anEngine)
 	CreateEntityProcessor* createProcessor = new CreateEntityProcessor(*myWorld, *myEntityFactory);
 	myWorld->AddProcessor(createProcessor);
 
-	SelectionProcessor* selectionProcessor = new SelectionProcessor(*myWorld, camera);
+	SelectionProcessor* selectionProcessor = new SelectionProcessor(*myWorld, camera, *myPhysicsWorld);
 	myWorld->AddProcessor(selectionProcessor);
 
+	AABBProcessor* aabbProcessor = new AABBProcessor(*myWorld, *myPhysicsWorld);
+	myWorld->AddProcessor(aabbProcessor);
+
+	BehaviorProcessor* behaviorProcessor = new BehaviorProcessor(*myWorld, *myGlobalBlackboard);
+	myWorld->AddProcessor(behaviorProcessor);
+
 	myWorld->AddProcessor<MovementProcessor>();
-	myWorld->AddProcessor<AABBProcessor>();
-	myWorld->AddProcessor<BehaviorProcessor>();
 	myWorld->AddProcessor<AIEventProcessor>();
 
 	InitWorld();
@@ -83,34 +89,6 @@ void InGameContext::Init(CE_Engine& anEngine)
 	myNavMesh = new CE_NavMesh();
 	myPathFinder = new CE_PathFinder(*myNavMesh);
 	myGlobalBlackboard->Set("pathfinder", myPathFinder);
-
-
-
-
-	CE_Vector2f leftVertex(0.f, -1.f);
-	CE_Vector2f rightVertex(0.f, 1.f);
-			 
-	CE_Vector2f center1(-1.f, 0.f);
-	CE_Vector2f center2(1.f, 0.f);
-			 
-			 
-	//CE_Vector2f dif = center2 - center1;
-	//dif.y = -dif.y;
-	//
-	//float d = CE_Dot(rightVertex- center1, dif);
-
-
-	
-
-	/*CE_Vector3f betweenCenters = center2 - center1;
-	CE_Vector3f edge = rightVertex - leftVertex;
-	static CE_Matrix44f rotMatrix = CE_Matrix44f::CreateRotateAroundZ(CU_PI_DIV_2);
-	CE_Vector3f normal = edge * rotMatrix;
-
-	float dot = CE_Dot(edge, normal);
-	dot;
-	int apa = 5;
-	++apa;*/
 }
 
 void InGameContext::Update(float aDelta)

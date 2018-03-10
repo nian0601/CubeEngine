@@ -1,4 +1,5 @@
 #include "stdafx.h"
+
 #include "EntityFactory.h"
 #include "TranslationComponent.h"
 #include "RenderComponent.h"
@@ -6,7 +7,6 @@
 #include "InventoryComponent.h"
 #include "AABBComponent.h"
 #include "ResourceComponent.h"
-#include <CE_FileParser.h>
 #include "BehaviorComponent.h"
 
 #include <CE_BehaviorTree.h>
@@ -14,13 +14,13 @@
 #include <CE_BlackBoard.h>
 #include <CE_BTInitNode.h>
 #include <CE_BTSequenceNode.h>
+#include <CE_FileParser.h>
 
 #include "BT_FindStockpileNode.h"
 #include "BT_GatherResourceNode.h"
 
-EntityFactory::EntityFactory(CE_World& anRealWorld, CE_Blackboard* aGlobalBlackboard)
+EntityFactory::EntityFactory(CE_World& anRealWorld)
 	: myRealWorld(anRealWorld)
-	, myGlobalBlackboard(aGlobalBlackboard)
 {
 	myTemplateWorld = new CE_World();
 	LoadTemplateEntities();
@@ -345,7 +345,6 @@ void EntityFactory::LoadBehaviorComponent(CE_Entity anEntity, CE_FileParser& aFi
 	CE_Blackboard& blackboard = behavior.myBehaviorTree->GetBlackboard();
 	blackboard.Set("speed", speed);
 	blackboard.Set("world", &myRealWorld);
-	blackboard.Set("globalblackboard", myGlobalBlackboard);
 }
 
 void EntityFactory::LoadEmptyComponent(CE_FileParser& aFileParser)
