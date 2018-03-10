@@ -150,6 +150,12 @@
     <ClCompile Include="CE_BTActionNode.cpp">
       <Filter>AI\Behavior\Nodes</Filter>
     </ClCompile>
+    <ClCompile Include="CPY_PhysicsWorld.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="CPY_CollisionEntity.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -205,6 +211,9 @@
     </Filter>
     <Filter Include="AI\Navigation">
       <UniqueIdentifier>{ab08ca7a-d77f-47b3-aba5-a045b7e01335}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\Intersection">
+      <UniqueIdentifier>{400193ed-6855-48af-b297-09e5827c75b0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -380,15 +389,6 @@
     <ClInclude Include="CE_WindowManager.h">
       <Filter>DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="CPY_AABB.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="CPY_Line3D.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="CPY_Intersection.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
     <ClInclude Include="CE_FileParser.h">
       <Filter>Utility\Files</Filter>
     </ClInclude>
@@ -440,6 +440,21 @@
     </ClInclude>
     <ClInclude Include="CE_BTActionNode.h">
       <Filter>AI\Behavior\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="CPY_PhysicsWorld.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="CPY_AABB.h">
+      <Filter>Physics\Intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="CPY_Intersection.h">
+      <Filter>Physics\Intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="CPY_Line3D.h">
+      <Filter>Physics\Intersection</Filter>
+    </ClInclude>
+    <ClInclude Include="CPY_CollisionEntity.h">
+      <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
