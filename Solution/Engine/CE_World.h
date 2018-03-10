@@ -27,6 +27,9 @@ public:
 	T& AddComponent(CE_Entity aEntity);
 
 	template<typename T>
+	void AddComponent(CE_Entity aEntity, const T& aComponent);
+
+	template<typename T>
 	void RemoveComponent(CE_Entity aEntity);
 
 	template<typename T>
@@ -67,6 +70,17 @@ T& CE_World::AddComponent(CE_Entity aEntity)
 	ModifiedEntity(aEntity, componentID, true);
 
 	return *component;
+}
+
+template<typename T>
+void CE_World::AddComponent(CE_Entity aEntity, const T& aComponent)
+{
+	T* component = new T();
+	*component = aComponent;
+
+	unsigned int componentID = CE_TypeID<CE_BaseComponent>::GetID<T>();
+	myComponentStorage->AddComponent(aEntity, component, componentID);
+	ModifiedEntity(aEntity, componentID, true);
 }
 
 template<typename T>

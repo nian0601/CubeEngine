@@ -20,3 +20,5 @@
 #include "CE_CommonHelper.h"
 
 #include "CE_DebugDraw.h"
+
+#include "CE_CustomEntityTypes.h"

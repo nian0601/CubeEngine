@@ -34,6 +34,7 @@ public:
 
 	const CE_ComponentFilter& GetComponentFilter() const { return myComponentFilter; }
 
+	virtual void EntityAdded(CE_Entity /*aEntity*/) {};
 	virtual void EntityRemoved(CE_Entity /*aEntity*/) {};
 
 protected:

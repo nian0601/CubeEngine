@@ -119,6 +119,9 @@ void CE_World::ModifiedEntity(CE_Entity aEntity, int aComponentID, bool aAddedCo
 				wasAdded = true;
 		}
 
+		if (wasAdded)
+			processor->EntityAdded(aEntity);
+
 		if (wasRemoved)
 			processor->EntityRemoved(aEntity);
 	}
