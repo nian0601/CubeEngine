@@ -6,20 +6,73 @@
 #include "CE_NavMeshPrimitives.h"
 #include "CE_Path.h"
 
+namespace CE_PathFinder_private
+{
+	struct CE_NavPortal
+	{
+		CE_Vector3f myLeft;
+		CE_Vector3f myRight;
+	};
+
+	CE_NavPortal CreatePortal(const CE_NavTriangle* aStartTriangle, const CE_NavTriangle* aEndTriangle)
+	{
+		const CE_NavEdge* sharedEdge = aStartTriangle->GetSharedEdge(aEndTriangle);
+
+		float aX = aStartTriangle->myCenter.x;
+		float aY = aStartTriangle->myCenter.z;
+		float bX = aEndTriangle->myCenter.x;
+		float bY = aEndTriangle->myCenter.z;
+		float cX = sharedEdge->myVertex1->myPosition.x;
+		float cY = sharedEdge->myVertex1->myPosition.z;
+
+		// if d > 0, then vertex1 is the left vertex
+		CE_NavPortal portal;
+		float d = (bX - aX) * (cY - aY) - (bY - aY) * (cX - aX);
+		if (d > 0.f)
+		{
+			portal.myLeft = sharedEdge->myVertex1->myPosition;
+			portal.myRight = sharedEdge->myVertex2->myPosition;
+		}
+		else if (d < 0.f)
+		{
+			portal.myLeft = sharedEdge->myVertex2->myPosition;
+			portal.myRight = sharedEdge->myVertex1->myPosition;
+		}
+		else
+		{
+			CE_ASSERT_ALWAYS("This shouldnt happen!");
+		}
+
+		return portal;
+	}
+
+	float TriArea2(const CE_Vector3f& aA, const CE_Vector3f& aB, const CE_Vector3f& aC)
+	{
+		float ax = aB.x - aA.x;
+		float ay = aB.z - aA.z;
+		float bx = aC.x - aA.x;
+		float by = aC.z - aA.z;
+
+		return bx*ay - ax*by;
+	}
+
+	bool VEqual(const CE_Vector3f& aA, const CE_Vector3f& aB)
+	{
+		static float eq = 0.001f * 0.001f;
+		return CE_Length2(aA - aB) < eq;
+	}
+}
+
 CE_PathFinder::CE_PathFinder(const CE_NavMesh& aNavMesh)
 	: myNavMesh(aNavMesh)
 	, myPathNodeCount(0)
 {
-	myStartPortal = new CE_NavPortal();
-	myEndPortal = new CE_NavPortal();
 	AllocateNewNodes(64);
 }
 
 CE_PathFinder::~CE_PathFinder()
 {
 	myPathNodes.DeleteAll();
-	CE_SAFE_DELETE(myEndPortal);
-	CE_SAFE_DELETE(myStartPortal);
 }
 
 bool CE_PathFinder::FindPath(const CE_Vector3f& aStart, const CE_Vector3f& aEnd, CE_Path& aPathOut)
@@ -29,6 +82,12 @@ bool CE_PathFinder::FindPath(const CE_Vector3f& aStart, const CE_Vector3f& aEnd,
 
 	if (!startTriangle || !endTriangle)
 		return false;
+
+	if (startTriangle == endTriangle)
+	{
+		aPathOut.AddWaypoint(aEnd);
+		return true;
+	}
 
 	CE_GrowingArray<const CE_NavTriangle*> triangles;
 	if (RunAStar(endTriangle, startTriangle, triangles))
@@ -110,44 +169,36 @@ bool CE_PathFinder::RunAStar(const CE_NavTriangle* aStartTriangle, const CE_NavT
 
 void CE_PathFinder::FunnelPath(const CE_Vector3f& aStart, const CE_Vector3f& aEnd, const CE_GrowingArray<const CE_NavTriangle*>& someTriangles, CE_Path& aPathOut)
 {
-	CE_GrowingArray<const CE_NavPortal*> portals;
-
-	myStartPortal->myLeft = CE_Vector3f(aStart.x, 0.f, aStart.z);
-	myStartPortal->myRight = CE_Vector3f(aStart.x, 0.f, aStart.z);
-	portals.Add(myStartPortal);
-
-	// Iterate
+	//Create Portals
+	CE_GrowingArray<CE_PathFinder_private::CE_NavPortal> portals;
 	for (int i = 0; i < someTriangles.Size() - 1; ++i)
 	{
-		portals.Add(GetPortal(someTriangles[i], someTriangles[i + 1], (i % 2) == 0));
+		portals.Add(CE_PathFinder_private::CreatePortal(someTriangles[i], someTriangles[i + 1]));
 	}
 
-	myEndPortal->myLeft = CE_Vector3f(aEnd.x, 0.f, aEnd.z);
-	myEndPortal->myRight = CE_Vector3f(aEnd.x, 0.f, aEnd.z);
-	portals.Add(myEndPortal);
+	CE_PathFinder_private::CE_NavPortal& endPortal = portals.Add();
+	endPortal.myLeft = CE_Vector3f(aEnd.x, 0.f, aEnd.z);
+	endPortal.myRight = CE_Vector3f(aEnd.x, 0.f, aEnd.z);
 
-	StringPull(portals, aPathOut);
-}
 
-void CE_PathFinder::StringPull(const CE_GrowingArray<const CE_NavPortal*>& somePortals, CE_Path& aPathOut)
-{
-	CE_Vector3f portalApex = somePortals[0]->myLeft;
-	CE_Vector3f portalLeft = somePortals[0]->myLeft;
-	CE_Vector3f portalRight = somePortals[0]->myRight;
+	// Do StringPulling
+	CE_Vector3f portalApex = CE_Vector3f(aStart.x, 0.f, aStart.z);
+	CE_Vector3f portalLeft = portalApex;
+	CE_Vector3f portalRight = portalApex;
 
 	int apexIndex = 0;
 	int leftIndex = 0;
 	int rightIndex = 0;
 
-	for (int i = 1; i < somePortals.Size(); ++i)
+	for (int i = 0; i < portals.Size(); ++i)
 	{
-		const CE_Vector3f& left = somePortals[i]->myLeft;
-		const CE_Vector3f& right = somePortals[i]->myRight;
+		const CE_Vector3f& left = portals[i].myLeft;
+		const CE_Vector3f& right = portals[i].myRight;
 
 		//update right vertex
-		if (TriArea2(portalApex, portalRight, right) <= 0.0f)
+		if (CE_PathFinder_private::TriArea2(portalApex, portalRight, right) <= 0.0f)
 		{
-			if (VEqual(portalApex, portalRight) || TriArea2(portalApex, portalLeft, right) > 0.0f)
+			if (CE_PathFinder_private::VEqual(portalApex, portalRight) || CE_PathFinder_private::TriArea2(portalApex, portalLeft, right) > 0.0f)
 			{
 				// tighten the funnel
 				portalRight = right;
@@ -155,8 +206,6 @@ void CE_PathFinder::StringPull(const CE_GrowingArray<const CE_NavPortal*>& someP
 			}
 			else
 			{
-				// Right over left, insert left to path and restart scan from portal left point.
-
 				aPathOut.AddWaypoint(portalLeft);
 
 				// make current left the new apex.
@@ -173,9 +222,9 @@ void CE_PathFinder::StringPull(const CE_GrowingArray<const CE_NavPortal*>& someP
 		}
 
 		// update left vertex
-		if (TriArea2(portalApex, portalLeft, left) >= 0.0f)
+		if (CE_PathFinder_private::TriArea2(portalApex, portalLeft, left) >= 0.0f)
 		{
-			if (VEqual(portalApex, portalLeft) || TriArea2(portalApex, portalRight, left) < 0.0f)
+			if (CE_PathFinder_private::VEqual(portalApex, portalLeft) || CE_PathFinder_private::TriArea2(portalApex, portalRight, left) < 0.0f)
 			{
 				// tighten the funnel
 				portalLeft = left;
@@ -199,51 +248,6 @@ void CE_PathFinder::StringPull(const CE_GrowingArray<const CE_NavPortal*>& someP
 				continue;
 			}
 		}
-
-		//if (TriArea2(portalApex, portalRight, right) <= 0.f)
-		//{
-		//	if (VEqual(portalApex, portalRight) || TriArea2(portalApex, portalLeft, right) > 0.f)
-		//	{
-		//		portalRight = right;
-		//		rightIndex = i;
-		//	}
-		//	else
-		//	{
-		//		aPathOut.AddWaypoint(portalLeft);
-		//		portalApex = portalLeft;
-		//		portalLeft = portalApex;
-		//		portalRight = portalApex;
-		//
-		//		apexIndex = leftIndex;
-		//		leftIndex = apexIndex;
-		//		rightIndex = apexIndex;
-		//		i = apexIndex;
-		//		continue;
-		//	}
-		//}
-		//
-		//if (TriArea2(portalApex, portalLeft, left) >= 0.f)
-		//{
-		//	if (VEqual(portalApex, portalLeft) || TriArea2(portalApex, portalRight, left) < 0.f)
-		//	{
-		//		portalLeft = left;
-		//		leftIndex = i;
-		//	}
-		//	else
-		//	{
-		//		aPathOut.AddWaypoint(portalRight);
-		//		portalApex = portalRight;
-		//		apexIndex = rightIndex;
-		//
-		//		portalLeft = portalApex;
-		//		portalRight = portalApex;
-		//
-		//		leftIndex = apexIndex;
-		//		rightIndex = apexIndex;
-		//		i = apexIndex;
-		//		continue;
-		//	}
-		//}
 	}
 }
 
@@ -252,7 +256,7 @@ float CE_PathFinder::EstimateCost(const CE_NavTriangle* aStart, const CE_NavTria
 	float x = fabsf(aStart->myCenter.x - aGoal->myCenter.x);
 	float z = fabsf(aStart->myCenter.z - aGoal->myCenter.z);
 
-	return 10.f * (x + z);
+	return x + z;
 }
 
 CE_PathNode* CE_PathFinder::GetNode(const CE_NavTriangle* aTriangle)
@@ -283,36 +287,4 @@ void CE_PathFinder::AllocateNewNodes(int aCount)
 {
 	for (int i = 0; i < aCount; ++i)
 		myPathNodes.Add(new CE_PathNode());
-
-	//myPathNodes.Reserve(aCount);
-
-	//CE_PathNode* nodes = new CE_PathNode[aCount];
-	//for (int i = 0; i < aCount; ++i)
-	//	myPathNodes.Add(&nodes[i]);
-}
-
-const CE_NavPortal* CE_PathFinder::GetPortal(const CE_NavTriangle* aFirst, const CE_NavTriangle* aSecond, bool aUseFirst) const
-{
-	const CE_NavEdge* sharedEdge = aFirst->GetSharedEdge(aSecond);
-
-	if(aUseFirst)
-		return sharedEdge->GetPortal(aSecond);
-
-	return sharedEdge->GetPortal(aSecond);
-}
-
-float CE_PathFinder::TriArea2(const CE_Vector3f& aA, const CE_Vector3f& aB, const CE_Vector3f& aC) const
-{
-	float ax = aB.x - aA.x;
-	float ay = aB.z - aA.z;
-	float bx = aC.x - aA.x;
-	float by = aC.z - aA.z;
-
-	return bx*ay - ax*by;
-}
-
-bool CE_PathFinder::VEqual(const CE_Vector3f& aA, const CE_Vector3f& aB) const
-{
-	static float eq = 0.001f * 0.001f;
-	return CE_Length2(aA - aB) < eq;
 }

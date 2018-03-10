@@ -29,7 +29,7 @@ public:
 
 	void Reset();
 
-	void DebugDraw();
+	void DebugDraw(const CE_Vector3f& aCurrentPosition);
 
 private:
 	void DebugDrawTriangle(const CE_NavTriangle* aTriangle, float aHeight, const CE_Vector4f aColor) const;

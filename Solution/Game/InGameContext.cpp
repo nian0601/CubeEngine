@@ -1,5 +1,9 @@
 #include "stdafx.h"
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+#define CU_PI_DIV_2 static_cast<float>(M_PI) / 2.f
+
 #include <CE_Camera.h>
 #include <CE_World.h>
 #include <CE_Engine.h>
@@ -79,6 +83,34 @@ void InGameContext::Init(CE_Engine& anEngine)
 	myNavMesh = new CE_NavMesh();
 	myPathFinder = new CE_PathFinder(*myNavMesh);
 	myGlobalBlackboard->Set("pathfinder", myPathFinder);
+
+
+
+
+	CE_Vector2f leftVertex(0.f, -1.f);
+	CE_Vector2f rightVertex(0.f, 1.f);
+			 
+	CE_Vector2f center1(-1.f, 0.f);
+	CE_Vector2f center2(1.f, 0.f);
+			 
+			 
+	//CE_Vector2f dif = center2 - center1;
+	//dif.y = -dif.y;
+	//
+	//float d = CE_Dot(rightVertex- center1, dif);
+
+
+	
+
+	/*CE_Vector3f betweenCenters = center2 - center1;
+	CE_Vector3f edge = rightVertex - leftVertex;
+	static CE_Matrix44f rotMatrix = CE_Matrix44f::CreateRotateAroundZ(CU_PI_DIV_2);
+	CE_Vector3f normal = edge * rotMatrix;
+
+	float dot = CE_Dot(edge, normal);
+	dot;
+	int apa = 5;
+	++apa;*/
 }
 
 void InGameContext::Update(float aDelta)

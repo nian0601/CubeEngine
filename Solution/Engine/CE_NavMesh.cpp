@@ -4,8 +4,8 @@
 
 namespace CE_NavMesh_private
 {
-	const int locNumQuadsPerSide = 2;
-	const float locQuadSize = 4.f;
+	const int locNumQuadsPerSide = 4;
+	const float locQuadSize = 2.f;
 
 	const CE_Vector3f locMoveX = CE_Vector3f(locQuadSize, 0.f, 0.f);
 	const CE_Vector3f locMoveZ = CE_Vector3f(0.f, 0.f, locQuadSize);

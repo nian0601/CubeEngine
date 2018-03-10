@@ -11,12 +11,6 @@ struct CE_NavVertex
 
 //////////////////////////////////////////////////////////////////////////
 
-struct CE_NavPortal
-{
-	CE_Vector3f myLeft;
-	CE_Vector3f myRight;
-};
-
 struct CE_NavTriangle;
 struct CE_NavEdge
 {
@@ -28,18 +22,11 @@ struct CE_NavEdge
 	void AddTriangle(const CE_NavTriangle* aTriangle);
 	void RemoveTriangle(const CE_NavTriangle* aTriangle);
 
-	void CalcPortals();
-	const CE_NavPortal* GetPortal(const CE_NavTriangle* aTriangle) const;
-
 	CE_NavVertex* myVertex1;
 	CE_NavVertex* myVertex2;
 
 	const CE_NavTriangle* myTriangle1;
 	const CE_NavTriangle* myTriangle2;
-
-	CE_NavPortal myPortal1;
-	CE_NavPortal myPortal2;
-	bool myHasPortals;
 };
 
 //////////////////////////////////////////////////////////////////////////
