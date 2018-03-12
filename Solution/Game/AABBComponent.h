@@ -8,7 +8,6 @@ struct AABBComponent : public CE_BaseComponent
 {
 	void operator=(const AABBComponent& aOther)
 	{
-		myAABB = aOther.myAABB;
 		myCollisionLayers = aOther.myCollisionLayers;
 		myCollidesWith = aOther.myCollidesWith;
 	}
