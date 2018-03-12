@@ -24,12 +24,6 @@ CE_ComponentStorage::~CE_ComponentStorage()
 void CE_ComponentStorage::AddEntity()
 {
 	myEntityComponents.Add(CE_EntityComponentArray());
-	CE_EntityComponentArray& components = myEntityComponents.GetLast();
-
-	for (int i = 0; i < MAX_NUMBER_OF_COMPONENTS; ++i)
-	{
-		components[i] = -1;
-	}
 }
 
 void CE_ComponentStorage::DestroyEntity(CE_Entity anEntity)
@@ -44,10 +38,10 @@ void CE_ComponentStorage::DestroyEntity(CE_Entity anEntity)
 void CE_ComponentStorage::AddComponent(CE_Entity aEntity, CE_BaseComponent* aComponent, unsigned int aComponentID)
 {
 	CE_ASSERT(myEntityComponents.Size() > static_cast<int>(aEntity), "Invalid Entity-ID");
-	CE_ASSERT(myEntityComponents[aEntity][aComponentID] == -1, "Tried to add a component twice");
+	CE_ASSERT(!myEntityComponents[aEntity].HasComponent(aComponentID), "Tried to add a component twice");
 
 	myComponents[aComponentID].Add(aComponent);
-	myEntityComponents[aEntity][aComponentID] = myComponents[aComponentID].Size() - 1;
+	myEntityComponents[aEntity].SetComponent(aComponentID, myComponents[aComponentID].Size() - 1);
 }
 
 void CE_ComponentStorage::RemoveComponent(CE_Entity aEntity, unsigned int aComponentID)
@@ -55,7 +49,7 @@ void CE_ComponentStorage::RemoveComponent(CE_Entity aEntity, unsigned int aCompo
 	int index = HasComponent(aEntity, aComponentID);
 	CE_ASSERT(index != -1, "Tried to Remove an invalid component");
 	CE_SAFE_DELETE(myComponents[aComponentID][index]);
-	myEntityComponents[aEntity][aComponentID] = -1;
+	myEntityComponents[aEntity].RemoveComponent(aComponentID);
 }
 
 CE_BaseComponent& CE_ComponentStorage::GetComponent(CE_Entity aEntity, unsigned int aComponentID)
@@ -72,7 +66,7 @@ int CE_ComponentStorage::HasComponent(CE_Entity aEntity, unsigned int aComponent
 		return -1;
 	}
 
-	return myEntityComponents[aEntity][aComponentID];
+	return myEntityComponents[aEntity].myComponentIndices[aComponentID];
 }
 
 const CE_GrowingArray<CE_Entity>& CE_ComponentStorage::GetEntities(const CE_ComponentFilter& aFilter)
@@ -80,7 +74,7 @@ const CE_GrowingArray<CE_Entity>& CE_ComponentStorage::GetEntities(const CE_Comp
 	myEntitiesToReturn.RemoveAll();
 	for (int i = 0; i < myEntityComponents.Size(); ++i)
 	{
-		if (aFilter.Compare(myEntityComponents[i]) == true)
+		if (aFilter.Compare(myEntityComponents[i].myComponentMask) == true)
 		{
 			myEntitiesToReturn.Add(i);
 		}

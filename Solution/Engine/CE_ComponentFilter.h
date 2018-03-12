@@ -11,71 +11,52 @@ struct CE_Requires : CE_TypeList<Args...> {};
 template <typename... Args>
 struct CE_Excludes : CE_TypeList<Args...> {};
 
-
 template<typename... Args>
-static void CE_Types(CE_EntityComponentArray&, CE_TypeList<Args...>) {}
+static void CE_Types(unsigned int&, CE_TypeList<Args...>) {}
 
 
 template<typename T, typename... Args>
-static void CE_Types(CE_EntityComponentArray& someComponents, CE_TypeList<T, Args...>)
+static void CE_Types(unsigned int& someFlags, CE_TypeList<T, Args...>)
 {
-	someComponents[CE_TypeID<CE_BaseComponent>::GetID<T>()] = 1;
-	CE_Types(someComponents, CE_TypeList<Args...>());
+	unsigned int componentID = CE_TypeID<CE_BaseComponent>::GetID<T>();
+	someFlags |= (1 << componentID);
+
+	CE_Types(someFlags, CE_TypeList<Args...>());
 }
 
 struct CE_ComponentFilter
 {
 	CE_ComponentFilter()
-	{
-		for (int i = 0; i < MAX_NUMBER_OF_COMPONENTS; ++i)
-		{
-			myRequires[i] = 0;
-			myExcludes[i] = 0;
-		}
-	}
-
-	CE_ComponentFilter(const CE_EntityComponentArray& someRequires
-		, const CE_EntityComponentArray& someExludes)
-		: myRequires(someRequires)
-		, myExcludes(someExludes)
+		: myRequiresFlags(0)
+		, myExcludesFlags(0)
 	{}
 
-	bool Compare(const CE_EntityComponentArray& someComponents) const
-	{
-		for (int i = 0; i < MAX_NUMBER_OF_COMPONENTS; ++i)
-		{
-			if (myRequires[i] == 1 && someComponents[i] == -1)
-			{
-				return false;
-			}
+	CE_ComponentFilter(unsigned int someRequires, unsigned int someExcludes)
+		: myRequiresFlags(someRequires)
+		, myExcludesFlags(someExcludes)
+	{}
 
-			if (myExcludes[i] == 1 && someComponents[i] != -1)
-			{
-				return false;
-			}
-		}
+	bool Compare(unsigned int someComponentFlags) const
+	{
+		if ((someComponentFlags & myRequiresFlags) != myRequiresFlags)
+			return false;
+
+		if ((someComponentFlags & myExcludesFlags) > 0)
+			return false;
 
 		return true;
 	}
 
 private:
-	CE_EntityComponentArray myRequires;
-	CE_EntityComponentArray myExcludes;
+	unsigned int myRequiresFlags;
+	unsigned int myExcludesFlags;
 };
-
-
 
 template <typename RequireList = CE_Requires<>, typename ExcludeList = CE_Excludes<>>
 CE_ComponentFilter CE_CreateFilter()
 {
-	CE_EntityComponentArray requires;
-	CE_EntityComponentArray excludes;
-
-	for (int i = 0; i < MAX_NUMBER_OF_COMPONENTS; ++i)
-	{
-		requires[i] = 0;
-		excludes[i] = 0;
-	}
+	unsigned int requires = 0;
+	unsigned int excludes = 0;
 
 	CE_Types(requires, RequireList{});
 	CE_Types(excludes, ExcludeList{});

@@ -94,10 +94,11 @@ void CE_World::ModifiedEntity(CE_Entity aEntity, int aComponentID, bool aAddedCo
 
 		if (aAddedComponent)
 		{
-			bool matchedAfter = filter.Compare(modifiedComponents);
-			modifiedComponents[aComponentID] = -1;
+			bool matchedAfter = filter.Compare(modifiedComponents.myComponentMask);
+			modifiedComponents.RemoveComponent(aComponentID);
+			//modifiedComponents[aComponentID] = -1;
 
-			bool matchedBefore = filter.Compare(modifiedComponents);
+			bool matchedBefore = filter.Compare(modifiedComponents.myComponentMask);
 
 			if (matchedBefore && !matchedAfter)
 				wasRemoved = true;
@@ -107,10 +108,11 @@ void CE_World::ModifiedEntity(CE_Entity aEntity, int aComponentID, bool aAddedCo
 		}
 		else
 		{
-			bool matchedBefore = filter.Compare(modifiedComponents);
-			modifiedComponents[aComponentID] = -1;
+			bool matchedBefore = filter.Compare(modifiedComponents.myComponentMask);
+			modifiedComponents.RemoveComponent(aComponentID);
+			//modifiedComponents[aComponentID] = -1;
 
-			bool matchedAfter = filter.Compare(modifiedComponents);
+			bool matchedAfter = filter.Compare(modifiedComponents.myComponentMask);
 
 			if (matchedBefore && !matchedAfter)
 				wasRemoved = true;
