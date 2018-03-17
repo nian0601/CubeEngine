@@ -23,10 +23,10 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 	CE_ASSERT(FAILED(hr) == false, "Failed to CoInitializeEx");
 
 	myDirectX = new CE_DirectX();
-	CE_WindowManager::Create(*myDirectX);
+	myGPUContext = new CE_GPUContext(*myDirectX);
+	CE_WindowManager::Create(*myGPUContext);
 	myMainWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 1280, 720 }, "Cube Engine");
 
-	myGPUContext = new CE_GPUContext(*myDirectX);
 
 	myRenderer = new CE_Renderer(*myGPUContext);
 
@@ -73,6 +73,13 @@ void CE_Engine::Run()
 		for (CE_Window* window : windows)
 		{
 			window->PrepareForRender();
+			
+			// myRenderer->BeginGBuffer();
+			// myRenderer->Render3D();
+			// myRenderer->EndGBuffer();
+
+			// myRenderer->RenderLights();
+
 
 			myRenderer->Render3D(*myCamera, window->GetRendererProxy());
 			myRenderer->Render2D(window->GetOrthagonalProjection(), window->GetRendererProxy());

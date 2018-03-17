@@ -4,7 +4,7 @@
 
 struct CE_CharData
 {
-	void LoadFromLine(const CE_String& aLine, const CE_Vector2f& aTextureSize);
+	void LoadFromLine(const CE_String& aLine, const CE_Vector2i& aTextureSize);
 	CE_String LoadToken(const CE_String& aLine, const CE_String& aToken);
 
 	char myID;

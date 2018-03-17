@@ -21,12 +21,12 @@ struct CE_WindowMessage
 	int myHighWordWParam;
 };
 
-class CE_DirectX;
+class CE_GPUContext;
 class CE_Window;
 class CE_WindowManager
 {
 public:
-	static void Create(CE_DirectX& aDirect);
+	static void Create(CE_GPUContext& aGPUContext);
 	static void Destory();
 	static CE_WindowManager* GetInstance();
 
@@ -36,13 +36,13 @@ public:
 	void HandleWindowMessage(CE_Window* aWindow, const CE_WindowMessage& aMessage);
 
 	const CE_GrowingArray<CE_Window*>& GetWindows() const { return myWindows; }
-	const CE_DirectX& GetDirectX() const { return myDirectX; }
+	CE_GPUContext& GetGPUContext() { return myGPUContext; }
 
 private:
-	CE_WindowManager(CE_DirectX& aDirectX);
+	CE_WindowManager(CE_GPUContext& aGPUContext);
 	~CE_WindowManager();
 
-	CE_DirectX& myDirectX;
+	CE_GPUContext& myGPUContext;
 	CE_GrowingArray<CE_Window*> myWindows;
 
 	static CE_WindowManager* ourInstance;

@@ -1,5 +1,8 @@
 #pragma once
 struct ID3D11ShaderResourceView;
+struct ID3D11RenderTargetView;
+struct ID3D11DepthStencilView;
+struct ID3D11Texture2D;
 
 class CE_GPUContext;
 
@@ -9,15 +12,33 @@ public:
 	CE_Texture();
 	~CE_Texture();
 
+	void InitForShader(const CE_Vector2i& aSize, unsigned int aBindFlag, unsigned int aFormat, CE_GPUContext& aGPUContext);
+	void InitAsBackBuffer(const CE_Vector2i& aSize, ID3D11Texture2D* aTexture, CE_GPUContext& aGPUContext);
+
 	void Load(const CE_String& aFilePath, CE_GPUContext& aGPUContext);
 
-	const CE_Vector2f& GetSize() const { return mySize; }
+	const CE_Vector2i& GetSize() const { return mySize; }
+
 	ID3D11ShaderResourceView* GetShaderView() { return myShaderView; }
+	ID3D11RenderTargetView* GetRenderTarget() { return myRenderTarget; }
+
+	ID3D11ShaderResourceView* GetDepthView() { return myDepthShaderView; }
+	ID3D11DepthStencilView* GetDepthStencil() { return myDepthStencil; }
 
 private:
-	CE_Vector2f mySize;
-	CE_String myFilePath;
+	void CreateRenderTarget(const CE_Vector2i& aSize, unsigned int aBindFlag, unsigned int aFormat, CE_GPUContext& aGPUContext);
+	void CreateDepthStencil(const CE_Vector2i& aSize, CE_GPUContext& aGPUContext);
 
+	CE_Vector2i mySize;
+	CE_String myFilePath;
+	unsigned int myFormat;
+
+	ID3D11Texture2D* myTexture;
 	ID3D11ShaderResourceView* myShaderView;
+	ID3D11RenderTargetView* myRenderTarget;
+
+	ID3D11Texture2D* myDepthTexture;
+	ID3D11ShaderResourceView* myDepthShaderView;
+	ID3D11DepthStencilView* myDepthStencil;
 };
 

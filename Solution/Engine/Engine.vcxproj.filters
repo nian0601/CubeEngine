@@ -23,12 +23,6 @@
     <ClCompile Include="CE_Camera.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="CE_Renderer.cpp">
-      <Filter>Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="CE_RendererProxy.cpp">
-      <Filter>Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="CE_BaseProcessor.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
@@ -123,9 +117,6 @@
       <Filter>AI\Behavior\Nodes</Filter>
     </ClCompile>
     <ClCompile Include="CE_TypeID.cpp" />
-    <ClCompile Include="CE_DebugRenderManager.cpp">
-      <Filter>Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="CE_LineRenderObject.cpp">
       <Filter>Rendering\RenderObjects</Filter>
     </ClCompile>
@@ -155,6 +146,21 @@
     </ClCompile>
     <ClCompile Include="CPY_CollisionEntity.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_DebugRenderManager.cpp">
+      <Filter>Rendering\Debugging</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_Renderer.cpp">
+      <Filter>Rendering\Renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_RendererProxy.cpp">
+      <Filter>Rendering\Renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_DeferredRenderer.cpp">
+      <Filter>Rendering\Renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_SwapChain.cpp">
+      <Filter>DirectX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +220,12 @@
     </Filter>
     <Filter Include="Physics\Intersection">
       <UniqueIdentifier>{400193ed-6855-48af-b297-09e5827c75b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Debugging">
+      <UniqueIdentifier>{779ade8b-0d9e-46f1-9e92-579040e0028e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Renderers">
+      <UniqueIdentifier>{172eb193-68a1-4369-bec8-8c7e5be6ad86}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -281,12 +293,6 @@
       <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="CE_Game.h" />
-    <ClInclude Include="CE_Renderer.h">
-      <Filter>Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_RendererProxy.h">
-      <Filter>Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="CE_BaseComponent.h">
       <Filter>Entity</Filter>
     </ClInclude>
@@ -405,12 +411,6 @@
       <Filter>AI\Behavior\Nodes</Filter>
     </ClInclude>
     <ClInclude Include="CE_TypeID.h" />
-    <ClInclude Include="CE_DebugRenderManager.h">
-      <Filter>Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_DebugPrimitives.h">
-      <Filter>Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="CE_LineRenderObject.h">
       <Filter>Rendering\RenderObjects</Filter>
     </ClInclude>
@@ -455,6 +455,24 @@
     </ClInclude>
     <ClInclude Include="CPY_CollisionEntity.h">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_DebugPrimitives.h">
+      <Filter>Rendering\Debugging</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_DebugRenderManager.h">
+      <Filter>Rendering\Debugging</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Renderer.h">
+      <Filter>Rendering\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_RendererProxy.h">
+      <Filter>Rendering\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_DeferredRenderer.h">
+      <Filter>Rendering\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_SwapChain.h">
+      <Filter>DirectX</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

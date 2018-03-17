@@ -69,9 +69,9 @@ LRESULT CALLBACK CE_WindowManager_StaticWndProc(HWND hWnd, UINT message, WPARAM 
 }
 
 CE_WindowManager* CE_WindowManager::ourInstance = nullptr;
-void CE_WindowManager::Create(CE_DirectX& aDirect)
+void CE_WindowManager::Create(CE_GPUContext& aGPUContext)
 {
-	ourInstance = new CE_WindowManager(aDirect);
+	ourInstance = new CE_WindowManager(aGPUContext);
 }
 
 void CE_WindowManager::Destory()
@@ -86,8 +86,7 @@ CE_WindowManager* CE_WindowManager::GetInstance()
 
 CE_Window* CE_WindowManager::CreateNewWindow(const CE_Vector2i& aSize, const char* aTitle)
 {
-	CE_Window* window = new CE_Window();
-	window->Setup(aSize, aTitle, this, CE_WindowManager_StaticWndProc);
+	CE_Window* window = new CE_Window(aSize, aTitle, this, CE_WindowManager_StaticWndProc);
 	myWindows.Add(window);
 
 	return window;
@@ -133,8 +132,8 @@ void CE_WindowManager::HandleWindowMessage(CE_Window* aWindow, const CE_WindowMe
 	}
 }
 
-CE_WindowManager::CE_WindowManager(CE_DirectX& aDirectX)
-	: myDirectX(aDirectX)
+CE_WindowManager::CE_WindowManager(CE_GPUContext& aGPUContext)
+	: myGPUContext(aGPUContext)
 {
 }
 

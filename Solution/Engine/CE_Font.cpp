@@ -5,7 +5,7 @@
 #include <string>
 #include "CE_Texture.h"
 
-void CE_CharData::LoadFromLine(const CE_String& aLine, const CE_Vector2f& aTextureSize)
+void CE_CharData::LoadFromLine(const CE_String& aLine, const CE_Vector2i& aTextureSize)
 {
 	CE_String id = LoadToken(aLine, "id=");
 	CE_String x = LoadToken(aLine, "x=");
@@ -30,8 +30,10 @@ void CE_CharData::LoadFromLine(const CE_String& aLine, const CE_Vector2f& aTextu
 	myBottomRightUV.x = myTopLeftUV.x + myWidth;
 	myBottomRightUV.y = myTopLeftUV.y + myHeight;
 
-	myTopLeftUV /= aTextureSize;
-	myBottomRightUV /= aTextureSize;
+	myTopLeftUV.x /= aTextureSize.x;
+	myTopLeftUV.y /= aTextureSize.y;
+	myBottomRightUV.x /= aTextureSize.x;
+	myBottomRightUV.y /= aTextureSize.y;
 }
 
 CE_String CE_CharData::LoadToken(const CE_String& aLine, const CE_String& aToken)
@@ -69,7 +71,7 @@ void CE_Font::LoadFromFile(const CE_String& aFilePath, CE_GPUContext& aContext)
 	std::getline(stream, stdLine); //first line is just the name of the font, dont care
 	std::getline(stream, stdLine); //the second like is the number of characers in the file ("chars count=191"), dont care
 
-	CE_Vector2<float> textureSize = myTexture->GetSize();
+	CE_Vector2i textureSize = myTexture->GetSize();
 	while (std::getline(stream, stdLine))
 	{
 		CE_CharData data;
