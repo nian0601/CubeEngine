@@ -2,6 +2,7 @@
 
 class CE_Camera;
 class CE_DebugRenderManager;
+class CE_DeferredRenderer;
 class CE_Input;
 class CE_GPUContext;
 class CE_Renderer;
@@ -42,6 +43,7 @@ private:
 
 	CE_Camera* myCamera;
 	CE_Renderer* myRenderer;
+	CE_DeferredRenderer* myDeferredRenderer;
 
 	static CE_DebugRenderManager* myDebugRenderManager;
 };

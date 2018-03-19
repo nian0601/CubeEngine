@@ -15,6 +15,8 @@ public:
 	void PrepareForRender();
 	void FinishRender();
 
+	CE_Texture* GetBackbuffer() { return myBackbuffer; }
+
 private:
 	void CreateSwapchain(const CE_Vector2i& aWindowSize, HWND aHWND);
 	void CreateBackbuffer(const CE_Vector2i& aWindowSize);

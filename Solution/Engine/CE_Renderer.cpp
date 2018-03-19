@@ -80,9 +80,8 @@ void CE_Renderer::RenderLines(CE_Camera& aCamera, const CE_GrowingArray<CE_Line>
 	if (someLines.Size() == 0)
 		return;
 
-	CE_DirextXFactory* factory = CE_DirextXFactory::GetInstance();
-	factory->SetBlendState(ALPHA_BLEND);
-	factory->SetDepthStencilState(ENABLED);
+	CE_SetResetBlend blend(ALPHA_BLEND);
+	CE_SetResetDepth depth(ENABLED);
 
 	myLineShader->SetGlobalGPUData(myGPUContext, aCamera);
 	
@@ -92,10 +91,9 @@ void CE_Renderer::RenderLines(CE_Camera& aCamera, const CE_GrowingArray<CE_Line>
 
 void CE_Renderer::RenderCubes(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
 {
-	CE_DirextXFactory* factory = CE_DirextXFactory::GetInstance();
-	factory->SetRasterizerState(CULL_BACK);
-	factory->SetDepthStencilState(ENABLED);
-	factory->SetBlendState(NO_BLEND);
+	CE_SetResetRasterizer raster(CULL_BACK);
+	CE_SetResetDepth depth(ENABLED);
+	CE_SetResetBlend blend(NO_BLEND);
 
 	myCubeShader->SetGlobalGPUData(myGPUContext, aCamera);
 
@@ -111,8 +109,7 @@ void CE_Renderer::RenderCubes(CE_Camera& aCamera, const CE_RendererProxy& aRende
 
 void CE_Renderer::RenderSprites(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy)
 {
-	CE_DirextXFactory* factory = CE_DirextXFactory::GetInstance();
-	factory->SetBlendState(ALPHA_BLEND);
+	CE_SetResetBlend blend(ALPHA_BLEND);
 
 	mySpriteShader->SetGlobalGPUData(myGPUContext, aOrthagonalMatrix);
 	for (const CE_SpriteData& data : aRendererProxy.GetSpriteData())
@@ -127,8 +124,7 @@ void CE_Renderer::RenderSprites(const CE_Matrix44f& aOrthagonalMatrix, const CE_
 
 void CE_Renderer::RenderTexts(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy)
 {
-	CE_DirextXFactory* factory = CE_DirextXFactory::GetInstance();
-	factory->SetBlendState(ALPHA_BLEND);
+	CE_SetResetBlend blend(ALPHA_BLEND);
 
 	if (myMSDFTextShader != nullptr)
 		myMSDFTextShader->SetGlobalGPUData(myGPUContext, aOrthagonalMatrix);

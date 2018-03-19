@@ -1,0 +1,39 @@
+struct PosUVVertex
+{
+	float4 Position : POSITION;
+	float2 TextureCoord : TEXCOORD;
+};
+
+struct PosUVPixel
+{
+	float4 Position : SV_POSITION;
+	float2 TextureCoord : TEXCOORD;
+};
+
+
+Texture2D AlbedoMetalnessTexture;
+Texture2D NormalRoughnessTexture;
+Texture2D DepthTexture;
+SamplerState Sampler;
+
+PosUVPixel VS(PosUVVertex aInput)
+{
+	PosUVPixel output;
+
+	output.Position = aInput.Position;
+	output.TextureCoord = aInput.TextureCoord;
+
+	return output;
+};
+
+
+float4 PS(PosUVPixel anInput) : SV_TARGET
+{
+	float2 texCoord = anInput.TextureCoord;
+	float4 color = AlbedoMetalnessTexture.Sample(Sampler, texCoord);
+	return color;
+	//return float4(0.75f, 0.33f, 0.25f, 1.f);
+	//float4 color = anInput.Color;
+	//color.w = 1.f;
+	//return color;
+};

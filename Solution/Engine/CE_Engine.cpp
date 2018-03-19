@@ -13,6 +13,7 @@
 #include "CE_DirectX.h"
 #include "CE_Window.h"
 #include "CE_DebugRenderManager.h"
+#include "CE_DeferredRenderer.h"
 
 CE_DebugRenderManager* CE_Engine::myDebugRenderManager = nullptr;
 
@@ -29,6 +30,7 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 
 
 	myRenderer = new CE_Renderer(*myGPUContext);
+	myDeferredRenderer = new CE_DeferredRenderer(*myGPUContext, myMainWindow->GetWindowSize());
 
 	myCamera = new CE_Camera(myMainWindow->GetWindowSize());
 
@@ -48,6 +50,7 @@ CE_Engine::~CE_Engine()
 	CE_SAFE_DELETE(myInput);
 	CE_SAFE_DELETE(myTime);
 	CE_SAFE_DELETE(myCamera);
+	CE_SAFE_DELETE(myDeferredRenderer);
 	CE_SAFE_DELETE(myRenderer);
 	CE_SAFE_DELETE(myGPUContext);
 	CE_WindowManager::Destory();
@@ -73,18 +76,20 @@ void CE_Engine::Run()
 		for (CE_Window* window : windows)
 		{
 			window->PrepareForRender();
-			
-			// myRenderer->BeginGBuffer();
-			// myRenderer->Render3D();
-			// myRenderer->EndGBuffer();
 
+			myDeferredRenderer->BeginGBuffer(window->GetBackbuffer());
+			myRenderer->Render3D(*myCamera, window->GetRendererProxy());
+			myDeferredRenderer->EndGBuffer(window->GetBackbuffer());
+
+			
+			myDeferredRenderer->RenderToScreen();
+			
 			// myRenderer->RenderLights();
 
-
-			myRenderer->Render3D(*myCamera, window->GetRendererProxy());
 			myRenderer->Render2D(window->GetOrthagonalProjection(), window->GetRendererProxy());
 			myRenderer->RenderLines(*myCamera, myDebugRenderManager->myLines);
 			myDebugRenderManager->myLines.RemoveAll();
+
 			window->FinishRender();
 		}
 	}

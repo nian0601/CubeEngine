@@ -38,8 +38,6 @@ void CE_SwapChain::PrepareForRender()
 
 	context->ClearRenderTargetView(target, clearColor);
 	context->ClearDepthStencilView(stencil, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
-
-	context->OMSetRenderTargets(1, &target, stencil);
 	context->RSSetViewports(1, myViewPort);
 }
 

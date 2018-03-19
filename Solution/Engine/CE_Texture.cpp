@@ -122,6 +122,20 @@ void CE_Texture::CreateDepthStencil(const CE_Vector2i& aSize, CE_GPUContext& aGP
 
 	ID3D11Device* device = aGPUContext.GetDevice();
 	CE_ASSERT(SUCCEEDED(device->CreateTexture2D(&texDesc, NULL, &myDepthTexture)), "Failed to Create texture");
-	CE_ASSERT(SUCCEEDED(device->CreateShaderResourceView(myDepthTexture, NULL, &myDepthShaderView)), "Failed to create shaderresource");
-	CE_ASSERT(SUCCEEDED(device->CreateDepthStencilView(myDepthTexture, NULL, &myDepthStencil)), "Failed to create rendertarget");
+
+	D3D11_DEPTH_STENCIL_VIEW_DESC depthDesc;
+	CE_ZERO_MEMORY(depthDesc);
+	depthDesc.Format = DXGI_FORMAT_D32_FLOAT;
+	depthDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	depthDesc.Texture2D.MipSlice = 0;
+
+	CE_ASSERT(SUCCEEDED(device->CreateDepthStencilView(myDepthTexture, &depthDesc, &myDepthStencil)), "Failed to create rendertarget");
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC viewDesc;
+	CE_ZERO_MEMORY(viewDesc);
+	viewDesc.Format = DXGI_FORMAT_R32_FLOAT;
+	viewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	viewDesc.Texture2D.MipLevels = 1;
+	viewDesc.Texture2D.MostDetailedMip = 0;
+	CE_ASSERT(SUCCEEDED(device->CreateShaderResourceView(myDepthTexture, &viewDesc, &myDepthShaderView)), "Failed to create shaderresource");
 }

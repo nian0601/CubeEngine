@@ -73,3 +73,8 @@ void CE_Window::FinishRender()
 	mySwapChain->FinishRender();
 	myRendererProxy->Clear();
 }
+
+CE_Texture* CE_Window::GetBackbuffer()
+{
+	return mySwapChain->GetBackbuffer();
+}

@@ -162,6 +162,15 @@
     <ClCompile Include="CE_SwapChain.cpp">
       <Filter>DirectX</Filter>
     </ClCompile>
+    <ClCompile Include="CE_FullscreenQuad.cpp">
+      <Filter>Rendering\RenderObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_FullscreenShader.cpp">
+      <Filter>Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_GBuffer.cpp">
+      <Filter>Rendering\Renderers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -473,6 +482,15 @@
     </ClInclude>
     <ClInclude Include="CE_SwapChain.h">
       <Filter>DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_FullscreenQuad.h">
+      <Filter>Rendering\RenderObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_FullscreenShader.h">
+      <Filter>Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_GBuffer.h">
+      <Filter>Rendering\Renderers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

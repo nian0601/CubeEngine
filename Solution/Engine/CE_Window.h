@@ -5,6 +5,7 @@
 class CE_DirectX;
 class CE_RendererProxy;
 class CE_SwapChain;
+class CE_Texture;
 class CE_WindowManager;
 
 class CE_Window
@@ -21,6 +22,8 @@ public:
 
 	CE_RendererProxy& GetRendererProxy() { return *myRendererProxy; }
 	const CE_Matrix44f& GetOrthagonalProjection() const { return myOrthagonalProjection; }
+
+	CE_Texture* GetBackbuffer();
 
 private:
 	CE_Matrix44f myOrthagonalProjection;

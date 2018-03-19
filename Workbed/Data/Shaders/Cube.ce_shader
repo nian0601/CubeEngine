@@ -25,13 +25,20 @@ struct PosNormColorPixel
 	float4 Color : COLOR;
 };
 
+struct GBuffer
+{
+	float4 AlbedoMetalness;
+	float4 NormalRoughness;
+	float Depth;
+};
+
 
 PosNormColorPixel VS(PosNormColorVertex aInput)
 {
 	PosNormColorPixel output;
 
 	aInput.Position.w = 1.f;
-	aInput.Position.xyz *= Scale;
+	aInput.Position.xyz *= Scale.xyz;
 	output.Position = mul(World, aInput.Position);
 	output.Position = mul(View, output.Position);
 	output.Position = mul(Projection, output.Position);
@@ -43,10 +50,15 @@ PosNormColorPixel VS(PosNormColorVertex aInput)
 };
 
 
-float4 PS(PosNormColorPixel anInput) : SV_TARGET
+GBuffer PS(PosNormColorPixel anInput) : SV_TARGET
 {
-	//return Color;
-	//float4 color = float4(abs(anInput.Normal.xyz), 1.f);
-	//return color;
-	return anInput.Color;
+	GBuffer output;
+	output.AlbedoMetalness = anInput.Color;
+	output.AlbedoMetalness.w = 1.f;
+
+	output.NormalRoughness = anInput.Normal;
+	output.NormalRoughness.w = 0.f;
+
+	output.Depth = anInput.Position.z;
+	return output;
 };

@@ -53,16 +53,20 @@ void CE_DirextXFactory::CreateDepthStencilView(unsigned int aFormat, unsigned in
 
 void CE_DirextXFactory::SetRasterizerState(CE_RasterizerState anState)
 {
+	myCurrentRasterizeState = anState;
 	myContext->RSSetState(myRasterizerStates[anState]);
 }
 
 void CE_DirextXFactory::SetDepthStencilState(CE_DepthState anState)
 {
+	myCurrentDepthState = anState;
 	myContext->OMSetDepthStencilState(myDepthStencilStates[anState], 1);
 }
 
 void CE_DirextXFactory::SetBlendState(CE_BlendState anState)
 {
+	myCurrentBlendState = anState;
+
 	float blendFactor[4];
 	blendFactor[0] = 0.f;
 	blendFactor[1] = 0.f;
