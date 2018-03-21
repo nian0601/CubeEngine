@@ -76,6 +76,11 @@ void CE_DirextXFactory::SetBlendState(CE_BlendState anState)
 	myContext->OMSetBlendState(myBlendStates[anState], blendFactor, 0xFFFFFFFF);
 }
 
+void CE_DirextXFactory::SetSamplerState(CE_SamplerState anState)
+{
+	myContext->PSSetSamplers(0, 1, &mySamplerStates[anState]);
+}
+
 CE_DirextXFactory::CE_DirextXFactory(ID3D11Device* aDevice, ID3D11DeviceContext* aContext)
 	: myDevice(aDevice)
 	, myContext(aContext)
@@ -83,11 +88,23 @@ CE_DirextXFactory::CE_DirextXFactory(ID3D11Device* aDevice, ID3D11DeviceContext*
 	SetupRasterizerStates();
 	SetupDepthStencilStates();
 	SetupBlendStates();
+	SetupSamplerStates();
 }
 
 
 CE_DirextXFactory::~CE_DirextXFactory()
 {
+	for (int i = 0; i < _RAZTER_COUNT; ++i)
+		CE_SAFE_RELEASE(myRasterizerStates[i]);
+
+	for (int i = 0; i < _DEPTH_COUNT; ++i)
+		CE_SAFE_RELEASE(myDepthStencilStates[i]);
+
+	for (int i = 0; i < _BLEND_COUNT; ++i)
+		CE_SAFE_RELEASE(myBlendStates[i]);
+
+	for (int i = 0; i < _SAMPLER_COUNT; ++i)
+		CE_SAFE_RELEASE(mySamplerStates[i]);
 }
 
 void CE_DirextXFactory::SetupRasterizerStates()
@@ -200,4 +217,33 @@ void CE_DirextXFactory::SetupBlendStates()
 
 	hr = myDevice->CreateBlendState(&blendDesc, &myBlendStates[static_cast<int>(CE_BlendState::NO_BLEND)]);
 	CE_ASSERT(FAILED(hr) == false, "Failed to CreateNoAlphaBlendState");
+}
+
+void CE_DirextXFactory::SetupSamplerStates()
+{
+	D3D11_SAMPLER_DESC samplerDesc;
+	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.MipLODBias = 0.0f;
+	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	samplerDesc.BorderColor[0] = 0;
+	samplerDesc.BorderColor[1] = 0;
+	samplerDesc.BorderColor[2] = 0;
+	samplerDesc.BorderColor[3] = 0;
+	samplerDesc.MinLOD = 0;
+	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+	HRESULT result = myDevice->CreateSamplerState(&samplerDesc, &mySamplerStates[static_cast<int>(CE_SamplerState::LINEAR_SAMPLING)]);
+	CE_ASSERT(FAILED(result) == false, "Failed to LinearSampling-state");
+
+
+	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	result = myDevice->CreateSamplerState(&samplerDesc, &mySamplerStates[static_cast<int>(CE_SamplerState::POINT_SAMPLING)]);
+	CE_ASSERT(FAILED(result) == false, "Failed to PointSampling-state");
 }

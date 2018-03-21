@@ -12,14 +12,12 @@ CE_TextShader::CE_TextShader()
 	, myPixelShader(nullptr)
 	, myInputLayout(nullptr)
 	, myGlobalDataBuffer(nullptr)
-	, mySamplerState(nullptr)
 {
 }
 
 
 CE_TextShader::~CE_TextShader()
 {
-	CE_SAFE_RELEASE(mySamplerState);
 	CE_SAFE_RELEASE(myGlobalDataBuffer);
 	CE_SAFE_RELEASE(myInputLayout);
 	CE_SAFE_RELEASE(myPixelShader);
@@ -96,24 +94,6 @@ void CE_TextShader::Init(const WCHAR* aShaderFilePath, const CE_GPUContext& aGPU
 
 	result = device->CreateBuffer(&matrixBufferDesc, NULL, &myGlobalDataBuffer);
 	CE_ASSERT(FAILED(result) == false, "Failed to create GlobalDataBuffer");
-
-	D3D11_SAMPLER_DESC samplerDesc;
-	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.MipLODBias = 0.0f;
-	samplerDesc.MaxAnisotropy = 1;
-	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-	samplerDesc.BorderColor[0] = 0;
-	samplerDesc.BorderColor[1] = 0;
-	samplerDesc.BorderColor[2] = 0;
-	samplerDesc.BorderColor[3] = 0;
-	samplerDesc.MinLOD = 0;
-	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
-	result = device->CreateSamplerState(&samplerDesc, &mySamplerState);
-	CE_ASSERT(FAILED(result) == false, "Failed to CreateSamplerState");
 }
 
 void CE_TextShader::SetGlobalGPUData(const CE_GPUContext& aGPUContext, const CE_Matrix44f& aOrthagonalMatrix)
@@ -136,7 +116,6 @@ void CE_TextShader::SetGlobalGPUData(const CE_GPUContext& aGPUContext, const CE_
 
 	context->VSSetShader(myVertexShader, NULL, 0);
 	context->PSSetShader(myPixelShader, NULL, 0);
-	context->PSSetSamplers(0, 1, &mySamplerState);
 }
 
 void CE_TextShader::OutputError(ID3D10Blob* aErrorBlob, const WCHAR* aShaderName)

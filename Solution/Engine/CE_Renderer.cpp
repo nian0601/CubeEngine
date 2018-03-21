@@ -125,6 +125,7 @@ void CE_Renderer::RenderSprites(const CE_Matrix44f& aOrthagonalMatrix, const CE_
 void CE_Renderer::RenderTexts(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy)
 {
 	CE_SetResetBlend blend(ALPHA_BLEND);
+	CE_SetResetSampler sampler(LINEAR_SAMPLING);
 
 	if (myMSDFTextShader != nullptr)
 		myMSDFTextShader->SetGlobalGPUData(myGPUContext, aOrthagonalMatrix);

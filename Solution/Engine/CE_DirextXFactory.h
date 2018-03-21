@@ -5,9 +5,10 @@ struct ID3D11DeviceContext;
 struct ID3D11Texture2D;
 struct ID3D11DepthStencilView;
 
-struct ID3D11RasterizerState;
-struct ID3D11DepthStencilState;
 struct ID3D11BlendState;
+struct ID3D11DepthStencilState;
+struct ID3D11RasterizerState;
+struct ID3D11SamplerState;
 
 class CE_DirextXFactory
 {
@@ -28,6 +29,9 @@ public:
 	CE_BlendState GetBlendState() const { return myCurrentBlendState; }
 	void SetBlendState(CE_BlendState anState);
 
+	CE_SamplerState GetSamplerState() const { return myCurrentSamplerState; }
+	void SetSamplerState(CE_SamplerState  anState);
+
 private:
 	CE_DirextXFactory(ID3D11Device* aDevice, ID3D11DeviceContext* aContext);
 	~CE_DirextXFactory();
@@ -35,6 +39,7 @@ private:
 	void SetupRasterizerStates();
 	void SetupDepthStencilStates();
 	void SetupBlendStates();
+	void SetupSamplerStates();
 
 	ID3D11Device* myDevice;
 	ID3D11DeviceContext* myContext;
@@ -47,6 +52,9 @@ private:
 
 	CE_BlendState myCurrentBlendState;
 	ID3D11BlendState* myBlendStates[static_cast<int>(CE_BlendState::_BLEND_COUNT)];
+
+	CE_SamplerState myCurrentSamplerState;
+	ID3D11SamplerState* mySamplerStates[static_cast<int>(CE_SamplerState::_SAMPLER_COUNT)];
 
 	static CE_DirextXFactory* ourInstance;
 };
@@ -103,4 +111,22 @@ public:
 
 private:
 	CE_BlendState myOldState;
+};
+
+class CE_SetResetSampler
+{
+public:
+	CE_SetResetSampler(CE_SamplerState aState)
+	{
+		myOldState = CE_DirextXFactory::GetInstance()->GetSamplerState();
+		CE_DirextXFactory::GetInstance()->SetSamplerState(aState);
+	}
+
+	~CE_SetResetSampler()
+	{
+		CE_DirextXFactory::GetInstance()->SetSamplerState(myOldState);
+	}
+
+private:
+	CE_SamplerState myOldState;
 };

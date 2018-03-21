@@ -23,3 +23,10 @@ enum CE_BlendState
 	ALPHA_BLEND,
 	_BLEND_COUNT
 };
+
+enum CE_SamplerState
+{
+	LINEAR_SAMPLING,
+	POINT_SAMPLING,
+	_SAMPLER_COUNT
+};

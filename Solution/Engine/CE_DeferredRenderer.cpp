@@ -56,6 +56,7 @@ void CE_DeferredRenderer::RenderToScreen()
 	CE_SetResetDepth depth(NO_READ_NO_WRITE);
 	CE_SetResetBlend blend(NO_BLEND);
 	CE_SetResetRasterizer rasterizer(CULL_BACK);
+	CE_SetResetSampler sampler(POINT_SAMPLING);
 
 	myShader->SetGlobalGPUData(myGPUContext);
 	myQuad->Render(myGPUContext, *myGBuffer);
