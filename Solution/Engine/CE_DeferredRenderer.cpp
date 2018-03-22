@@ -5,17 +5,21 @@
 #include <d3d11.h>
 #include "CE_GPUContext.h"
 #include "CE_GBuffer.h"
-#include "CE_FullscreenShader.h"
 #include "CE_FullscreenQuad.h"
 #include "CE_DirextXFactory.h"
+#include "CE_Shader.h"
 
 
 CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Vector2i& aWindowSize)
 	: myGPUContext(aGPUContext)
 {
 	myGBuffer = new CE_GBuffer(aGPUContext, aWindowSize);
-	myShader = new CE_FullscreenShader();
-	myShader->Init(L"Data/Shaders/FullscreenQuad.ce_shader", myGPUContext);
+
+	CE_ShaderParameters shaderParams;
+	shaderParams.myFilePath = L"Data/Shaders/FullscreenQuad.ce_shader";
+	shaderParams.myInputElements.Add(CE_ShaderParameters::POSITION);
+	shaderParams.myInputElements.Add(CE_ShaderParameters::UV);
+	myShader = new CE_Shader(shaderParams, myGPUContext);
 
 	myQuad = new CE_FullscreenQuad();
 	myQuad->Init(aGPUContext);
@@ -58,6 +62,6 @@ void CE_DeferredRenderer::RenderToScreen()
 	CE_SetResetRasterizer rasterizer(CULL_BACK);
 	CE_SetResetSampler sampler(POINT_SAMPLING);
 
-	myShader->SetGlobalGPUData(myGPUContext);
+	myShader->Activate();
 	myQuad->Render(myGPUContext, *myGBuffer);
 }

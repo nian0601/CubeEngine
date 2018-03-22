@@ -44,9 +44,6 @@
     <ClCompile Include="CE_Sprite.cpp">
       <Filter>Rendering\RenderObjects</Filter>
     </ClCompile>
-    <ClCompile Include="CE_SpriteShader.cpp">
-      <Filter>Rendering\Shaders</Filter>
-    </ClCompile>
     <ClCompile Include="CUI_Manager.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
@@ -158,9 +155,6 @@
     </ClCompile>
     <ClCompile Include="CE_FullscreenQuad.cpp">
       <Filter>Rendering\RenderObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="CE_FullscreenShader.cpp">
-      <Filter>Rendering\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="CE_GBuffer.cpp">
       <Filter>Rendering\Renderers</Filter>
@@ -338,9 +332,6 @@
     <ClInclude Include="CE_Sprite.h">
       <Filter>Rendering\RenderObjects</Filter>
     </ClInclude>
-    <ClInclude Include="CE_SpriteShader.h">
-      <Filter>Rendering\Shaders</Filter>
-    </ClInclude>
     <ClInclude Include="CUI_Manager.h">
       <Filter>GUI</Filter>
     </ClInclude>
@@ -476,9 +467,6 @@
     </ClInclude>
     <ClInclude Include="CE_FullscreenQuad.h">
       <Filter>Rendering\RenderObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_FullscreenShader.h">
-      <Filter>Rendering\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="CE_GBuffer.h">
       <Filter>Rendering\Renderers</Filter>

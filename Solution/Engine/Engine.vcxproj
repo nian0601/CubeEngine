@@ -145,7 +145,6 @@
     <ClCompile Include="CE_FileParser.cpp" />
     <ClCompile Include="CE_Font.cpp" />
     <ClCompile Include="CE_FullscreenQuad.cpp" />
-    <ClCompile Include="CE_FullscreenShader.cpp" />
     <ClCompile Include="CE_Input.cpp" />
     <ClCompile Include="CE_LineRenderObject.cpp" />
     <ClCompile Include="CE_MSDFFont.cpp" />
@@ -179,7 +178,6 @@
     <ClCompile Include="CE_GPUContext.cpp" />
     <ClCompile Include="CE_World.cpp" />
     <ClCompile Include="CE_ComponentStorage.cpp" />
-    <ClCompile Include="CE_SpriteShader.cpp" />
     <ClCompile Include="CUI_TreeView.cpp" />
     <ClCompile Include="CUI_ValueController.cpp" />
     <ClCompile Include="CUI_VBox.cpp" />
@@ -214,7 +212,6 @@
     <ClInclude Include="CE_FileParser.h" />
     <ClInclude Include="CE_Font.h" />
     <ClInclude Include="CE_FullscreenQuad.h" />
-    <ClInclude Include="CE_FullscreenShader.h" />
     <ClInclude Include="CE_Game.h" />
     <ClInclude Include="CE_GBuffer.h" />
     <ClInclude Include="CE_GrowingArray.h" />
@@ -271,7 +268,6 @@
     <ClInclude Include="CE_World.h" />
     <ClInclude Include="CE_ComponentStorage.h" />
     <ClInclude Include="CE_Map.h" />
-    <ClInclude Include="CE_SpriteShader.h" />
     <ClInclude Include="CUI_TreeView.h" />
     <ClInclude Include="CUI_ValueController.h" />
     <ClInclude Include="CUI_VBox.h" />

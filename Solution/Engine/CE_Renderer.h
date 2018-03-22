@@ -5,14 +5,9 @@ class CE_GPUContext;
 class CE_Model;
 
 class CE_Sprite;
-class CE_SpriteShader;
-
 class CE_Text;
-
 class CE_LineRenderObject;
-
 class CE_RendererProxy;
-
 class CE_Shader;
 
 #include "CE_DebugPrimitives.h"
@@ -38,7 +33,7 @@ private:
 	CE_Model* myCubeModel;
 
 	CE_Sprite* mySprite;
-	CE_SpriteShader* mySpriteShader;
+	CE_Shader* mySpriteShader;
 
 	CE_Text* myText;
 	CE_Shader* myTextShader;

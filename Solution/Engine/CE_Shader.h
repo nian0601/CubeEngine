@@ -27,6 +27,22 @@ struct CE_ShaderParameters
 	const WCHAR* myFilePath;
 };
 
+struct CE_ProjectionData
+{
+	CE_Matrix44f myProjection;
+};
+
+struct CE_ViewProjectionData
+{
+	CE_Matrix44f myView;
+	CE_Matrix44f myProjection;
+};
+
+struct CE_SpriteShaderData
+{
+	CE_Matrix44f myProjection;
+};
+
 class CE_Shader
 {
 public:
