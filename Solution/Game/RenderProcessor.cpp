@@ -38,4 +38,6 @@ void RenderProcessor::Update(float /*aDelta*/)
 				myRendererProxy.AddCubeData(entry.myOffsetMatrix * translation.myOrientation, entry.myScale * translation.myScale, entry.myColor);
 		}
 	}
+
+	myRendererProxy.AddTextData("This is some text!", { 500.f, 400.f });
 }

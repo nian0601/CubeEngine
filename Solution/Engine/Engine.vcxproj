@@ -156,15 +156,14 @@
     <ClCompile Include="CE_PathFinder.cpp" />
     <ClCompile Include="CE_Renderer.cpp" />
     <ClCompile Include="CE_RendererProxy.cpp" />
-    <ClCompile Include="CE_CubeShader.cpp" />
     <ClCompile Include="CE_Model.cpp" />
     <ClCompile Include="CE_DirectX.cpp" />
     <ClCompile Include="CE_DirextXFactory.cpp" />
     <ClCompile Include="CE_Engine.cpp" />
     <ClCompile Include="CE_Murmur.cpp" />
+    <ClCompile Include="CE_Shader.cpp" />
     <ClCompile Include="CE_Sprite.cpp" />
     <ClCompile Include="CE_SwapChain.cpp" />
-    <ClCompile Include="CE_TextShader.cpp" />
     <ClCompile Include="CE_Texture.cpp" />
     <ClCompile Include="CE_Time.cpp" />
     <ClCompile Include="CE_TypeID.cpp" />
@@ -230,7 +229,6 @@
     <ClInclude Include="CE_PathFinder.h" />
     <ClInclude Include="CE_Renderer.h" />
     <ClInclude Include="CE_RendererProxy.h" />
-    <ClInclude Include="CE_CubeShader.h" />
     <ClInclude Include="CE_Model.h" />
     <ClInclude Include="CE_DirectX.h" />
     <ClInclude Include="CE_DirextXFactory.h" />
@@ -242,11 +240,11 @@
     <ClInclude Include="CE_Matrix44_Decl.h" />
     <ClInclude Include="CE_Memory.h" />
     <ClInclude Include="CE_Murmur.h" />
+    <ClInclude Include="CE_Shader.h" />
     <ClInclude Include="CE_Sprite.h" />
     <ClInclude Include="CE_StaticArray.h" />
     <ClInclude Include="CE_String.h" />
     <ClInclude Include="CE_SwapChain.h" />
-    <ClInclude Include="CE_TextShader.h" />
     <ClInclude Include="CE_Texture.h" />
     <ClInclude Include="CE_Time.h" />
     <ClInclude Include="CE_TypeID.h" />

@@ -3,17 +3,17 @@
 class CE_Camera;
 class CE_GPUContext;
 class CE_Model;
-class CE_CubeShader;
 
 class CE_Sprite;
 class CE_SpriteShader;
 
 class CE_Text;
-class CE_TextShader;
 
 class CE_LineRenderObject;
 
 class CE_RendererProxy;
+
+class CE_Shader;
 
 #include "CE_DebugPrimitives.h"
 
@@ -34,19 +34,19 @@ private:
 
 	CE_GPUContext& myGPUContext;
 
-	CE_CubeShader* myCubeShader;
+	CE_Shader* myCubeShader;
 	CE_Model* myCubeModel;
 
 	CE_Sprite* mySprite;
 	CE_SpriteShader* mySpriteShader;
 
 	CE_Text* myText;
-	CE_TextShader* myTextShader;
+	CE_Shader* myTextShader;
 
 	CE_Text* myMSDFText;
-	CE_TextShader* myMSDFTextShader;
+	CE_Shader* myMSDFTextShader;
 
 	CE_LineRenderObject* myLineObject;
-	CE_CubeShader* myLineShader;
+	CE_Shader* myLineShader;
 };
 

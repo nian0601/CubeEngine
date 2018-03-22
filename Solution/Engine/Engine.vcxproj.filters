@@ -44,9 +44,6 @@
     <ClCompile Include="CE_Sprite.cpp">
       <Filter>Rendering\RenderObjects</Filter>
     </ClCompile>
-    <ClCompile Include="CE_CubeShader.cpp">
-      <Filter>Rendering\Shaders</Filter>
-    </ClCompile>
     <ClCompile Include="CE_SpriteShader.cpp">
       <Filter>Rendering\Shaders</Filter>
     </ClCompile>
@@ -73,9 +70,6 @@
     </ClCompile>
     <ClCompile Include="CE_Text.cpp">
       <Filter>Rendering\RenderObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="CE_TextShader.cpp">
-      <Filter>Rendering\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="CE_Texture.cpp">
       <Filter>Rendering</Filter>
@@ -170,6 +164,9 @@
     </ClCompile>
     <ClCompile Include="CE_GBuffer.cpp">
       <Filter>Rendering\Renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_Shader.cpp">
+      <Filter>Rendering\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -341,9 +338,6 @@
     <ClInclude Include="CE_Sprite.h">
       <Filter>Rendering\RenderObjects</Filter>
     </ClInclude>
-    <ClInclude Include="CE_CubeShader.h">
-      <Filter>Rendering\Shaders</Filter>
-    </ClInclude>
     <ClInclude Include="CE_SpriteShader.h">
       <Filter>Rendering\Shaders</Filter>
     </ClInclude>
@@ -373,9 +367,6 @@
     </ClInclude>
     <ClInclude Include="CE_CommonHelper.h">
       <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_TextShader.h">
-      <Filter>Rendering\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="CE_Texture.h">
       <Filter>Rendering</Filter>
@@ -491,6 +482,9 @@
     </ClInclude>
     <ClInclude Include="CE_GBuffer.h">
       <Filter>Rendering\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Shader.h">
+      <Filter>Rendering\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

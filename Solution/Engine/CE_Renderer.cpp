@@ -1,36 +1,59 @@
 #include "stdafx.h"
 #include "CE_Renderer.h"
-#include "CE_CubeShader.h"
 #include "CE_Model.h"
 #include "CE_SpriteShader.h"
 #include "CE_Sprite.h"
-#include "CE_TextShader.h"
 #include "CE_Text.h"
 #include "CE_DirextXFactory.h"
 #include "CE_RendererProxy.h"
 #include "CE_LineRenderObject.h"
+#include "CE_Shader.h"
+#include "CE_Camera.h"
 
+struct CE_TextShaderData
+{
+	CE_Matrix44f myProjection;
+};
+
+struct CE_CubeShaderData
+{
+	CE_Matrix44f myView;
+	CE_Matrix44f myProjection;
+};
 
 CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 	: myGPUContext(anGPUContext)
 {
-	myCubeShader = new CE_CubeShader();
-	myCubeShader->Init(L"Data/Shaders/Cube.ce_shader", myGPUContext, false);
+	
 
 	myCubeModel = new CE_Model();
 	myCubeModel->InitCube(myGPUContext);
 
-	mySpriteShader = new CE_SpriteShader();
-	mySpriteShader->Init(L"Data/Shaders/Sprite.ce_shader", myGPUContext);
-
 	mySprite = new CE_Sprite();
 	mySprite->Init(myGPUContext);
 
-	myTextShader = new CE_TextShader();
-	myTextShader->Init(L"Data/Shaders/Text.ce_shader", myGPUContext);
-
 	myText = new CE_Text(myGPUContext);
 	myText->Init();
+
+	myLineObject = new CE_LineRenderObject();
+
+	CE_ShaderParameters cubeParams;
+	cubeParams.myFilePath = L"Data/Shaders/Cube.ce_shader";
+	cubeParams.myInputElements.Add(CE_ShaderParameters::POSITION);
+	cubeParams.myInputElements.Add(CE_ShaderParameters::NORMAL);
+	cubeParams.myInputElements.Add(CE_ShaderParameters::COLOR);
+	myCubeShader = new CE_Shader(cubeParams, myGPUContext);
+	myCubeShader->InitGlobalData<CE_CubeShaderData>();
+
+	mySpriteShader = new CE_SpriteShader();
+	mySpriteShader->Init(L"Data/Shaders/Sprite.ce_shader", myGPUContext);
+
+	CE_ShaderParameters textParams;
+	textParams.myFilePath = L"Data/Shaders/Text.ce_shader";
+	textParams.myInputElements.Add(CE_ShaderParameters::POSITION);
+	textParams.myInputElements.Add(CE_ShaderParameters::UV);
+	myTextShader = new CE_Shader(textParams, myGPUContext);
+	myTextShader->InitGlobalData<CE_TextShaderData>();
 
 	//myMSDFTextShader = new CE_TextShader();
 	//myMSDFTextShader->Init(L"Data/Shaders/MSDFText.ce_shader", myGPUContext);
@@ -38,11 +61,15 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 	//myMSDFText = new CE_Text();
 	//myMSDFText->InitMSDF(myGPUContext);
 
+	//myLineShader = new CE_CubeShader();
+	//myLineShader->Init(L"Data/Shaders/Line.ce_shader", myGPUContext, true);
 
-	myLineShader = new CE_CubeShader();
-	myLineShader->Init(L"Data/Shaders/Line.ce_shader", myGPUContext, true);
-
-	myLineObject = new CE_LineRenderObject();
+	CE_ShaderParameters lineParams;
+	lineParams.myFilePath = L"Data/Shaders/Line.ce_shader";
+	lineParams.myInputElements.Add(CE_ShaderParameters::POSITION);
+	lineParams.myInputElements.Add(CE_ShaderParameters::COLOR);
+	myLineShader = new CE_Shader(lineParams, myGPUContext);
+	myLineShader->InitGlobalData<CE_CubeShaderData>();
 }
 
 
@@ -83,7 +110,11 @@ void CE_Renderer::RenderLines(CE_Camera& aCamera, const CE_GrowingArray<CE_Line>
 	CE_SetResetBlend blend(ALPHA_BLEND);
 	CE_SetResetDepth depth(ENABLED);
 
-	myLineShader->SetGlobalGPUData(myGPUContext, aCamera);
+	CE_CubeShaderData* shaderData = myLineShader->GetGlobalData<CE_CubeShaderData>();
+	shaderData->myView = aCamera.GetView();
+	shaderData->myProjection = aCamera.GetProjection();
+
+	myLineShader->Activate();
 	
 	myLineObject->SetLines(someLines, myGPUContext);
 	myLineObject->Render(myGPUContext);
@@ -95,7 +126,11 @@ void CE_Renderer::RenderCubes(CE_Camera& aCamera, const CE_RendererProxy& aRende
 	CE_SetResetDepth depth(ENABLED);
 	CE_SetResetBlend blend(NO_BLEND);
 
-	myCubeShader->SetGlobalGPUData(myGPUContext, aCamera);
+	CE_CubeShaderData* shaderData = myCubeShader->GetGlobalData<CE_CubeShaderData>();
+	shaderData->myView = aCamera.GetView();
+	shaderData->myProjection = aCamera.GetProjection();
+
+	myCubeShader->Activate();
 
 	for (const CE_CubeData& data : aRendererProxy.GetCubeData())
 	{
@@ -127,11 +162,15 @@ void CE_Renderer::RenderTexts(const CE_Matrix44f& aOrthagonalMatrix, const CE_Re
 	CE_SetResetBlend blend(ALPHA_BLEND);
 	CE_SetResetSampler sampler(LINEAR_SAMPLING);
 
-	if (myMSDFTextShader != nullptr)
-		myMSDFTextShader->SetGlobalGPUData(myGPUContext, aOrthagonalMatrix);
-	else
-		myTextShader->SetGlobalGPUData(myGPUContext, aOrthagonalMatrix);
+	CE_Shader* shader = myMSDFTextShader;
+	if (shader == nullptr)
+		shader = myTextShader;
 
+	CE_ASSERT(shader != nullptr, "We dont have a textshader????");
+
+	CE_TextShaderData* shaderData = shader->GetGlobalData<CE_TextShaderData>();
+	shaderData->myProjection = aOrthagonalMatrix;
+	shader->Activate();
 
 	for (const CE_TextData& data : aRendererProxy.GetTextData())
 	{
