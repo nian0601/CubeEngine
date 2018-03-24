@@ -5,7 +5,6 @@ cbuffer GlobalData
 
 cbuffer ObjectData
 {
-	Matrix World;	
 	float4 Color;
 	float2 Position;
 	float2 Size;

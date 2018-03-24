@@ -1,23 +1,17 @@
 #include "stdafx.h"
 #include "CE_Renderer.h"
-#include "CE_Model.h"
-#include "CE_Sprite.h"
 #include "CE_Text.h"
 #include "CE_DirextXFactory.h"
 #include "CE_RendererProxy.h"
 #include "CE_LineRenderObject.h"
 #include "CE_Shader.h"
 #include "CE_Camera.h"
+#include "CE_RenderObject.h"
+#include "CE_ShaderStructs.h"
 
 CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 	: myGPUContext(anGPUContext)
 {
-	myCubeModel = new CE_Model();
-	myCubeModel->InitCube(myGPUContext);
-
-	mySprite = new CE_Sprite();
-	mySprite->Init(myGPUContext);
-
 	myText = new CE_Text(myGPUContext);
 	myText->Init();
 
@@ -64,6 +58,15 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 		myLineShader = new CE_Shader(lineParams, myGPUContext);
 		myLineShader->InitGlobalData<CE_ViewProjectionData>();
 	}
+
+
+	myCubeModel = new CE_RenderObject();
+	myCubeModel->InitCube(myGPUContext);
+	myCubeModel->CreateObjectData(sizeof(CE_ModelShaderData));
+
+	mySprite = new CE_RenderObject();
+	mySprite->InitSprite(myGPUContext);
+	mySprite->CreateObjectData(sizeof(CE_SpriteShaderData));
 }
 
 
@@ -128,11 +131,12 @@ void CE_Renderer::RenderCubes(CE_Camera& aCamera, const CE_RendererProxy& aRende
 
 	for (const CE_CubeData& data : aRendererProxy.GetCubeData())
 	{
-		myCubeModel->SetOrientation(data.myOrientation);
-		myCubeModel->SetColor(data.myColor);
-		myCubeModel->SetScale(data.myScale);
+		CE_CubeData* cubeData = myCubeModel->GetObjectData<CE_CubeData>();
+		cubeData->myOrientation = data.myOrientation;
+		cubeData->myColor = data.myColor;
+		cubeData->myScale = data.myScale;
 
-		myCubeModel->Render(myGPUContext);
+		myCubeModel->Render();
 	}
 }
 
@@ -146,11 +150,14 @@ void CE_Renderer::RenderSprites(const CE_Matrix44f& aOrthagonalMatrix, const CE_
 
 	for (const CE_SpriteData& data : aRendererProxy.GetSpriteData())
 	{
-		mySprite->SetPosition(data.myPosition);
-		mySprite->SetSize(data.mySize);
-		mySprite->SetColor(data.myColor);
-		mySprite->SetHotspot(data.myHotspot);
-		mySprite->Render(myGPUContext);
+		CE_SpriteShaderData* spriteData = mySprite->GetObjectData<CE_SpriteShaderData>();
+
+		spriteData->myColor = data.myColor;
+		spriteData->mySize = data.mySize * 0.5f;
+		spriteData->myPosition = data.myPosition;
+		spriteData->myHotspot = data.myHotspot * 2.f;
+
+		mySprite->Render();
 	}
 }
 

@@ -38,12 +38,6 @@
     <ClCompile Include="CE_Input.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="CE_Model.cpp">
-      <Filter>Rendering\RenderObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="CE_Sprite.cpp">
-      <Filter>Rendering\RenderObjects</Filter>
-    </ClCompile>
     <ClCompile Include="CUI_Manager.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
@@ -64,9 +58,6 @@
     </ClCompile>
     <ClCompile Include="CUI_Button.cpp">
       <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="CE_Text.cpp">
-      <Filter>Rendering\RenderObjects</Filter>
     </ClCompile>
     <ClCompile Include="CE_Texture.cpp">
       <Filter>Rendering</Filter>
@@ -108,9 +99,6 @@
       <Filter>AI\Behavior\Nodes</Filter>
     </ClCompile>
     <ClCompile Include="CE_TypeID.cpp" />
-    <ClCompile Include="CE_LineRenderObject.cpp">
-      <Filter>Rendering\RenderObjects</Filter>
-    </ClCompile>
     <ClCompile Include="CE_BehaviorTree.cpp">
       <Filter>AI\Behavior</Filter>
     </ClCompile>
@@ -153,14 +141,23 @@
     <ClCompile Include="CE_SwapChain.cpp">
       <Filter>DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="CE_FullscreenQuad.cpp">
+    <ClCompile Include="CE_Shader.cpp">
+      <Filter>Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_RenderObject.cpp">
       <Filter>Rendering\RenderObjects</Filter>
     </ClCompile>
     <ClCompile Include="CE_GBuffer.cpp">
-      <Filter>Rendering\Renderers</Filter>
+      <Filter>Rendering\Buffers</Filter>
     </ClCompile>
-    <ClCompile Include="CE_Shader.cpp">
-      <Filter>Rendering\Shaders</Filter>
+    <ClCompile Include="CE_Text.cpp">
+      <Filter>Rendering\RenderObjects\Old</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_LineRenderObject.cpp">
+      <Filter>Rendering\RenderObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_GPUBuffer.cpp">
+      <Filter>Rendering\Buffers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +223,12 @@
     </Filter>
     <Filter Include="Rendering\Renderers">
       <UniqueIdentifier>{172eb193-68a1-4369-bec8-8c7e5be6ad86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Buffers">
+      <UniqueIdentifier>{81e2345d-017e-45f7-83be-6760dfdc014a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\RenderObjects\Old">
+      <UniqueIdentifier>{58cdec27-3e0e-4aba-8fef-a8e825f9d233}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -326,12 +329,6 @@
     <ClInclude Include="CE_Map.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="CE_Model.h">
-      <Filter>Rendering\RenderObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_Sprite.h">
-      <Filter>Rendering\RenderObjects</Filter>
-    </ClInclude>
     <ClInclude Include="CUI_Manager.h">
       <Filter>GUI</Filter>
     </ClInclude>
@@ -352,9 +349,6 @@
     </ClInclude>
     <ClInclude Include="CUI_Button.h">
       <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_Text.h">
-      <Filter>Rendering\RenderObjects</Filter>
     </ClInclude>
     <ClInclude Include="CE_CommonHelper.h">
       <Filter>Utility</Filter>
@@ -402,9 +396,6 @@
       <Filter>AI\Behavior\Nodes</Filter>
     </ClInclude>
     <ClInclude Include="CE_TypeID.h" />
-    <ClInclude Include="CE_LineRenderObject.h">
-      <Filter>Rendering\RenderObjects</Filter>
-    </ClInclude>
     <ClInclude Include="CE_DebugDraw.h">
       <Filter>Debug</Filter>
     </ClInclude>
@@ -465,14 +456,26 @@
     <ClInclude Include="CE_SwapChain.h">
       <Filter>DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="CE_FullscreenQuad.h">
+    <ClInclude Include="CE_Shader.h">
+      <Filter>Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_RenderObject.h">
       <Filter>Rendering\RenderObjects</Filter>
     </ClInclude>
     <ClInclude Include="CE_GBuffer.h">
-      <Filter>Rendering\Renderers</Filter>
+      <Filter>Rendering\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="CE_Shader.h">
-      <Filter>Rendering\Shaders</Filter>
+    <ClInclude Include="CE_Text.h">
+      <Filter>Rendering\RenderObjects\Old</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_LineRenderObject.h">
+      <Filter>Rendering\RenderObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_GPUBuffer.h">
+      <Filter>Rendering\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_ShaderStructs.h">
+      <Filter>Rendering\Buffers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

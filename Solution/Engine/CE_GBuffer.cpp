@@ -36,6 +36,18 @@ CE_GBuffer::~CE_GBuffer()
 		CE_SAFE_DELETE(myTextures[i]);
 }
 
+void CE_GBuffer::SendToGPU(CE_GPUContext& aGPUContext)
+{
+	ID3D11DeviceContext* context = aGPUContext.GetContext();
+
+	ID3D11ShaderResourceView* resources[3];
+	resources[0] = myTextures[CE_GBuffer::ALBEDO_METALNESS]->GetShaderView();
+	resources[1] = myTextures[CE_GBuffer::NORMAL_ROUGNESS]->GetShaderView();
+	resources[2] = myTextures[CE_GBuffer::DEPTH]->GetShaderView();
+
+	context->PSSetShaderResources(0, 3, resources);
+}
+
 void CE_GBuffer::Clear(CE_GPUContext& aGPUContext, const CE_Vector4f& aClearColor)
 {
 	float clearColor[4];

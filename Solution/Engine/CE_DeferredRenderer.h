@@ -6,6 +6,7 @@ class CE_Texture;
 
 class CE_Shader;
 class CE_FullscreenQuad;
+class CE_RenderObject;
 
 class CE_DeferredRenderer
 {
@@ -23,6 +24,6 @@ private:
 	CE_GPUContext& myGPUContext;
 
 	CE_Shader* myShader;
-	CE_FullscreenQuad* myQuad;
+	CE_RenderObject* myQuad;
 };
 

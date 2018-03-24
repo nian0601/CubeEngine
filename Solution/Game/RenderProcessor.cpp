@@ -40,4 +40,5 @@ void RenderProcessor::Update(float /*aDelta*/)
 	}
 
 	myRendererProxy.AddTextData("This is some text!", { 500.f, 400.f });
+	myRendererProxy.AddSpriteData({ 700.f, 200.f }, { 50.f, 50.f }, { 1.f, 0.f, 1.f, 1.f });
 }

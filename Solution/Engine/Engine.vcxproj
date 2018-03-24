@@ -144,7 +144,6 @@
     <ClCompile Include="CE_DeferredRenderer.cpp" />
     <ClCompile Include="CE_FileParser.cpp" />
     <ClCompile Include="CE_Font.cpp" />
-    <ClCompile Include="CE_FullscreenQuad.cpp" />
     <ClCompile Include="CE_Input.cpp" />
     <ClCompile Include="CE_LineRenderObject.cpp" />
     <ClCompile Include="CE_MSDFFont.cpp" />
@@ -155,17 +154,17 @@
     <ClCompile Include="CE_PathFinder.cpp" />
     <ClCompile Include="CE_Renderer.cpp" />
     <ClCompile Include="CE_RendererProxy.cpp" />
-    <ClCompile Include="CE_Model.cpp" />
     <ClCompile Include="CE_DirectX.cpp" />
     <ClCompile Include="CE_DirextXFactory.cpp" />
     <ClCompile Include="CE_Engine.cpp" />
     <ClCompile Include="CE_Murmur.cpp" />
+    <ClCompile Include="CE_RenderObject.cpp" />
     <ClCompile Include="CE_Shader.cpp" />
-    <ClCompile Include="CE_Sprite.cpp" />
     <ClCompile Include="CE_SwapChain.cpp" />
     <ClCompile Include="CE_Texture.cpp" />
     <ClCompile Include="CE_Time.cpp" />
     <ClCompile Include="CE_TypeID.cpp" />
+    <ClCompile Include="CE_GPUBuffer.cpp" />
     <ClCompile Include="CE_Window.cpp" />
     <ClCompile Include="CPY_PhysicsWorld.cpp" />
     <ClCompile Include="CUI_Button.cpp" />
@@ -211,7 +210,6 @@
     <ClInclude Include="CE_DeferredRenderer.h" />
     <ClInclude Include="CE_FileParser.h" />
     <ClInclude Include="CE_Font.h" />
-    <ClInclude Include="CE_FullscreenQuad.h" />
     <ClInclude Include="CE_Game.h" />
     <ClInclude Include="CE_GBuffer.h" />
     <ClInclude Include="CE_GrowingArray.h" />
@@ -226,7 +224,6 @@
     <ClInclude Include="CE_PathFinder.h" />
     <ClInclude Include="CE_Renderer.h" />
     <ClInclude Include="CE_RendererProxy.h" />
-    <ClInclude Include="CE_Model.h" />
     <ClInclude Include="CE_DirectX.h" />
     <ClInclude Include="CE_DirextXFactory.h" />
     <ClInclude Include="CE_Engine.h" />
@@ -237,8 +234,9 @@
     <ClInclude Include="CE_Matrix44_Decl.h" />
     <ClInclude Include="CE_Memory.h" />
     <ClInclude Include="CE_Murmur.h" />
+    <ClInclude Include="CE_RenderObject.h" />
     <ClInclude Include="CE_Shader.h" />
-    <ClInclude Include="CE_Sprite.h" />
+    <ClInclude Include="CE_ShaderStructs.h" />
     <ClInclude Include="CE_StaticArray.h" />
     <ClInclude Include="CE_String.h" />
     <ClInclude Include="CE_SwapChain.h" />
@@ -246,6 +244,7 @@
     <ClInclude Include="CE_Time.h" />
     <ClInclude Include="CE_TypeID.h" />
     <ClInclude Include="CE_Types.h" />
+    <ClInclude Include="CE_GPUBuffer.h" />
     <ClInclude Include="CE_Window.h" />
     <ClInclude Include="CPY_AABB.h" />
     <ClInclude Include="CPY_Intersection.h" />
