@@ -1,5 +1,6 @@
 #pragma once
 
+class CE_Camera;
 class CE_GBuffer;
 class CE_GPUContext;
 class CE_Texture;
@@ -17,7 +18,7 @@ public:
 	void BeginGBuffer(CE_Texture* aBackbuffer);
 	void EndGBuffer(CE_Texture* aBackbuffer);
 
-	void RenderToScreen();
+	void RenderToScreen(CE_Camera* aCamera);
 
 private:
 	CE_GBuffer* myGBuffer;
@@ -25,5 +26,7 @@ private:
 
 	CE_Shader* myShader;
 	CE_RenderObject* myQuad;
+
+	CE_Texture* myCubeMap;
 };
 

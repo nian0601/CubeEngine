@@ -7,6 +7,7 @@ CE_Camera::CE_Camera(const CE_Vector2i& aSize)
 	const float pi = 3.14159265f;
 
 	myProjection = CE_Matrix44f::CreateProjectionMatrixLH(0.1f, 100.f, static_cast<float>(aSize.y) / aSize.x, pi * 0.5f);
+	myInvertedProjection = CE_InverseSimple(myProjection);
 	myIsDirty = true;
 }
 

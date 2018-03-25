@@ -21,7 +21,7 @@ CE_Shader::CE_Shader(const CE_ShaderParameters& someParameters, CE_GPUContext& a
 	int compileFlags = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION | D3D10_SHADER_ENABLE_STRICTNESS;
 
 	ID3D10Blob* vertexShaderBuffer = nullptr;
-	result = D3DCompileFromFile(someParameters.myFilePath, NULL, NULL, "VS", "vs_5_0", compileFlags, 0, &vertexShaderBuffer, &errorMessage);
+	result = D3DCompileFromFile(someParameters.myFilePath, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "VS", "vs_5_0", compileFlags, 0, &vertexShaderBuffer, &errorMessage);
 	if (FAILED(result))
 	{
 		if (errorMessage)
@@ -32,7 +32,7 @@ CE_Shader::CE_Shader(const CE_ShaderParameters& someParameters, CE_GPUContext& a
 	}
 
 	ID3D10Blob* pixelShaderBuffer = nullptr;
-	result = D3DCompileFromFile(someParameters.myFilePath, NULL, NULL, "PS", "ps_5_0", compileFlags, 0, &pixelShaderBuffer, &errorMessage);
+	result = D3DCompileFromFile(someParameters.myFilePath, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "PS", "ps_5_0", compileFlags, 0, &pixelShaderBuffer, &errorMessage);
 	if (FAILED(result))
 	{
 		if (errorMessage)

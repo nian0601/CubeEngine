@@ -73,7 +73,8 @@ void CE_GPUBuffer::Render()
 	if (myObjectDataBuffer)
 	{
 		context->Unmap(myObjectDataBuffer, 0);
-		context->VSSetConstantBuffers(1, 1, &myObjectDataBuffer);
+		context->VSSetConstantBuffers(myObjectDataBufferIndex, 1, &myObjectDataBuffer);
+		context->PSSetConstantBuffers(myObjectDataBufferIndex, 1, &myObjectDataBuffer);
 	}
 
 	context ->IASetVertexBuffers(0, 1, &myVertexBuffer, &stride, &offset);
@@ -84,7 +85,7 @@ void CE_GPUBuffer::Render()
 	context->DrawIndexed(myIndexCount, 0, 0);
 }
 
-void CE_GPUBuffer::InitObjectData(unsigned int aSize)
+void CE_GPUBuffer::InitObjectData(unsigned int aSize, int aBufferIndex)
 {
 	D3D11_BUFFER_DESC matrixBufferDesc;
 	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -97,6 +98,8 @@ void CE_GPUBuffer::InitObjectData(unsigned int aSize)
 	ID3D11Device* device = myGPUContext.GetDevice();
 	HRESULT result = device->CreateBuffer(&matrixBufferDesc, NULL, &myObjectDataBuffer);
 	CE_ASSERT(FAILED(result) == false, "Failed to create GlobalDataBuffer");
+
+	myObjectDataBufferIndex = aBufferIndex;
 }
 
 void* CE_GPUBuffer::GetObjectData()

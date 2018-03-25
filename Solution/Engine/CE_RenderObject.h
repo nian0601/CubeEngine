@@ -17,7 +17,7 @@ public:
 
 	void Render();
 
-	void CreateObjectData(unsigned int aSize);
+	void CreateObjectData(unsigned int aSize, int aBufferIndex);
 	template <typename T>
 	T* GetObjectData();
 
@@ -25,10 +25,10 @@ private:
 	CE_GPUBuffer* myGPUBuffer;
 };
 
-inline void CE_RenderObject::CreateObjectData(unsigned int aSize)
+inline void CE_RenderObject::CreateObjectData(unsigned int aSize, int aBufferIndex)
 {
 	CE_ASSERT(myGPUBuffer != nullptr, "Dont have GPUBuffer");
-	myGPUBuffer->InitObjectData(aSize);
+	myGPUBuffer->InitObjectData(aSize, aBufferIndex);
 }
 
 template <typename T>

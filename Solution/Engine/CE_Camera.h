@@ -11,13 +11,15 @@ public:
 	void SetPosition(const CE_Vector3f& aPosition);
 
 	const CE_Matrix44f& GetProjection() const { return myProjection; }
+	const CE_Matrix44f& GetInvertedProjection() const { return myInvertedProjection; }
 	const CE_Matrix44f& GetView() const { return myView; }
+	const CE_Matrix44f& GetNotInvertedView() const { return myOrientation; }
 
 private:
 	CE_Matrix44f myOrientation;
 	CE_Matrix44f myView;
 	CE_Matrix44f myProjection;
+	CE_Matrix44f myInvertedProjection;
 
 	bool myIsDirty;
 };
-

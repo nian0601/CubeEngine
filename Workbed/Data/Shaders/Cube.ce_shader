@@ -52,12 +52,16 @@ PosNormColorPixel VS(PosNormColorVertex aInput)
 
 GBuffer PS(PosNormColorPixel anInput) : SV_TARGET
 {
+	//Get these as ObjectParamaters later
+	float metalness = 0.f;
+	float roughness = 0.f;
+
 	GBuffer output;
 	output.AlbedoMetalness = anInput.Color;
-	output.AlbedoMetalness.w = 1.f;
+	output.AlbedoMetalness.w = metalness;
 
-	output.NormalRoughness = anInput.Normal;
-	output.NormalRoughness.w = 0.f;
+	output.NormalRoughness.xyz = normalize(anInput.Normal).xyz;
+	output.NormalRoughness.w = roughness;
 
 	output.Depth = anInput.Position.z;
 	return output;

@@ -1,3 +1,5 @@
+#include "PBL_Helpers.ce_shader"
+
 struct PosUVVertex
 {
 	float4 Position : POSITION;
@@ -10,12 +12,6 @@ struct PosUVPixel
 	float2 TextureCoord : TEXCOORD;
 };
 
-
-Texture2D AlbedoMetalnessTexture;
-Texture2D NormalRoughnessTexture;
-Texture2D DepthTexture;
-SamplerState Sampler;
-
 PosUVPixel VS(PosUVVertex aInput)
 {
 	PosUVPixel output;
@@ -26,14 +22,50 @@ PosUVPixel VS(PosUVVertex aInput)
 	return output;
 };
 
-
 float4 PS(PosUVPixel anInput) : SV_TARGET
 {
-	float2 texCoord = anInput.TextureCoord;
-	float4 color = AlbedoMetalnessTexture.Sample(Sampler, texCoord);
-	return color;
-	//return float4(0.75f, 0.33f, 0.25f, 1.f);
-	//float4 color = anInput.Color;
-	//color.w = 1.f;
-	//return color;
+	DeferredPixelData pixelData = CalculateDeferredPixelData(anInput.TextureCoord);
+
+	float3 viewPos = CameraPosition;
+	float3 toEye = normalize(viewPos - pixelData.myWorldPosition.xyz);
+
+	//float ao = CalculateSSAO(input.Tex, pixelData.myNormal.xyz, pixelData.myWorldPosition.xyz);
+	float ao = pixelData.myAmbientocclusion;
+
+	float3 reflectionFresnel = ReflectionFresnel(pixelData.mySubstance.xyz, pixelData.myNormal
+		, toEye, 1.f - pixelData.myRoughnessOffsetted);
+
+	float3 ambientDiffuse = Cubemap.SampleLevel(LinearSampler, pixelData.myNormal, 9).xyz
+		* ao * pixelData.myMetalnessAlbedo * (1.f - reflectionFresnel);
+
+	float3 reflectionVector = reflect(toEye, pixelData.myNormal);
+	float fakeLysSpecularPower = RoughToSPow(pixelData.myRoughness);
+	float lysMipMap = GetSpecPowToMip(fakeLysSpecularPower, 12);
+
+	float3 ambientSpec = Cubemap.SampleLevel(LinearSampler, reflectionVector, lysMipMap).xyz
+		* ao * reflectionFresnel;
+
+	float3 finalAmbientLight = (ambientDiffuse + ambientSpec);
+	
+
+
+	float3 toLight = -normalize(float3(1.f, 1.f, 1.f));
+	float3 lightDir = normalize(toLight);
+	float3 halfVec = normalize(lightDir + toEye.xyz);
+	float NdotL = saturate(dot(pixelData.myNormal.xyz, lightDir));
+	float HdotN = saturate(dot(halfVec, pixelData.myNormal.xyz));
+	float NdotV = saturate(dot(pixelData.myNormal.xyz, toEye));
+
+	float3 F = saturate(Fresnel(pixelData.mySubstance.xyz, lightDir, halfVec));
+	float D = saturate(D_GGX(HdotN, (pixelData.myRoughness + 1.f) / 2.f));
+	float V = saturate(V_SchlickForGGX((pixelData.myRoughness + 1.f) / 2.f, NdotV, NdotL));
+	float lambert = NdotL;
+
+	float lightIntensity = 2.f;
+	float3 lightColor = float3(0.f, 1.f, 0.f) * lightIntensity;
+	float3 directSpecc = F * D * V * NdotL * lightColor;
+
+
+	float3 finalDirectLight = directSpecc;
+	return saturate(float4(finalAmbientLight + finalDirectLight, 1.f));
 };

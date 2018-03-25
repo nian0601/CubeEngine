@@ -13,7 +13,7 @@ public:
 	void InitVertexBuffer(void* someVertices, int aVertexCount, unsigned int aVertexSize);
 	void InitIndexBuffer(void* someIndices, int aIndexCount);
 
-	void InitObjectData(unsigned int aSize);
+	void InitObjectData(unsigned int aSize, int aBufferIndex);
 	void* GetObjectData();
 
 	void SetTopology(D3D11_PRIMITIVE_TOPOLOGY aTopology);
@@ -32,6 +32,7 @@ private:
 
 	ID3D11Buffer* myObjectDataBuffer;
 	D3D11_MAPPED_SUBRESOURCE myObjectDataResource;
+	int myObjectDataBufferIndex;
 
 	D3D11_PRIMITIVE_TOPOLOGY myTopology;
 };

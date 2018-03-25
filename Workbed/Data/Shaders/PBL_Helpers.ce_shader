@@ -1,0 +1,165 @@
+#include "Shader_Variables.ce_shader"
+
+struct DeferredPixelData
+{
+	float3 myAlbedo;
+	float3 myNormal;
+	float3 myDepth;
+	float2 myTexCoord;
+	float4 myWorldPosition;
+
+	float3 myMetalness;
+	float3 myMetalnessAlbedo;
+	float3 mySubstance;
+	float myAmbientocclusion;
+	float myRoughness;
+	float myRoughnessOffsetted;
+};
+
+DeferredPixelData CalculateDeferredPixelData(float2 aTex)
+{
+	float4 albedoSample = AlbedoTexture.Sample(PointSampler, aTex);
+	float4 normalSample = NormalTexture.Sample(PointSampler, aTex);
+	float depthSample = DepthTexture.Sample(PointSampler, aTex).x;
+
+	float4 normal = float4(normalSample.xyz, 1.f);
+	normal.xyz *= 2.0f;
+	float normLength = length(normal.xyz);
+	if(normLength != 0)
+	{
+		normal.xyz -= 1.f;
+	}
+
+	float metalness = albedoSample.w;
+	float roughness = normalSample.w;
+	float depth = depthSample;
+	float ambientOcclusion = 1.f;
+
+	float x = aTex.x * 2.f - 1.f;
+	float y = (1.f - aTex.y) * 2.f - 1.f;
+	float z = depth;
+
+	float4 worldPosition = float4(x, y, z, 1.f);
+	worldPosition = mul(worldPosition, InvertedProjection);
+	worldPosition = worldPosition / worldPosition.w;
+	worldPosition = mul(worldPosition, NotInvertedView);
+
+	DeferredPixelData data = (DeferredPixelData)0;
+	
+	data.myAlbedo = albedoSample.xyz;
+	data.myNormal = normal.xyz;
+	data.myDepth = float3(depth, depth, depth);
+	data.myTexCoord = aTex;
+	data.myWorldPosition = worldPosition;
+
+	data.myMetalness = float3(metalness, metalness, metalness);
+	data.myMetalnessAlbedo = data.myAlbedo - (data.myAlbedo * data.myMetalness);
+	data.mySubstance = (0.04f - 0.04f * data.myMetalness) + data.myAlbedo * data.myMetalness;
+	data.myRoughness = roughness;
+	data.myRoughnessOffsetted = pow(8192, data.myRoughness);
+	data.myAmbientocclusion = ambientOcclusion;
+	return data;
+}
+
+//
+//	Functions used to calculate Ambient light
+//--------------------------------------------------------
+
+//Calculates how reflections will behave in different materials
+float3 ReflectionFresnel(float3 aSubstance, float3 aLightDir, float3 aHalfVector, float aRoughness)
+{
+	return (aSubstance + (1.f - aSubstance) * pow((1.f - saturate(dot(aLightDir, aHalfVector))), 5) / (4 - 3 * aRoughness));
+}
+
+
+//Calculations copied from Lys which calculates which MIP level to use for the reflections based on roughness
+static const float k0 = 0.00098f;
+static const float k1 = 0.9921f;
+static const float fakeLysMaxSpecularPower = (2.f / (0.0014f * 0.0014f)) - 2.f;
+static const float fMaxT = (exp2(-10.f / sqrt((2.f / (0.0014f * 0.0014f)) - 2.f)) - 0.00098f) / 0.9921f;
+
+float RoughToSPow(float aRoughness)
+{
+	return (2.f / (aRoughness * aRoughness)) - 2.f;
+}
+
+float GetSpecPowToMip(float fSpecPow, int nMips)
+{
+	float fSmulMaxT = (exp2(-10.0 / sqrt(fSpecPow)) - k0) / k1;
+
+	return float(nMips - 1 - 0) * (1.0 - clamp(fSmulMaxT / fMaxT, 0.0, 1.0));
+}
+
+float GetLysMipLevel(float aRoughness, int aMipCount)
+{
+	float fSmulMaxT = (exp2(-10.0 / sqrt(RoughToSPow(aRoughness))) - k0) / k1;
+
+	return float(aMipCount - 1 - 0) * (1.0 - clamp(fSmulMaxT / fMaxT, 0.0, 1.0));
+}
+
+
+
+//
+//	Functions used to calculate Direct light
+//--------------------------------------------------------
+float3 Fresnel(float3 aSubstance, float3 aLightDir, float3 aHalfVector)
+{
+	return (aSubstance + (1.f - aSubstance) * pow((1.f - saturate(dot(aLightDir, aHalfVector))), 5));
+}
+
+float V_SchlickForGGX(float aRoughness, float aNdotV, float aNdotL)
+{
+	float k = aRoughness * aRoughness * 0.5f;
+	float G1V = aNdotV * (1.f - k) + k;
+	float G1L = aNdotL * (1.f - k) + k;
+
+	return 0.25f / (G1V * G1L);
+}
+
+float SchlickForGGX(float aRoughness, float NdotV, float NdotL)
+{
+	float k = aRoughness * aRoughness * 0.5f;
+	float G1V = NdotV * (1.f - k) + k;
+	float G1L = NdotL * (1.f - k) + k;
+
+	return 0.25f / (G1V * G1L);
+}
+
+float D_GGX(float HdotN, float aRoughness)
+{
+	float m = aRoughness * aRoughness;
+	float m2 = m * m;
+	float denominator = HdotN * HdotN * (m2 - 1.f) + 1.f;
+
+	return m2 / (3.14159 * denominator * denominator);
+}
+
+
+//
+//	Attenuations
+//--------------------------------------------------------
+float Attenuation(float3 aLightVec, float aRange)
+{
+	float distance = length(aLightVec);
+	float attenuation = 1.f / (1.f + 0.1f * distance + 0.01f * distance * distance);
+	float fallOff = 1.f - (distance / (aRange + 0.00001f));
+	float totalAttenuation = attenuation * fallOff;
+	return totalAttenuation;
+/*
+	float distance = length(aLightVec);
+	return 1 - (distance / aRange);
+
+	float attenuation = (1.f + 0.1f * distance + 0.01f * distance * distance); //1.f;
+	float fallOff = 1.f - (distance / (aRange + 0.00001f));
+	return saturate(attenuation * fallOff);
+	*/
+}
+
+float AngularAttenuation(float3 aLightVec, float3 aLightDirection, float aLightCone)
+{
+	float angularAttenuation = dot(-aLightVec, aLightDirection);
+	angularAttenuation -= 1.f - aLightCone;
+	angularAttenuation *= 1.f / aLightCone;
+
+	return angularAttenuation;
+}

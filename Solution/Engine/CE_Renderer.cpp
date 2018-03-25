@@ -62,11 +62,11 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 
 	myCubeModel = new CE_RenderObject();
 	myCubeModel->InitCube(myGPUContext);
-	myCubeModel->CreateObjectData(sizeof(CE_ModelShaderData));
+	myCubeModel->CreateObjectData(sizeof(CE_ModelShaderData), 1);
 
 	mySprite = new CE_RenderObject();
 	mySprite->InitSprite(myGPUContext);
-	mySprite->CreateObjectData(sizeof(CE_SpriteShaderData));
+	mySprite->CreateObjectData(sizeof(CE_SpriteShaderData), 1);
 }
 
 
@@ -164,7 +164,6 @@ void CE_Renderer::RenderSprites(const CE_Matrix44f& aOrthagonalMatrix, const CE_
 void CE_Renderer::RenderTexts(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy)
 {
 	CE_SetResetBlend blend(ALPHA_BLEND);
-	CE_SetResetSampler sampler(LINEAR_SAMPLING);
 
 	CE_Shader* shader = myMSDFTextShader;
 	if (shader == nullptr)

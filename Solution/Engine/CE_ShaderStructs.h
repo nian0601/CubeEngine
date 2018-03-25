@@ -41,6 +41,14 @@ struct CE_SpriteShaderData
 	CE_Vector2f padding;
 };
 
+struct CE_FullscreenQuadShaderData
+{
+	CE_Matrix44f myInvertedProjection;
+	CE_Matrix44f myNotInvertedView;
+	CE_Vector3f myCameraPosition;
+	float padding;
+};
+
 //
 // Vertex Data structs
 //

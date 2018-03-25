@@ -76,11 +76,6 @@ void CE_DirextXFactory::SetBlendState(CE_BlendState anState)
 	myContext->OMSetBlendState(myBlendStates[anState], blendFactor, 0xFFFFFFFF);
 }
 
-void CE_DirextXFactory::SetSamplerState(CE_SamplerState anState)
-{
-	myContext->PSSetSamplers(0, 1, &mySamplerStates[anState]);
-}
-
 CE_DirextXFactory::CE_DirextXFactory(ID3D11Device* aDevice, ID3D11DeviceContext* aContext)
 	: myDevice(aDevice)
 	, myContext(aContext)
@@ -89,6 +84,9 @@ CE_DirextXFactory::CE_DirextXFactory(ID3D11Device* aDevice, ID3D11DeviceContext*
 	SetupDepthStencilStates();
 	SetupBlendStates();
 	SetupSamplerStates();
+
+	myContext->PSSetSamplers(0, 1, &mySamplerStates[LINEAR_SAMPLING]);
+	myContext->PSSetSamplers(1, 1, &mySamplerStates[POINT_SAMPLING]);
 }
 
 

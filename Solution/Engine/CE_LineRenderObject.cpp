@@ -8,7 +8,9 @@ CE_LineRenderObject::CE_LineRenderObject()
 	: myVertexBuffer(nullptr)
 	, myIndexBuffer(nullptr)
 	, myVertexCount(0)
+	, myRealVertexCount(0)
 	, myIndexCount(0)
+	, myRealIndexCount(0)
 	, myVertices(nullptr)
 	, myIndices(nullptr)
 {
@@ -51,6 +53,9 @@ void CE_LineRenderObject::SetLines(const CE_GrowingArray<CE_Line>& someLines, co
 		realIndex += 2;
 	}
 
+	myRealVertexCount = someLines.Size() * 2;
+	myRealIndexCount = someLines.Size() * 2;
+
 	InitVertexAndIndexBuffers(aGPUContext, myVertices, myIndices, realIndex);
 }
 
@@ -66,7 +71,7 @@ void CE_LineRenderObject::Render(const CE_GPUContext& aGPUContext)
 
 	// Actually render
 	ID3D11DeviceContext* context = aGPUContext.GetContext();
-	context->DrawIndexed(myIndexCount, 0, 0);
+	context->DrawIndexed(myRealIndexCount, 0, 0);
 }
 
 void CE_LineRenderObject::InitVertexAndIndexBuffers(const CE_GPUContext& aGPUContext, void* aVertexData, void* aIndexData, int aVertexCount)

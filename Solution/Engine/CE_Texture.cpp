@@ -5,6 +5,7 @@
 #include "CE_Texture.h"
 
 #include <WICTextureLoader.h>
+#include <DDSTextureLoader.h>
 
 CE_Texture::CE_Texture()
 	: myTexture(nullptr)
@@ -63,6 +64,34 @@ void CE_Texture::Load(const CE_String& aFilePath, CE_GPUContext& aGPUContext)
 	
 
 	HRESULT hr = DirectX::CreateWICTextureFromFile(aGPUContext.GetDevice(), wCharFile, nullptr, &myShaderView);
+	CE_ASSERT(FAILED(hr) == false, "Failed to create texture");
+
+	ID3D11Resource* resource = nullptr;
+	myShaderView->GetResource(&resource);
+
+	ID3D11Texture2D* tex2D = nullptr;
+	hr = resource->QueryInterface(&tex2D);
+	CE_ASSERT(FAILED(hr) == false, "Failed to get texture size");
+
+	D3D11_TEXTURE2D_DESC desc;
+	tex2D->GetDesc(&desc);
+	mySize.x = desc.Width;
+	mySize.y = desc.Height;
+
+	CE_SAFE_DELETE_ARRAY(wCharFile);
+}
+
+void CE_Texture::LoadDDS(const CE_String& aFilePath, CE_GPUContext& aGPUContext)
+{
+	myFilePath = aFilePath;
+
+	const int fileLenght = strlen(aFilePath.c_str()) + 1;
+	wchar_t* wCharFile = new wchar_t[fileLenght];
+	size_t tempSize;
+	mbstowcs_s(&tempSize, wCharFile, fileLenght, aFilePath.c_str(), fileLenght);
+
+
+	HRESULT hr = DirectX::CreateDDSTextureFromFileEx(aGPUContext.GetDevice(), wCharFile, 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, D3D11_RESOURCE_MISC_TEXTURECUBE, false, nullptr, &myShaderView);
 	CE_ASSERT(FAILED(hr) == false, "Failed to create texture");
 
 	ID3D11Resource* resource = nullptr;

@@ -81,7 +81,7 @@ void CE_Engine::Run()
 			myDeferredRenderer->EndGBuffer(window->GetBackbuffer());
 
 			
-			myDeferredRenderer->RenderToScreen();
+			myDeferredRenderer->RenderToScreen(myCamera);
 			
 			// myRenderer->RenderLights();
 

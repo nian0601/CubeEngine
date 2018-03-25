@@ -27,9 +27,9 @@ CE_SwapChain::~CE_SwapChain()
 void CE_SwapChain::PrepareForRender()
 {
 	float clearColor[4];
-	clearColor[0] = 0.15f;
-	clearColor[1] = 0.15f;
-	clearColor[2] = 0.15f;
+	clearColor[0] = 0.f;
+	clearColor[1] = 0.f;
+	clearColor[2] = 0.f;
 	clearColor[3] = 1.f;
 
 	ID3D11DeviceContext* context = myGPUContext.GetContext();

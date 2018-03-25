@@ -16,6 +16,7 @@ public:
 	void InitAsBackBuffer(const CE_Vector2i& aSize, ID3D11Texture2D* aTexture, CE_GPUContext& aGPUContext);
 
 	void Load(const CE_String& aFilePath, CE_GPUContext& aGPUContext);
+	void LoadDDS(const CE_String& aFilePath, CE_GPUContext& aGPUContext);
 
 	const CE_Vector2i& GetSize() const { return mySize; }
 

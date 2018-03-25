@@ -33,5 +33,8 @@ private:
 
 	ID3D11Buffer* myIndexBuffer;
 	int myIndexCount;
+
+	int myRealVertexCount;
+	int myRealIndexCount;
 };
 
