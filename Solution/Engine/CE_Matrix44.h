@@ -701,6 +701,22 @@ CE_Vector3<T> CE_Matrix44<T>::GetRight() const
 	return CE_Vector3<T>(myMatrix[0], myMatrix[1], myMatrix[2]);
 }
 
+template <typename T>
+CE_Vector3<T> CE_Matrix44<T>::TakePos()
+{
+	CE_Vector3<T> pos = CE_Vector3<T>(myMatrix[12], myMatrix[13], myMatrix[14]);
+	SetPos(0.f, 0.f, 0.f);
+	return pos;
+}
+
+template <typename T>
+CE_Vector4<T> CE_Matrix44<T>::TakePos4()
+{
+	CE_Vector4<T> pos = CE_Vector4<T>(myMatrix[12], myMatrix[13], myMatrix[14], myMatrix[15]);
+	SetPos(0.f, 0.f, 0.f, 0.f);
+	return pos;
+}
+
 template<typename T>
 CE_Matrix44<T> CE_Matrix44<T>::CreateProjectionMatrixLH(T aNearZ, T aFarZ, T aAspectRatio, T aFovAngle)
 {

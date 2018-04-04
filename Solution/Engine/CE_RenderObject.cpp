@@ -24,7 +24,8 @@ void CE_RenderObject::InitCube(const CE_GPUContext& aGPUContext)
 
 	float size = 1.f;
 	float halfWidth = size / 2.f;
-	float halfHeight = size / 2.f;
+	//float halfHeight = size / 2.f;
+	float height = size;
 	float halfDepth = size / 2.f;
 	CE_Vector4f aColour(1.f, 1.f, 1.f, 1.f);
 
@@ -38,40 +39,40 @@ void CE_RenderObject::InitCube(const CE_GPUContext& aGPUContext)
 	CE_Vector3f back(0.f, 0.f, -1.f);
 
 	//0 - 3 (Top)
-	vertices[0] = { { -halfWidth, halfHeight, -halfDepth }, up, aColour };
-	vertices[1] = { { halfWidth, halfHeight, -halfDepth }, up, aColour };
-	vertices[2] = { { halfWidth, halfHeight, halfDepth }, up, aColour };
-	vertices[3] = { { -halfWidth, halfHeight, halfDepth }, up, aColour };
+	vertices[0] = { { -halfWidth, height, -halfDepth }, up, aColour };
+	vertices[1] = { { halfWidth, height, -halfDepth }, up, aColour };
+	vertices[2] = { { halfWidth, height, halfDepth }, up, aColour };
+	vertices[3] = { { -halfWidth, height, halfDepth }, up, aColour };
 
 	//4 - 7 (Bottom)
-	vertices[4] = { { -halfWidth, -halfHeight, -halfDepth }, down, aColour };
-	vertices[5] = { { halfWidth, -halfHeight, -halfDepth }, down, aColour };
-	vertices[6] = { { halfWidth, -halfHeight, halfDepth }, down, aColour };
-	vertices[7] = { { -halfWidth, -halfHeight, halfDepth }, down, aColour };
+	vertices[4] = { { -halfWidth, 0, -halfDepth }, down, aColour };
+	vertices[5] = { { halfWidth, 0, -halfDepth }, down, aColour };
+	vertices[6] = { { halfWidth, 0, halfDepth }, down, aColour };
+	vertices[7] = { { -halfWidth, 0, halfDepth }, down, aColour };
 
 	//8 - 11 (Left)
-	vertices[8] = { { -halfWidth, -halfHeight, halfDepth }, left, aColour };
-	vertices[9] = { { -halfWidth, -halfHeight, -halfDepth }, left, aColour };
-	vertices[10] = { { -halfWidth, halfHeight, -halfDepth }, left, aColour };
-	vertices[11] = { { -halfWidth, halfHeight, halfDepth }, left, aColour };
+	vertices[8] = { { -halfWidth, 0, halfDepth }, left, aColour };
+	vertices[9] = { { -halfWidth, 0, -halfDepth }, left, aColour };
+	vertices[10] = { { -halfWidth, height, -halfDepth }, left, aColour };
+	vertices[11] = { { -halfWidth, height, halfDepth }, left, aColour };
 
 	//12 - 15 (Right)
-	vertices[12] = { { halfWidth, -halfHeight, halfDepth }, right, aColour };
-	vertices[13] = { { halfWidth, -halfHeight, -halfDepth }, right, aColour };
-	vertices[14] = { { halfWidth, halfHeight, -halfDepth }, right, aColour };
-	vertices[15] = { { halfWidth, halfHeight, halfDepth }, right, aColour };
+	vertices[12] = { { halfWidth, 0, halfDepth }, right, aColour };
+	vertices[13] = { { halfWidth, 0, -halfDepth }, right, aColour };
+	vertices[14] = { { halfWidth, height, -halfDepth }, right, aColour };
+	vertices[15] = { { halfWidth, height, halfDepth }, right, aColour };
 
 	//16 - 19 (Front)
-	vertices[16] = { { -halfWidth, -halfHeight, -halfDepth }, forward, aColour };
-	vertices[17] = { { halfWidth, -halfHeight, -halfDepth }, forward, aColour };
-	vertices[18] = { { halfWidth, halfHeight, -halfDepth }, forward, aColour };
-	vertices[19] = { { -halfWidth, halfHeight, -halfDepth }, forward, aColour };
+	vertices[16] = { { -halfWidth, 0, -halfDepth }, forward, aColour };
+	vertices[17] = { { halfWidth, 0, -halfDepth }, forward, aColour };
+	vertices[18] = { { halfWidth, height, -halfDepth }, forward, aColour };
+	vertices[19] = { { -halfWidth, height, -halfDepth }, forward, aColour };
 
 	//20 - 23 (Back)
-	vertices[20] = { { -halfWidth, -halfHeight, halfDepth }, back, aColour };
-	vertices[21] = { { halfWidth, -halfHeight, halfDepth }, back, aColour };
-	vertices[22] = { { halfWidth, halfHeight, halfDepth }, back, aColour };
-	vertices[23] = { { -halfWidth, halfHeight, halfDepth }, back, aColour };
+	vertices[20] = { { -halfWidth, 0, halfDepth }, back, aColour };
+	vertices[21] = { { halfWidth, 0, halfDepth }, back, aColour };
+	vertices[22] = { { halfWidth, height, halfDepth }, back, aColour };
+	vertices[23] = { { -halfWidth, height, halfDepth }, back, aColour };
 #pragma endregion
 
 #pragma region Indices

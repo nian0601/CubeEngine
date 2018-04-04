@@ -39,6 +39,9 @@ public:
 	CE_Vector3<T> GetUp() const;
 	CE_Vector3<T> GetRight() const;
 
+	CE_Vector3<T> TakePos();
+	CE_Vector4<T> TakePos4();
+
 
 	inline CE_Matrix44<T> operator=(const CE_Matrix44<T>& aMatrix)
 	{

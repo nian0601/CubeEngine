@@ -6,8 +6,8 @@ void CE_RendererProxy::AddCubeData(const CE_Matrix44f& anOrientation, const CE_V
 {
 	CE_CubeData& data = myCubeData.Add();
 	data.myOrientation = anOrientation;
-	data.myScale = aScale;
-	data.myColor = aColor;
+	data.myScaleAndRoughness = CE_Vector4f(aScale.x, aScale.y, aScale.z, 0.f);
+	data.myColorAndMetalness = aColor;
 }
 
 void CE_RendererProxy::AddSpriteData(const CE_Vector2f& aPosition, const CE_Vector2f& aSize, const CE_Vector4f& aColor, const CE_Vector2f& aHotspot /*= CE_Vector2f(0.f, 0.f)*/)

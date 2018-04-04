@@ -7,8 +7,8 @@ cbuffer GlobalData
 cbuffer ObjectData
 {
 	Matrix World;	
-	float4 Color;
-	float4 Scale;
+	float4 ColorAndMetalness;
+	float4 ScaleAndRoughness;
 };
 
 struct PosNormColorVertex
@@ -21,8 +21,8 @@ struct PosNormColorVertex
 struct PosNormColorPixel
 {
 	float4 Position : SV_POSITION;
-	float4 Normal : NORMAL;
-	float4 Color : COLOR;
+	float4 NormalAndRoughness : NORMAL;
+	float4 ColorAndMetalness : COLOR;
 };
 
 struct GBuffer
@@ -38,30 +38,27 @@ PosNormColorPixel VS(PosNormColorVertex aInput)
 	PosNormColorPixel output;
 
 	aInput.Position.w = 1.f;
-	aInput.Position.xyz *= Scale.xyz;
+	aInput.Position.xyz *= ScaleAndRoughness.xyz;
 	output.Position = mul(World, aInput.Position);
 	output.Position = mul(View, output.Position);
 	output.Position = mul(Projection, output.Position);
 
 
-	output.Normal = aInput.Normal;
-	output.Color = Color;
+	output.NormalAndRoughness.xyz = aInput.Normal.xyz;
+	output.NormalAndRoughness.w = ScaleAndRoughness.w;
+	output.ColorAndMetalness = ColorAndMetalness;
 	return output;
 };
 
 
 GBuffer PS(PosNormColorPixel anInput) : SV_TARGET
 {
-	//Get these as ObjectParamaters later
-	float metalness = 0.f;
-	float roughness = 0.f;
 
 	GBuffer output;
-	output.AlbedoMetalness = anInput.Color;
-	output.AlbedoMetalness.w = metalness;
+	output.AlbedoMetalness = anInput.ColorAndMetalness;
 
-	output.NormalRoughness.xyz = normalize(anInput.Normal).xyz;
-	output.NormalRoughness.w = roughness;
+	output.NormalRoughness.xyz = normalize(anInput.NormalAndRoughness).xyz;
+	output.NormalRoughness.w = anInput.NormalAndRoughness.w;
 
 	output.Depth = anInput.Position.z;
 	return output;

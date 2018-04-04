@@ -133,8 +133,10 @@ void CE_Renderer::RenderCubes(CE_Camera& aCamera, const CE_RendererProxy& aRende
 	{
 		CE_CubeData* cubeData = myCubeModel->GetObjectData<CE_CubeData>();
 		cubeData->myOrientation = data.myOrientation;
-		cubeData->myColor = data.myColor;
-		cubeData->myScale = data.myScale;
+		cubeData->myColorAndMetalness = data.myColorAndMetalness;
+		cubeData->myColorAndMetalness.w = 0.f;
+		cubeData->myScaleAndRoughness = data.myScaleAndRoughness;
+		cubeData->myScaleAndRoughness.w = 0.f;
 
 		myCubeModel->Render();
 	}

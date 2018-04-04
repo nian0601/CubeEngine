@@ -4,8 +4,8 @@
 struct CE_CubeData
 {
 	CE_Matrix44f myOrientation;
-	CE_Vector4f myColor;
-	CE_Vector3f myScale;
+	CE_Vector4f myColorAndMetalness;
+	CE_Vector4f myScaleAndRoughness;
 };
 
 struct CE_SpriteData
