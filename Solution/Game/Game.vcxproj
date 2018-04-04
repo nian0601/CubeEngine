@@ -150,6 +150,8 @@
     <ClInclude Include="RenderProcessor.h" />
     <ClInclude Include="ResourceComponent.h" />
     <ClInclude Include="CursorSingletonComponent.h" />
+    <ClInclude Include="RotationComponent.h" />
+    <ClInclude Include="RotationProcessor.h" />
     <ClInclude Include="SelectionProcessor.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TranslationComponent.h" />
@@ -169,6 +171,7 @@
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="MovementProcessor.cpp" />
     <ClCompile Include="RenderProcessor.cpp" />
+    <ClCompile Include="RotationProcessor.cpp" />
     <ClCompile Include="SelectionProcessor.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

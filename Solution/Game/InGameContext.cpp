@@ -12,6 +12,7 @@
 #include "InGameContext.h"
 
 #include "TranslationComponent.h"
+#include "RotationComponent.h"
 
 #include "AABBProcessor.h"
 #include "AIEventProcessor.h"
@@ -21,6 +22,7 @@
 #include "MovementProcessor.h"
 #include "RenderProcessor.h"
 #include "SelectionProcessor.h"
+#include "RotationProcessor.h"
 
 #include <CE_DebugDraw.h>
 #include <CE_NavMesh.h>
@@ -83,6 +85,7 @@ void InGameContext::Init(CE_Engine& anEngine)
 
 	myWorld->AddProcessor<MovementProcessor>();
 	myWorld->AddProcessor<AIEventProcessor>();
+	myWorld->AddProcessor<RotationProcessor>();
 
 	InitWorld();
 
@@ -107,6 +110,10 @@ void InGameContext::InitWorld()
 	TranslationComponent& gathererTranslate = myWorld->GetComponent<TranslationComponent>(gatherer);
 	gathererTranslate.myOrientation.SetPos(CE_Vector3f(6.5f, 1.f, 1.f));
 
+	RotationComponent& rotation = myWorld->AddComponent<RotationComponent>(gatherer);
+	rotation.mySpeeds = CE_Vector3f(0.f);
+	rotation.mySpeeds.y = 3.14f / 3.f;
+
 	//InitWater();
 	//InitStone();
 	//InitStockpile();
@@ -121,13 +128,35 @@ void InGameContext::InitGrid()
 	{
 		for (int x = 0; x < gridSize; ++x)
 		{
-			CE_Vector3f pos(static_cast<float>(x), -0.7f, static_cast<float>(z));
+			CE_Vector3f pos(static_cast<float>(x), -1.f, static_cast<float>(z));
 
 			CE_Entity entity = myEntityFactory->InstansiateEntity(eEntityTypes::GROUND);
 			TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(entity);
 			translate.myOrientation.SetPos(pos);
+
+			//RotationComponent& rotation = myWorld->AddComponent<RotationComponent>(entity);
+			//rotation.mySpeeds = CE_Vector3f(0.f);
+			//rotation.mySpeeds.y = 3.14f / 3.f;
 		}
 	}
+
+
+	for (int i = 0; i < 10; ++i)
+	{
+		float x = static_cast<float>(i) + i;
+
+		CE_Vector3f pos(x, 2.f, 4.f);
+		CE_Entity metalness = myEntityFactory->InstansiateEntity(eEntityTypes::GROUND);
+		TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(metalness);
+		translate.myOrientation.SetPos(pos);
+
+		pos = CE_Vector3f(x, 4.f, 4.f);
+		CE_Entity roughness = myEntityFactory->InstansiateEntity(eEntityTypes::GROUND);
+		TranslationComponent& translate2 = myWorld->GetComponent<TranslationComponent>(roughness);
+		translate2.myOrientation.SetPos(pos);
+	}
+
+	
 }
 
 void InGameContext::InitWater()
