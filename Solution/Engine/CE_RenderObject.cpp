@@ -4,6 +4,25 @@
 #include "CE_GPUContext.h"
 #include "CE_GPUBuffer.h"
 #include "CE_ShaderStructs.h"
+#include "CE_IcoSphereCreator.h"
+
+namespace CE_RenderObject_priv
+{
+	CE_Vector3f GetSphericalPosition(float aRadius, float aS, float aT)
+	{
+		CE_Vector3f pos;
+		
+		//pos.x = aRadius * std::sin(aInlination) * std::cos(aAzimuth);
+		//pos.y = aRadius * std::sin(aInlination) * std::sin(aAzimuth);
+		//pos.z = aRadius * std::cos(aInlination);
+
+		pos.x = aRadius * cos(aS) * sin(aT);
+		pos.y = aRadius * sin(aS) * sin(aT);
+		pos.z = aRadius * cos(aT);
+
+		return pos;
+	}
+}
 
 CE_RenderObject::CE_RenderObject()
 	: myGPUBuffer(nullptr)
@@ -204,6 +223,17 @@ void CE_RenderObject::InitFullscreenQuad(const CE_GPUContext& aGPUContext)
 
 	CE_SAFE_DELETE_ARRAY(vertices);
 	CE_SAFE_DELETE_ARRAY(indices);
+}
+
+void CE_RenderObject::InitSphere(const CE_GPUContext& aGPUContext)
+{
+	CE_IcoSphereCreator sphereCreator;
+	sphereCreator.Create(4);
+
+	myGPUBuffer = new CE_GPUBuffer(aGPUContext);
+	myGPUBuffer->InitVertexBuffer(sphereCreator.myVertices.GetArrayAsPointer(), sphereCreator.myVertices.Size(), sizeof(sphereCreator.myVertices[0]));
+	myGPUBuffer->InitIndexBuffer(sphereCreator.myIndices.GetArrayAsPointer(), sphereCreator.myIndices.Size());
+	myGPUBuffer->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
 void CE_RenderObject::Render()

@@ -31,3 +31,11 @@ inline unsigned int Murmur(unsigned long long aValue)
 
 	return result;
 }
+
+inline unsigned int Murmur(long long aValue)
+{
+	unsigned int result = 0;
+	MurmurHash3_x86_32(&aValue, 1, 2654435761, &result);
+
+	return result;
+}

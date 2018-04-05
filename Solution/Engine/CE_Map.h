@@ -49,6 +49,7 @@ public:
 	void Insert(const Key &aKey, const Value &aValue);
 	Value& Get(const Key &aKey);
 	const Value& Get(const Key &aKey) const;
+	const Value* GetIfExists(const Key &aKey) const;
 	void Remove(const Key &aKey);
 	bool KeyExists(const Key &aKey) const;
 	Value& operator[](const Key &aKey);
@@ -139,6 +140,14 @@ const Value& CE_Map<Key, Value, StartSize, BucketSize>::Get(const Key &aKey) con
 	return myBuckets[index][keyIndex].myValue;
 }
 
+template<typename Key, typename Value, int StartSize = 67, int BucketSize = 3>
+const Value* CE_Map<Key, Value, StartSize, BucketSize>::GetIfExists(const Key &aKey) const
+{
+	if (!KeyExists(aKey))
+		return nullptr;
+
+	return &Get(aKey);
+}
 
 //----- DELETE -----
 //------------------

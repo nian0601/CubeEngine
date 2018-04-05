@@ -61,7 +61,8 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 
 
 	myCubeModel = new CE_RenderObject();
-	myCubeModel->InitCube(myGPUContext);
+	//myCubeModel->InitCube(myGPUContext);
+	myCubeModel->InitSphere(myGPUContext);
 	myCubeModel->CreateObjectData(sizeof(CE_ModelShaderData), 1);
 
 	mySprite = new CE_RenderObject();

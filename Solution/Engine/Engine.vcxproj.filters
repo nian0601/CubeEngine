@@ -159,6 +159,9 @@
     <ClCompile Include="CE_GPUBuffer.cpp">
       <Filter>Rendering\Buffers</Filter>
     </ClCompile>
+    <ClCompile Include="CE_IcoSphereCreator.cpp">
+      <Filter>Rendering\RenderObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -476,6 +479,9 @@
     </ClInclude>
     <ClInclude Include="CE_ShaderStructs.h">
       <Filter>Rendering\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_IcoSphereCreator.h">
+      <Filter>Rendering\RenderObjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

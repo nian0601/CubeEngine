@@ -144,6 +144,7 @@
     <ClCompile Include="CE_DeferredRenderer.cpp" />
     <ClCompile Include="CE_FileParser.cpp" />
     <ClCompile Include="CE_Font.cpp" />
+    <ClCompile Include="CE_IcoSphereCreator.cpp" />
     <ClCompile Include="CE_Input.cpp" />
     <ClCompile Include="CE_LineRenderObject.cpp" />
     <ClCompile Include="CE_MSDFFont.cpp" />
@@ -214,6 +215,7 @@
     <ClInclude Include="CE_GBuffer.h" />
     <ClInclude Include="CE_GrowingArray.h" />
     <ClInclude Include="CE_Heap.h" />
+    <ClInclude Include="CE_IcoSphereCreator.h" />
     <ClInclude Include="CE_Input.h" />
     <ClInclude Include="CE_LineRenderObject.h" />
     <ClInclude Include="CE_MSDFFont.h" />
