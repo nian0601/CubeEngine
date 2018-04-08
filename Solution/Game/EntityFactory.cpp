@@ -34,12 +34,14 @@ EntityFactory::~EntityFactory()
 
 void EntityFactory::LoadTemplateEntities()
 {
+	//TODO: Make all this load automatically instead..
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::GROUND)] = LoadFromDisk("Data/Entities/ground.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::PLAYER)] = LoadFromDisk("Data/Entities/player.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::RESOURCE_STONE)] = LoadFromDisk("Data/Entities/stone_resource.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::RESOURCE_WATER)] = LoadFromDisk("Data/Entities/water_resource.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::GATHERER)] = LoadFromDisk("Data/Entities/gatherer.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::STOCKPILE)] = LoadFromDisk("Data/Entities/stockpile.ce_entity");
+	myTemplateEntityMap[static_cast<int>(eEntityTypes::SPHERE)] = LoadFromDisk("Data/Entities/sphere.ce_entity");
 }
 
 CE_Entity EntityFactory::InstansiateEntity(eEntityTypes anIdentifier)
@@ -141,6 +143,27 @@ void EntityFactory::LoadRenderComponent(CE_Entity anEntity, CE_FileParser& aFile
 			entry.myScale.x = aFileParser.GetFloat(words[1]);
 			entry.myScale.y = aFileParser.GetFloat(words[2]);
 			entry.myScale.z = aFileParser.GetFloat(words[3]);
+		}
+		else if (words[0] == "#type")
+		{
+			CE_ASSERT(openEntry == true, "Need '#entry' before you can specify a scale");
+
+			RenderComponent::Entry& entry = entries.GetLast();
+			entry.myType = ModelType::FromString(words[1]);
+		}
+		else if (words[0] == "#metalness")
+		{
+			CE_ASSERT(openEntry == true, "Need '#entry' before you can specify a scale");
+
+			RenderComponent::Entry& entry = entries.GetLast();
+			entry.myMetalness = aFileParser.GetFloat(words[1]);
+		}
+		else if (words[0] == "#roughness")
+		{
+			CE_ASSERT(openEntry == true, "Need '#entry' before you can specify a scale");
+
+			RenderComponent::Entry& entry = entries.GetLast();
+			entry.myRoughness= aFileParser.GetFloat(words[1]);
 		}
 		else if (words[0] == "#entry")
 		{

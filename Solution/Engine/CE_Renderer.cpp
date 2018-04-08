@@ -23,8 +23,8 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 		cubeParams.myInputElements.Add(CE_ShaderParameters::POSITION);
 		cubeParams.myInputElements.Add(CE_ShaderParameters::NORMAL);
 		cubeParams.myInputElements.Add(CE_ShaderParameters::COLOR);
-		myCubeShader = new CE_Shader(cubeParams, myGPUContext);
-		myCubeShader->InitGlobalData<CE_ViewProjectionData>();
+		myModelShader = new CE_Shader(cubeParams, myGPUContext);
+		myModelShader->InitGlobalData<CE_ViewProjectionData>();
 	}
 
 	{
@@ -61,9 +61,12 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 
 
 	myCubeModel = new CE_RenderObject();
-	//myCubeModel->InitCube(myGPUContext);
-	myCubeModel->InitSphere(myGPUContext);
+	myCubeModel->InitCube(myGPUContext);
 	myCubeModel->CreateObjectData(sizeof(CE_ModelShaderData), 1);
+
+	mySphereModel = new CE_RenderObject();
+	mySphereModel->InitSphere(myGPUContext);
+	mySphereModel->CreateObjectData(sizeof(CE_ModelShaderData), 1);
 
 	mySprite = new CE_RenderObject();
 	mySprite->InitSprite(myGPUContext);
@@ -85,13 +88,14 @@ CE_Renderer::~CE_Renderer()
 	CE_SAFE_DELETE(mySprite);
 	CE_SAFE_DELETE(mySpriteShader);
 
+	CE_SAFE_DELETE(mySphereModel);
 	CE_SAFE_DELETE(myCubeModel);
-	CE_SAFE_DELETE(myCubeShader);
+	CE_SAFE_DELETE(myModelShader);
 }
 
 void CE_Renderer::Render3D(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
 {
-	RenderCubes(aCamera, aRendererProxy);
+	RenderModels(aCamera, aRendererProxy);
 }
 
 void CE_Renderer::Render2D(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy)
@@ -118,26 +122,30 @@ void CE_Renderer::RenderLines(CE_Camera& aCamera, const CE_GrowingArray<CE_Line>
 	myLineObject->Render(myGPUContext);
 }
 
-void CE_Renderer::RenderCubes(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
+void CE_Renderer::RenderModels(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
 {
 	CE_SetResetRasterizer raster(CULL_BACK);
 	CE_SetResetDepth depth(ENABLED);
 	CE_SetResetBlend blend(NO_BLEND);
 
-	CE_ViewProjectionData* shaderData = myCubeShader->GetGlobalData<CE_ViewProjectionData>();
+	CE_ViewProjectionData* shaderData = myModelShader->GetGlobalData<CE_ViewProjectionData>();
 	shaderData->myView = aCamera.GetView();
 	shaderData->myProjection = aCamera.GetProjection();
 
-	myCubeShader->Activate();
+	myModelShader->Activate();
 
-	for (const CE_CubeData& data : aRendererProxy.GetCubeData())
+	for (const CE_ModelData& data : aRendererProxy.GetModelData())
 	{
-		CE_CubeData* cubeData = myCubeModel->GetObjectData<CE_CubeData>();
-		cubeData->myOrientation = data.myOrientation;
-		cubeData->myColorAndMetalness = data.myColorAndMetalness;
-		cubeData->myScaleAndRoughness = data.myScaleAndRoughness;
+		CE_RenderObject* model = myCubeModel;
+		if (data.myIsSphere)
+			model = mySphereModel;
 
-		myCubeModel->Render();
+		CE_ModelShaderData* modelData = model->GetObjectData<CE_ModelShaderData>();
+		modelData->myWorld = data.myOrientation;
+		modelData->myColorAndMetalness = data.myColorAndMetalness;
+		modelData->myScaleAndRoughness = data.myScaleAndRoughness;
+
+		model->Render();
 	}
 }
 

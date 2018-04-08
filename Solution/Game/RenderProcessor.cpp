@@ -27,16 +27,18 @@ void RenderProcessor::Update(float /*aDelta*/)
 		TranslationComponent& translation = GetComponent<TranslationComponent>(entity);
 		RenderComponent& render = GetComponent<RenderComponent>(entity);
 
-		if (selectedEntity.myHoveredEntity == entity)
+		bool isHovered = selectedEntity.myHoveredEntity == entity;
+
+		for (const RenderComponent::Entry& entry : render.myEntries)
 		{
-			for (const RenderComponent::Entry& entry : render.myEntries)
-				myRendererProxy.AddCubeData(entry.myOffsetMatrix * translation.myOrientation, entry.myScale * translation.myScale, CE_Vector4f(0.78f, 0.78f, 0.78f, 1.f), entry.myMetalness, entry.myRoughness);
+			CE_Vector4f color = entry.myColor;
+			if (isHovered)
+				color = CE_Vector4f(0.78f, 0.78f, 0.78f, entry.myMetalness);
+
+			bool isSphere = entry.myType == ModelType::eType::SPHERE;
+			myRendererProxy.AddModelData(entry.myOffsetMatrix * translation.myOrientation, entry.myScale * translation.myScale, color, entry.myMetalness, entry.myRoughness, isSphere);
 		}
-		else
-		{
-			for (const RenderComponent::Entry& entry : render.myEntries)
-				myRendererProxy.AddCubeData(entry.myOffsetMatrix * translation.myOrientation, entry.myScale * translation.myScale, entry.myColor, entry.myMetalness, entry.myRoughness);
-		}
+			
 	}
 
 	myRendererProxy.AddTextData("This is some text!", { 500.f, 400.f });

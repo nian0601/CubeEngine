@@ -124,31 +124,29 @@ void InGameContext::InitWorld()
 
 void InGameContext::InitGrid()
 {
-	//const int gridSize = 20;
-	//for (int z = 0; z < gridSize; ++z)
-	//{
-	//	for (int x = 0; x < gridSize; ++x)
-	//	{
-	//		CE_Vector3f pos(static_cast<float>(x), -1.f, static_cast<float>(z));
-	//
-	//		CE_Entity entity = myEntityFactory->InstansiateEntity(eEntityTypes::GROUND);
-	//		TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(entity);
-	//		translate.myOrientation.SetPos(pos);
-	//
-	//		//RotationComponent& rotation = myWorld->AddComponent<RotationComponent>(entity);
-	//		//rotation.mySpeeds = CE_Vector3f(0.f);
-	//		//rotation.mySpeeds.y = 3.14f / 3.f;
-	//	}
-	//}
+	const int gridSize = 20;
+	for (int z = 0; z < gridSize; ++z)
+	{
+		for (int x = 0; x < gridSize; ++x)
+		{
+			CE_Vector3f pos(static_cast<float>(x), -1.f, static_cast<float>(z));
+	
+			CE_Entity entity = myEntityFactory->InstansiateEntity(eEntityTypes::GROUND);
+			TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(entity);
+			translate.myOrientation.SetPos(pos);
+		}
+	}
 
 
+#define DEBUGGING_PBL
+#ifdef DEBUGGING_PBL
 	for (int i = 0; i < 10; ++i)
 	{
 		float x = -5;
 		x += static_cast<float>(i) + i;
 
 		CE_Vector3f pos(x, 2.f, 4.f);
-		CE_Entity metalness = myEntityFactory->InstansiateEntity(eEntityTypes::GROUND);
+		CE_Entity metalness = myEntityFactory->InstansiateEntity(eEntityTypes::SPHERE);
 		TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(metalness);
 		translate.myOrientation.SetPos(pos);
 
@@ -157,7 +155,7 @@ void InGameContext::InitGrid()
 		render.myEntries[0].myRoughness = 0.f;
 
 		pos = CE_Vector3f(x, 4.f, 4.f);
-		CE_Entity roughness = myEntityFactory->InstansiateEntity(eEntityTypes::GROUND);
+		CE_Entity roughness = myEntityFactory->InstansiateEntity(eEntityTypes::SPHERE);
 		TranslationComponent& translate2 = myWorld->GetComponent<TranslationComponent>(roughness);
 		translate2.myOrientation.SetPos(pos);
 
@@ -165,8 +163,7 @@ void InGameContext::InitGrid()
 		render2.myEntries[0].myMetalness = 0.f;
 		render2.myEntries[0].myRoughness = i / 10.f;
 	}
-
-	
+#endif
 }
 
 void InGameContext::InitWater()

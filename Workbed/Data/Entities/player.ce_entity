@@ -3,6 +3,7 @@
 		#entry
 			#color 0 0 0.56 1
 			#scale 1 1 1
+			#type CUBE
 		#end
 	#end
 

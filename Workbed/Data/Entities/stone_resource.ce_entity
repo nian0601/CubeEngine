@@ -6,6 +6,7 @@
 		#entry
 			#color 0.01 0.03 0.04 1
 			#scale 1 1 1
+			#type CUBE
 		#end
 	#end
 

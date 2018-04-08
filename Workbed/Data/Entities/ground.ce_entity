@@ -6,6 +6,9 @@
 		#entry
 			#color 0.58 0.58 0.58 1
 			#scale 1 1 1
+			#type CUBE
+			#metalness 1.0
+			#roughness 1.0
 		#end
 	#end
 

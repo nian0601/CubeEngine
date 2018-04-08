@@ -4,17 +4,13 @@
 
 	#render
 		#entry
-			#color 0.05 0.32 0.83 1
+			#color 0.58 0.58 0.58 1
 			#scale 1 1 1
-			#type CUBE
+			#type SPHERE
 		#end
 	#end
 
 	#aabb
 		#layer CLICKABLE
-	#end
-
-	#resource
-		#type WATER
 	#end
 #end

@@ -9,6 +9,7 @@ enum class eEntityTypes
 	RESOURCE_WATER,
 	GATHERER,
 	STOCKPILE,
+	SPHERE,
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -58,6 +59,30 @@ namespace ResourceType
 			return eType::WATER;
 
 		CE_ASSERT_ALWAYS("Invalid Resource type");
+		return eType::INVALID;
+	}
+};
+
+//////////////////////////////////////////////////////////////////////////
+// Model Type
+
+namespace ModelType
+{
+	enum class eType
+	{
+		INVALID = -1,
+		CUBE,
+		SPHERE
+	};
+
+	inline eType FromString(const CE_String& aString)
+	{
+		if (aString == "CUBE")
+			return eType::CUBE;
+		else if (aString == "SPHERE")
+			return eType::SPHERE;
+
+		CE_ASSERT_ALWAYS("Invalid Model type");
 		return eType::INVALID;
 	}
 };

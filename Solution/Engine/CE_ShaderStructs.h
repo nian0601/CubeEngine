@@ -28,8 +28,8 @@ struct CE_ViewProjectionData
 struct CE_ModelShaderData
 {
 	CE_Matrix44f myWorld;
-	CE_Vector4f myColor;
-	CE_Vector4f myScale;
+	CE_Vector4f myColorAndMetalness;
+	CE_Vector4f myScaleAndRoughness;
 };
 
 struct CE_SpriteShaderData

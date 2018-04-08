@@ -6,24 +6,6 @@
 #include "CE_ShaderStructs.h"
 #include "CE_IcoSphereCreator.h"
 
-namespace CE_RenderObject_priv
-{
-	CE_Vector3f GetSphericalPosition(float aRadius, float aS, float aT)
-	{
-		CE_Vector3f pos;
-		
-		//pos.x = aRadius * std::sin(aInlination) * std::cos(aAzimuth);
-		//pos.y = aRadius * std::sin(aInlination) * std::sin(aAzimuth);
-		//pos.z = aRadius * std::cos(aInlination);
-
-		pos.x = aRadius * cos(aS) * sin(aT);
-		pos.y = aRadius * sin(aS) * sin(aT);
-		pos.z = aRadius * cos(aT);
-
-		return pos;
-	}
-}
-
 CE_RenderObject::CE_RenderObject()
 	: myGPUBuffer(nullptr)
 {
@@ -33,7 +15,6 @@ CE_RenderObject::~CE_RenderObject()
 {
 	CE_SAFE_DELETE(myGPUBuffer);
 }
-
 
 void CE_RenderObject::InitCube(const CE_GPUContext& aGPUContext)
 {
