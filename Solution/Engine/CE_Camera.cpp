@@ -40,3 +40,9 @@ void CE_Camera::SetPosition(const CE_Vector3f& aPosition)
 
 	myIsDirty = true;
 }
+
+void CE_Camera::Move(const CE_Vector3f& aMoveVector)
+{
+	CE_Vector3f pos = myOrientation.GetPos();
+	myOrientation.SetPos(pos + aMoveVector);
+}

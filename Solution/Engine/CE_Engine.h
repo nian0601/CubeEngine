@@ -32,6 +32,7 @@ public:
 	static CE_DebugRenderManager& GetDebugRenderManager();
 
 private:
+	void UpdateDebugCamera();
 	CE_Window* myMainWindow;
 	CE_DirectX* myDirectX;
 

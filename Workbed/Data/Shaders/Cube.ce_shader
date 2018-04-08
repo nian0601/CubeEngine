@@ -60,6 +60,9 @@ GBuffer PS(PosNormColorPixel anInput) : SV_TARGET
 	output.NormalRoughness.xyz = normalize(anInput.NormalAndRoughness).xyz;
 	output.NormalRoughness.w = anInput.NormalAndRoughness.w;
 
+	output.NormalRoughness.xyz += 1.f;
+	output.NormalRoughness.xyz *= 0.5f;
+	
 	output.Depth = anInput.Position.z;
 	return output;
 };

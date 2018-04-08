@@ -228,7 +228,7 @@ void CE_RenderObject::InitFullscreenQuad(const CE_GPUContext& aGPUContext)
 void CE_RenderObject::InitSphere(const CE_GPUContext& aGPUContext)
 {
 	CE_IcoSphereCreator sphereCreator;
-	sphereCreator.Create(4);
+	sphereCreator.Create(2);
 
 	myGPUBuffer = new CE_GPUBuffer(aGPUContext);
 	myGPUBuffer->InitVertexBuffer(sphereCreator.myVertices.GetArrayAsPointer(), sphereCreator.myVertices.Size(), sizeof(sphereCreator.myVertices[0]));

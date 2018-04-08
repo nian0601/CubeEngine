@@ -9,6 +9,7 @@ public:
 
 	void Rotate(const CE_Matrix44f& aRotation);
 	void SetPosition(const CE_Vector3f& aPosition);
+	void Move(const CE_Vector3f& aMoveVector);
 
 	const CE_Matrix44f& GetProjection() const { return myProjection; }
 	const CE_Matrix44f& GetInvertedProjection() const { return myInvertedProjection; }
