@@ -107,6 +107,7 @@ void CE_Shader::Activate()
 	{
 		context->Unmap(myGlobalDataBuffer, 0);
 		context->VSSetConstantBuffers(0, 1, &myGlobalDataBuffer);
+		context->PSSetConstantBuffers(0, 1, &myGlobalDataBuffer);
 	}
 
 	context->IASetInputLayout(myInputLayout);

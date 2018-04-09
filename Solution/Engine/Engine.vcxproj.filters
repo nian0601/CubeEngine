@@ -160,7 +160,13 @@
       <Filter>Rendering\Buffers</Filter>
     </ClCompile>
     <ClCompile Include="CE_IcoSphereCreator.cpp">
-      <Filter>Rendering\RenderObjects</Filter>
+      <Filter>Rendering\RenderObjects\ModelCreator</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_LightSphereCreator.cpp">
+      <Filter>Rendering\RenderObjects\ModelCreator</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_ModelSphereCreator.cpp">
+      <Filter>Rendering\RenderObjects\ModelCreator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +238,12 @@
     </Filter>
     <Filter Include="Rendering\RenderObjects\Old">
       <UniqueIdentifier>{58cdec27-3e0e-4aba-8fef-a8e825f9d233}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\RenderObjects\ModelCreator">
+      <UniqueIdentifier>{d5fd9f88-a928-425f-823c-4e1205e85ae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Shaders\HLSL">
+      <UniqueIdentifier>{104b2b62-e4fe-45f5-8ba3-55cce1b97115}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -481,7 +493,13 @@
       <Filter>Rendering\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="CE_IcoSphereCreator.h">
-      <Filter>Rendering\RenderObjects</Filter>
+      <Filter>Rendering\RenderObjects\ModelCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_LightSphereCreator.h">
+      <Filter>Rendering\RenderObjects\ModelCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_ModelSphereCreator.h">
+      <Filter>Rendering\RenderObjects\ModelCreator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

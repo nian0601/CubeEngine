@@ -146,6 +146,7 @@
     <ClCompile Include="CE_Font.cpp" />
     <ClCompile Include="CE_IcoSphereCreator.cpp" />
     <ClCompile Include="CE_Input.cpp" />
+    <ClCompile Include="CE_LightSphereCreator.cpp" />
     <ClCompile Include="CE_LineRenderObject.cpp" />
     <ClCompile Include="CE_MSDFFont.cpp" />
     <ClCompile Include="CE_MSDFGenerator.cpp" />
@@ -188,6 +189,7 @@
     <ClCompile Include="CE_BTInitNode.cpp" />
     <ClCompile Include="CE_DebugRenderManager.cpp" />
     <ClCompile Include="CPY_CollisionEntity.cpp" />
+    <ClCompile Include="CE_ModelSphereCreator.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -217,6 +219,7 @@
     <ClInclude Include="CE_Heap.h" />
     <ClInclude Include="CE_IcoSphereCreator.h" />
     <ClInclude Include="CE_Input.h" />
+    <ClInclude Include="CE_LightSphereCreator.h" />
     <ClInclude Include="CE_LineRenderObject.h" />
     <ClInclude Include="CE_MSDFFont.h" />
     <ClInclude Include="CE_MSDFGenerator.h" />
@@ -280,6 +283,7 @@
     <ClInclude Include="CE_DebugRenderManager.h" />
     <ClInclude Include="CE_DebugPrimitives.h" />
     <ClInclude Include="CPY_CollisionEntity.h" />
+    <ClInclude Include="CE_ModelSphereCreator.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

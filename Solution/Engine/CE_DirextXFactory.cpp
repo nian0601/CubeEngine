@@ -215,6 +215,19 @@ void CE_DirextXFactory::SetupBlendStates()
 
 	hr = myDevice->CreateBlendState(&blendDesc, &myBlendStates[static_cast<int>(CE_BlendState::NO_BLEND)]);
 	CE_ASSERT(FAILED(hr) == false, "Failed to CreateNoAlphaBlendState");
+
+
+	blendDesc.RenderTarget[0].BlendEnable = TRUE;
+	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
+	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
+	blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].RenderTargetWriteMask = 0x0f;
+
+	hr = myDevice->CreateBlendState(&blendDesc, &myBlendStates[static_cast<int>(CE_BlendState::LIGHT_BLEND)]);
+	CE_ASSERT(FAILED(hr) == false, "Failed to CreateLightBlendState");
 }
 
 void CE_DirextXFactory::SetupSamplerStates()

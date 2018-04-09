@@ -93,7 +93,7 @@ CE_Renderer::~CE_Renderer()
 	CE_SAFE_DELETE(myModelShader);
 }
 
-void CE_Renderer::Render3D(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
+void CE_Renderer::Render3D(const CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
 {
 	RenderModels(aCamera, aRendererProxy);
 }
@@ -104,7 +104,7 @@ void CE_Renderer::Render2D(const CE_Matrix44f& aOrthagonalMatrix, const CE_Rende
 	RenderTexts(aOrthagonalMatrix, aRendererProxy);
 }
 
-void CE_Renderer::RenderLines(CE_Camera& aCamera, const CE_GrowingArray<CE_Line>& someLines)
+void CE_Renderer::RenderLines(const CE_Camera& aCamera, const CE_GrowingArray<CE_Line>& someLines)
 {
 	if (someLines.Size() == 0)
 		return;
@@ -122,7 +122,7 @@ void CE_Renderer::RenderLines(CE_Camera& aCamera, const CE_GrowingArray<CE_Line>
 	myLineObject->Render(myGPUContext);
 }
 
-void CE_Renderer::RenderModels(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
+void CE_Renderer::RenderModels(const CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
 {
 	CE_SetResetRasterizer raster(CULL_BACK);
 	CE_SetResetDepth depth(ENABLED);

@@ -6,7 +6,6 @@ void CE_IcoSphereCreator::Create(int aRecursionLevel)
 {
 	CreateInitialSphere();
 
-
 	// refine triangles
 	for (int r = 0; r < aRecursionLevel; r++)
 	{
@@ -82,16 +81,6 @@ void CE_IcoSphereCreator::CreateInitialSphere()
 	AddFace(9, 8, 1, myIndices);
 }
 
-int CE_IcoSphereCreator::AddVertex(const CE_Vector3f& aPosition)
-{
-	CE_PosNormColor_Vert& vertex = myVertices.Add();
-	vertex.myColor = CE_Vector4f(1.f, 1.f, 1.f, 1.f);
-	vertex.myPosition = CE_GetNormalized(aPosition);
-	vertex.myNormal = vertex.myPosition;
-
-	return myVertices.Size() - 1;
-}
-
 void CE_IcoSphereCreator::AddFace(int aIndex1, int aIndex2, int aIndex3, CE_GrowingArray<unsigned int>& someIndices)
 {
 	someIndices.Add(aIndex1);
@@ -109,10 +98,10 @@ int CE_IcoSphereCreator::GetMiddlePoint(int aPoint1, int aPoint2)
 	if (const int* index = myMiddlePointIndexCache.GetIfExists(key))
 		return *index;
 
-	CE_PosNormColor_Vert& vert1 = myVertices[aPoint1];
-	CE_PosNormColor_Vert& vert2 = myVertices[aPoint2];
+	const CE_Vector3f& vert1 = GetPosition(aPoint1);
+	const CE_Vector3f& vert2 = GetPosition(aPoint2);
 
-	CE_Vector3f middle = (vert1.myPosition + vert2.myPosition) * 0.5f;
+	CE_Vector3f middle = (vert1 + vert2) * 0.5f;
 	int index = AddVertex(middle);
 
 	myMiddlePointIndexCache[key] = index;

@@ -22,5 +22,5 @@ CUI_Image::CUI_Image(const CE_Vector2f& aSize, const CE_Vector4f& aColor, const 
 
 void CUI_Image::Render(CE_RendererProxy& anRendererProxy)
 {
-	anRendererProxy.AddSpriteData(myPosition, mySize, myColor, myHotspot);
+	anRendererProxy.AddSprite(myPosition, mySize, myColor, myHotspot);
 }

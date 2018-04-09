@@ -15,6 +15,7 @@ public:
 	void InitSprite(const CE_GPUContext& aGPUContext);
 	void InitFullscreenQuad(const CE_GPUContext& aGPUContext);
 	void InitSphere(const CE_GPUContext& aGPUContext);
+	void InitLightSphere(const CE_GPUContext& aGPUContext);
 
 	void Render();
 

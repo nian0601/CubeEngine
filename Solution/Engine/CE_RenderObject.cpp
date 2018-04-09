@@ -4,7 +4,8 @@
 #include "CE_GPUContext.h"
 #include "CE_GPUBuffer.h"
 #include "CE_ShaderStructs.h"
-#include "CE_IcoSphereCreator.h"
+#include "CE_ModelSphereCreator.h"
+#include "CE_LightSphereCreator.h"
 
 CE_RenderObject::CE_RenderObject()
 	: myGPUBuffer(nullptr)
@@ -208,7 +209,18 @@ void CE_RenderObject::InitFullscreenQuad(const CE_GPUContext& aGPUContext)
 
 void CE_RenderObject::InitSphere(const CE_GPUContext& aGPUContext)
 {
-	CE_IcoSphereCreator sphereCreator;
+	CE_ModelSphereCreator sphereCreator;
+	sphereCreator.Create(2);
+
+	myGPUBuffer = new CE_GPUBuffer(aGPUContext);
+	myGPUBuffer->InitVertexBuffer(sphereCreator.myVertices.GetArrayAsPointer(), sphereCreator.myVertices.Size(), sizeof(sphereCreator.myVertices[0]));
+	myGPUBuffer->InitIndexBuffer(sphereCreator.myIndices.GetArrayAsPointer(), sphereCreator.myIndices.Size());
+	myGPUBuffer->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+void CE_RenderObject::InitLightSphere(const CE_GPUContext& aGPUContext)
+{
+	CE_LightSphereCreator sphereCreator;
 	sphereCreator.Create(2);
 
 	myGPUBuffer = new CE_GPUBuffer(aGPUContext);

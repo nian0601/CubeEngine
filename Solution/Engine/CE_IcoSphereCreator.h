@@ -10,15 +10,16 @@
 class CE_IcoSphereCreator
 {
 public:
-
 	void Create(int aRecursionLevel);
 
-	CE_GrowingArray<CE_PosNormColor_Vert> myVertices;
 	CE_GrowingArray<unsigned int> myIndices;
+
+protected:
+	virtual int AddVertex(const CE_Vector3f& aPosition) = 0;
+	virtual const CE_Vector3f& GetPosition(int aVertexIndex) const = 0;
 
 private:
 	void CreateInitialSphere();
-	int AddVertex(const CE_Vector3f& aPosition);
 	void AddFace(int aIndex1, int aIndex2, int aIndex3, CE_GrowingArray<unsigned int>& someIndices);
 	int GetMiddlePoint(int aPoint1, int aPoint2);
 

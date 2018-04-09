@@ -18,12 +18,12 @@ public:
 	CE_Renderer(CE_GPUContext& anGPUContext);
 	~CE_Renderer();
 
-	void Render3D(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
+	void Render3D(const CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
 	void Render2D(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy);
-	void RenderLines(CE_Camera& aCamera, const CE_GrowingArray<CE_Line>& someLines);
+	void RenderLines(const CE_Camera& aCamera, const CE_GrowingArray<CE_Line>& someLines);
 
 private:
-	void RenderModels(CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
+	void RenderModels(const CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
 	void RenderSprites(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy);
 	void RenderTexts(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy);
 
@@ -44,7 +44,5 @@ private:
 
 	CE_LineRenderObject* myLineObject;
 	CE_Shader* myLineShader;
-
-
 };
 

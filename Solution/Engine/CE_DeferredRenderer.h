@@ -18,6 +18,7 @@ public:
 	void BeginGBuffer(CE_Texture* aBackbuffer);
 	void EndGBuffer(CE_Texture* aBackbuffer);
 
+	void RenderPointLights(const CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
 	void RenderToScreen(CE_Camera* aCamera);
 
 private:
@@ -28,5 +29,8 @@ private:
 	CE_RenderObject* myQuad;
 
 	CE_Texture* myCubeMap;
+
+	CE_RenderObject* myPointLightModel;
+	CE_Shader* myPointLightShader;
 };
 

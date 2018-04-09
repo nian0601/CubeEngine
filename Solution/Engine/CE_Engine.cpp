@@ -81,8 +81,8 @@ void CE_Engine::Run()
 			myRenderer->Render3D(*myCamera, window->GetRendererProxy());
 			myDeferredRenderer->EndGBuffer(window->GetBackbuffer());
 
-			
 			myDeferredRenderer->RenderToScreen(myCamera);
+			myDeferredRenderer->RenderPointLights(*myCamera, window->GetRendererProxy());
 			
 			// myRenderer->RenderLights();
 

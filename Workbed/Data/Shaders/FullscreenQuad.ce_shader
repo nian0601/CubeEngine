@@ -26,24 +26,25 @@ float4 PS(PosUVPixel anInput) : SV_TARGET
 {
 	DeferredPixelData pixelData = CalculateDeferredPixelData(anInput.TextureCoord);
 
-	float3 viewPos = CameraPosition;
-	float3 toEye = normalize(viewPos - pixelData.myWorldPosition.xyz);
-
 	//float ao = CalculateSSAO(input.Tex, pixelData.myNormal.xyz, pixelData.myWorldPosition.xyz);
 	float ao = pixelData.myAmbientocclusion;
 
 	float3 reflectionFresnel = ReflectionFresnel(pixelData.mySubstance.xyz, pixelData.myNormal
-		, toEye, 1.f - pixelData.myRoughnessOffsetted);
+		, pixelData.myToEye, 1.f - pixelData.myRoughnessOffsetted);
 
+	float3 cubemapColor = float3(0.1f, 0.1f, 0.1f);
 	float3 ambientDiffuse = Cubemap.SampleLevel(LinearSampler, pixelData.myNormal, 9).xyz
 		* ao * pixelData.myMetalnessAlbedo * (1.f - reflectionFresnel);
+	//float3 ambientDiffuse = cubemapColor
+	//	* ao * pixelData.myMetalnessAlbedo * (1.f - reflectionFresnel);
 
-	float3 reflectionVector = reflect(toEye, pixelData.myNormal);
+	float3 reflectionVector = reflect(pixelData.myToEye, pixelData.myNormal);
 	float fakeLysSpecularPower = RoughToSPow(pixelData.myRoughness);
 	float lysMipMap = GetSpecPowToMip(fakeLysSpecularPower, 12);
 
 	float3 ambientSpec = Cubemap.SampleLevel(LinearSampler, reflectionVector, lysMipMap).xyz
 		* ao * reflectionFresnel;
+	//float3 ambientSpec = cubemapColor * ao * reflectionFresnel;
 
 	float3 finalAmbientLight = (ambientDiffuse + ambientSpec);
 	
@@ -51,10 +52,10 @@ float4 PS(PosUVPixel anInput) : SV_TARGET
 
 	float3 toLight = -normalize(float3(1.f, 1.f, 1.f));
 	float3 lightDir = normalize(toLight);
-	float3 halfVec = normalize(lightDir + toEye.xyz);
+	float3 halfVec = normalize(lightDir + pixelData.myToEye.xyz);
 	float NdotL = saturate(dot(pixelData.myNormal.xyz, lightDir));
 	float HdotN = saturate(dot(halfVec, pixelData.myNormal.xyz));
-	float NdotV = saturate(dot(pixelData.myNormal.xyz, toEye));
+	float NdotV = saturate(dot(pixelData.myNormal.xyz, pixelData.myToEye));
 
 	float3 F = saturate(Fresnel(pixelData.mySubstance.xyz, lightDir, halfVec));
 	float D = saturate(D_GGX(HdotN, (pixelData.myRoughness + 1.f) / 2.f));
@@ -68,5 +69,4 @@ float4 PS(PosUVPixel anInput) : SV_TARGET
 
 	float3 finalDirectLight = directSpecc;
 	return saturate(float4(finalAmbientLight + finalDirectLight, 1.f));
-	//return saturate(float4(finalAmbientLight, 1.f));
 };

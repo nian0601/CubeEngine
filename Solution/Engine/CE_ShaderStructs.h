@@ -19,6 +19,15 @@ struct CE_ViewProjectionData
 	CE_Matrix44f myProjection;
 };
 
+struct CE_GlobalPBLData
+{
+	CE_Matrix44f myView;
+	CE_Matrix44f myProjection;
+	CE_Matrix44f myInvertedProjection;
+	CE_Matrix44f myNotInvertedView;
+	CE_Vector3f myCameraPosition;
+	float padding;
+};
 
 
 //
@@ -41,12 +50,11 @@ struct CE_SpriteShaderData
 	CE_Vector2f padding;
 };
 
-struct CE_FullscreenQuadShaderData
+struct CE_PointLightShaderData
 {
-	CE_Matrix44f myInvertedProjection;
-	CE_Matrix44f myNotInvertedView;
-	CE_Vector3f myCameraPosition;
-	float padding;
+	CE_Matrix44f myWorld;
+	CE_Vector4f myColorAndIntensity;
+	CE_Vector4f myRadius;
 };
 
 //

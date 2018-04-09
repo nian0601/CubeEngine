@@ -21,6 +21,7 @@ enum CE_BlendState
 {
 	NO_BLEND,
 	ALPHA_BLEND,
+	LIGHT_BLEND,
 	_BLEND_COUNT
 };
 

@@ -1,5 +1,14 @@
 #include "Shader_Variables.ce_shader"
 
+cbuffer DeferredPBLData : register(b0)
+{
+	Matrix View;
+	Matrix Projection;
+	Matrix InvertedProjection;
+	Matrix NotInvertedView;
+	float3 CameraPosition;
+};
+
 struct DeferredPixelData
 {
 	float3 myAlbedo;
@@ -7,6 +16,7 @@ struct DeferredPixelData
 	float3 myDepth;
 	float2 myTexCoord;
 	float4 myWorldPosition;
+	float3 myToEye;
 
 	float3 myMetalness;
 	float3 myMetalnessAlbedo;
@@ -40,9 +50,11 @@ DeferredPixelData CalculateDeferredPixelData(float2 aTex)
 	float z = depth;
 
 	float4 worldPosition = float4(x, y, z, 1.f);
-	worldPosition = mul(worldPosition, InvertedProjection);
+	worldPosition = mul(InvertedProjection, worldPosition);
 	worldPosition = worldPosition / worldPosition.w;
-	worldPosition = mul(worldPosition, NotInvertedView);
+	worldPosition = mul(NotInvertedView, worldPosition);
+
+	float3 toEye = normalize(CameraPosition - worldPosition.xyz);
 
 	DeferredPixelData data = (DeferredPixelData)0;
 	
@@ -51,6 +63,7 @@ DeferredPixelData CalculateDeferredPixelData(float2 aTex)
 	data.myDepth = float3(depth, depth, depth);
 	data.myTexCoord = aTex;
 	data.myWorldPosition = worldPosition;
+	data.myToEye = toEye;
 
 	data.myMetalness = float3(metalness, metalness, metalness);
 	data.myMetalnessAlbedo = data.myAlbedo - (data.myAlbedo * data.myMetalness);

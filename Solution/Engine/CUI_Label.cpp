@@ -37,7 +37,7 @@ CUI_Label::~CUI_Label()
 
 void CUI_Label::Render(CE_RendererProxy& anRendererProxy)
 {
-	anRendererProxy.AddTextData(myString, myPosition);
+	anRendererProxy.AddText(myString, myPosition);
 }
 
 void CUI_Label::PrepareLayout()
