@@ -112,8 +112,8 @@ void CE_Text::Render()
 	//Update constant-buffer
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 
-	context->Map(myObjectDataBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-
+	HRESULT result = context->Map(myObjectDataBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	CE_ASSERT(SUCCEEDED(result), "Mapping failed");
 	CE_Vector2f scaledSize;
 	scaledSize.x = myFont->GetScale();
 	scaledSize.y = myFont->GetScale();

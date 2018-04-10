@@ -21,12 +21,10 @@ public:
 	void FinishRender();
 
 	CE_RendererProxy& GetRendererProxy() { return *myRendererProxy; }
-	const CE_Matrix44f& GetOrthagonalProjection() const { return myOrthagonalProjection; }
 
 	CE_Texture* GetBackbuffer();
 
 private:
-	CE_Matrix44f myOrthagonalProjection;
 	CE_Vector2i myWindowSize;
 	HWND myHWND;
 	CE_WindowManager* myWindowManager;

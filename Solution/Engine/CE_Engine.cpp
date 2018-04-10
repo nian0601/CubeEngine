@@ -77,20 +77,14 @@ void CE_Engine::Run()
 		{
 			window->PrepareForRender();
 
+			myRenderer->UpdateConstantBuffers(*myCamera);
+			myDeferredRenderer->UpdateConstantBuffers(*myCamera);
+
 			myDeferredRenderer->SetBackbuffer(window->GetBackbuffer());
-			myDeferredRenderer->Render(*myRenderer, *myCamera, window->GetRendererProxy());
+			myDeferredRenderer->Render(*myRenderer, window->GetRendererProxy());
 
-			//myDeferredRenderer->BeginGBuffer(window->GetBackbuffer());
-			//myRenderer->Render3D(*myCamera, window->GetRendererProxy());
-			//myDeferredRenderer->EndGBuffer(window->GetBackbuffer());
-			//
-			//myDeferredRenderer->RenderToScreen(myCamera);
-			//myDeferredRenderer->RenderPointLights(*myCamera, window->GetRendererProxy());
-			
-			// myRenderer->RenderLights();
-
-			myRenderer->Render2D(window->GetOrthagonalProjection(), window->GetRendererProxy());
-			myRenderer->RenderLines(*myCamera, myDebugRenderManager->myLines);
+			myRenderer->Render2D(window->GetRendererProxy());
+			myRenderer->RenderLines(myDebugRenderManager->myLines);
 			myDebugRenderManager->myLines.RemoveAll();
 
 			window->FinishRender();

@@ -20,7 +20,8 @@ public:
 
 	void SetBackbuffer(CE_Texture* aBackbuffer) { myBackbuffer = aBackbuffer; }
 
-	void Render(CE_Renderer& aRenderer, const CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
+	void UpdateConstantBuffers(const CE_Camera& aCamera);
+	void Render(CE_Renderer& aRenderer, const CE_RendererProxy& aRendererProxy);
 
 private:
 	void RenderPointLights(const CE_RendererProxy& aRendererProxy);

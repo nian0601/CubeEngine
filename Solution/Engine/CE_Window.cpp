@@ -11,7 +11,6 @@ CE_Window::CE_Window(const CE_Vector2i& aSize, const char* aTitle, CE_WindowMana
 {
 	myWindowManager = aWindowManager;
 	myWindowSize = aSize;
-	myOrthagonalProjection = CE_Matrix44f::CreateOrthogonalMatrixLH(static_cast<float>(myWindowSize.x), static_cast<float>(myWindowSize.y), 0.1f, 100.f);
 
 	WNDCLASSEX wcex;
 	wcex.cbSize = sizeof(WNDCLASSEX);

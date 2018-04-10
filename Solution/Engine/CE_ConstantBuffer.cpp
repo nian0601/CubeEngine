@@ -44,8 +44,8 @@ void CE_ConstantBuffer::Update(void* someData, unsigned int someDataSize)
 	ID3D11DeviceContext* context = myGPUContext.GetContext();
 
 	D3D11_MAPPED_SUBRESOURCE dataResource;
-	context->Map(myBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &dataResource);
-
+	HRESULT result = context->Map(myBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &dataResource);
+	CE_ASSERT(SUCCEEDED(result), "Mapping failed");
 	CE_MEM_COPY(dataResource.pData, someData, someDataSize);
 
 	context->Unmap(myBuffer, 0);

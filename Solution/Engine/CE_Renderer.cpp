@@ -8,6 +8,7 @@
 #include "CE_Camera.h"
 #include "CE_RenderObject.h"
 #include "CE_ShaderStructs.h"
+#include "CE_ConstantBuffer.h"
 
 CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 	: myGPUContext(anGPUContext)
@@ -24,7 +25,6 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 		cubeParams.myInputElements.Add(CE_ShaderParameters::NORMAL);
 		cubeParams.myInputElements.Add(CE_ShaderParameters::COLOR);
 		myModelShader = new CE_Shader(cubeParams, myGPUContext);
-		myModelShader->InitGlobalData<CE_ViewProjectionData>();
 	}
 
 	{
@@ -32,7 +32,6 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 		spriteParams.myFilePath = L"Data/Shaders/Sprite.ce_shader";
 		spriteParams.myInputElements.Add(CE_ShaderParameters::POSITION);
 		mySpriteShader = new CE_Shader(spriteParams, myGPUContext);
-		mySpriteShader->InitGlobalData<CE_ProjectionData>();
 	}
 
 
@@ -42,7 +41,7 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 		textParams.myInputElements.Add(CE_ShaderParameters::POSITION);
 		textParams.myInputElements.Add(CE_ShaderParameters::UV);
 		myTextShader = new CE_Shader(textParams, myGPUContext);
-		myTextShader->InitGlobalData<CE_ProjectionData>();
+
 		//myMSDFTextShader = new CE_TextShader();
 		//myMSDFTextShader->Init(L"Data/Shaders/MSDFText.ce_shader", myGPUContext);
 		//
@@ -56,21 +55,27 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 		lineParams.myInputElements.Add(CE_ShaderParameters::POSITION);
 		lineParams.myInputElements.Add(CE_ShaderParameters::COLOR);
 		myLineShader = new CE_Shader(lineParams, myGPUContext);
-		myLineShader->InitGlobalData<CE_ViewProjectionData>();
 	}
 
 
 	myCubeModel = new CE_RenderObject();
 	myCubeModel->InitCube(myGPUContext);
-	myCubeModel->CreateObjectData(sizeof(CE_ModelShaderData), 1);
 
 	mySphereModel = new CE_RenderObject();
 	mySphereModel->InitSphere(myGPUContext);
-	mySphereModel->CreateObjectData(sizeof(CE_ModelShaderData), 1);
 
 	mySprite = new CE_RenderObject();
 	mySprite->InitSprite(myGPUContext);
 	mySprite->CreateObjectData(sizeof(CE_SpriteShaderData), 1);
+
+	myViewProjectionConstantBuffer = new CE_ConstantBuffer(myGPUContext);
+	myViewProjectionConstantBuffer->Init(sizeof(CE_ViewProjectionData), 0);
+
+	myOrthagonalConstantBuffer = new CE_ConstantBuffer(myGPUContext);
+	myOrthagonalConstantBuffer->Init(sizeof(CE_ProjectionData), 0);
+
+	myModelObjectDataConstantBuffer = new CE_ConstantBuffer(myGPUContext);
+	myModelObjectDataConstantBuffer->Init(sizeof(CE_ModelShaderData), 1);
 }
 
 
@@ -91,20 +96,35 @@ CE_Renderer::~CE_Renderer()
 	CE_SAFE_DELETE(mySphereModel);
 	CE_SAFE_DELETE(myCubeModel);
 	CE_SAFE_DELETE(myModelShader);
+
+	CE_SAFE_DELETE(myModelObjectDataConstantBuffer);
+	CE_SAFE_DELETE(myViewProjectionConstantBuffer);
 }
 
-void CE_Renderer::Render3D(const CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
+void CE_Renderer::UpdateConstantBuffers(const CE_Camera& aCamera)
 {
-	RenderModels(aCamera, aRendererProxy);
+	CE_ViewProjectionData viewProjection;
+	viewProjection.myView = aCamera.GetView();
+	viewProjection.myProjection = aCamera.GetProjection();
+	myViewProjectionConstantBuffer->Update(&viewProjection, sizeof(viewProjection));
+
+	CE_ProjectionData orthagonal;
+	orthagonal.myProjection = aCamera.GetOrthagonalProjection();
+	myOrthagonalConstantBuffer->Update(&orthagonal, sizeof(orthagonal));
 }
 
-void CE_Renderer::Render2D(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy)
+void CE_Renderer::Render3D(const CE_RendererProxy& aRendererProxy)
 {
-	RenderSprites(aOrthagonalMatrix, aRendererProxy);
-	RenderTexts(aOrthagonalMatrix, aRendererProxy);
+	RenderModels(aRendererProxy);
 }
 
-void CE_Renderer::RenderLines(const CE_Camera& aCamera, const CE_GrowingArray<CE_Line>& someLines)
+void CE_Renderer::Render2D(const CE_RendererProxy& aRendererProxy)
+{
+	RenderSprites(aRendererProxy);
+	RenderTexts(aRendererProxy);
+}
+
+void CE_Renderer::RenderLines(const CE_GrowingArray<CE_Line>& someLines)
 {
 	if (someLines.Size() == 0)
 		return;
@@ -112,26 +132,20 @@ void CE_Renderer::RenderLines(const CE_Camera& aCamera, const CE_GrowingArray<CE
 	CE_SetResetBlend blend(ALPHA_BLEND);
 	CE_SetResetDepth depth(ENABLED);
 
-	CE_ViewProjectionData* shaderData = myLineShader->GetGlobalData<CE_ViewProjectionData>();
-	shaderData->myView = aCamera.GetView();
-	shaderData->myProjection = aCamera.GetProjection();
-
+	myViewProjectionConstantBuffer->SendToGPU();
 	myLineShader->Activate();
 	
 	myLineObject->SetLines(someLines, myGPUContext);
 	myLineObject->Render(myGPUContext);
 }
 
-void CE_Renderer::RenderModels(const CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
+void CE_Renderer::RenderModels(const CE_RendererProxy& aRendererProxy)
 {
 	CE_SetResetRasterizer raster(CULL_BACK);
 	CE_SetResetDepth depth(ENABLED);
 	CE_SetResetBlend blend(NO_BLEND);
 
-	CE_ViewProjectionData* shaderData = myModelShader->GetGlobalData<CE_ViewProjectionData>();
-	shaderData->myView = aCamera.GetView();
-	shaderData->myProjection = aCamera.GetProjection();
-
+	myViewProjectionConstantBuffer->SendToGPU();
 	myModelShader->Activate();
 
 	for (const CE_ModelData& data : aRendererProxy.GetModelData())
@@ -140,21 +154,23 @@ void CE_Renderer::RenderModels(const CE_Camera& aCamera, const CE_RendererProxy&
 		if (data.myIsSphere)
 			model = mySphereModel;
 
-		CE_ModelShaderData* modelData = model->GetObjectData<CE_ModelShaderData>();
-		modelData->myWorld = data.myOrientation;
-		modelData->myColorAndMetalness = data.myColorAndMetalness;
-		modelData->myScaleAndRoughness = data.myScaleAndRoughness;
+		CE_ModelShaderData modelData;
+		modelData.myWorld = data.myOrientation;
+		modelData.myColorAndMetalness = data.myColorAndMetalness;
+		modelData.myScaleAndRoughness = data.myScaleAndRoughness;
+
+		myModelObjectDataConstantBuffer->Update(&modelData, sizeof(modelData));
+		myModelObjectDataConstantBuffer->SendToGPU();
 
 		model->Render();
 	}
 }
 
-void CE_Renderer::RenderSprites(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy)
+void CE_Renderer::RenderSprites(const CE_RendererProxy& aRendererProxy)
 {
 	CE_SetResetBlend blend(ALPHA_BLEND);
 
-	CE_ProjectionData* shaderData = mySpriteShader->GetGlobalData<CE_ProjectionData>();
-	shaderData->myProjection = aOrthagonalMatrix;
+	myOrthagonalConstantBuffer->SendToGPU();
 	mySpriteShader->Activate();
 
 	for (const CE_SpriteData& data : aRendererProxy.GetSpriteData())
@@ -170,7 +186,7 @@ void CE_Renderer::RenderSprites(const CE_Matrix44f& aOrthagonalMatrix, const CE_
 	}
 }
 
-void CE_Renderer::RenderTexts(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy)
+void CE_Renderer::RenderTexts(const CE_RendererProxy& aRendererProxy)
 {
 	CE_SetResetBlend blend(ALPHA_BLEND);
 
@@ -180,8 +196,7 @@ void CE_Renderer::RenderTexts(const CE_Matrix44f& aOrthagonalMatrix, const CE_Re
 
 	CE_ASSERT(shader != nullptr, "We dont have a textshader????");
 
-	CE_ProjectionData* shaderData = shader->GetGlobalData<CE_ProjectionData>();
-	shaderData->myProjection = aOrthagonalMatrix;
+	myOrthagonalConstantBuffer->SendToGPU();
 	shader->Activate();
 
 	for (const CE_TextData& data : aRendererProxy.GetTextData())

@@ -106,7 +106,8 @@ void* CE_GPUBuffer::GetObjectData()
 {
 	CE_ASSERT(myObjectDataBuffer != nullptr, "No GlobalData created for this shader");
 	ID3D11DeviceContext* context = myGPUContext.GetContext();
-	context->Map(myObjectDataBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &myObjectDataResource);
+	HRESULT result = context->Map(myObjectDataBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &myObjectDataResource);
+	CE_ASSERT(SUCCEEDED(result), "Mapping failed");
 	return myObjectDataResource.pData;
 }
 

@@ -58,14 +58,8 @@ CE_DeferredRenderer::~CE_DeferredRenderer()
 	CE_SAFE_DELETE(myDefferedConstantBuffer);
 }
 
-void CE_DeferredRenderer::Render(CE_Renderer& aRenderer, const CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
+void CE_DeferredRenderer::UpdateConstantBuffers(const CE_Camera& aCamera)
 {
-	CE_ASSERT(myBackbuffer != nullptr, "DeferredRendrer is missing a backbuffer!");
-
-	BeginGBuffer();
-	aRenderer.Render3D(aCamera, aRendererProxy);
-	EndGBuffer();
-
 	CE_GlobalPBLData shaderData;
 	shaderData.myView = aCamera.GetView();
 	shaderData.myProjection = aCamera.GetProjection();
@@ -73,6 +67,16 @@ void CE_DeferredRenderer::Render(CE_Renderer& aRenderer, const CE_Camera& aCamer
 	shaderData.myNotInvertedView = aCamera.GetNotInvertedView();
 	shaderData.myCameraPosition = aCamera.GetNotInvertedView().GetPos();
 	myDefferedConstantBuffer->Update(&shaderData, sizeof(shaderData));
+}
+
+void CE_DeferredRenderer::Render(CE_Renderer& aRenderer, const CE_RendererProxy& aRendererProxy)
+{
+	CE_ASSERT(myBackbuffer != nullptr, "DeferredRendrer is missing a backbuffer!");
+
+	BeginGBuffer();
+	aRenderer.Render3D(aRendererProxy);
+	EndGBuffer();
+	
 	myDefferedConstantBuffer->SendToGPU();
 
 	RenderToScreen();

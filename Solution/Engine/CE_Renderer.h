@@ -9,6 +9,7 @@ class CE_RendererProxy;
 class CE_Shader;
 
 class CE_RenderObject;
+class CE_ConstantBuffer;
 
 #include "CE_DebugPrimitives.h"
 
@@ -18,14 +19,15 @@ public:
 	CE_Renderer(CE_GPUContext& anGPUContext);
 	~CE_Renderer();
 
-	void Render3D(const CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
-	void Render2D(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy);
-	void RenderLines(const CE_Camera& aCamera, const CE_GrowingArray<CE_Line>& someLines);
+	void UpdateConstantBuffers(const CE_Camera& aCamera);
+	void Render3D(const CE_RendererProxy& aRendererProxy);
+	void Render2D(const CE_RendererProxy& aRendererProxy);
+	void RenderLines(const CE_GrowingArray<CE_Line>& someLines);
 
 private:
-	void RenderModels(const CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
-	void RenderSprites(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy);
-	void RenderTexts(const CE_Matrix44f& aOrthagonalMatrix, const CE_RendererProxy& aRendererProxy);
+	void RenderModels(const CE_RendererProxy& aRendererProxy);
+	void RenderSprites(const CE_RendererProxy& aRendererProxy);
+	void RenderTexts(const CE_RendererProxy& aRendererProxy);
 
 	CE_GPUContext& myGPUContext;
 
@@ -44,5 +46,10 @@ private:
 
 	CE_LineRenderObject* myLineObject;
 	CE_Shader* myLineShader;
+
+	CE_ConstantBuffer* myViewProjectionConstantBuffer;
+	CE_ConstantBuffer* myOrthagonalConstantBuffer;
+
+	CE_ConstantBuffer* myModelObjectDataConstantBuffer;
 };
 

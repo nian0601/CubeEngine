@@ -12,7 +12,6 @@ CE_Shader::CE_Shader(const CE_ShaderParameters& someParameters, CE_GPUContext& a
 	, myVertexShader(nullptr)
 	, myPixelShader(nullptr)
 	, myInputLayout(nullptr)
-	, myGlobalDataBuffer(nullptr)
 {
 	HRESULT result;
 	ID3D10Blob* errorMessage = nullptr;
@@ -93,7 +92,6 @@ CE_Shader::CE_Shader(const CE_ShaderParameters& someParameters, CE_GPUContext& a
 
 CE_Shader::~CE_Shader()
 {
-	CE_SAFE_RELEASE(myGlobalDataBuffer);
 	CE_SAFE_RELEASE(myInputLayout);
 	CE_SAFE_RELEASE(myPixelShader);
 	CE_SAFE_RELEASE(myVertexShader);
@@ -102,14 +100,6 @@ CE_Shader::~CE_Shader()
 void CE_Shader::Activate()
 {
 	ID3D11DeviceContext* context = myGPUContext.GetContext();
-
-	if (myGlobalDataBuffer)
-	{
-		context->Unmap(myGlobalDataBuffer, 0);
-		context->VSSetConstantBuffers(0, 1, &myGlobalDataBuffer);
-		context->PSSetConstantBuffers(0, 1, &myGlobalDataBuffer);
-	}
-
 	context->IASetInputLayout(myInputLayout);
 
 	context->VSSetShader(myVertexShader, NULL, 0);
