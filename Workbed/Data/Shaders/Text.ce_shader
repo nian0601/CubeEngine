@@ -26,9 +26,6 @@ struct PosColorPixel
 	float2 Tex : TEXCOORD0;
 };
 
-Texture2D Texture;
-
-
 PosColorPixel VS(PosVertex aInput)
 {
 	PosColorPixel output;
@@ -63,7 +60,7 @@ static const bool USE_OUTLINE = true;
 static const float SMOOTHING = 1.0/32.0;
 float4 PS(PosColorPixel anInput) : SV_TARGET
 {
-	float distAlphaMask = Texture.Sample(PointSampler, anInput.Tex).a;
+	float distAlphaMask = AlbedoTexture.Sample(PointSampler, anInput.Tex).a;
 	
 	float alpha = smoothstep(0.55 - SMOOTHING, 0.55 + SMOOTHING, distAlphaMask);
 
