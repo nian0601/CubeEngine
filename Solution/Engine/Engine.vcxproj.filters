@@ -168,6 +168,9 @@
     <ClCompile Include="CE_ModelSphereCreator.cpp">
       <Filter>Rendering\RenderObjects\ModelCreator</Filter>
     </ClCompile>
+    <ClCompile Include="CE_ConstantBuffer.cpp">
+      <Filter>Rendering\Buffers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -500,6 +503,9 @@
     </ClInclude>
     <ClInclude Include="CE_ModelSphereCreator.h">
       <Filter>Rendering\RenderObjects\ModelCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_ConstantBuffer.h">
+      <Filter>Rendering\Buffers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

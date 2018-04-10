@@ -21,8 +21,3 @@ ID3D11DeviceContext* CE_GPUContext::GetContext() const
 {
 	return myDirectX.GetContext();
 }
-
-CE_Vector2i CE_GPUContext::GetWindowSize() const
-{
-	return CE_Vector2i(1280, 720);
-}

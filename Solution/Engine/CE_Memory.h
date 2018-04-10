@@ -11,3 +11,4 @@ if(aPointer) \
 }
 
 #define CE_ZERO_MEMORY(aObject) {ZeroMemory(&aObject, sizeof(aObject));}
+#define CE_MEM_COPY(aDestination, aSource, aSize) {memcpy(aDestination, aSource, aSize);}

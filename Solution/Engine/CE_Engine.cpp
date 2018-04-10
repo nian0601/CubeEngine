@@ -77,12 +77,15 @@ void CE_Engine::Run()
 		{
 			window->PrepareForRender();
 
-			myDeferredRenderer->BeginGBuffer(window->GetBackbuffer());
-			myRenderer->Render3D(*myCamera, window->GetRendererProxy());
-			myDeferredRenderer->EndGBuffer(window->GetBackbuffer());
+			myDeferredRenderer->SetBackbuffer(window->GetBackbuffer());
+			myDeferredRenderer->Render(*myRenderer, *myCamera, window->GetRendererProxy());
 
-			myDeferredRenderer->RenderToScreen(myCamera);
-			myDeferredRenderer->RenderPointLights(*myCamera, window->GetRendererProxy());
+			//myDeferredRenderer->BeginGBuffer(window->GetBackbuffer());
+			//myRenderer->Render3D(*myCamera, window->GetRendererProxy());
+			//myDeferredRenderer->EndGBuffer(window->GetBackbuffer());
+			//
+			//myDeferredRenderer->RenderToScreen(myCamera);
+			//myDeferredRenderer->RenderPointLights(*myCamera, window->GetRendererProxy());
 			
 			// myRenderer->RenderLights();
 

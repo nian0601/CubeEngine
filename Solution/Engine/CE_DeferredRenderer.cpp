@@ -11,7 +11,8 @@
 #include "CE_ShaderStructs.h"
 #include "CE_Camera.h"
 #include "CE_RendererProxy.h"
-
+#include "CE_Renderer.h"
+#include "CE_ConstantBuffer.h"
 
 CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Vector2i& aWindowSize)
 	: myGPUContext(aGPUContext)
@@ -23,7 +24,6 @@ CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Ve
 	shaderParams.myInputElements.Add(CE_ShaderParameters::POSITION);
 	shaderParams.myInputElements.Add(CE_ShaderParameters::UV);
 	myShader = new CE_Shader(shaderParams, myGPUContext);
-	myShader->InitGlobalData<CE_GlobalPBLData>();
 
 	myQuad = new CE_RenderObject();
 	myQuad->InitFullscreenQuad(myGPUContext);
@@ -36,11 +36,13 @@ CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Ve
 	pointLightParams.myFilePath = L"Data/Shaders/Pointlight.ce_shader";
 	pointLightParams.myInputElements.Add(CE_ShaderParameters::POSITION);
 	myPointLightShader = new CE_Shader(pointLightParams, myGPUContext);
-	myPointLightShader->InitGlobalData<CE_GlobalPBLData>();
 
 	myPointLightModel = new CE_RenderObject();
 	myPointLightModel->InitLightSphere(myGPUContext);
 	myPointLightModel->CreateObjectData(sizeof(CE_PointLightShaderData), 1);
+
+	myDefferedConstantBuffer = new CE_ConstantBuffer(myGPUContext);
+	myDefferedConstantBuffer->Init(sizeof(CE_GlobalPBLData), 0);
 }
 
 
@@ -52,44 +54,36 @@ CE_DeferredRenderer::~CE_DeferredRenderer()
 
 	CE_SAFE_DELETE(myPointLightShader);
 	CE_SAFE_DELETE(myPointLightModel);
+
+	CE_SAFE_DELETE(myDefferedConstantBuffer);
 }
 
-void CE_DeferredRenderer::BeginGBuffer(CE_Texture* aBackbuffer)
+void CE_DeferredRenderer::Render(CE_Renderer& aRenderer, const CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
 {
-	myGBuffer->Clear(myGPUContext, { 0.f, 0.f, 0.f, 1.f });
+	CE_ASSERT(myBackbuffer != nullptr, "DeferredRendrer is missing a backbuffer!");
 
-	ID3D11RenderTargetView* targets[3];
-	targets[0] = myGBuffer->myTextures[CE_GBuffer::ALBEDO_METALNESS]->GetRenderTarget();
-	targets[1] = myGBuffer->myTextures[CE_GBuffer::NORMAL_ROUGNESS]->GetRenderTarget();
-	targets[2] = myGBuffer->myTextures[CE_GBuffer::DEPTH]->GetRenderTarget();
+	BeginGBuffer();
+	aRenderer.Render3D(aCamera, aRendererProxy);
+	EndGBuffer();
 
-	ID3D11DepthStencilView* stencil = aBackbuffer->GetDepthStencil();
+	CE_GlobalPBLData shaderData;
+	shaderData.myView = aCamera.GetView();
+	shaderData.myProjection = aCamera.GetProjection();
+	shaderData.myInvertedProjection = aCamera.GetInvertedProjection();
+	shaderData.myNotInvertedView = aCamera.GetNotInvertedView();
+	shaderData.myCameraPosition = aCamera.GetNotInvertedView().GetPos();
+	myDefferedConstantBuffer->Update(&shaderData, sizeof(shaderData));
+	myDefferedConstantBuffer->SendToGPU();
 
-	ID3D11DeviceContext* context = myGPUContext.GetContext();
-	context->OMSetRenderTargets(3, targets, stencil);
+	RenderToScreen();
+	RenderPointLights(aRendererProxy);
 }
 
-void CE_DeferredRenderer::EndGBuffer(CE_Texture* aBackbuffer)
-{
-	ID3D11DeviceContext* context = myGPUContext.GetContext();
-
-	ID3D11RenderTargetView* target = aBackbuffer->GetRenderTarget();
-	ID3D11DepthStencilView* stencil = aBackbuffer->GetDepthStencil();
-	context->OMSetRenderTargets(1, &target, stencil);
-}
-
-void CE_DeferredRenderer::RenderPointLights(const CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy)
+void CE_DeferredRenderer::RenderPointLights(const CE_RendererProxy& aRendererProxy)
 {
 	CE_SetResetRasterizer raster(NO_CULLING);
 	CE_SetResetDepth depth(READ_NO_WRITE);
 	CE_SetResetBlend blend(LIGHT_BLEND);
-
-	CE_GlobalPBLData* shaderData = myPointLightShader->GetGlobalData<CE_GlobalPBLData>();
-	shaderData->myView = aCamera.GetView();
-	shaderData->myProjection = aCamera.GetProjection();
-	shaderData->myInvertedProjection = aCamera.GetInvertedProjection();
-	shaderData->myNotInvertedView = aCamera.GetNotInvertedView();
-	shaderData->myCameraPosition = aCamera.GetNotInvertedView().GetPos();
 
 	myPointLightShader->Activate();
 	myGBuffer->SendToGPU(myGPUContext);
@@ -105,16 +99,11 @@ void CE_DeferredRenderer::RenderPointLights(const CE_Camera& aCamera, const CE_R
 	}
 }
 
-void CE_DeferredRenderer::RenderToScreen(CE_Camera* aCamera)
+void CE_DeferredRenderer::RenderToScreen()
 {
 	CE_SetResetDepth depth(NO_READ_NO_WRITE);
 	CE_SetResetBlend blend(NO_BLEND);
 	CE_SetResetRasterizer rasterizer(CULL_BACK);
-
-	CE_GlobalPBLData* pblData = myShader->GetGlobalData<CE_GlobalPBLData>();
-	pblData->myInvertedProjection = aCamera->GetInvertedProjection();
-	pblData->myNotInvertedView = aCamera->GetNotInvertedView();
-	pblData->myCameraPosition = aCamera->GetNotInvertedView().GetPos();
 
 	myShader->Activate();
 	myGBuffer->SendToGPU(myGPUContext);
@@ -123,4 +112,28 @@ void CE_DeferredRenderer::RenderToScreen(CE_Camera* aCamera)
 	ID3D11ShaderResourceView* resource = myCubeMap->GetShaderView();
 	context->PSSetShaderResources(3, 1, &resource);
 	myQuad->Render();
+}
+
+void CE_DeferredRenderer::BeginGBuffer()
+{
+	myGBuffer->Clear(myGPUContext, { 0.f, 0.f, 0.f, 1.f });
+
+	ID3D11RenderTargetView* targets[3];
+	targets[0] = myGBuffer->myTextures[CE_GBuffer::ALBEDO_METALNESS]->GetRenderTarget();
+	targets[1] = myGBuffer->myTextures[CE_GBuffer::NORMAL_ROUGNESS]->GetRenderTarget();
+	targets[2] = myGBuffer->myTextures[CE_GBuffer::DEPTH]->GetRenderTarget();
+
+	ID3D11DepthStencilView* stencil = myBackbuffer->GetDepthStencil();
+
+	ID3D11DeviceContext* context = myGPUContext.GetContext();
+	context->OMSetRenderTargets(3, targets, stencil);
+}
+
+void CE_DeferredRenderer::EndGBuffer()
+{
+	ID3D11DeviceContext* context = myGPUContext.GetContext();
+
+	ID3D11RenderTargetView* target = myBackbuffer->GetRenderTarget();
+	ID3D11DepthStencilView* stencil = myBackbuffer->GetDepthStencil();
+	context->OMSetRenderTargets(1, &target, stencil);
 }

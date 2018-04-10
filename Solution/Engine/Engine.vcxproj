@@ -141,6 +141,7 @@
     <ClCompile Include="CE_BTMoveToNode.cpp" />
     <ClCompile Include="CE_BTSequenceNode.cpp" />
     <ClCompile Include="CE_Camera.cpp" />
+    <ClCompile Include="CE_ConstantBuffer.cpp" />
     <ClCompile Include="CE_DeferredRenderer.cpp" />
     <ClCompile Include="CE_FileParser.cpp" />
     <ClCompile Include="CE_Font.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="CE_Camera.h" />
     <ClInclude Include="CE_CommonHelper.h" />
     <ClInclude Include="CE_ComponentFilter.h" />
+    <ClInclude Include="CE_ConstantBuffer.h" />
     <ClInclude Include="CE_CustomEntityTypes.h" />
     <ClInclude Include="CE_DebugDraw.h" />
     <ClInclude Include="CE_DeferredRenderer.h" />

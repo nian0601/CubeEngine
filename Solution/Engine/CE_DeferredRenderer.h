@@ -8,6 +8,9 @@ class CE_Texture;
 class CE_Shader;
 class CE_FullscreenQuad;
 class CE_RenderObject;
+class CE_Renderer;
+
+class CE_ConstantBuffer;
 
 class CE_DeferredRenderer
 {
@@ -15,15 +18,20 @@ public:
 	CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Vector2i& aWindowSize);
 	~CE_DeferredRenderer();
 
-	void BeginGBuffer(CE_Texture* aBackbuffer);
-	void EndGBuffer(CE_Texture* aBackbuffer);
+	void SetBackbuffer(CE_Texture* aBackbuffer) { myBackbuffer = aBackbuffer; }
 
-	void RenderPointLights(const CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
-	void RenderToScreen(CE_Camera* aCamera);
+	void Render(CE_Renderer& aRenderer, const CE_Camera& aCamera, const CE_RendererProxy& aRendererProxy);
 
 private:
-	CE_GBuffer* myGBuffer;
+	void RenderPointLights(const CE_RendererProxy& aRendererProxy);
+	void RenderToScreen();
+
+	void BeginGBuffer();
+	void EndGBuffer();
+
 	CE_GPUContext& myGPUContext;
+	CE_GBuffer* myGBuffer;
+	CE_ConstantBuffer* myDefferedConstantBuffer;
 
 	CE_Shader* myShader;
 	CE_RenderObject* myQuad;
@@ -32,5 +40,7 @@ private:
 
 	CE_RenderObject* myPointLightModel;
 	CE_Shader* myPointLightShader;
+
+	CE_Texture* myBackbuffer;
 };
 

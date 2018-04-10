@@ -15,8 +15,6 @@ public:
 	ID3D11Device* GetDevice() const;
 	ID3D11DeviceContext* GetContext() const;
 
-	CE_Vector2i GetWindowSize() const;
-
 private:
 	const CE_DirectX& myDirectX;
 };
