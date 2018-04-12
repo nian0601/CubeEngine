@@ -42,6 +42,8 @@ void EntityFactory::LoadTemplateEntities()
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::GATHERER)] = LoadFromDisk("Data/Entities/gatherer.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::STOCKPILE)] = LoadFromDisk("Data/Entities/stockpile.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::SPHERE)] = LoadFromDisk("Data/Entities/sphere.ce_entity");
+	myTemplateEntityMap[static_cast<int>(eEntityTypes::TREE)] = LoadFromDisk("Data/Entities/tree.ce_entity");
+	myTemplateEntityMap[static_cast<int>(eEntityTypes::POINT_LIGHT)] = LoadFromDisk("Data/Entities/point_light.ce_entity");
 }
 
 CE_Entity EntityFactory::InstansiateEntity(eEntityTypes anIdentifier)
@@ -143,6 +145,18 @@ void EntityFactory::LoadRenderComponent(CE_Entity anEntity, CE_FileParser& aFile
 			entry.myScale.x = aFileParser.GetFloat(words[1]);
 			entry.myScale.y = aFileParser.GetFloat(words[2]);
 			entry.myScale.z = aFileParser.GetFloat(words[3]);
+		}
+		else if (words[0] == "#translate")
+		{
+			CE_ASSERT(openEntry == true, "Need '#entry' before you can specify a translate");
+
+			CE_Vector3f translate;
+			translate.x = aFileParser.GetFloat(words[1]);
+			translate.y = aFileParser.GetFloat(words[2]);
+			translate.z = aFileParser.GetFloat(words[3]);
+
+			RenderComponent::Entry& entry = entries.GetLast();
+			entry.myOffsetMatrix.SetPos(translate);
 		}
 		else if (words[0] == "#type")
 		{

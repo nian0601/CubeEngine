@@ -10,6 +10,8 @@ enum class eEntityTypes
 	GATHERER,
 	STOCKPILE,
 	SPHERE,
+	TREE,
+	POINT_LIGHT,
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -72,7 +74,8 @@ namespace ModelType
 	{
 		INVALID = -1,
 		CUBE,
-		SPHERE
+		SPHERE,
+		POINT_LIGHT,
 	};
 
 	inline eType FromString(const CE_String& aString)
@@ -81,6 +84,8 @@ namespace ModelType
 			return eType::CUBE;
 		else if (aString == "SPHERE")
 			return eType::SPHERE;
+		else if (aString == "POINTLIGHT")
+			return eType::POINT_LIGHT;
 
 		CE_ASSERT_ALWAYS("Invalid Model type");
 		return eType::INVALID;

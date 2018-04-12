@@ -36,5 +36,9 @@ private:
 	CE_NavMesh* myNavMesh;
 	CE_PathFinder* myPathFinder;
 	CPY_PhysicsWorld* myPhysicsWorld;
+
+	CE_Entity myPointLight;
+	CE_Entity myPointLight1;
+	CE_Entity myPointLight2;
 };
 

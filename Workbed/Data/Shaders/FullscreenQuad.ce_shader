@@ -63,7 +63,7 @@ float4 PS(PosUVPixel anInput) : SV_TARGET
 	float lambert = NdotL;
 
 	float lightIntensity = 2.f;
-	float3 lightColor = float3(0.f, 1.f, 0.f) * lightIntensity;
+	float3 lightColor = float3(0.82f, 0.82f, 0.82f) * lightIntensity;
 	float3 directSpecc = F * D * V * NdotL * lightColor;
 
 

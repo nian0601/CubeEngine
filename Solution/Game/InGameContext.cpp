@@ -98,6 +98,19 @@ void InGameContext::Init(CE_Engine& anEngine)
 void InGameContext::Update(float aDelta)
 {
 	myWorld->Update(aDelta);
+
+	static float counter = 0.f;
+	counter += aDelta;
+	float x = sin(counter) * 10.f + 6.f;
+
+	TranslationComponent& lightTranslate = myWorld->GetComponent<TranslationComponent>(myPointLight);
+	lightTranslate.myOrientation.SetPos({ x, 5.f, 12.f });
+
+	TranslationComponent& lightTranslate1 = myWorld->GetComponent<TranslationComponent>(myPointLight1);
+	lightTranslate1.myOrientation.SetPos({ x, 11.f, 12.f });
+
+	TranslationComponent& lightTranslate2 = myWorld->GetComponent<TranslationComponent>(myPointLight2);
+	lightTranslate2.myOrientation.SetPos({ x, 17.f, 12.f });
 }
 
 void InGameContext::Render()
@@ -120,6 +133,14 @@ void InGameContext::InitWorld()
 	//InitStockpile();
 
 	InitGrid();
+
+	CE_Entity tree = myEntityFactory->InstansiateEntity(eEntityTypes::TREE);
+	TranslationComponent& treeTranslate = myWorld->GetComponent<TranslationComponent>(tree);
+	treeTranslate.myOrientation.SetPos(CE_Vector3f(3.f, 0.f, 3.f));
+
+	myPointLight = myEntityFactory->InstansiateEntity(eEntityTypes::POINT_LIGHT);
+	myPointLight1 = myEntityFactory->InstansiateEntity(eEntityTypes::POINT_LIGHT);
+	myPointLight2 = myEntityFactory->InstansiateEntity(eEntityTypes::POINT_LIGHT);
 }
 
 void InGameContext::InitGrid()
@@ -140,28 +161,27 @@ void InGameContext::InitGrid()
 
 #define DEBUGGING_PBL
 #ifdef DEBUGGING_PBL
-	for (int i = 0; i < 10; ++i)
+	float z = 15.f;
+	for (int y = 0; y < 10; ++y)
 	{
-		float x = -5;
-		x += static_cast<float>(i) + i;
+		float roughness = y / 10.f;
+		for (int x = 0; x < 10; ++x)
+		{
+			float realX = -5.f;
+			realX += static_cast<float>(x) + x;
 
-		CE_Vector3f pos(x, 2.f, 4.f);
-		CE_Entity metalness = myEntityFactory->InstansiateEntity(eEntityTypes::SPHERE);
-		TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(metalness);
-		translate.myOrientation.SetPos(pos);
+			float realY = 2.f;
+			realY += static_cast<float>(y) + y;
 
-		RenderComponent& render = myWorld->GetComponent<RenderComponent>(metalness);
-		render.myEntries[0].myMetalness = i / 10.f;
-		render.myEntries[0].myRoughness = 0.f;
+			CE_Vector3f pos(realX, realY, z);
+			CE_Entity metalness = myEntityFactory->InstansiateEntity(eEntityTypes::SPHERE);
+			TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(metalness);
+			translate.myOrientation.SetPos(pos);
 
-		pos = CE_Vector3f(x, 4.f, 4.f);
-		CE_Entity roughness = myEntityFactory->InstansiateEntity(eEntityTypes::SPHERE);
-		TranslationComponent& translate2 = myWorld->GetComponent<TranslationComponent>(roughness);
-		translate2.myOrientation.SetPos(pos);
-
-		RenderComponent& render2 = myWorld->GetComponent<RenderComponent>(roughness);
-		render2.myEntries[0].myMetalness = 0.f;
-		render2.myEntries[0].myRoughness = i / 10.f;
+			RenderComponent& render = myWorld->GetComponent<RenderComponent>(metalness);
+			render.myEntries[0].myMetalness = x / 10.f;
+			render.myEntries[0].myRoughness = roughness;
+		}
 	}
 #endif
 }

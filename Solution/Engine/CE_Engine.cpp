@@ -25,7 +25,7 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 	myDirectX = new CE_DirectX();
 	myGPUContext = new CE_GPUContext(*myDirectX);
 	CE_WindowManager::Create(*myGPUContext);
-	myMainWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 1280, 720 }, "Cube Engine");
+	myMainWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 1920, 1080 }, "Cube Engine");
 
 
 	myRenderer = new CE_Renderer(*myGPUContext);

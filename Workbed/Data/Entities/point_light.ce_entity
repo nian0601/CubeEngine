@@ -1,0 +1,25 @@
+#components
+	#render
+		#entry
+			#color 0.82 0 0.82 1
+			#scale 0.25 0.25 0.25
+			#type SPHERE
+		#end
+		#entry
+			#color 0.82 0 0.82 10
+			#scale 5 5 5
+			#type POINTLIGHT
+		#end
+	#end
+
+	#aabb
+		#layer CLICKABLE
+	#end
+
+	#translate
+	#end
+	
+	#behavior
+		#speed 2
+	#end
+#end
