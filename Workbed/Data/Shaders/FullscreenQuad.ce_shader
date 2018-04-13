@@ -26,8 +26,8 @@ float4 PS(PosUVPixel anInput) : SV_TARGET
 {
 	DeferredPixelData pixelData = CalculateDeferredPixelData(anInput.TextureCoord);
 
-	//float ao = CalculateSSAO(input.Tex, pixelData.myNormal.xyz, pixelData.myWorldPosition.xyz);
-	float ao = pixelData.myAmbientocclusion;
+	float ao = CalculateSSAO(anInput.TextureCoord, pixelData.myNormal.xyz, pixelData.myWorldPosition.xyz);
+	//float ao = pixelData.myAmbientocclusion;
 
 	float3 reflectionFresnel = ReflectionFresnel(pixelData.mySubstance.xyz, pixelData.myNormal
 		, pixelData.myToEye, 1.f - pixelData.myRoughnessOffsetted);

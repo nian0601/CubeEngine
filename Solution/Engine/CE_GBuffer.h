@@ -18,4 +18,6 @@ public:
 	void SendToGPU(CE_GPUContext& aGPUContext);
 	void Clear(CE_GPUContext& aGPUContext, const CE_Vector4f& aClearColor);
 	CE_Texture* myTextures[__COUNT];
+
+	CE_Vector2i myScreenSize;
 };

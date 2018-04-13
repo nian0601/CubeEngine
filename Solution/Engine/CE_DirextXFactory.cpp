@@ -86,7 +86,9 @@ CE_DirextXFactory::CE_DirextXFactory(ID3D11Device* aDevice, ID3D11DeviceContext*
 	SetupSamplerStates();
 
 	myContext->PSSetSamplers(0, 1, &mySamplerStates[LINEAR_SAMPLING]);
-	myContext->PSSetSamplers(1, 1, &mySamplerStates[POINT_SAMPLING]);
+	myContext->PSSetSamplers(1, 1, &mySamplerStates[LINEAR_CLAMP_SAMPLING]);
+	myContext->PSSetSamplers(2, 1, &mySamplerStates[POINT_SAMPLING]);
+	myContext->PSSetSamplers(3, 1, &mySamplerStates[POINT_WRAP_SAMPLING]);
 }
 
 
@@ -250,11 +252,18 @@ void CE_DirextXFactory::SetupSamplerStates()
 	HRESULT result = myDevice->CreateSamplerState(&samplerDesc, &mySamplerStates[static_cast<int>(CE_SamplerState::LINEAR_SAMPLING)]);
 	CE_ASSERT(FAILED(result) == false, "Failed to LinearSampling-state");
 
-
 	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+
+	result = myDevice->CreateSamplerState(&samplerDesc, &mySamplerStates[static_cast<int>(CE_SamplerState::POINT_WRAP_SAMPLING)]);
+	CE_ASSERT(FAILED(result) == false, "Failed to PointWrapSampling-state");
+
 	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
 	result = myDevice->CreateSamplerState(&samplerDesc, &mySamplerStates[static_cast<int>(CE_SamplerState::POINT_SAMPLING)]);
 	CE_ASSERT(FAILED(result) == false, "Failed to PointSampling-state");
+
+	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	result = myDevice->CreateSamplerState(&samplerDesc, &mySamplerStates[static_cast<int>(CE_SamplerState::LINEAR_CLAMP_SAMPLING)]);
+	CE_ASSERT(FAILED(result) == false, "Failed to LinearClampSampling-state");
 }

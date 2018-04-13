@@ -31,6 +31,9 @@ CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Ve
 	myCubeMap = new CE_Texture();
 	myCubeMap->LoadDDS("Data/Textures/church_cubemap.dds", myGPUContext);
 
+	mySSAORandomTexture = new CE_Texture();
+	mySSAORandomTexture->LoadDDS("Data/Textures/ssao_random_texture.dds", myGPUContext);
+
 
 	CE_ShaderParameters pointLightParams;
 	pointLightParams.myFilePath = L"Data/Shaders/Pointlight.ce_shader";
@@ -56,6 +59,8 @@ CE_DeferredRenderer::~CE_DeferredRenderer()
 	CE_SAFE_DELETE(myPointLightModel);
 
 	CE_SAFE_DELETE(myDefferedConstantBuffer);
+
+	CE_SAFE_DELETE(mySSAORandomTexture);
 }
 
 void CE_DeferredRenderer::UpdateConstantBuffers(const CE_Camera& aCamera)
@@ -66,6 +71,11 @@ void CE_DeferredRenderer::UpdateConstantBuffers(const CE_Camera& aCamera)
 	shaderData.myInvertedProjection = aCamera.GetInvertedProjection();
 	shaderData.myNotInvertedView = aCamera.GetNotInvertedView();
 	shaderData.myCameraPosition = aCamera.GetNotInvertedView().GetPos();
+
+	CE_Vector2f screenSize;
+	screenSize.x = static_cast<float>(myGBuffer->myScreenSize.x);
+	screenSize.y = static_cast<float>(myGBuffer->myScreenSize.y);
+	shaderData.myScreenSize = screenSize;
 	myDefferedConstantBuffer->Update(&shaderData, sizeof(shaderData));
 }
 
@@ -113,8 +123,10 @@ void CE_DeferredRenderer::RenderToScreen()
 	myGBuffer->SendToGPU(myGPUContext);
 
 	ID3D11DeviceContext* context = myGPUContext.GetContext();
-	ID3D11ShaderResourceView* resource = myCubeMap->GetShaderView();
-	context->PSSetShaderResources(3, 1, &resource);
+	ID3D11ShaderResourceView* resources[2];
+	resources[0] = mySSAORandomTexture->GetShaderView();
+	resources[1] = myCubeMap->GetShaderView();
+	context->PSSetShaderResources(3, 2, resources);
 	myQuad->Render();
 }
 

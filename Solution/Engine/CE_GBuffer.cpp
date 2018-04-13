@@ -9,18 +9,20 @@
 
 CE_GBuffer::CE_GBuffer(CE_GPUContext& aGPUContext, const CE_Vector2i& aWindowSize)
 {
+	myScreenSize = aWindowSize;
+
 	myTextures[ALBEDO_METALNESS] = new CE_Texture();
-	myTextures[ALBEDO_METALNESS]->InitForShader(aWindowSize
+	myTextures[ALBEDO_METALNESS]->InitForShader(myScreenSize
 		, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE
 		, DXGI_FORMAT_R8G8B8A8_UNORM, aGPUContext);
 
 	myTextures[NORMAL_ROUGNESS] = new CE_Texture();
-	myTextures[NORMAL_ROUGNESS]->InitForShader(aWindowSize
+	myTextures[NORMAL_ROUGNESS]->InitForShader(myScreenSize
 		, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE
 		, DXGI_FORMAT_R8G8B8A8_UNORM, aGPUContext);
 
 	myTextures[DEPTH] = new CE_Texture();
-	myTextures[DEPTH]->InitForShader(aWindowSize
+	myTextures[DEPTH]->InitForShader(myScreenSize
 		, D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE
 		, DXGI_FORMAT_R32_FLOAT, aGPUContext);
 

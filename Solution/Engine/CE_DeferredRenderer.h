@@ -38,6 +38,7 @@ private:
 	CE_RenderObject* myQuad;
 
 	CE_Texture* myCubeMap;
+	CE_Texture* mySSAORandomTexture;
 
 	CE_RenderObject* myPointLightModel;
 	CE_Shader* myPointLightShader;

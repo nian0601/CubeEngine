@@ -7,6 +7,7 @@ cbuffer DeferredPBLData : register(b0)
 	Matrix InvertedProjection;
 	Matrix NotInvertedView;
 	float3 CameraPosition;
+	float2 ScreenSize;
 };
 
 struct DeferredPixelData
@@ -175,4 +176,86 @@ float AngularAttenuation(float3 aLightVec, float3 aLightDirection, float aLightC
 	angularAttenuation *= 1.f / aLightCone;
 
 	return angularAttenuation;
+}
+
+
+//
+//
+//	SSAO
+//--------------------------------------------------------
+
+static const float SSAO_RandomSize = 256.f; //Size of the random-texture used for SSAO
+
+static const float SSAO_Sample_Size = 0.1f; //Size of the SSAO
+static const float SSAO_Intensity = 0.75f; //The intensity of the SSAO
+static const float SSAO_Scale = 0.1f;
+static const float SSAO_Bias = 0.15f;
+float4 SSAOGetViewPosition(float2 uv)
+{
+	float depth = DepthTexture.Sample(PointSampler, uv).x;
+	float x = uv.x * 2.f - 1.f;
+	float y = (1.f - uv.y) * 2.f - 1.f;
+	float z = depth;
+
+	float4 worldPosition = float4(x, y, z, 1.f);
+	worldPosition = mul(InvertedProjection, worldPosition);
+	worldPosition = worldPosition / worldPosition.w;
+	return worldPosition;
+}
+
+float3 SSAOGetWorldPosition(float2 uv)
+{
+	float4 worldPosition = SSAOGetViewPosition(uv);
+	worldPosition = mul(NotInvertedView,worldPosition);
+	return worldPosition.xyz;
+}
+
+
+float4 SSAOGetRandom(float2 uv)
+{
+	float4 random = SSAO_RandomTexture.Sample(PointWrapSampler, uv * ScreenSize / SSAO_RandomSize);
+	random *= 2.0f;
+	random -= 1.f;
+	normalize(random);
+	return random;
+}
+
+float DoAmbientOcclusion(in float2 tcoord,in float2 uv, in float3 p, in float3 cnorm)
+{
+	float3 diff = SSAOGetWorldPosition(tcoord + uv) - p;
+	const float3 v = normalize(diff);
+	const float d = length(diff)*SSAO_Scale;
+	return max(0.0,dot(cnorm,v)-SSAO_Bias)*(1.0/(1.0+d))*SSAO_Intensity;
+}
+
+float CalculateSSAO(float2 aUV, float3 aNormal, float3 aWorldPosition)
+{
+	const float2 vec[4] = {float2(1,0),float2(-1,0),
+			float2(0,1),float2(0,-1)};
+
+	float3 p = SSAOGetWorldPosition(aUV);// aWorldPosition;
+	float3 pView = SSAOGetViewPosition(aUV).xyz;
+	float3 n = aNormal;
+
+	float2 rand = SSAOGetRandom(aUV ).xy;
+
+	float ao = 0.0f;
+	float rad = SSAO_Sample_Size/pView.z; // SKALL VARA I VIEWSPACE
+
+	//**SSAO Calculation**//
+	int iterations = 4;
+	for (int j = 0; j < iterations; ++j)
+	{
+	  	float2 coord1 = reflect(vec[j],rand)*rad;
+  		float2 coord2 = float2(coord1.x*0.707 - coord1.y*0.707,
+			  coord1.x*0.707 + coord1.y*0.707);
+  
+ 	 	ao += DoAmbientOcclusion(aUV, coord1*0.25, p, n);
+ 	 	ao += DoAmbientOcclusion(aUV, coord2*0.5, p, n);
+ 	 	ao += DoAmbientOcclusion(aUV, coord1*0.75, p, n);
+ 	 	ao += DoAmbientOcclusion(aUV, coord2, p, n);
+	}
+	ao /= (float)iterations*4.0;
+	ao = 1.f- ao;
+	return ao;
 }
