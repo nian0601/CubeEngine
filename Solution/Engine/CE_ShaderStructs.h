@@ -64,18 +64,18 @@ struct CE_PointLightShaderData
 
 struct CE_PosNormColor_Vert
 {
-	CE_Vector3f myPosition;
-	CE_Vector3f myNormal;
+	CE_Vector4f myPosition;
+	CE_Vector4f myNormal;
 	CE_Vector4f myColor;
 };
 
 struct CE_Pos_Vert
 {
-	CE_Vector3f myPosition;
+	CE_Vector4f myPosition;
 };
 
 struct CE_Pos_UV_Vert
 {
-	CE_Vector3f myPosition;
+	CE_Vector4f myPosition;
 	CE_Vector2f myTexCoord;
 };

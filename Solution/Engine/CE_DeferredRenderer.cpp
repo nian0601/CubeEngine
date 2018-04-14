@@ -17,16 +17,13 @@
 CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Vector2i& aWindowSize)
 	: myGPUContext(aGPUContext)
 {
+	myShader = new CE_Shader(L"Data/Shaders/FullscreenQuad.ce_shader", myGPUContext);
+	myPointLightShader = new CE_Shader(L"Data/Shaders/Pointlight.ce_shader", myGPUContext);
+
 	myGBuffer = new CE_GBuffer(aGPUContext, aWindowSize);
 
-	CE_ShaderParameters shaderParams;
-	shaderParams.myFilePath = L"Data/Shaders/FullscreenQuad.ce_shader";
-	shaderParams.myInputElements.Add(CE_ShaderParameters::POSITION);
-	shaderParams.myInputElements.Add(CE_ShaderParameters::UV);
-	myShader = new CE_Shader(shaderParams, myGPUContext);
-
-	myQuad = new CE_RenderObject();
-	myQuad->InitFullscreenQuad(myGPUContext);
+	myDefferedConstantBuffer = new CE_ConstantBuffer(myGPUContext);
+	myDefferedConstantBuffer->Init(sizeof(CE_GlobalPBLData), 0);
 
 	myCubeMap = new CE_Texture();
 	myCubeMap->LoadDDS("Data/Textures/church_cubemap.dds", myGPUContext);
@@ -34,33 +31,29 @@ CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Ve
 	mySSAORandomTexture = new CE_Texture();
 	mySSAORandomTexture->LoadDDS("Data/Textures/ssao_random_texture.dds", myGPUContext);
 
-
-	CE_ShaderParameters pointLightParams;
-	pointLightParams.myFilePath = L"Data/Shaders/Pointlight.ce_shader";
-	pointLightParams.myInputElements.Add(CE_ShaderParameters::POSITION);
-	myPointLightShader = new CE_Shader(pointLightParams, myGPUContext);
+	myQuad = new CE_RenderObject();
+	myQuad->InitFullscreenQuad(myGPUContext);
 
 	myPointLightModel = new CE_RenderObject();
 	myPointLightModel->InitLightSphere(myGPUContext);
 	myPointLightModel->CreateObjectData(sizeof(CE_PointLightShaderData), 1);
-
-	myDefferedConstantBuffer = new CE_ConstantBuffer(myGPUContext);
-	myDefferedConstantBuffer->Init(sizeof(CE_GlobalPBLData), 0);
 }
 
 
 CE_DeferredRenderer::~CE_DeferredRenderer()
 {
-	CE_SAFE_DELETE(myCubeMap);
-	CE_SAFE_DELETE(myQuad);
-	CE_SAFE_DELETE(myGBuffer);
-
-	CE_SAFE_DELETE(myPointLightShader);
 	CE_SAFE_DELETE(myPointLightModel);
+	CE_SAFE_DELETE(myQuad);
+
+	CE_SAFE_DELETE(mySSAORandomTexture);
+	CE_SAFE_DELETE(myCubeMap);
 
 	CE_SAFE_DELETE(myDefferedConstantBuffer);
 
-	CE_SAFE_DELETE(mySSAORandomTexture);
+	CE_SAFE_DELETE(myGBuffer);
+
+	CE_SAFE_DELETE(myPointLightShader);
+	CE_SAFE_DELETE(myShader);
 }
 
 void CE_DeferredRenderer::UpdateConstantBuffers(const CE_Camera& aCamera)

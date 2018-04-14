@@ -9,25 +9,10 @@ struct ID3D10Blob;
 
 class CE_GPUContext;
 
-
-struct CE_ShaderParameters
-{
-	enum InputElement
-	{
-		POSITION,
-		NORMAL,
-		COLOR,
-		UV,
-	};
-
-	CE_GrowingArray<InputElement> myInputElements;
-	const WCHAR* myFilePath;
-};
-
 class CE_Shader
 {
 public:
-	CE_Shader(const CE_ShaderParameters& someParameters, CE_GPUContext& aGPUContext);
+	CE_Shader(const WCHAR* aFilePath, CE_GPUContext& aGPUContext);
 	~CE_Shader();
 
 	void Activate();

@@ -7,7 +7,41 @@
 #include <d3d11.h>
 #include <d3dcompiler.h>
 
-CE_Shader::CE_Shader(const CE_ShaderParameters& someParameters, CE_GPUContext& aGPUContext)
+namespace CE_Shader_priv
+{
+	DXGI_FORMAT GetFormat(const D3D11_SIGNATURE_PARAMETER_DESC& someParams)
+	{
+		if (someParams.Mask == 1)
+		{
+			if (someParams.ComponentType == D3D_REGISTER_COMPONENT_UINT32) return DXGI_FORMAT_R32_UINT;
+			else if (someParams.ComponentType == D3D_REGISTER_COMPONENT_SINT32) return DXGI_FORMAT_R32_SINT;
+			else if (someParams.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) return DXGI_FORMAT_R32_FLOAT;
+		}
+		else if (someParams.Mask <= 3)
+		{
+			if (someParams.ComponentType == D3D_REGISTER_COMPONENT_UINT32) return DXGI_FORMAT_R32G32_UINT;
+			else if (someParams.ComponentType == D3D_REGISTER_COMPONENT_SINT32) return DXGI_FORMAT_R32G32_SINT;
+			else if (someParams.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) return DXGI_FORMAT_R32G32_FLOAT;
+		}
+		else if (someParams.Mask <= 7)
+		{
+			if (someParams.ComponentType == D3D_REGISTER_COMPONENT_UINT32) return DXGI_FORMAT_R32G32B32_UINT;
+			else if (someParams.ComponentType == D3D_REGISTER_COMPONENT_SINT32) return DXGI_FORMAT_R32G32B32_SINT;
+			else if (someParams.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) return DXGI_FORMAT_R32G32B32_FLOAT;
+		}
+		else if (someParams.Mask <= 15)
+		{
+			if (someParams.ComponentType == D3D_REGISTER_COMPONENT_UINT32) return DXGI_FORMAT_R32G32B32A32_UINT;
+			else if (someParams.ComponentType == D3D_REGISTER_COMPONENT_SINT32) return DXGI_FORMAT_R32G32B32A32_SINT;
+			else if (someParams.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) return DXGI_FORMAT_R32G32B32A32_FLOAT;
+		}
+		
+		CE_ASSERT_ALWAYS("Failed to GetFormat");
+		return DXGI_FORMAT_R32_UINT;
+	}
+}
+
+CE_Shader::CE_Shader(const WCHAR* aFilePath, CE_GPUContext& aGPUContext)
 	: myGPUContext(aGPUContext)
 	, myVertexShader(nullptr)
 	, myPixelShader(nullptr)
@@ -20,25 +54,25 @@ CE_Shader::CE_Shader(const CE_ShaderParameters& someParameters, CE_GPUContext& a
 	int compileFlags = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION | D3D10_SHADER_ENABLE_STRICTNESS;
 
 	ID3D10Blob* vertexShaderBuffer = nullptr;
-	result = D3DCompileFromFile(someParameters.myFilePath, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "VS", "vs_5_0", compileFlags, 0, &vertexShaderBuffer, &errorMessage);
+	result = D3DCompileFromFile(aFilePath, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "VS", "vs_5_0", compileFlags, 0, &vertexShaderBuffer, &errorMessage);
 	if (FAILED(result))
 	{
 		if (errorMessage)
-			OutputError(errorMessage, someParameters.myFilePath);
+			OutputError(errorMessage, aFilePath);
 
 		if (!errorMessage)
-			CE_ASSERT_ALWAYS("Couldnt find shader %s", someParameters.myFilePath);
+			CE_ASSERT_ALWAYS("Couldnt find shader %s", aFilePath);
 	}
 
 	ID3D10Blob* pixelShaderBuffer = nullptr;
-	result = D3DCompileFromFile(someParameters.myFilePath, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "PS", "ps_5_0", compileFlags, 0, &pixelShaderBuffer, &errorMessage);
+	result = D3DCompileFromFile(aFilePath, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE, "PS", "ps_5_0", compileFlags, 0, &pixelShaderBuffer, &errorMessage);
 	if (FAILED(result))
 	{
 		if (errorMessage)
-			OutputError(errorMessage, someParameters.myFilePath);
+			OutputError(errorMessage, aFilePath);
 
 		if (!errorMessage)
-			CE_ASSERT_ALWAYS("Couldnt find shader %s", someParameters.myFilePath);
+			CE_ASSERT_ALWAYS("Couldnt find shader %s", aFilePath);
 	}
 
 
@@ -46,39 +80,29 @@ CE_Shader::CE_Shader(const CE_ShaderParameters& someParameters, CE_GPUContext& a
 	result = device->CreateVertexShader(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), NULL, &myVertexShader);
 	result = device->CreatePixelShader(pixelShaderBuffer->GetBufferPointer(), pixelShaderBuffer->GetBufferSize(), NULL, &myPixelShader);
 
+	ID3D11ShaderReflection* reflection = nullptr; 
+	result = D3DReflect(vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), IID_ID3D11ShaderReflection, (void**)&reflection);
+	CE_ASSERT(SUCCEEDED(result), "Failed to Reflect vertex shader");
 
-	int numElements = someParameters.myInputElements.Size();
+	D3D11_SHADER_DESC shaderDesc;
+	reflection->GetDesc(&shaderDesc);
+
+	int numElements = shaderDesc.InputParameters;
 	D3D11_INPUT_ELEMENT_DESC* vertexLayout = new D3D11_INPUT_ELEMENT_DESC[numElements];
 	for (int i = 0; i < numElements; ++i)
 	{
-		vertexLayout[i].SemanticIndex = 0;
-		vertexLayout[i].InputSlot = 0;
-		vertexLayout[i].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
-		vertexLayout[i].InstanceDataStepRate = 0;
-		vertexLayout[i].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		D3D11_SIGNATURE_PARAMETER_DESC paramDesc;
+		reflection->GetInputParameterDesc(i, &paramDesc);
 
-		switch (someParameters.myInputElements[i])
-		{
-		case CE_ShaderParameters::POSITION:
-			vertexLayout[i].SemanticName = "POSITION";
-			vertexLayout[i].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-			break;
-		case CE_ShaderParameters::NORMAL:
-			vertexLayout[i].SemanticName = "NORMAL";
-			vertexLayout[i].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-			break;
-		case CE_ShaderParameters::COLOR:
-			vertexLayout[i].SemanticName = "COLOR";
-			vertexLayout[i].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-			break;
-		case CE_ShaderParameters::UV:
-			vertexLayout[i].SemanticName = "TEXCOORD";
-			vertexLayout[i].Format = DXGI_FORMAT_R32G32_FLOAT;
-			break;
-		default:
-			CE_ASSERT_ALWAYS("Invalid InputElement");
-			break;
-		}
+		vertexLayout[i].SemanticIndex = paramDesc.SemanticIndex;
+		vertexLayout[i].SemanticName = paramDesc.SemanticName;
+		vertexLayout[i].Format = CE_Shader_priv::GetFormat(paramDesc);
+		
+
+		vertexLayout[i].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+		vertexLayout[i].AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+		vertexLayout[i].InputSlot = 0;
+		vertexLayout[i].InstanceDataStepRate = 0;
 	}
 
 	result = device->CreateInputLayout(vertexLayout, static_cast<unsigned int>(numElements), vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), &myInputLayout);

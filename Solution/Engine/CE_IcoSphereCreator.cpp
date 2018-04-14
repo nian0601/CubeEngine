@@ -36,20 +36,21 @@ void CE_IcoSphereCreator::CreateInitialSphere()
 {
 	float t = (1.f + sqrt(5.f)) / 2.f;
 
-	AddVertex(CE_Vector3f(-1.f, t, 0.f));
-	AddVertex(CE_Vector3f(1.f, t, 0.f));
-	AddVertex(CE_Vector3f(-1.f, -t, 0.f));
-	AddVertex(CE_Vector3f(1.f, -t, 0.f));
+	float w = 0.f;
+	AddVertex(CE_Vector4f(-1.f, t, 0.f, w));
+	AddVertex(CE_Vector4f(1.f, t, 0.f, w));
+	AddVertex(CE_Vector4f(-1.f, -t, 0.f, w));
+	AddVertex(CE_Vector4f(1.f, -t, 0.f, w));
 
-	AddVertex(CE_Vector3f(0.f, -1.f, t));
-	AddVertex(CE_Vector3f(0.f, 1.f, t));
-	AddVertex(CE_Vector3f(0.f, -1.f, -t));
-	AddVertex(CE_Vector3f(0.f, 1.f, -t));
-
-	AddVertex(CE_Vector3f(t, 0.f, -1.f));
-	AddVertex(CE_Vector3f(t, 0.f, 1.f));
-	AddVertex(CE_Vector3f(-t, 0.f, -1.f));
-	AddVertex(CE_Vector3f(-t, 0.f, 1.f));
+	AddVertex(CE_Vector4f(0.f, -1.f, t, w));
+	AddVertex(CE_Vector4f(0.f, 1.f, t, w));
+	AddVertex(CE_Vector4f(0.f, -1.f, -t, w));
+	AddVertex(CE_Vector4f(0.f, 1.f, -t, w));
+					   
+	AddVertex(CE_Vector4f(t, 0.f, -1.f, w));
+	AddVertex(CE_Vector4f(t, 0.f, 1.f, w));
+	AddVertex(CE_Vector4f(-t, 0.f, -1.f, w));
+	AddVertex(CE_Vector4f(-t, 0.f, 1.f, w));
 
 
 	// 5 faces around point 0
@@ -98,10 +99,10 @@ int CE_IcoSphereCreator::GetMiddlePoint(int aPoint1, int aPoint2)
 	if (const int* index = myMiddlePointIndexCache.GetIfExists(key))
 		return *index;
 
-	const CE_Vector3f& vert1 = GetPosition(aPoint1);
-	const CE_Vector3f& vert2 = GetPosition(aPoint2);
+	const CE_Vector4f& vert1 = GetPosition(aPoint1);
+	const CE_Vector4f& vert2 = GetPosition(aPoint2);
 
-	CE_Vector3f middle = (vert1 + vert2) * 0.5f;
+	CE_Vector4f middle = (vert1 + vert2) * 0.5f;
 	int index = AddVertex(middle);
 
 	myMiddlePointIndexCache[key] = index;

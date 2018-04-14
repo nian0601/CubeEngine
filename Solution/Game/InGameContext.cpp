@@ -158,7 +158,6 @@ void InGameContext::InitGrid()
 		}
 	}
 
-
 #define DEBUGGING_PBL
 #ifdef DEBUGGING_PBL
 	float z = 15.f;
@@ -177,6 +176,7 @@ void InGameContext::InitGrid()
 			CE_Entity metalness = myEntityFactory->InstansiateEntity(eEntityTypes::SPHERE);
 			TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(metalness);
 			translate.myOrientation.SetPos(pos);
+			translate.myScale = 2.f;
 
 			RenderComponent& render = myWorld->GetComponent<RenderComponent>(metalness);
 			render.myEntries[0].myMetalness = x / 10.f;

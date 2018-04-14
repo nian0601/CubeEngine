@@ -13,50 +13,20 @@
 CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 	: myGPUContext(anGPUContext)
 {
+	myModelShader = new CE_Shader(L"Data/Shaders/Cube.ce_shader", myGPUContext);
+	mySpriteShader = new CE_Shader(L"Data/Shaders/Sprite.ce_shader", myGPUContext);
+	myLineShader = new CE_Shader(L"Data/Shaders/Line.ce_shader", myGPUContext);
+	myTextShader = new CE_Shader(L"Data/Shaders/Text.ce_shader", myGPUContext);
+	//myMSDFTextShader = new CE_Shader(L"Data/Shaders/MSDFText.ce_shader", myGPUContext);
+
+
 	myText = new CE_Text(myGPUContext);
 	myText->Init();
 
+	//myMSDFText = new CE_Text();
+	//myMSDFText->InitMSDF(myGPUContext);
+
 	myLineObject = new CE_LineRenderObject();
-
-	{
-		CE_ShaderParameters cubeParams;
-		cubeParams.myFilePath = L"Data/Shaders/Cube.ce_shader";
-		cubeParams.myInputElements.Add(CE_ShaderParameters::POSITION);
-		cubeParams.myInputElements.Add(CE_ShaderParameters::NORMAL);
-		cubeParams.myInputElements.Add(CE_ShaderParameters::COLOR);
-		myModelShader = new CE_Shader(cubeParams, myGPUContext);
-	}
-
-	{
-		CE_ShaderParameters spriteParams;
-		spriteParams.myFilePath = L"Data/Shaders/Sprite.ce_shader";
-		spriteParams.myInputElements.Add(CE_ShaderParameters::POSITION);
-		mySpriteShader = new CE_Shader(spriteParams, myGPUContext);
-	}
-
-
-	{
-		CE_ShaderParameters textParams;
-		textParams.myFilePath = L"Data/Shaders/Text.ce_shader";
-		textParams.myInputElements.Add(CE_ShaderParameters::POSITION);
-		textParams.myInputElements.Add(CE_ShaderParameters::UV);
-		myTextShader = new CE_Shader(textParams, myGPUContext);
-
-		//myMSDFTextShader = new CE_TextShader();
-		//myMSDFTextShader->Init(L"Data/Shaders/MSDFText.ce_shader", myGPUContext);
-		//
-		//myMSDFText = new CE_Text();
-		//myMSDFText->InitMSDF(myGPUContext);
-	}
-
-	{
-		CE_ShaderParameters lineParams;
-		lineParams.myFilePath = L"Data/Shaders/Line.ce_shader";
-		lineParams.myInputElements.Add(CE_ShaderParameters::POSITION);
-		lineParams.myInputElements.Add(CE_ShaderParameters::COLOR);
-		myLineShader = new CE_Shader(lineParams, myGPUContext);
-	}
-
 
 	myCubeModel = new CE_RenderObject();
 	myCubeModel->InitCube(myGPUContext);
@@ -67,7 +37,7 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 	mySprite = new CE_RenderObject();
 	mySprite->InitSprite(myGPUContext);
 	mySprite->CreateObjectData(sizeof(CE_SpriteShaderData), 1);
-
+	
 	myViewProjectionConstantBuffer = new CE_ConstantBuffer(myGPUContext);
 	myViewProjectionConstantBuffer->Init(sizeof(CE_ViewProjectionData), 0);
 
@@ -81,24 +51,25 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 
 CE_Renderer::~CE_Renderer()
 {
-	CE_SAFE_DELETE(myLineObject);
-	CE_SAFE_DELETE(myLineShader);
-
-	CE_SAFE_DELETE(myMSDFText);
-	CE_SAFE_DELETE(myMSDFTextShader);
-
-	CE_SAFE_DELETE(myText);
-	CE_SAFE_DELETE(myTextShader);
+	CE_SAFE_DELETE(myModelObjectDataConstantBuffer);
+	CE_SAFE_DELETE(myOrthagonalConstantBuffer);
+	CE_SAFE_DELETE(myViewProjectionConstantBuffer);
 
 	CE_SAFE_DELETE(mySprite);
-	CE_SAFE_DELETE(mySpriteShader);
-
 	CE_SAFE_DELETE(mySphereModel);
-	CE_SAFE_DELETE(myCubeModel);
-	CE_SAFE_DELETE(myModelShader);
 
-	CE_SAFE_DELETE(myModelObjectDataConstantBuffer);
-	CE_SAFE_DELETE(myViewProjectionConstantBuffer);
+	CE_SAFE_DELETE(myCubeModel);
+
+	CE_SAFE_DELETE(myLineObject);
+
+	CE_SAFE_DELETE(myMSDFText);
+	CE_SAFE_DELETE(myText);
+
+	CE_SAFE_DELETE(myMSDFTextShader);
+	CE_SAFE_DELETE(myTextShader);
+	CE_SAFE_DELETE(myLineShader);
+	CE_SAFE_DELETE(mySpriteShader);
+	CE_SAFE_DELETE(myModelShader);
 }
 
 void CE_Renderer::UpdateConstantBuffers(const CE_Camera& aCamera)

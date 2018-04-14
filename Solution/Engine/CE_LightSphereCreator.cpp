@@ -1,15 +1,14 @@
 #include "stdafx.h"
 #include "CE_LightSphereCreator.h"
 
-int CE_LightSphereCreator::AddVertex(const CE_Vector3f& aPosition)
+int CE_LightSphereCreator::AddVertex(const CE_Vector4f& aPosition)
 {
 	CE_Pos_Vert& vertex = myVertices.Add();
 	vertex.myPosition = CE_GetNormalized(aPosition);
-
 	return myVertices.Size() - 1;
 }
 
-const CE_Vector3f& CE_LightSphereCreator::GetPosition(int aVertexIndex) const
+const CE_Vector4f& CE_LightSphereCreator::GetPosition(int aVertexIndex) const
 {
 	return myVertices[aVertexIndex].myPosition;
 }

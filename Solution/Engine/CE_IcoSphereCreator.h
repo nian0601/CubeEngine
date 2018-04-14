@@ -15,8 +15,8 @@ public:
 	CE_GrowingArray<unsigned int> myIndices;
 
 protected:
-	virtual int AddVertex(const CE_Vector3f& aPosition) = 0;
-	virtual const CE_Vector3f& GetPosition(int aVertexIndex) const = 0;
+	virtual int AddVertex(const CE_Vector4f& aPosition) = 0;
+	virtual const CE_Vector4f& GetPosition(int aVertexIndex) const = 0;
 
 private:
 	void CreateInitialSphere();

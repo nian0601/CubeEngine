@@ -8,7 +8,7 @@ public:
 	CE_GrowingArray<CE_PosNormColor_Vert> myVertices;
 
 protected:
-	int AddVertex(const CE_Vector3f& aPosition) override;
-	const CE_Vector3f& GetPosition(int aVertexIndex) const override;
+	int AddVertex(const CE_Vector4f& aPosition) override;
+	const CE_Vector4f& GetPosition(int aVertexIndex) const override;
 };
 
