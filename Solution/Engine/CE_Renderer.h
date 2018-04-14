@@ -6,10 +6,11 @@ class CE_GPUContext;
 class CE_Text;
 class CE_LineRenderObject;
 class CE_RendererProxy;
-class CE_Shader;
 
 class CE_RenderObject;
 class CE_ConstantBuffer;
+
+class CE_ShaderPair;
 
 #include "CE_DebugPrimitives.h"
 
@@ -31,25 +32,27 @@ private:
 
 	CE_GPUContext& myGPUContext;
 
-	CE_Shader* myModelShader;
 	CE_RenderObject* myCubeModel;
 	CE_RenderObject* mySphereModel;
 
 	CE_RenderObject* mySprite;
-	CE_Shader* mySpriteShader;
+	CE_ShaderPair* mySpriteShader;
 
 	CE_Text* myText;
-	CE_Shader* myTextShader;
+	CE_ShaderPair* myTextShader;
 
 	CE_Text* myMSDFText;
-	CE_Shader* myMSDFTextShader;
+	CE_ShaderPair* myMSDFTextShader;
 
 	CE_LineRenderObject* myLineObject;
-	CE_Shader* myLineShader;
 
 	CE_ConstantBuffer* myViewProjectionConstantBuffer;
 	CE_ConstantBuffer* myOrthagonalConstantBuffer;
 
 	CE_ConstantBuffer* myModelObjectDataConstantBuffer;
+
+	CE_ShaderPair* myCubeShader;
+	CE_ShaderPair* myLineShader;
+
 };
 

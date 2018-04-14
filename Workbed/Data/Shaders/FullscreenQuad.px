@@ -1,28 +1,12 @@
 #include "PBL_Helpers.ce_shader"
 
-struct PosUVVertex
-{
-	float4 Position : POSITION;
-	float2 TextureCoord : TEXCOORD;
-};
-
 struct PosUVPixel
 {
 	float4 Position : SV_POSITION;
 	float2 TextureCoord : TEXCOORD;
 };
 
-PosUVPixel VS(PosUVVertex aInput)
-{
-	PosUVPixel output;
-
-	output.Position = aInput.Position;
-	output.TextureCoord = aInput.TextureCoord;
-
-	return output;
-};
-
-float4 PS(PosUVPixel anInput) : SV_TARGET
+float4 main(PosUVPixel anInput) : SV_TARGET
 {
 	DeferredPixelData pixelData = CalculateDeferredPixelData(anInput.TextureCoord);
 

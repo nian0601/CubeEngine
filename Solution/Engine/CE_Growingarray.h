@@ -74,6 +74,8 @@ public:
 	iterator end() { return &myData[myCurrentSize]; }
 	const_iterator end() const { return &myData[myCurrentSize]; }
 
+	bool operator==(const CE_GrowingArray& aOther);
+
 private:
 	ObjectType* myData;
 	int myCurrentSize;
@@ -454,4 +456,18 @@ template<typename ObjectType>
 inline ObjectType* CE_GrowingArray<ObjectType>::GetArrayAsPointer()
 {
 	return myData;
+}
+
+template<typename ObjectType>
+inline bool CE_GrowingArray<ObjectType>::operator==(const CE_GrowingArray& aOther)
+{
+	if (myCurrentSize != aOther.myCurrentSize) return false;
+
+	for (int i = 0; i < myCurrentSize; ++i)
+	{
+		if (myData[i] != aOther.myData[i])
+			return false;
+	}
+
+	return true;
 }

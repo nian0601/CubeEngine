@@ -23,8 +23,7 @@ struct PosColorPixel
 	float4 Color : COLOR;
 };
 
-
-PosColorPixel VS(PosVertex aInput)
+PosColorPixel main(PosVertex aInput)
 {
 	PosColorPixel output;
 
@@ -54,10 +53,4 @@ PosColorPixel VS(PosVertex aInput)
 
 	output.Color = Color;
 	return output;
-};
-
-
-float4 PS(PosColorPixel anInput) : SV_TARGET
-{
-	return anInput.Color;
 };

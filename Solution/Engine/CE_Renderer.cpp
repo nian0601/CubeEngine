@@ -4,21 +4,17 @@
 #include "CE_DirextXFactory.h"
 #include "CE_RendererProxy.h"
 #include "CE_LineRenderObject.h"
-#include "CE_Shader.h"
 #include "CE_Camera.h"
 #include "CE_RenderObject.h"
 #include "CE_ShaderStructs.h"
 #include "CE_ConstantBuffer.h"
+#include "CE_ShaderPair.h"
 
 CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 	: myGPUContext(anGPUContext)
 {
-	myModelShader = new CE_Shader(L"Data/Shaders/Cube.ce_shader", myGPUContext);
-	mySpriteShader = new CE_Shader(L"Data/Shaders/Sprite.ce_shader", myGPUContext);
-	myLineShader = new CE_Shader(L"Data/Shaders/Line.ce_shader", myGPUContext);
-	myTextShader = new CE_Shader(L"Data/Shaders/Text.ce_shader", myGPUContext);
+	myTextShader = new CE_ShaderPair("Data/Shaders/Text.vx", "Data/Shaders/Text.px", myGPUContext);
 	//myMSDFTextShader = new CE_Shader(L"Data/Shaders/MSDFText.ce_shader", myGPUContext);
-
 
 	myText = new CE_Text(myGPUContext);
 	myText->Init();
@@ -46,8 +42,12 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 
 	myModelObjectDataConstantBuffer = new CE_ConstantBuffer(myGPUContext);
 	myModelObjectDataConstantBuffer->Init(sizeof(CE_ModelShaderData), 1);
-}
 
+
+	myCubeShader = new CE_ShaderPair("Data/Shaders/Cube.vx", "Data/Shaders/Cube.px", myGPUContext);
+	myLineShader = new CE_ShaderPair("Data/Shaders/Line.vx", "Data/Shaders/Line.px", myGPUContext);
+	mySpriteShader = new CE_ShaderPair("Data/Shaders/Sprite.vx", "Data/Shaders/Sprite.px", myGPUContext);
+}
 
 CE_Renderer::~CE_Renderer()
 {
@@ -69,7 +69,8 @@ CE_Renderer::~CE_Renderer()
 	CE_SAFE_DELETE(myTextShader);
 	CE_SAFE_DELETE(myLineShader);
 	CE_SAFE_DELETE(mySpriteShader);
-	CE_SAFE_DELETE(myModelShader);
+
+	CE_SAFE_DELETE(myCubeShader);
 }
 
 void CE_Renderer::UpdateConstantBuffers(const CE_Camera& aCamera)
@@ -117,7 +118,7 @@ void CE_Renderer::RenderModels(const CE_RendererProxy& aRendererProxy)
 	CE_SetResetBlend blend(NO_BLEND);
 
 	myViewProjectionConstantBuffer->SendToGPU();
-	myModelShader->Activate();
+	myCubeShader->Activate();
 
 	for (const CE_ModelData& data : aRendererProxy.GetModelData())
 	{
@@ -161,7 +162,7 @@ void CE_Renderer::RenderTexts(const CE_RendererProxy& aRendererProxy)
 {
 	CE_SetResetBlend blend(ALPHA_BLEND);
 
-	CE_Shader* shader = myMSDFTextShader;
+	CE_ShaderPair* shader = myMSDFTextShader;
 	if (shader == nullptr)
 		shader = myTextShader;
 

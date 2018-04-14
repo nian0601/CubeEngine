@@ -64,19 +64,19 @@ void CE_Text::InitMSDF()
 		top = static_cast<float>(static_cast<int>(top + 0.5f));
 		bottom = static_cast<float>(static_cast<int>(bottom + 0.5f));
 
-		vert.myPosition = CE_Vector3f(left, top, z);
+		vert.myPosition = CE_Vector4f(left, top, z, 1.f);
 		vert.myUV = charData.myTopLeftUV;
 		vertices.Add(vert);
 
-		vert.myPosition = CE_Vector3f(right, bottom, z);
+		vert.myPosition = CE_Vector4f(right, bottom, z, 1.f);
 		vert.myUV = charData.myBottomRightUV;
 		vertices.Add(vert);
 
-		vert.myPosition = CE_Vector3f(left, bottom, z);
+		vert.myPosition = CE_Vector4f(left, bottom, z, 1.f);
 		vert.myUV = { charData.myTopLeftUV.x, charData.myBottomRightUV.y };
 		vertices.Add(vert);
 
-		vert.myPosition = CE_Vector3f(right, top, z);
+		vert.myPosition = CE_Vector4f(right, top, z, 1.f);
 		vert.myUV = { charData.myBottomRightUV.x, charData.myTopLeftUV.y };
 		vertices.Add(vert);
 
@@ -182,19 +182,19 @@ void CE_Text::SetText(const CE_String& aString)
 		top = static_cast<float>(static_cast<int>(top + 0.5f));
 		bottom = static_cast<float>(static_cast<int>(bottom + 0.5f));
 
-		vert.myPosition = CE_Vector3f(left, top, z);
+		vert.myPosition = CE_Vector4f(left, top, z, 1.f);
 		vert.myUV = charData.myTopLeftUV;
 		vertices.Add(vert);
 
-		vert.myPosition = CE_Vector3f(right, bottom, z);
+		vert.myPosition = CE_Vector4f(right, bottom, z, 1.f);
 		vert.myUV = charData.myBottomRightUV;
 		vertices.Add(vert);
 
-		vert.myPosition = CE_Vector3f(left, bottom, z);
+		vert.myPosition = CE_Vector4f(left, bottom, z, 1.f);
 		vert.myUV = { charData.myTopLeftUV.x, charData.myBottomRightUV.y };
 		vertices.Add(vert);
 
-		vert.myPosition = CE_Vector3f(right, top, z);
+		vert.myPosition = CE_Vector4f(right, top, z, 1.f);
 		vert.myUV = { charData.myBottomRightUV.x, charData.myTopLeftUV.y };
 		vertices.Add(vert);
 

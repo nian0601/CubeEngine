@@ -7,42 +7,13 @@ cbuffer ObjectData
 	float4 Radius;
 };
 
-struct PosNormColorVertex
-{
-	float4 Position : POSITION;
-};
-
 struct PosNormColorPixel
 {
 	float4 Position : SV_POSITION;
 	float4 TexCoord : POSITION;
-	float4 ColorAndIntensity : COLOR;
 };
 
-
-PosNormColorPixel VS(PosNormColorVertex aInput)
-{
-	PosNormColorPixel output;
-
-	aInput.Position.w = 1.f;
-	aInput.Position.xyz *= Radius.xyz;
-	output.Position = mul(World, aInput.Position);
-	output.Position = mul(View, output.Position);
-	output.Position = mul(Projection, output.Position);
-
-	output.ColorAndIntensity = ColorAndIntensity;
-
-	float x = output.Position.x;
-	float y = output.Position.y;
-	float w = output.Position.w;
-
-	output.TexCoord = float4((float2(x + w, w - y)) / 2, output.Position.zw);
-
-	return output;
-};
-
-
-float4 PS(PosNormColorPixel anInput) : SV_TARGET
+float4 main(PosNormColorPixel anInput) : SV_TARGET
 {
 	anInput.TexCoord /= anInput.TexCoord.w;
 	DeferredPixelData pixelData = CalculateDeferredPixelData(anInput.TexCoord.xy);

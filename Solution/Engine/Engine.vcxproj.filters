@@ -171,6 +171,18 @@
     <ClCompile Include="CE_ConstantBuffer.cpp">
       <Filter>Rendering\Buffers</Filter>
     </ClCompile>
+    <ClCompile Include="CE_PixelShader.cpp">
+      <Filter>Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_VertexShader.cpp">
+      <Filter>Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_GenericShader.cpp">
+      <Filter>Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_ShaderPair.cpp">
+      <Filter>Rendering\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -244,9 +256,6 @@
     </Filter>
     <Filter Include="Rendering\RenderObjects\ModelCreator">
       <UniqueIdentifier>{d5fd9f88-a928-425f-823c-4e1205e85ae8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rendering\Shaders\HLSL">
-      <UniqueIdentifier>{104b2b62-e4fe-45f5-8ba3-55cce1b97115}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -506,6 +515,21 @@
     </ClInclude>
     <ClInclude Include="CE_ConstantBuffer.h">
       <Filter>Rendering\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_PixelShader.h">
+      <Filter>Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_VertexShader.h">
+      <Filter>Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_GenericShader.h">
+      <Filter>Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_ShaderSignature.h">
+      <Filter>Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_ShaderPair.h">
+      <Filter>Rendering\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

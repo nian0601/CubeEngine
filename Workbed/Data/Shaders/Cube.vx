@@ -25,15 +25,7 @@ struct PosNormColorPixel
 	float4 ColorAndMetalness : COLOR;
 };
 
-struct GBuffer
-{
-	float4 AlbedoMetalness;
-	float4 NormalRoughness;
-	float Depth;
-};
-
-
-PosNormColorPixel VS(PosNormColorVertex aInput)
+PosNormColorPixel main(PosNormColorVertex aInput)
 {
 	PosNormColorPixel output;
 
@@ -47,22 +39,5 @@ PosNormColorPixel VS(PosNormColorVertex aInput)
 	output.NormalAndRoughness.xyz = aInput.Normal.xyz;
 	output.NormalAndRoughness.w = ScaleAndRoughness.w;
 	output.ColorAndMetalness = ColorAndMetalness;
-	return output;
-};
-
-
-GBuffer PS(PosNormColorPixel anInput) : SV_TARGET
-{
-
-	GBuffer output;
-	output.AlbedoMetalness = anInput.ColorAndMetalness;
-
-	output.NormalRoughness.xyz = normalize(anInput.NormalAndRoughness).xyz;
-	output.NormalRoughness.w = anInput.NormalAndRoughness.w;
-
-	output.NormalRoughness.xyz += 1.f;
-	output.NormalRoughness.xyz *= 0.5f;
-	
-	output.Depth = anInput.Position.z;
 	return output;
 };

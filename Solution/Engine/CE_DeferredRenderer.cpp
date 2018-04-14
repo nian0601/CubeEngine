@@ -6,19 +6,18 @@
 #include "CE_GPUContext.h"
 #include "CE_GBuffer.h"
 #include "CE_DirextXFactory.h"
-#include "CE_Shader.h"
 #include "CE_RenderObject.h"
 #include "CE_ShaderStructs.h"
 #include "CE_Camera.h"
 #include "CE_RendererProxy.h"
 #include "CE_Renderer.h"
 #include "CE_ConstantBuffer.h"
+#include "CE_ShaderPair.h"
 
 CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Vector2i& aWindowSize)
 	: myGPUContext(aGPUContext)
 {
-	myShader = new CE_Shader(L"Data/Shaders/FullscreenQuad.ce_shader", myGPUContext);
-	myPointLightShader = new CE_Shader(L"Data/Shaders/Pointlight.ce_shader", myGPUContext);
+	
 
 	myGBuffer = new CE_GBuffer(aGPUContext, aWindowSize);
 
@@ -37,6 +36,9 @@ CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Ve
 	myPointLightModel = new CE_RenderObject();
 	myPointLightModel->InitLightSphere(myGPUContext);
 	myPointLightModel->CreateObjectData(sizeof(CE_PointLightShaderData), 1);
+
+	myFullscreenShader = new CE_ShaderPair("Data/Shaders/FullscreenQuad.vx", "Data/Shaders/FullscreenQuad.px", myGPUContext);
+	myPointLightShader = new CE_ShaderPair("Data/Shaders/Pointlight.vx", "Data/Shaders/Pointlight.px", myGPUContext);
 }
 
 
@@ -53,7 +55,7 @@ CE_DeferredRenderer::~CE_DeferredRenderer()
 	CE_SAFE_DELETE(myGBuffer);
 
 	CE_SAFE_DELETE(myPointLightShader);
-	CE_SAFE_DELETE(myShader);
+	CE_SAFE_DELETE(myFullscreenShader);
 }
 
 void CE_DeferredRenderer::UpdateConstantBuffers(const CE_Camera& aCamera)
@@ -93,6 +95,7 @@ void CE_DeferredRenderer::RenderPointLights(const CE_RendererProxy& aRendererPro
 	CE_SetResetBlend blend(LIGHT_BLEND);
 
 	myPointLightShader->Activate();
+	
 	myGBuffer->SendToGPU(myGPUContext);
 
 	for (const CE_PointLightData& data : aRendererProxy.GetPointLightData())
@@ -112,7 +115,7 @@ void CE_DeferredRenderer::RenderToScreen()
 	CE_SetResetBlend blend(NO_BLEND);
 	CE_SetResetRasterizer rasterizer(CULL_BACK);
 
-	myShader->Activate();
+	myFullscreenShader->Activate();
 	myGBuffer->SendToGPU(myGPUContext);
 
 	ID3D11DeviceContext* context = myGPUContext.GetContext();
