@@ -10,7 +10,7 @@ public:
 	static void Destroy() { CE_SAFE_DELETE(ourInstance); };
 	static CE_DebugLogger* GetInstance();
 
-	void Assert(bool anExpression, char* aFile, char* aFunction, int aLine, const char* aFormattedString, ...);
+	void Assert(char* aFile, char* aFunction, int aLine, const char* aFormattedString, ...);
 
 private:
 	CE_DebugLogger();

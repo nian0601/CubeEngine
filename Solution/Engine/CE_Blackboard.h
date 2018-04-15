@@ -36,7 +36,7 @@ private:
 template <typename T>
 void CE_Blackboard::Set(const CE_String& aName, const T& someData)
 {
-	CE_ASSERT(sizeof(T) <= 24, "Trying to store a too large object by value in Blackboard. Theres only 24 available bytes");
+	CE_CT_ASSERT(sizeof(T) <= 24, "Trying to store a too large object by value in Blackboard. Theres only 24 available bytes");
 	CE_ASSERT(CE_TYPE_IS_REGISTERED(T), "Blackboard tried to use type that wasnt registered, thats not safe!");
 
 	unsigned int typeID = CE_TypeID<Data>::GetID<T>();

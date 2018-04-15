@@ -17,12 +17,8 @@ CE_DebugLogger* CE_DebugLogger::GetInstance()
 	return ourInstance;
 }
 
-void CE_DebugLogger::Assert(bool anExpression, char* aFile, char* aFunction, int aLine, const char* aFormattedString, ...)
+void CE_DebugLogger::Assert(char* aFile, char* aFunction, int aLine, const char* aFormattedString, ...)
 {
-	if (anExpression)
-		return;
-
-
 	//Get the formated VA_ARGS string
 	char localFormated[1024];
 	strcpy_s(localFormated, aFormattedString);

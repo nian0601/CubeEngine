@@ -148,6 +148,7 @@ ID3D10Blob* CE_GenericShader::CompileShader(const char* aCompilerTarget)
 		{
 			const char* errorMsg = (const char*)(errorMessage->GetBufferPointer());
 			errorMsg;
+			CE_DEBUG_BREAK;
 			CE_SAFE_RELEASE(errorMessage);
 		}
 
