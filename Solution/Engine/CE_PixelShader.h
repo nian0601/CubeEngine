@@ -10,7 +10,9 @@ public:
 	CE_PixelShader(const char* aFilePath, CE_GPUContext& aGPUContext);
 	~CE_PixelShader();
 
-	void Activate();
+	void Activate() override;
+	void Reload() override;
+
 private:
 	ID3D11PixelShader* myPiexlShader;
 };

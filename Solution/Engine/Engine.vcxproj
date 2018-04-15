@@ -146,6 +146,7 @@
     <ClCompile Include="CE_ConstantBuffer.cpp" />
     <ClCompile Include="CE_DeferredRenderer.cpp" />
     <ClCompile Include="CE_FileParser.cpp" />
+    <ClCompile Include="CE_FileSystem.cpp" />
     <ClCompile Include="CE_Font.cpp" />
     <ClCompile Include="CE_GenericShader.cpp" />
     <ClCompile Include="CE_IcoSphereCreator.cpp" />
@@ -166,7 +167,7 @@
     <ClCompile Include="CE_Engine.cpp" />
     <ClCompile Include="CE_Murmur.cpp" />
     <ClCompile Include="CE_RenderObject.cpp" />
-    <ClCompile Include="CE_Shader.cpp" />
+    <ClCompile Include="CE_ShaderManager.cpp" />
     <ClCompile Include="CE_ShaderPair.cpp" />
     <ClCompile Include="CE_SwapChain.cpp" />
     <ClCompile Include="CE_Texture.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="CE_DebugDraw.h" />
     <ClInclude Include="CE_DeferredRenderer.h" />
     <ClInclude Include="CE_FileParser.h" />
+    <ClInclude Include="CE_FileSystem.h" />
     <ClInclude Include="CE_Font.h" />
     <ClInclude Include="CE_Game.h" />
     <ClInclude Include="CE_GBuffer.h" />
@@ -250,7 +252,7 @@
     <ClInclude Include="CE_Memory.h" />
     <ClInclude Include="CE_Murmur.h" />
     <ClInclude Include="CE_RenderObject.h" />
-    <ClInclude Include="CE_Shader.h" />
+    <ClInclude Include="CE_ShaderManager.h" />
     <ClInclude Include="CE_ShaderPair.h" />
     <ClInclude Include="CE_ShaderStructs.h" />
     <ClInclude Include="CE_StaticArray.h" />

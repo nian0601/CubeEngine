@@ -141,9 +141,6 @@
     <ClCompile Include="CE_SwapChain.cpp">
       <Filter>DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="CE_Shader.cpp">
-      <Filter>Rendering\Shaders</Filter>
-    </ClCompile>
     <ClCompile Include="CE_RenderObject.cpp">
       <Filter>Rendering\RenderObjects</Filter>
     </ClCompile>
@@ -182,6 +179,12 @@
     </ClCompile>
     <ClCompile Include="CE_ShaderPair.cpp">
       <Filter>Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_ShaderManager.cpp">
+      <Filter>Rendering\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_FileSystem.cpp">
+      <Filter>Utility\Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -256,6 +259,9 @@
     </Filter>
     <Filter Include="Rendering\RenderObjects\ModelCreator">
       <UniqueIdentifier>{d5fd9f88-a928-425f-823c-4e1205e85ae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\Assets">
+      <UniqueIdentifier>{2ef02b99-91a1-4e22-addc-d850cd09a374}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -483,9 +489,6 @@
     <ClInclude Include="CE_SwapChain.h">
       <Filter>DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="CE_Shader.h">
-      <Filter>Rendering\Shaders</Filter>
-    </ClInclude>
     <ClInclude Include="CE_RenderObject.h">
       <Filter>Rendering\RenderObjects</Filter>
     </ClInclude>
@@ -530,6 +533,12 @@
     </ClInclude>
     <ClInclude Include="CE_ShaderPair.h">
       <Filter>Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_ShaderManager.h">
+      <Filter>Rendering\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_FileSystem.h">
+      <Filter>Utility\Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

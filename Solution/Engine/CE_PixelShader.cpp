@@ -14,13 +14,7 @@ CE_PixelShader::CE_PixelShader(const char* aFilePath, CE_GPUContext& aGPUContext
 	: CE_GenericShader(aFilePath, aGPUContext)
 	, myPiexlShader(nullptr)
 {
-	ID3D10Blob* shaderBlob = CompileShader("ps_5_0");
-	myGPUContext.GetDevice()->CreatePixelShader(shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), NULL, &myPiexlShader);
-
-	CE_GrowingArray<D3D11_INPUT_ELEMENT_DESC> vertexLayout;
-	GetInputParamaters(vertexLayout);
-
-	CE_SAFE_RELEASE(shaderBlob);
+	Reload();
 }
 
 
@@ -33,4 +27,16 @@ void CE_PixelShader::Activate()
 {
 	ID3D11DeviceContext* context = myGPUContext.GetContext();
 	context->PSSetShader(myPiexlShader, NULL, 0);
+}
+
+void CE_PixelShader::Reload()
+{
+	ID3D10Blob* shaderBlob = CompileShader("ps_5_0");
+	if (!shaderBlob)
+		return;
+
+	CE_SAFE_RELEASE(myPiexlShader);
+	myGPUContext.GetDevice()->CreatePixelShader(shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), NULL, &myPiexlShader);
+
+	CE_SAFE_RELEASE(shaderBlob);
 }

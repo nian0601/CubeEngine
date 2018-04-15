@@ -14,6 +14,8 @@
 #include "CE_DebugRenderManager.h"
 #include "CE_DeferredRenderer.h"
 
+#include "CE_ShaderManager.h"
+
 CE_DebugRenderManager* CE_Engine::myDebugRenderManager = nullptr;
 
 CE_Engine::CE_Engine(CE_Game* aGame)
@@ -27,9 +29,9 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 	CE_WindowManager::Create(*myGPUContext);
 	myMainWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 1920, 1080 }, "Cube Engine");
 
-
-	myRenderer = new CE_Renderer(*myGPUContext);
-	myDeferredRenderer = new CE_DeferredRenderer(*myGPUContext, myMainWindow->GetWindowSize());
+	myShaderManager = new CE_ShaderManager("Data/Shaders", *myGPUContext);
+	myRenderer = new CE_Renderer(*myGPUContext, *myShaderManager);
+	myDeferredRenderer = new CE_DeferredRenderer(*myGPUContext, myMainWindow->GetWindowSize(), *myShaderManager);
 
 	myCamera = new CE_Camera(myMainWindow->GetWindowSize());
 
@@ -60,6 +62,7 @@ void CE_Engine::Run()
 	CE_WindowManager* windowManager = CE_WindowManager::GetInstance();
 	while (windowManager->PumpEvent())
 	{
+		myShaderManager->Update();
 		myTime->Update();
 		myInput->Update();
 

@@ -11,11 +11,12 @@ class CE_Renderer;
 
 class CE_ConstantBuffer;
 class CE_ShaderPair;
+class CE_ShaderManager;
 
 class CE_DeferredRenderer
 {
 public:
-	CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Vector2i& aWindowSize);
+	CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Vector2i& aWindowSize, CE_ShaderManager& aShaderManager);
 	~CE_DeferredRenderer();
 
 	void SetBackbuffer(CE_Texture* aBackbuffer) { myBackbuffer = aBackbuffer; }

@@ -10,10 +10,10 @@ class CE_RendererProxy;
 class CE_Time;
 
 class CE_Window;
-class CE_WindowManager;
 class CE_DirectX;
 
 class CE_Game;
+class CE_ShaderManager;
 
 class CE_Engine
 {
@@ -43,6 +43,7 @@ private:
 	CE_Input* myInput;
 
 	CE_Camera* myCamera;
+	CE_ShaderManager* myShaderManager;
 	CE_Renderer* myRenderer;
 	CE_DeferredRenderer* myDeferredRenderer;
 

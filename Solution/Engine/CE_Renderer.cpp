@@ -9,8 +9,9 @@
 #include "CE_ShaderStructs.h"
 #include "CE_ConstantBuffer.h"
 #include "CE_ShaderPair.h"
+#include "CE_ShaderManager.h"
 
-CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
+CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext, CE_ShaderManager& aShaderManager)
 	: myGPUContext(anGPUContext)
 {
 	myTextShader = new CE_ShaderPair("Data/Shaders/Text.vx", "Data/Shaders/Text.px", myGPUContext);
@@ -44,9 +45,17 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 	myModelObjectDataConstantBuffer->Init(sizeof(CE_ModelShaderData), 1);
 
 
-	myCubeShader = new CE_ShaderPair("Data/Shaders/Cube.vx", "Data/Shaders/Cube.px", myGPUContext);
-	myLineShader = new CE_ShaderPair("Data/Shaders/Line.vx", "Data/Shaders/Line.px", myGPUContext);
-	mySpriteShader = new CE_ShaderPair("Data/Shaders/Sprite.vx", "Data/Shaders/Sprite.px", myGPUContext);
+	CE_GenericShader* cubeVX = aShaderManager.GetShader("Cube.vx");
+	CE_GenericShader* cubePX = aShaderManager.GetShader("Cube.px");
+	myCubeShader = new CE_ShaderPair(cubeVX, cubePX);
+
+	CE_GenericShader* lineVX = aShaderManager.GetShader("Line.vx");
+	CE_GenericShader* linePX = aShaderManager.GetShader("Line.px");
+	myLineShader = new CE_ShaderPair(lineVX, linePX);
+
+	CE_GenericShader* spriteVX = aShaderManager.GetShader("Sprite.vx");
+	CE_GenericShader* spritePX = aShaderManager.GetShader("Sprite.px");
+	mySpriteShader = new CE_ShaderPair(spriteVX, spritePX);
 }
 
 CE_Renderer::~CE_Renderer()

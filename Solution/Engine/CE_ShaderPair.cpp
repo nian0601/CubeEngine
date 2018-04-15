@@ -11,6 +11,13 @@ CE_ShaderPair::CE_ShaderPair(const char* aVertexShader, const char* aPixelShader
 	myPixelShader->VerifyVertexShader(*myVertexShader);
 }
 
+CE_ShaderPair::CE_ShaderPair(CE_GenericShader* aVertexShader, CE_GenericShader* aPixelShader)
+	: myVertexShader(aVertexShader)
+	, myPixelShader(aPixelShader)
+{
+	myPixelShader->VerifyVertexShader(*myVertexShader);
+}
+
 CE_ShaderPair::~CE_ShaderPair()
 {
 	CE_SAFE_DELETE(myPixelShader);

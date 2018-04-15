@@ -141,16 +141,24 @@ ID3D10Blob* CE_GenericShader::CompileShader(const char* aCompilerTarget)
 	CE_SAFE_DELETE_ARRAY(buf);
 	if (FAILED(result))
 	{
-		if (errorMessage)
-			OutputError(errorMessage);
-
 		if (!errorMessage)
 			CE_ASSERT_ALWAYS("Couldnt find shader %s", myFileName.c_str());
+
+		if (errorMessage)
+		{
+			const char* errorMsg = (const char*)(errorMessage->GetBufferPointer());
+			errorMsg;
+			CE_SAFE_RELEASE(errorMessage);
+		}
+
+		return nullptr;
 	}
 
 	result = D3DReflect(shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), IID_ID3D11ShaderReflection, (void**)&myShaderReflection);
 	CE_ASSERT(SUCCEEDED(result), "Failed to Reflect shader");
 
+	myInputSignature.myElements.RemoveAll();
+	myOutputSignature.myElements.RemoveAll();
 	CompileInputSignature(myInputSignature);
 	CompileOutputSignature(myOutputSignature);
 
@@ -201,12 +209,4 @@ void CE_GenericShader::CompileOutputSignature(CE_ShaderSignature& aSignatureOut)
 		CE_SignatureElement& element = aSignatureOut.myElements.Add();
 		element = CE_GenericShader_priv::GetSignatureElement(paramDesc);
 	}
-}
-
-void CE_GenericShader::OutputError(ID3D10Blob* aErrorBlob)
-{
-	const char* errorMsg = (const char*)(aErrorBlob->GetBufferPointer());
-	CE_ASSERT_ALWAYS("Shader Error (%s): %s", myFileName.c_str(), errorMsg);
-
-	CE_SAFE_RELEASE(aErrorBlob);
 }

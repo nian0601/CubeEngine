@@ -14,6 +14,9 @@ public:
 	CE_GenericShader(const char* aFilePath, CE_GPUContext& aGPUContext);
 	virtual ~CE_GenericShader();
 
+	virtual void Activate() = 0;
+	virtual void Reload() = 0;
+
 	void VerifyVertexShader(const CE_GenericShader& aVertexShader)
 	{
 		CE_ASSERT(myInputSignature == aVertexShader.myOutputSignature, "Signatures dont match..");
@@ -25,8 +28,6 @@ protected:
 
 	void CompileInputSignature(CE_ShaderSignature& aSignatureOut);
 	void CompileOutputSignature(CE_ShaderSignature& aSignatureOut);
-
-	void OutputError(ID3D10Blob* aErrorBlob);
 
 	CE_String myFileName;
 	CE_GPUContext& myGPUContext;
