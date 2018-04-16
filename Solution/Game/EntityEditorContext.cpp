@@ -16,7 +16,7 @@
 #include <CUI_Label.h>
 #include <CUI_Button.h>
 #include <CUI_ValueController.h>
-#include "..\Engine\CE_Window.h"
+#include <CE_Window.h>
 
 EntityEditorContext::EntityEditorContext()
 {

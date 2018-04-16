@@ -31,7 +31,7 @@
 #include <CE_BlackBoard.h>
 #include <CPY_PhysicsWorld.h>
 #include "RenderComponent.h"
-#include "..\Engine\CE_Window.h"
+#include <CE_Window.h>
 
 InGameContext::InGameContext()
 {
