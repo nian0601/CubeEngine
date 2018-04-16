@@ -55,7 +55,9 @@ CE_Entity SelectionProcessor::FindEntityUnderMouse(const CE_Vector2f& aMousePosi
 
 CE_Vector3f SelectionProcessor::Unproject(const CE_Vector2f& aPosition, float aDepth) const
 {
-	const CE_Vector2f windowSize(1280.f, 720.f);
+	CE_Vector2f windowSize;
+	windowSize.x = static_cast<float>(myCamera.GetWindowSize().x);
+	windowSize.y = static_cast<float>(myCamera.GetWindowSize().y);
 
 	float flippedY = windowSize.y - aPosition.y;
 

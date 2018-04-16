@@ -16,6 +16,7 @@ public:
 	const CE_Matrix44f& GetView() const { return myView; }
 	const CE_Matrix44f& GetNotInvertedView() const { return myOrientation; }
 	const CE_Matrix44f& GetOrthagonalProjection() const { return myOrthagonalProjection; }
+	const CE_Vector2i& GetWindowSize() const { return myWindowSize; }
 
 private:
 	CE_Matrix44f myOrientation;
@@ -23,6 +24,7 @@ private:
 	CE_Matrix44f myProjection;
 	CE_Matrix44f myInvertedProjection;
 	CE_Matrix44f myOrthagonalProjection;
+	CE_Vector2i myWindowSize;
 
 	bool myIsDirty;
 };

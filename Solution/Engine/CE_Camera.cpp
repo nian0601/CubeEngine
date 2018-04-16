@@ -3,6 +3,7 @@
 
 
 CE_Camera::CE_Camera(const CE_Vector2i& aSize)
+	: myWindowSize(aSize)
 {
 	const float pi = 3.14159265f;
 
