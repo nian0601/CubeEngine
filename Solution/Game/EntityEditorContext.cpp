@@ -16,6 +16,7 @@
 #include <CUI_Label.h>
 #include <CUI_Button.h>
 #include <CUI_ValueController.h>
+#include "..\Engine\CE_Window.h"
 
 EntityEditorContext::EntityEditorContext()
 {
@@ -29,9 +30,10 @@ EntityEditorContext::~EntityEditorContext()
 
 void EntityEditorContext::Init(CE_Engine& anEngine)
 {
-	CE_Camera& camera = anEngine.GetCamera();
-	camera.SetPosition(CE_Vector3f(0.f, 10.f, -5.f));
-	camera.Rotate(CE_Matrix44f::CreateRotateAroundX(3.14f * 0.30f));
+	CE_Window& mainWindow = anEngine.GetMainWindow();
+	CE_Camera* camera = mainWindow.GetCamera();
+	camera->SetPosition(CE_Vector3f(0.f, 10.f, -5.f));
+	camera->Rotate(CE_Matrix44f::CreateRotateAroundX(3.14f * 0.30f));
 
 	myInput = &anEngine.GetInput();
 	myRendererProxy = &anEngine.GetRendererProxy();

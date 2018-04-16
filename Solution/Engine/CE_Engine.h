@@ -23,11 +23,11 @@ public:
 
 	void Run();
 
-	CE_Camera& GetCamera();
 	CE_RendererProxy& GetRendererProxy();
 	CE_Input& GetInput();
 
 	CE_GPUContext& GetGPUContext();
+	CE_Window& GetMainWindow();
 
 	static CE_DebugRenderManager& GetDebugRenderManager();
 
@@ -42,7 +42,6 @@ private:
 	CE_Time* myTime;
 	CE_Input* myInput;
 
-	CE_Camera* myCamera;
 	CE_ShaderManager* myShaderManager;
 	CE_Renderer* myRenderer;
 	CE_DeferredRenderer* myDeferredRenderer;

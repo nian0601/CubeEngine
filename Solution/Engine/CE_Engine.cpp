@@ -33,8 +33,6 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 	myRenderer = new CE_Renderer(*myGPUContext, *myShaderManager);
 	myDeferredRenderer = new CE_DeferredRenderer(*myGPUContext, myMainWindow->GetWindowSize(), *myShaderManager);
 
-	myCamera = new CE_Camera(myMainWindow->GetWindowSize());
-
 	myTime = new CE_Time();
 	myInput = new CE_Input(myMainWindow->GetHWND(), GetModuleHandle(NULL), DISCL_NONEXCLUSIVE | DISCL_FOREGROUND, DISCL_NONEXCLUSIVE | DISCL_FOREGROUND);
 
@@ -50,7 +48,6 @@ CE_Engine::~CE_Engine()
 	CE_SAFE_DELETE(myDebugRenderManager);
 	CE_SAFE_DELETE(myInput);
 	CE_SAFE_DELETE(myTime);
-	CE_SAFE_DELETE(myCamera);
 	CE_SAFE_DELETE(myDeferredRenderer);
 	CE_SAFE_DELETE(myRenderer);
 	CE_SAFE_DELETE(myGPUContext);
@@ -71,17 +68,18 @@ void CE_Engine::Run()
 
 		myGame->Update(myTime->GetFrameTime());
 		UpdateDebugCamera();
-		myCamera->Update();
 
 		myGame->Render();
 
 		CE_GrowingArray<CE_Window*> windows = windowManager->GetWindows();
 		for (CE_Window* window : windows)
 		{
+			CE_Camera* camera = window->GetCamera();
+			camera->Update();
 			window->PrepareForRender();
 
-			myRenderer->UpdateConstantBuffers(*myCamera);
-			myDeferredRenderer->UpdateConstantBuffers(*myCamera);
+			myRenderer->UpdateConstantBuffers(*camera);
+			myDeferredRenderer->UpdateConstantBuffers(*camera);
 
 			myDeferredRenderer->SetBackbuffer(window->GetBackbuffer());
 			myDeferredRenderer->Render(*myRenderer, window->GetRendererProxy());
@@ -93,11 +91,6 @@ void CE_Engine::Run()
 			window->FinishRender();
 		}
 	}
-}
-
-CE_Camera& CE_Engine::GetCamera()
-{
-	return *myCamera;
 }
 
 CE_RendererProxy& CE_Engine::GetRendererProxy()
@@ -120,6 +113,11 @@ CE_GPUContext& CE_Engine::GetGPUContext()
 	return *myGPUContext;
 }
 
+CE_Window& CE_Engine::GetMainWindow()
+{
+	return *myMainWindow;
+}
+
 void CE_Engine::UpdateDebugCamera()
 {
 	float cameraSpeed = 1.f;
@@ -132,47 +130,27 @@ void CE_Engine::UpdateDebugCamera()
 	cameraSpeed *= myTime->GetFrameTime();
 	rotationSpeed *= myTime->GetFrameTime();
 
-	/*const CE_Vector3f right(1.f, 0.f, 0.f);
-	const CE_Vector3f up(0.f, 1.f, 0.f);
-	const CE_Vector3f forward(0.f, 0.f, 1.f);
-
-	CE_Vector3f finalMove(0.f, 0.f, 0.f);
+	CE_Camera* camera = myMainWindow->GetCamera();
+	const CE_Matrix44f& view = camera->GetNotInvertedView();
 	if (myInput->KeyIsPressed(DIK_W))
-		finalMove += forward;
+		camera->Move(view.GetForward() * cameraSpeed);
 	if (myInput->KeyIsPressed(DIK_S))
-		finalMove -= forward;
+		camera->Move(-view.GetForward() * cameraSpeed);
 	if (myInput->KeyIsPressed(DIK_A))
-		finalMove -= right;
+		camera->Move(-view.GetRight() * cameraSpeed);
 	if (myInput->KeyIsPressed(DIK_D))
-		finalMove += right;
+		camera->Move(view.GetRight() * cameraSpeed);
 	if (myInput->KeyIsPressed(DIK_Q))
-		finalMove -= up;
+		camera->Move(-view.GetUp() * cameraSpeed);
 	if (myInput->KeyIsPressed(DIK_E))
-		finalMove += up;
-
-	CE_Normalize(finalMove);
-	myCamera->Move(finalMove * cameraSpeed);*/
-
-	const CE_Matrix44f& view = myCamera->GetNotInvertedView();
-	if (myInput->KeyIsPressed(DIK_W))
-		myCamera->Move(view.GetForward() * cameraSpeed);
-	if (myInput->KeyIsPressed(DIK_S))
-		myCamera->Move(-view.GetForward() * cameraSpeed);
-	if (myInput->KeyIsPressed(DIK_A))
-		myCamera->Move(-view.GetRight() * cameraSpeed);
-	if (myInput->KeyIsPressed(DIK_D))
-		myCamera->Move(view.GetRight() * cameraSpeed);
-	if (myInput->KeyIsPressed(DIK_Q))
-		myCamera->Move(-view.GetUp() * cameraSpeed);
-	if (myInput->KeyIsPressed(DIK_E))
-		myCamera->Move(view.GetUp() * cameraSpeed);
+		camera->Move(view.GetUp() * cameraSpeed);
 
 	if (myInput->KeyIsPressed(DIK_UP))
-		myCamera->Rotate(CE_Matrix44f::CreateRotateAroundX(-rotationSpeed));
+		camera->Rotate(CE_Matrix44f::CreateRotateAroundX(-rotationSpeed));
 	if (myInput->KeyIsPressed(DIK_DOWN))
-		myCamera->Rotate(CE_Matrix44f::CreateRotateAroundX(rotationSpeed));
+		camera->Rotate(CE_Matrix44f::CreateRotateAroundX(rotationSpeed));
 	if (myInput->KeyIsPressed(DIK_LEFT))
-		myCamera->Rotate(CE_Matrix44f::CreateRotateAroundY(-rotationSpeed));
+		camera->Rotate(CE_Matrix44f::CreateRotateAroundY(-rotationSpeed));
 	if (myInput->KeyIsPressed(DIK_RIGHT))
-		myCamera->Rotate(CE_Matrix44f::CreateRotateAroundY(rotationSpeed));
+		camera->Rotate(CE_Matrix44f::CreateRotateAroundY(rotationSpeed));
 }

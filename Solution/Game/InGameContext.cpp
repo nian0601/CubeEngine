@@ -31,6 +31,7 @@
 #include <CE_BlackBoard.h>
 #include <CPY_PhysicsWorld.h>
 #include "RenderComponent.h"
+#include "..\Engine\CE_Window.h"
 
 InGameContext::InGameContext()
 {
@@ -59,12 +60,13 @@ void InGameContext::Init(CE_Engine& anEngine)
 	myGlobalBlackboard = new CE_Blackboard();
 	myPhysicsWorld = new CPY_PhysicsWorld();
 
-	myWorld = new CE_World();;
+	myWorld = new CE_World();
 	myEntityFactory = new EntityFactory(*myWorld);
 
-	CE_Camera& camera = anEngine.GetCamera();
-	camera.SetPosition(CE_Vector3f(5.f, 10.f, -5.f));
-	camera.Rotate(CE_Matrix44f::CreateRotateAroundX(3.14f * 0.25));
+	CE_Window& mainWindow = anEngine.GetMainWindow();
+	CE_Camera* camera = mainWindow.GetCamera();
+	camera->SetPosition(CE_Vector3f(5.f, 10.f, -5.f));
+	camera->Rotate(CE_Matrix44f::CreateRotateAroundX(3.14f * 0.25));
 
 	RenderProcessor* renderProcessor = new RenderProcessor(*myWorld, anEngine.GetRendererProxy());
 	myWorld->AddProcessor(renderProcessor);
@@ -75,7 +77,7 @@ void InGameContext::Init(CE_Engine& anEngine)
 	CreateEntityProcessor* createProcessor = new CreateEntityProcessor(*myWorld, *myEntityFactory);
 	myWorld->AddProcessor(createProcessor);
 
-	SelectionProcessor* selectionProcessor = new SelectionProcessor(*myWorld, camera, *myPhysicsWorld);
+	SelectionProcessor* selectionProcessor = new SelectionProcessor(*myWorld, *camera, *myPhysicsWorld);
 	myWorld->AddProcessor(selectionProcessor);
 
 	AABBProcessor* aabbProcessor = new AABBProcessor(*myWorld, *myPhysicsWorld);

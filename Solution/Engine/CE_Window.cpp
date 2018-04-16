@@ -6,6 +6,7 @@
 #include "CE_WindowManager.h"
 #include "CE_Window.h"
 #include "CE_SwapChain.h"
+#include "CE_Camera.h"
 
 CE_Window::CE_Window(const CE_Vector2i& aSize, const char* aTitle, CE_WindowManager* aWindowManager, WNDPROC aWinProc)
 {
@@ -51,15 +52,17 @@ CE_Window::CE_Window(const CE_Vector2i& aSize, const char* aTitle, CE_WindowMana
 	ShowWindow(myHWND, 10);
 	UpdateWindow(myHWND);
 
-	mySwapChain = new CE_SwapChain(myWindowManager->GetGPUContext(), aSize, myHWND);
 	myRendererProxy = new CE_RendererProxy();
+	myCamera = new CE_Camera(myWindowSize);
+	mySwapChain = new CE_SwapChain(myWindowManager->GetGPUContext(), myWindowSize, myHWND);
 }
 
 
 CE_Window::~CE_Window()
 {
-	CE_SAFE_DELETE(myRendererProxy);
 	CE_SAFE_DELETE(mySwapChain);
+	CE_SAFE_DELETE(myCamera);
+	CE_SAFE_DELETE(myRendererProxy);
 }
 
 void CE_Window::PrepareForRender()

@@ -2,6 +2,7 @@
 
 #include <windows.h>
 
+class CE_Camera;
 class CE_DirectX;
 class CE_RendererProxy;
 class CE_SwapChain;
@@ -21,6 +22,7 @@ public:
 	void FinishRender();
 
 	CE_RendererProxy& GetRendererProxy() { return *myRendererProxy; }
+	CE_Camera* GetCamera() { return myCamera; }
 
 	CE_Texture* GetBackbuffer();
 
@@ -29,6 +31,7 @@ private:
 	HWND myHWND;
 	CE_WindowManager* myWindowManager;
 	CE_RendererProxy* myRendererProxy;
+	CE_Camera* myCamera;
 
 	CE_SwapChain* mySwapChain;
 };
