@@ -11,6 +11,7 @@
 #include "AIEventSingletonComponent.h"
 #include <CE_DebugDraw.h>
 #include <CPY_PhysicsWorld.h>
+#include "CreateEntitySingletonComponent.h"
 
 SelectionProcessor::SelectionProcessor(CE_World& aWorld, const CE_Camera& aCamera, CPY_PhysicsWorld& aPhysicsWorld)
 	: CE_BaseProcessor(aWorld, CE_CreateFilter<CE_Requires<AABBComponent, TranslationComponent>>())
@@ -38,6 +39,24 @@ void SelectionProcessor::Update(float /*aDelta*/)
 		AIEventSingletonComponent& aiEvents = myWorld.GetSingletonComponent<AIEventSingletonComponent>();
 		AIEventSingletonComponent::AIEvent& event = aiEvents.myEvents.Add();
 		event.myPosition = intersectionPoint;
+	}
+	else if (input.ActionDown(RBUTTON))
+	{
+		intersectionPoint.y += 0.5f;
+		CreateEntitySingletonComponent& createComponent = myWorld.GetSingletonComponent<CreateEntitySingletonComponent>();
+		CE_Vector3f forward = CE_GetNormalized(intersectionPoint);
+		CE_Vector3f up(0.f, 1.f, 0.f);
+		CE_Vector3f right = CE_Cross(forward, up);
+		CE_Normalize(right);
+
+		CE_Matrix44f orientation;
+		orientation.SetForward(forward);
+		orientation.SetUp(up);
+		orientation.SetRight(right);
+		orientation.SetPos({ 0.f, 1.f, 0.f });
+		CreateEntitySingletonComponent::Entry& entry = createComponent.myEntries.Add();
+		entry.myEntityType = eEntityTypes::PROJECTILE;
+		entry.myOrientation = orientation;
 	}
 }
 

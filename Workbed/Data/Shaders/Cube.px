@@ -15,15 +15,23 @@ struct GBuffer
 
 GBuffer main(PosNormColorPixel anInput) : SV_TARGET
 {
+	//For testing only!
+	//float metalness = 0.95;
+	//float roughness = 0.15;
+
+	float metalness = anInput.ColorAndMetalness.w;
+	float roughness = anInput.NormalAndRoughness.w;
+
 	GBuffer output;
 	output.AlbedoMetalness = anInput.ColorAndMetalness;
-
 	output.NormalRoughness.xyz = normalize(anInput.NormalAndRoughness).xyz;
-	output.NormalRoughness.w = anInput.NormalAndRoughness.w;
 
 	output.NormalRoughness.xyz += 1.f;
 	output.NormalRoughness.xyz *= 0.5f;
 	
+	output.AlbedoMetalness.w = metalness;
+	output.NormalRoughness.w = roughness;
+
 	output.Depth = anInput.Position.z;
 	return output;
 };

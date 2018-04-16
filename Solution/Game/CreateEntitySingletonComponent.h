@@ -11,7 +11,7 @@ struct CreateEntitySingletonComponent : public CE_BaseComponent
 	struct Entry
 	{
 		eEntityTypes myEntityType;
-		CE_Vector3f myPosition;
+		CE_Matrix44f myOrientation;
 	};
 
 	CE_GrowingArray<Entry> myEntries;

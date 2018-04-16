@@ -115,6 +115,12 @@
     <ClInclude Include="RotationProcessor.h">
       <Filter>Entity\Processor</Filter>
     </ClInclude>
+    <ClInclude Include="LifetimeProcessor.h">
+      <Filter>Entity\Processor</Filter>
+    </ClInclude>
+    <ClInclude Include="LifetimeComponent.h">
+      <Filter>Entity\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -161,6 +167,9 @@
       <Filter>Contexts</Filter>
     </ClCompile>
     <ClCompile Include="RotationProcessor.cpp">
+      <Filter>Entity\Processor</Filter>
+    </ClCompile>
+    <ClCompile Include="LifetimeProcessor.cpp">
       <Filter>Entity\Processor</Filter>
     </ClCompile>
   </ItemGroup>

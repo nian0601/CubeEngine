@@ -18,6 +18,7 @@
 
 #include "BT_FindStockpileNode.h"
 #include "BT_GatherResourceNode.h"
+#include "LifetimeComponent.h"
 
 EntityFactory::EntityFactory(CE_World& anRealWorld)
 	: myRealWorld(anRealWorld)
@@ -44,6 +45,7 @@ void EntityFactory::LoadTemplateEntities()
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::SPHERE)] = LoadFromDisk("Data/Entities/sphere.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::TREE)] = LoadFromDisk("Data/Entities/tree.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::POINT_LIGHT)] = LoadFromDisk("Data/Entities/point_light.ce_entity");
+	myTemplateEntityMap[static_cast<int>(eEntityTypes::PROJECTILE)] = LoadFromDisk("Data/Entities/projectile.ce_entity");
 }
 
 CE_Entity EntityFactory::InstansiateEntity(eEntityTypes anIdentifier)
@@ -61,6 +63,7 @@ CE_Entity EntityFactory::InstansiateEntity(eEntityTypes anIdentifier)
 	CopyComponent<AABBComponent>(templateEntity, newEntity);
 	CopyComponent<ResourceComponent>(templateEntity, newEntity);
 	CopyComponent<BehaviorComponent>(templateEntity, newEntity);
+	CopyComponent<LifetimeComponent>(templateEntity, newEntity);
 
 	return newEntity;
 }
@@ -110,6 +113,8 @@ void EntityFactory::LoadComponents(CE_Entity anEntity, CE_FileParser& aFileParse
 			LoadResourceComponent(anEntity, aFileParser);
 		if (words[0] == "#behavior")
 			LoadBehaviorComponent(anEntity, aFileParser);
+		if (words[0] == "#lifetime")
+			LoadLifetimeComponent(anEntity, aFileParser);
 	}
 
 }
@@ -382,6 +387,35 @@ void EntityFactory::LoadBehaviorComponent(CE_Entity anEntity, CE_FileParser& aFi
 	CE_Blackboard& blackboard = behavior.myBehaviorTree->GetBlackboard();
 	blackboard.Set("speed", speed);
 	blackboard.Set("world", &myRealWorld);
+}
+
+void EntityFactory::LoadLifetimeComponent(CE_Entity anEntity, CE_FileParser& aFileParser)
+{
+	CE_String line;
+	CE_GrowingArray<CE_String> words;
+
+	float timeToLive = 0.f;
+	while (aFileParser.ReadLine(line))
+	{
+		aFileParser.TrimBeginAndEnd(line);
+		aFileParser.SplitLine(line, words);
+
+		if (words[0] == "#timetolive")
+		{
+			timeToLive = aFileParser.GetFloat(words[1]);
+		}
+		else if (words[0] == "#end")
+		{
+			break;
+		}
+		else
+		{
+			CE_ASSERT_ALWAYS("Unsupported Component-data");
+		}
+	}
+
+	LifetimeComponent& lifetimeComponent = myTemplateWorld->AddComponent<LifetimeComponent>(anEntity);
+	lifetimeComponent.myTimeToLive = timeToLive;
 }
 
 void EntityFactory::LoadEmptyComponent(CE_FileParser& aFileParser)

@@ -143,6 +143,8 @@
     <ClInclude Include="InGameContext.h" />
     <ClInclude Include="InputProcessor.h" />
     <ClInclude Include="InputSingletonComponent.h" />
+    <ClInclude Include="LifetimeComponent.h" />
+    <ClInclude Include="LifetimeProcessor.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="MovementProcessor.h" />
     <ClInclude Include="InventoryComponent.h" />
@@ -169,6 +171,7 @@
     <ClCompile Include="EntityEditorContext.cpp" />
     <ClCompile Include="InGameContext.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
+    <ClCompile Include="LifetimeProcessor.cpp" />
     <ClCompile Include="MovementProcessor.cpp" />
     <ClCompile Include="RenderProcessor.cpp" />
     <ClCompile Include="RotationProcessor.cpp" />

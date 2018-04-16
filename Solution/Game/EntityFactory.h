@@ -26,6 +26,7 @@ private:
 	void LoadAABBComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
 	void LoadResourceComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
 	void LoadBehaviorComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
+	void LoadLifetimeComponent(CE_Entity anEntity, CE_FileParser& aFileParser);
 
 	void LoadEmptyComponent(CE_FileParser& aFileParser);
 

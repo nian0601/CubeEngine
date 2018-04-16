@@ -32,6 +32,7 @@
 #include <CPY_PhysicsWorld.h>
 #include "RenderComponent.h"
 #include <CE_Window.h>
+#include "LifetimeProcessor.h"
 
 InGameContext::InGameContext()
 {
@@ -89,6 +90,7 @@ void InGameContext::Init(CE_Engine& anEngine)
 	myWorld->AddProcessor<MovementProcessor>();
 	myWorld->AddProcessor<AIEventProcessor>();
 	myWorld->AddProcessor<RotationProcessor>();
+	myWorld->AddProcessor<LifetimeProcessor>();
 
 	InitWorld();
 

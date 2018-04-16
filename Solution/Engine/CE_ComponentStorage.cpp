@@ -30,7 +30,7 @@ void CE_ComponentStorage::DestroyEntity(CE_Entity anEntity)
 {
 	for (int i = 0; i < MAX_NUMBER_OF_COMPONENTS; ++i)
 	{
-		if (HasComponent(anEntity, i))
+		if (HasComponent(anEntity, i) != -1)
 			RemoveComponent(anEntity, i);
 	}
 }

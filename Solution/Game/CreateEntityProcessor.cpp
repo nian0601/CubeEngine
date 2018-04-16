@@ -19,7 +19,7 @@ void CreateEntityProcessor::Update(float /*aDelta*/)
 		CE_Entity newEntity = myEntityFactory.InstansiateEntity(entry.myEntityType);
 
 		TranslationComponent& translation = GetComponent<TranslationComponent>(newEntity);
-		translation.myOrientation.SetPos(entry.myPosition);
+		translation.myOrientation = entry.myOrientation;
 	}
 
 	createComponent.myEntries.RemoveAll();
