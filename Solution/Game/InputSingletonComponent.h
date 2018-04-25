@@ -15,6 +15,11 @@ enum eActions
 	LBUTTON,
 	RBUTTON,
 
+	DEBUG_F1,
+	DEBUG_F2,
+	DEBUG_F3,
+	DEBUG_F4,
+
 	_ACTIONCOUNT,
 };
 

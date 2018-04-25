@@ -33,6 +33,11 @@
 #include "RenderComponent.h"
 #include <CE_Window.h>
 #include "LifetimeProcessor.h"
+#include "NeuralNetworkComponent.h"
+#include "NeuralNetworkProcessor.h"
+
+
+#include <CE_NeuralNetwork.h>
 
 InGameContext::InGameContext()
 {
@@ -91,6 +96,7 @@ void InGameContext::Init(CE_Engine& anEngine)
 	myWorld->AddProcessor<AIEventProcessor>();
 	myWorld->AddProcessor<RotationProcessor>();
 	myWorld->AddProcessor<LifetimeProcessor>();
+	myWorld->AddProcessor<NeuralNetworkProcessor>();
 
 	InitWorld();
 
@@ -138,9 +144,18 @@ void InGameContext::InitWorld()
 
 	InitGrid();
 
-	CE_Entity tree = myEntityFactory->InstansiateEntity(eEntityTypes::TREE);
-	TranslationComponent& treeTranslate = myWorld->GetComponent<TranslationComponent>(tree);
-	treeTranslate.myOrientation.SetPos(CE_Vector3f(3.f, 0.f, 3.f));
+	for (int i = 0; i < 25; ++i)
+	{
+		CE_Entity nn_entity = myEntityFactory->InstansiateEntity(eEntityTypes::NN_ENTITY);
+		TranslationComponent& treeTranslate = myWorld->GetComponent<TranslationComponent>(nn_entity);
+		treeTranslate.myOrientation.SetPos(CE_Vector3f(CE_RandFloat() * 10.f, 0.f, CE_RandFloat() * 10.f));
+
+		myWorld->AddComponent<NeuralNetworkComponent>(nn_entity);
+	}
+
+	CE_Entity nn_target = myEntityFactory->InstansiateEntity(eEntityTypes::NN_TARGET);
+	TranslationComponent& nn_target_translate = myWorld->GetComponent<TranslationComponent>(nn_target);
+	nn_target_translate.myOrientation.SetPos(CE_Vector3f(5.f, 0.f, 5.f));
 
 	myPointLight = myEntityFactory->InstansiateEntity(eEntityTypes::POINT_LIGHT);
 	myPointLight1 = myEntityFactory->InstansiateEntity(eEntityTypes::POINT_LIGHT);

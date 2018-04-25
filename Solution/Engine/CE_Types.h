@@ -33,6 +33,3 @@ enum CE_SamplerState
 	POINT_WRAP_SAMPLING,
 	_SAMPLER_COUNT
 };
-
-
-#define CE_PI 3.14159265359f

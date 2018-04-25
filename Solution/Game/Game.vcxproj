@@ -148,6 +148,8 @@
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="MovementProcessor.h" />
     <ClInclude Include="InventoryComponent.h" />
+    <ClInclude Include="NeuralNetworkComponent.h" />
+    <ClInclude Include="NeuralNetworkProcessor.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RenderProcessor.h" />
     <ClInclude Include="ResourceComponent.h" />
@@ -173,6 +175,7 @@
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="LifetimeProcessor.cpp" />
     <ClCompile Include="MovementProcessor.cpp" />
+    <ClCompile Include="NeuralNetworkProcessor.cpp" />
     <ClCompile Include="RenderProcessor.cpp" />
     <ClCompile Include="RotationProcessor.cpp" />
     <ClCompile Include="SelectionProcessor.cpp" />

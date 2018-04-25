@@ -66,7 +66,15 @@ void CE_Engine::Run()
 		if (myInput->KeyDown(DIK_ESCAPE))
 			return;
 
-		myGame->Update(myTime->GetFrameTime());
+		static bool superSpeed = false;
+		if (myInput->KeyDown(DIK_F1))
+			superSpeed = !superSpeed;
+
+		float deltaTime = myTime->GetFrameTime();
+		if (superSpeed)
+			deltaTime *= 40.f;
+
+		myGame->Update(deltaTime);
 		UpdateDebugCamera();
 
 		myGame->Render();

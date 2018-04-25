@@ -21,6 +21,11 @@ InputProcessor::InputProcessor(CE_World& aWorld, CE_Input& anInput)
 	input.myKeyboardMapping[MOVE_LEFT] = DIK_A;
 	input.myKeyboardMapping[MOVE_RIGHT] = DIK_D;
 
+	input.myKeyboardMapping[DEBUG_F1] = DIK_F1;
+	input.myKeyboardMapping[DEBUG_F2] = DIK_F2;
+	input.myKeyboardMapping[DEBUG_F3] = DIK_F3;
+	input.myKeyboardMapping[DEBUG_F4] = DIK_F4;
+
 	input.myMouseMappings[LBUTTON] = 0;
 	input.myMouseMappings[RBUTTON] = 1;
 }

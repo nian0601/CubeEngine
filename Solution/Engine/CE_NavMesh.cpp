@@ -4,7 +4,7 @@
 
 namespace CE_NavMesh_private
 {
-	const int locNumQuadsPerSide = 4;
+	const int locNumQuadsPerSide = 10;
 	const float locQuadSize = 2.f;
 
 	const CE_Vector3f locMoveX = CE_Vector3f(locQuadSize, 0.f, 0.f);
@@ -72,7 +72,7 @@ void CE_NavMesh::DebugDrawTriangle(const CE_NavTriangle& aTriangle) const
 	for (int i = 0; i < 3; ++i)
 	{
 		const CE_NavEdge* edge = aTriangle.myEdges[i];
-		CE_DRAW_LINE_COLOR(edge->myVertex1->myPosition, edge->myVertex2->myPosition, color);
+		CE_DRAW_LINE_COLOR_HEIGHT(edge->myVertex1->myPosition, edge->myVertex2->myPosition, 0.1f, color);
 	}
 }
 

@@ -46,6 +46,8 @@ void EntityFactory::LoadTemplateEntities()
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::TREE)] = LoadFromDisk("Data/Entities/tree.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::POINT_LIGHT)] = LoadFromDisk("Data/Entities/point_light.ce_entity");
 	myTemplateEntityMap[static_cast<int>(eEntityTypes::PROJECTILE)] = LoadFromDisk("Data/Entities/projectile.ce_entity");
+	myTemplateEntityMap[static_cast<int>(eEntityTypes::NN_ENTITY)] = LoadFromDisk("Data/Entities/nn_entity.ce_entity");
+	myTemplateEntityMap[static_cast<int>(eEntityTypes::NN_TARGET)] = LoadFromDisk("Data/Entities/nn_target.ce_entity");
 }
 
 CE_Entity EntityFactory::InstansiateEntity(eEntityTypes anIdentifier)

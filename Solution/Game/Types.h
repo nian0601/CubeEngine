@@ -13,6 +13,8 @@ enum class eEntityTypes
 	TREE,
 	POINT_LIGHT,
 	PROJECTILE,
+	NN_ENTITY,
+	NN_TARGET,
 };
 
 //////////////////////////////////////////////////////////////////////////

@@ -186,6 +186,12 @@
     <ClCompile Include="CE_FileSystem.cpp">
       <Filter>Utility\Files</Filter>
     </ClCompile>
+    <ClCompile Include="CE_NeuralNetwork.cpp">
+      <Filter>AI\Neural Network</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_GeneticAlgorithm.cpp">
+      <Filter>AI\Neural Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -262,6 +268,9 @@
     </Filter>
     <Filter Include="Rendering\Assets">
       <UniqueIdentifier>{2ef02b99-91a1-4e22-addc-d850cd09a374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Neural Network">
+      <UniqueIdentifier>{d599908c-2458-4008-acb5-86646b640fb2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -539,6 +548,15 @@
     </ClInclude>
     <ClInclude Include="CE_FileSystem.h">
       <Filter>Utility\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_NeuralNetwork.h">
+      <Filter>AI\Neural Network</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Math.h">
+      <Filter>Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_GeneticAlgorithm.h">
+      <Filter>AI\Neural Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

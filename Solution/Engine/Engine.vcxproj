@@ -149,6 +149,7 @@
     <ClCompile Include="CE_FileSystem.cpp" />
     <ClCompile Include="CE_Font.cpp" />
     <ClCompile Include="CE_GenericShader.cpp" />
+    <ClCompile Include="CE_GeneticAlgorithm.cpp" />
     <ClCompile Include="CE_IcoSphereCreator.cpp" />
     <ClCompile Include="CE_Input.cpp" />
     <ClCompile Include="CE_LightSphereCreator.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="CE_MSDFGenerator.cpp" />
     <ClCompile Include="CE_NavMesh.cpp" />
     <ClCompile Include="CE_NavMeshPrimitives.cpp" />
+    <ClCompile Include="CE_NeuralNetwork.cpp" />
     <ClCompile Include="CE_Path.cpp" />
     <ClCompile Include="CE_PathFinder.cpp" />
     <ClCompile Include="CE_PixelShader.cpp" />
@@ -226,16 +228,19 @@
     <ClInclude Include="CE_Game.h" />
     <ClInclude Include="CE_GBuffer.h" />
     <ClInclude Include="CE_GenericShader.h" />
+    <ClInclude Include="CE_GeneticAlgorithm.h" />
     <ClInclude Include="CE_GrowingArray.h" />
     <ClInclude Include="CE_Heap.h" />
     <ClInclude Include="CE_IcoSphereCreator.h" />
     <ClInclude Include="CE_Input.h" />
     <ClInclude Include="CE_LightSphereCreator.h" />
     <ClInclude Include="CE_LineRenderObject.h" />
+    <ClInclude Include="CE_Math.h" />
     <ClInclude Include="CE_MSDFFont.h" />
     <ClInclude Include="CE_MSDFGenerator.h" />
     <ClInclude Include="CE_NavMesh.h" />
     <ClInclude Include="CE_NavMeshPrimitives.h" />
+    <ClInclude Include="CE_NeuralNetwork.h" />
     <ClInclude Include="CE_Path.h" />
     <ClInclude Include="CE_PathFinder.h" />
     <ClInclude Include="CE_PixelShader.h" />

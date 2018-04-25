@@ -14,3 +14,4 @@
 
 #include <CE_CustomEntityTypes.h>
 #include <CE_CommonHelper.h>
+#include <CE_Math.h>
