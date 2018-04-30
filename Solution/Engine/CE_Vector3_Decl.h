@@ -12,4 +12,28 @@ public:
 	T x;
 	T y;
 	T z;
+	
+	T& operator[](int aIndex)
+	{
+		CE_ASSERT(aIndex >= 0 && aIndex < 3, "Invalid index");
+		if (aIndex == 0)
+			return x;
+
+		if (aIndex == 1)
+			return y;
+
+		return z;
+	}
+
+	const T& operator[](int aIndex) const
+	{
+		CE_ASSERT(aIndex >= 0 && aIndex < 3, "Invalid index");
+		if (aIndex == 0)
+			return x;
+
+		if (aIndex == 1)
+			return y;
+
+		return z;
+	}
 };

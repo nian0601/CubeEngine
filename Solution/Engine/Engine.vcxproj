@@ -252,10 +252,10 @@
     <ClInclude Include="CE_DirextXFactory.h" />
     <ClInclude Include="CE_Engine.h" />
     <ClInclude Include="CE_Hashing.h" />
-    <ClInclude Include="CE_Matrix33.h" />
-    <ClInclude Include="CE_Matrix33_Decl.h" />
+    <ClCompile Include="CE_Matrix44.cpp">
+      <FileType>CppHeader</FileType>
+    </ClCompile>
     <ClInclude Include="CE_Matrix44.h" />
-    <ClInclude Include="CE_Matrix44_Decl.h" />
     <ClInclude Include="CE_Memory.h" />
     <ClInclude Include="CE_Murmur.h" />
     <ClInclude Include="CE_RenderObject.h" />

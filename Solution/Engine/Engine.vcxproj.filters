@@ -198,6 +198,9 @@
     <ClCompile Include="CT_ToolModule.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="CE_Matrix44.cpp">
+      <Filter>Utility\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -317,18 +320,6 @@
     </ClInclude>
     <ClInclude Include="CE_DirextXFactory.h">
       <Filter>DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_Matrix33.h">
-      <Filter>Utility\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_Matrix44.h">
-      <Filter>Utility\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_Matrix33_Decl.h">
-      <Filter>Utility\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_Matrix44_Decl.h">
-      <Filter>Utility\Math</Filter>
     </ClInclude>
     <ClInclude Include="CE_Vector2_Decl.h">
       <Filter>Utility\Math</Filter>
@@ -572,6 +563,9 @@
     </ClInclude>
     <ClInclude Include="CT_ToolModule.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Matrix44.h">
+      <Filter>Utility\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

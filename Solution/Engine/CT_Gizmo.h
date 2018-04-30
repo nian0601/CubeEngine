@@ -24,8 +24,6 @@ private:
 	int GetIndexUnderMouse(const CE_Input& anInput) const;
 
 	const CE_Camera& myCamera;
-	const float myBarSize;
-	const float myBarHalfSize;
 	CE_Matrix44f* myTransform;
 	CE_Vector3f* myScale;
 	CE_Vector4f myColors[3];

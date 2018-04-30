@@ -8,17 +8,15 @@
 
 CT_Gizmo::CT_Gizmo(const CE_Camera& aCamera)
 	: myCamera(aCamera)
-	, myBarSize(2.f)
-	, myBarHalfSize(myBarSize * 0.5f)
 	, myHoveredIndex(-1)
 	, mySelectedIndex(-1)
 	, myTransform(nullptr)
 	, myScale(nullptr)
 	, myAccumulatedMouseMovementThreshold(15.f)
 {
-	myAABBs[0].myExtents = CE_Vector3f(myBarSize, 0.2f, 0.2f);
-	myAABBs[1].myExtents = CE_Vector3f(0.2f, myBarSize, 0.2f);
-	myAABBs[2].myExtents = CE_Vector3f(0.2f, 0.2f, myBarSize);
+	myAABBs[0].myExtents = CE_Vector3f(1.f, 0.2f, 0.2f);
+	myAABBs[1].myExtents = CE_Vector3f(0.2f, 1.f, 0.2f);
+	myAABBs[2].myExtents = CE_Vector3f(0.2f, 0.2f, 1.f);
 
 	myColors[0] = CE_Vector4f(1.f, 0.f, 0.f, 1.f);
 	myColors[1] = CE_Vector4f(0.f, 1.f, 0.f, 1.f);
@@ -170,9 +168,15 @@ void CT_Gizmo::UpdateAABB()
 {
 	if (myTransform != nullptr)
 	{
-		myAABBs[0].Move(myTransform->GetPos() + myTransform->GetRight() * myScale->x / 2.f);
-		myAABBs[1].Move(myTransform->GetPos() + myTransform->GetUp() * myScale->y / 2.f);
-		myAABBs[2].Move(myTransform->GetPos() + myTransform->GetForward() * myScale->z / 2.f);
+		const CE_Vector3f& center = myTransform->GetPos();
+		CE_Vector3f halfScale = *myScale / 2.f;
+		for (int i = 0; i < 3; ++i)
+		{
+			CE_Vector3f newPos = center + myTransform->myRow3s[i].myRow *  halfScale[i];
+			newPos[i] += myAABBs[i].myExtents[i] * 0.5f;
+
+			myAABBs[i].Move(newPos);
+		}
 	}
 }
 
