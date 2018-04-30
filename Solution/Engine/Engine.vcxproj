@@ -179,6 +179,8 @@
     <ClCompile Include="CE_VertexShader.cpp" />
     <ClCompile Include="CE_Window.cpp" />
     <ClCompile Include="CPY_PhysicsWorld.cpp" />
+    <ClCompile Include="CT_Gizmo.cpp" />
+    <ClCompile Include="CT_ToolModule.cpp" />
     <ClCompile Include="CUI_Button.cpp" />
     <ClCompile Include="CUI_Container.cpp" />
     <ClCompile Include="CUI_HBox.cpp" />
@@ -274,6 +276,8 @@
     <ClInclude Include="CPY_Intersection.h" />
     <ClInclude Include="CPY_Line3D.h" />
     <ClInclude Include="CPY_PhysicsWorld.h" />
+    <ClInclude Include="CT_Gizmo.h" />
+    <ClInclude Include="CT_ToolModule.h" />
     <ClInclude Include="CUI_Button.h" />
     <ClInclude Include="CUI_Container.h" />
     <ClInclude Include="CUI_HBox.h" />

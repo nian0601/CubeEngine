@@ -5,13 +5,13 @@
 
 namespace CPY_Intersection
 {
-	bool LineVSAABB(const CPY_AABB& anAABB, const CPY_Line3D& aLine, CE_Vector3f* aOutIntersectionPoint = nullptr);
+	float LineVSAABB(const CPY_AABB& anAABB, const CPY_Line3D& aLine, CE_Vector3f* aOutIntersectionPoint = nullptr);
 	bool AABBvsAABB(const CPY_AABB& anFirst, const CPY_AABB& anSecond);
 
 
 
-
-	inline bool LineVSAABB(const CPY_AABB& anAABB, const CPY_Line3D& aLine, CE_Vector3f* aOutIntersectionPoint)
+	//Returns the squared distance to the collision point, -1 if no collision
+	inline float LineVSAABB(const CPY_AABB& anAABB, const CPY_Line3D& aLine, CE_Vector3f* aOutIntersectionPoint)
 	{
 		CE_Vector3f rayOrg = aLine.myStart;
 		CE_Vector3f rayDelta = aLine.myEnd - aLine.myStart;
@@ -26,7 +26,7 @@ namespace CPY_Intersection
 			xt = anAABB.myMinPos.x - rayOrg.x;
 			if (xt > rayDelta.x)
 			{
-				return false;
+				return -1.f;
 			}
 			xt /= rayDelta.x;
 			inside = false;
@@ -37,7 +37,7 @@ namespace CPY_Intersection
 			xt = anAABB.myMaxPos.x - rayOrg.x;
 			if (xt < rayDelta.x)
 			{
-				return false;
+				return -1.f;
 			}
 			xt /= rayDelta.x;
 			inside = false;
@@ -56,7 +56,7 @@ namespace CPY_Intersection
 			yt = anAABB.myMinPos.y - rayOrg.y;
 			if (yt > rayDelta.y)
 			{
-				return false;
+				return -1.f;
 			}
 			yt /= rayDelta.y;
 			inside = false;
@@ -67,7 +67,7 @@ namespace CPY_Intersection
 			yt = anAABB.myMaxPos.y - rayOrg.y;
 			if (yt < rayDelta.y)
 			{
-				return false;
+				return -1.f;
 			}
 			yt /= rayDelta.y;
 			inside = false;
@@ -86,7 +86,7 @@ namespace CPY_Intersection
 			zt = anAABB.myMinPos.z - rayOrg.z;
 			if (zt > rayDelta.z)
 			{
-				return false;
+				return -1.f;
 			}
 			zt /= rayDelta.z;
 			inside = false;
@@ -97,7 +97,7 @@ namespace CPY_Intersection
 			zt = anAABB.myMaxPos.z - rayOrg.z;
 			if (zt < rayDelta.z)
 			{
-				return false;
+				return -1.f;
 			}
 			zt /= rayDelta.z;
 			inside = false;
@@ -113,7 +113,7 @@ namespace CPY_Intersection
 			if(aOutIntersectionPoint)
 				*aOutIntersectionPoint = aLine.myStart;
 
-			return true;
+			return 0.f;
 		}
 
 		int which = 0;
@@ -139,12 +139,12 @@ namespace CPY_Intersection
 			float y = rayOrg.y + rayDelta.y * t;
 			if (y < anAABB.myMinPos.y || y > anAABB.myMaxPos.y)
 			{
-				return false;
+				return -1.f;
 			}
 			float z = rayOrg.z + rayDelta.z * t;
 			if (z < anAABB.myMinPos.z || z > anAABB.myMaxPos.z)
 			{
-				return false;
+				return -1.f;
 			}
 			break;
 		}
@@ -153,12 +153,12 @@ namespace CPY_Intersection
 			float x = rayOrg.x + rayDelta.x * t;
 			if (x < anAABB.myMinPos.x || x > anAABB.myMaxPos.x)
 			{
-				return false;
+				return -1.f;
 			}
 			float z = rayOrg.z + rayDelta.z * t;
 			if (z < anAABB.myMinPos.z || z > anAABB.myMaxPos.z)
 			{
-				return false;
+				return -1.f;
 			}
 			break;
 		}
@@ -167,21 +167,22 @@ namespace CPY_Intersection
 			float x = rayOrg.x + rayDelta.x * t;
 			if (x < anAABB.myMinPos.x || x > anAABB.myMaxPos.x)
 			{
-				return false;
+				return -1.f;
 			}
 			float y = rayOrg.y + rayDelta.y * t;
 			if (y < anAABB.myMinPos.y || y > anAABB.myMaxPos.y)
 			{
-				return false;
+				return -1.f;
 			}
 			break;
 		}
 		}
 
+		CE_Vector3f intersectPoint = aLine.myStart + rayDelta * t;
 		if (aOutIntersectionPoint)
-			*aOutIntersectionPoint = aLine.myStart + rayDelta * t;
+			*aOutIntersectionPoint = intersectPoint;
 
-		return true;
+		return CE_Length2(intersectPoint - aLine.myStart);
 	}
 
 	inline bool AABBvsAABB(const CPY_AABB& anFirst, const CPY_AABB& anSecond)

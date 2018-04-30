@@ -192,6 +192,12 @@
     <ClCompile Include="CE_GeneticAlgorithm.cpp">
       <Filter>AI\Neural Network</Filter>
     </ClCompile>
+    <ClCompile Include="CT_Gizmo.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="CT_ToolModule.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -230,9 +236,6 @@
     <Filter Include="Rendering\Text">
       <UniqueIdentifier>{5bd03dcc-bc75-4eda-94f1-7d55dd48f625}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Physics">
-      <UniqueIdentifier>{6d41f349-67ba-4125-ab3f-21892fa1d24a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utility\Files">
       <UniqueIdentifier>{70e53c6f-81ae-41e1-a7b2-e91af36d9bd9}</UniqueIdentifier>
     </Filter>
@@ -247,9 +250,6 @@
     </Filter>
     <Filter Include="AI\Navigation">
       <UniqueIdentifier>{ab08ca7a-d77f-47b3-aba5-a045b7e01335}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Physics\Intersection">
-      <UniqueIdentifier>{400193ed-6855-48af-b297-09e5827c75b0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Rendering\Debugging">
       <UniqueIdentifier>{779ade8b-0d9e-46f1-9e92-579040e0028e}</UniqueIdentifier>
@@ -271,6 +271,15 @@
     </Filter>
     <Filter Include="AI\Neural Network">
       <UniqueIdentifier>{d599908c-2458-4008-acb5-86646b640fb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{09069c10-6ea3-424d-b567-5ff566920071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{6d41f349-67ba-4125-ab3f-21892fa1d24a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics\Intersection">
+      <UniqueIdentifier>{400193ed-6855-48af-b297-09e5827c75b0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -557,6 +566,12 @@
     </ClInclude>
     <ClInclude Include="CE_GeneticAlgorithm.h">
       <Filter>AI\Neural Network</Filter>
+    </ClInclude>
+    <ClInclude Include="CT_Gizmo.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="CT_ToolModule.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

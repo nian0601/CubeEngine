@@ -18,6 +18,9 @@
 #include <CUI_ValueController.h>
 #include <CE_Window.h>
 
+#include <CT_Gizmo.h>
+#include <CT_ToolModule.h>
+
 EntityEditorContext::EntityEditorContext()
 {
 }
@@ -25,6 +28,7 @@ EntityEditorContext::EntityEditorContext()
 
 EntityEditorContext::~EntityEditorContext()
 {
+	CE_SAFE_DELETE(myToolModule);
 	CE_SAFE_DELETE(myUIManager);
 }
 
@@ -47,17 +51,21 @@ void EntityEditorContext::Init(CE_Engine& anEngine)
 	myWorld->AddProcessor(renderProcessor);
 
 	myNumEntries = 0;
+
+	myToolModule = new CT_ToolModule(*camera, *myInput);
 	InitGUI();
 }
 
 void EntityEditorContext::Update(float aDelta)
 {
+	myToolModule->Update(aDelta);
 	myWorld->Update(aDelta);
 	myUIManager->Update();
 }
 
 void EntityEditorContext::Render()
 {
+	myToolModule->Render(*myRendererProxy);
 	myUIManager->Render(*myRendererProxy);
 }
 
@@ -70,11 +78,24 @@ void EntityEditorContext::InitGUI()
 	myUIManager->AddWidget(myTreeView);
 
 	CE_Entity entity = myWorld->CreateEmptyEntity();
-	myWorld->AddComponent<TranslationComponent>(entity);
+	TranslationComponent& translation = myWorld->AddComponent<TranslationComponent>(entity);
 
 	myRenderComponent = &myWorld->AddComponent<RenderComponent>(entity);
 	myRenderComponent->myEntries.Respace(128);
 	CreateRenderComponentWidget();
+
+	myToolModule->AddToolEntity(entity, &translation.myOrientation, &translation.myScale);
+
+	CE_Entity entity2 = myWorld->CreateEmptyEntity();
+	TranslationComponent& translation2 = myWorld->AddComponent<TranslationComponent>(entity2);
+	translation2.myOrientation.SetPos(2.f, 0.f, 0.f);
+
+	RenderComponent& renderComponent = myWorld->AddComponent<RenderComponent>(entity2);
+	RenderComponent::Entry& entry = renderComponent.myEntries.Add();
+	entry.myScale = CE_Vector3f(1.f);
+	entry.myColor = CE_Vector4f(0.75f, 0.5f, 0.75f, 1.f);
+
+	myToolModule->AddToolEntity(entity2, &translation2.myOrientation, &translation2.myScale);
 }
 
 void EntityEditorContext::CreateRenderComponentWidget()

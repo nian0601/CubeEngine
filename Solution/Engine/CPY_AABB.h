@@ -8,13 +8,18 @@ struct CPY_AABB
 
 	CPY_AABB(const CE_Vector3f& aPosition, const CE_Vector3f& aExtents)
 	{
-		myCenterPos = aPosition;
 		myExtents = aExtents;
-		myMinPos = aPosition - aExtents * 0.5f;
-		myMaxPos = aPosition + aExtents * 0.5f;
+		Move(aPosition);
 	}
 	
-	
+	void Move(const CE_Vector3f& aNewPosition)
+	{
+		myCenterPos = aNewPosition;
+
+		myMinPos = myCenterPos - myExtents * 0.5f;
+		myMaxPos = myCenterPos + myExtents * 0.5f;
+	}
+
 	CE_Vector3f myCenterPos;
 	CE_Vector3f myExtents;
 	CE_Vector3f myMinPos;

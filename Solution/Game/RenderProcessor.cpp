@@ -50,6 +50,6 @@ void RenderProcessor::Update(float /*aDelta*/)
 		}		
 	}
 
-	myRendererProxy.AddText("This is text", { 100.f, 100.f });
-	myRendererProxy.AddSprite({ 100.f, 200.f }, { 100.f, 50.f }, { 1.f, 0.f, 1.f, 1.f });
+	//myRendererProxy.AddText("This is text", { 100.f, 100.f });
+	//myRendererProxy.AddSprite({ 100.f, 200.f }, { 100.f, 50.f }, { 1.f, 0.f, 1.f, 1.f });
 }

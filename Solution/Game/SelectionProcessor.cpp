@@ -62,41 +62,12 @@ void SelectionProcessor::Update(float /*aDelta*/)
 
 CE_Entity SelectionProcessor::FindEntityUnderMouse(const CE_Vector2f& aMousePosition, CE_Vector3f& aIntersectionPointOut)
 {
-	CE_Vector3f lineStart = Unproject(aMousePosition, 0.f);
-	CE_Vector3f lineEnd = Unproject(aMousePosition, 1.f);
+	CE_Vector3f lineStart = myCamera.UnprojectPosition(aMousePosition, 0.f);
+	CE_Vector3f lineEnd = myCamera.UnprojectPosition(aMousePosition, 1.f);
 
 	const CPY_CollisionEntity* collisionEntity = myPhysicsWorld.RayCast(lineStart, lineEnd, CollisionLayer::CLICKABLE, aIntersectionPointOut);
 	if (collisionEntity)
 		return collisionEntity->myEntity;
 
 	return CE_Invalid_Entity;
-}
-
-CE_Vector3f SelectionProcessor::Unproject(const CE_Vector2f& aPosition, float aDepth) const
-{
-	CE_Vector2f windowSize;
-	windowSize.x = static_cast<float>(myCamera.GetWindowSize().x);
-	windowSize.y = static_cast<float>(myCamera.GetWindowSize().y);
-
-	float flippedY = windowSize.y - aPosition.y;
-
-	CE_Vector4f in;
-	in.x = aPosition.x / windowSize.x * 2.f - 1.f;
-	in.y = flippedY / windowSize.y * 2.f - 1.f;
-	in.z = 2.f * aDepth - 1.f;
-	in.w = 1.f;
-
-	CE_Matrix44f invertedViewProjection = CE_InverseReal(myCamera.GetView() * myCamera.GetProjection());
-
-	CE_Vector4f worldPos = in * invertedViewProjection;
-	if (worldPos.w == 0.f)
-		return CE_Vector3f(0.f);
-	
-	worldPos.w = 1.f / worldPos.w;
-	
-	CE_Vector3f out;
-	out.x = worldPos.x * worldPos.w;
-	out.y = worldPos.y * worldPos.w;
-	out.z = worldPos.z * worldPos.w;
-	return out;
 }

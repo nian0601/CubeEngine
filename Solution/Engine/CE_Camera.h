@@ -18,6 +18,8 @@ public:
 	const CE_Matrix44f& GetOrthagonalProjection() const { return myOrthagonalProjection; }
 	const CE_Vector2i& GetWindowSize() const { return myWindowSize; }
 
+	CE_Vector3f UnprojectPosition(const CE_Vector2f& aPosition, float aDepth) const;
+
 private:
 	CE_Matrix44f myOrientation;
 	CE_Matrix44f myView;

@@ -12,7 +12,10 @@ class CE_Font;
 class CE_RendererProxy;
 class CE_World;
 
+class CT_ToolModule;
+
 struct RenderComponent;
+
 
 class EntityEditorContext : public GameContext
 {
@@ -51,5 +54,7 @@ private:
 	CE_World* myWorld;
 
 	int myNumEntries;
+
+	CT_ToolModule* myToolModule;
 };
 
