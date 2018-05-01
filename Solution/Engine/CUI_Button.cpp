@@ -13,11 +13,8 @@ CUI_Button::CUI_Button(const CE_Font& aFont, const CE_String& aText)
 	myWidgets.Add(new CUI_Label(aFont, aText));
 }
 
-bool CUI_Button::OnClick(const CE_Vector2f& aMousePosition)
+bool CUI_Button::OnClick()
 {
-	if (!CUI_Widget::OnClick(aMousePosition))
-		return false;
-
 	myOnClick();
 	return true;
 }

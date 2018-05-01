@@ -14,14 +14,26 @@ public:
 	virtual void SetPosition(const CE_Vector2f& aPosition);
 	virtual void SetSize(const CE_Vector2f& aSize);
 
-	virtual bool OnClick(const CE_Vector2f& aMousePosition);
+	virtual bool OnClick() { return false; };
+	virtual void OnMouseDown(const CE_Vector2f& aMousePosition);
+	virtual bool OnMouseUp(const CE_Vector2f& aMousePosition);
+	virtual void OnMouseEnter() { myIsHovered = true; };
+	virtual void OnMouseExit() { myIsHovered = false; };
+
+	virtual void OnMouseMove(const CE_Vector2f& aNewMousePosition, const CE_Vector2f& aOldMousePosition);
 
 	void Show() { myIsVisible = true; }
 	void Hide() { myIsVisible = false; }
 	bool IsVisible() const { return myIsVisible; }
 
+	bool Contains(const CE_Vector2f& aPosition) const;
+
 protected:
-	CUI_Widget() : myIsVisible(true) {};
+	CUI_Widget() 
+		: myIsVisible(true)
+		, myIsFocused(false)
+		, myIsHovered(false)
+	{};
 
 	CE_Vector2f myPosition;
 	CE_Vector2f mySize;
@@ -29,4 +41,6 @@ protected:
 	CE_Vector2f myWindowSize;
 
 	bool myIsVisible;
+	bool myIsFocused;
+	bool myIsHovered;
 };

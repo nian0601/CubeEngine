@@ -6,17 +6,19 @@
 CUI_Manager::CUI_Manager(CE_Input& anInput)
 	: myInput(anInput)
 {
-	myWindowSize.x = 1280.f;
-	myWindowSize.y = 720.f;
 }
 
 void CUI_Manager::Update()
 {
 	PrepareLayout();
 
+	CE_Vector2f mousePos = myInput.GetMousePosition();
+	OnMouseMove(mousePos, myOldMousePosition);
+
 	if (myInput.MouseDown(0))
-	{
-		CE_Vector2f mousePos = myInput.GetMousePosition();
-		OnClick(mousePos);
-	}
+		OnMouseDown(mousePos);
+	else if (myInput.MouseUp(0))
+		OnMouseUp(mousePos);
+
+	myOldMousePosition = mousePos;
 }

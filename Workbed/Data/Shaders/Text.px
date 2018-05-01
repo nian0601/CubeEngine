@@ -22,6 +22,6 @@ float4 main(PosColorPixel anInput) : SV_TARGET
 	
 	float alpha = smoothstep(0.55 - SMOOTHING, 0.55 + SMOOTHING, distAlphaMask);
 
-	float4 color = float4(1.f, 1.f, 1.f, alpha);
+	float4 color = float4(anInput.Color.xyz, alpha);
 	return color;
 };

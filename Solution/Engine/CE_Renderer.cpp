@@ -189,12 +189,14 @@ void CE_Renderer::RenderTexts(const CE_RendererProxy& aRendererProxy)
 		{
 			myMSDFText->SetText(data.myString);
 			myMSDFText->SetPosition(data.myPosition);
+			myMSDFText->SetColor(data.myColor);
 			myMSDFText->Render();
 		}
 		else
 		{
 			myText->SetText(data.myString);
 			myText->SetPosition(data.myPosition);
+			myText->SetColor(data.myColor);
 			myText->Render();
 		}
 	}

@@ -22,5 +22,6 @@ private:
 	const CE_Font& myFont;
 	CE_String myString;
 	CUI_ValueController* myValueController;
+	CE_Vector4f myColor;
 };
 

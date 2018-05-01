@@ -20,11 +20,12 @@ void CE_RendererProxy::AddSprite(const CE_Vector2f& aPosition, const CE_Vector2f
 	data.myHotspot = aHotspot;
 }
 
-void CE_RendererProxy::AddText(const CE_String& aString, const CE_Vector2f& aPosition)
+void CE_RendererProxy::AddText(const CE_String& aString, const CE_Vector2f& aPosition, const CE_Vector4f& aColor)
 {
 	CE_TextData& data = myTextData.Add();
 	data.myString = aString;
 	data.myPosition = aPosition;
+	data.myColor = aColor;
 }
 
 void CE_RendererProxy::AddPointLight(const CE_Matrix44f& anOrientation, const CE_Vector4f& aColorAndIntensity, float aRadius)

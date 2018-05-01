@@ -15,6 +15,6 @@ public:
 
 private:
 	CE_Input& myInput;
-	CE_Vector2f myWindowSize;
+	CE_Vector2f myOldMousePosition;
 };
 

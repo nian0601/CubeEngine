@@ -9,6 +9,7 @@
 CUI_Label::CUI_Label(const CE_Font& aFont)
 	: myFont(aFont)
 	, myValueController(nullptr)
+	, myColor(1.f, 1.f, 1.f, 1.f)
 {
 }
 
@@ -37,7 +38,13 @@ CUI_Label::~CUI_Label()
 
 void CUI_Label::Render(CE_RendererProxy& anRendererProxy)
 {
-	anRendererProxy.AddText(myString, myPosition);
+	CE_Vector4f color = myColor;
+	if (myIsFocused)
+		color = CE_Vector4f(0.f, 1.f, 0.f, 1.f);
+	else if (myIsHovered)
+		color = CE_Vector4f(0.f, 0.f, 1.f, 1.f);
+
+	anRendererProxy.AddText(myString, myPosition, color);
 }
 
 void CUI_Label::PrepareLayout()

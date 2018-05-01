@@ -11,10 +11,8 @@ public:
 	CUI_Button(const CE_Font& aFont, const CE_String& aText);
 
 	virtual void PrepareLayout() override;
-	virtual bool OnClick(const CE_Vector2f& aMousePosition) override;
+	virtual bool OnClick() override;
 
 	std::function<void()> myOnClick;
-
-
 };
 
