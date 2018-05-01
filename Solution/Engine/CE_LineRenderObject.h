@@ -21,7 +21,7 @@ private:
 
 	struct VertexType
 	{
-		CE_Vector3f myPosition;
+		CE_Vector4f myPosition;
 		CE_Vector4f myColor;
 	};
 

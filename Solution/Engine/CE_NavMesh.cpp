@@ -68,7 +68,7 @@ void CE_NavMesh::DebugDraw()
 
 void CE_NavMesh::DebugDrawTriangle(const CE_NavTriangle& aTriangle) const
 {
-	const CE_Vector4f color(0.3f, 0.3f, 0.3f, 1.f);
+	const CE_Vector4f color(0.3f, 0.3f, 0.9f, 1.f);
 	for (int i = 0; i < 3; ++i)
 	{
 		const CE_NavEdge* edge = aTriangle.myEdges[i];
