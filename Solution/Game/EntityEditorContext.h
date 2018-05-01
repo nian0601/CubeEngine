@@ -28,6 +28,8 @@ public:
 	void Render() override;
 
 private:
+	void RenderGrid();
+
 	void InitGUI();
 	
 	void CreateRenderComponentWidget();

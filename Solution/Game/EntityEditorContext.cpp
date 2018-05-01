@@ -21,6 +21,8 @@
 #include <CT_Gizmo.h>
 #include <CT_ToolModule.h>
 
+#include <CE_DebugDraw.h>
+
 EntityEditorContext::EntityEditorContext()
 {
 }
@@ -65,8 +67,44 @@ void EntityEditorContext::Update(float aDelta)
 
 void EntityEditorContext::Render()
 {
+	RenderGrid();
+
 	myToolModule->Render(*myRendererProxy);
 	myUIManager->Render(*myRendererProxy);
+}
+
+void EntityEditorContext::RenderGrid()
+{
+	const float cellSize = 1.f;
+	const float halfCellSize = cellSize * 0.5f;
+	const int numPerSide = 11;
+	const CE_Vector4f color(0.3f, 0.3f, 0.3f, 1.f);
+	
+	int startX = -numPerSide / 2;
+	int endX = numPerSide / 2;
+
+	int startZ= -numPerSide / 2;
+	int endZ = numPerSide / 2;
+
+	for (int z = startZ; z < endZ; ++z)
+	{
+		for (int x = startX; x < endX; ++x)
+		{
+			CE_Vector3f horizontal1(x * cellSize + halfCellSize, 0.f, z * cellSize + halfCellSize);
+	
+			if (x < endX - 1)
+			{
+				CE_Vector3f horizontal2((x + 1) * cellSize + halfCellSize, 0.f, z * cellSize + halfCellSize);
+				CE_DRAW_LINE_COLOR(horizontal1, horizontal2, color);
+			}
+	
+			if (z < endZ - 1)
+			{
+				CE_Vector3f verticalPos(x * cellSize + halfCellSize, 0.f, (z + 1) * cellSize + halfCellSize);
+				CE_DRAW_LINE_COLOR(horizontal1, verticalPos, color);
+			}
+		}
+	}
 }
 
 void EntityEditorContext::InitGUI()

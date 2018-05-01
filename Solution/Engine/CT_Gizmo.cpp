@@ -153,7 +153,7 @@ void CT_Gizmo::UpdateScale(const CE_Input& anInput, float aMouseMovement, bool a
 				*valueToChange -= 1.f;
 		}
 
-		CE_RoundToInt(*valueToChange);
+		*valueToChange = CE_RoundToInt(*valueToChange);
 	}
 	else
 	{
