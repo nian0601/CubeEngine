@@ -35,6 +35,8 @@ bool CE_FileSystem::GetAllFilesFromDirectory(const char* aDirectory, CE_GrowingA
 			info.myFilePath = fullPath;
 			info.myLastTimeModifiedLowbit = data.ftLastWriteTime.dwLowDateTime;
 			info.myLastTimeModifiedHighbit = data.ftLastWriteTime.dwHighDateTime;
+
+			RemoveFileExtention(name, info.myFileNameNoExtention);
 		}
 	} while (FindNextFile(filehandle, &data) != 0);
 
@@ -55,6 +57,12 @@ void CE_FileSystem::GetFileExtention(const CE_String& aFilePath, CE_String& aExt
 {
 	int findIndex = aFilePath.RFind(".");
 	aExtentionOut = aFilePath.SubStr(findIndex + 1, aFilePath.Lenght());
+}
+
+void CE_FileSystem::RemoveFileExtention(const CE_String& aFilePath, CE_String& aNameOut)
+{
+	int findIndex = aFilePath.RFind(".");
+	aNameOut = aFilePath.SubStr(0, findIndex-1);
 }
 
 bool CE_FileSystem::GetFileInfo(const CE_String& aFilePath, FileInfo& aFileInfoOut)
