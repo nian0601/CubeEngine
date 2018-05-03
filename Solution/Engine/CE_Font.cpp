@@ -96,7 +96,7 @@ CE_Vector2f CE_Font::GetSize(const CE_String& aString) const
 {
 	CE_Vector2f size;
 
-	for (int i = 0; i < aString.Lenght(); ++i)
+	for (int i = 0; i < aString.Lenght()+1; ++i)
 	{
 		const CE_CharData& data = GetCharData(aString[i]);
 		size.x += data.myXAdvance * myScale;
