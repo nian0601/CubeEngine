@@ -13,19 +13,23 @@ void CE_RendererProxy::AddModel(const CE_Matrix44f& anOrientation, const CE_Vect
 
 void CE_RendererProxy::AddSprite(const CE_Vector2f& aPosition, const CE_Vector2f& aSize, const CE_Vector4f& aColor, const CE_Vector2f& aHotspot /*= CE_Vector2f(0.f, 0.f)*/)
 {
-	CE_SpriteData& data = mySpriteData.Add();
+	CE_2DData& data = my2DData.Add();
+	data.myType = CE_2DData::SPRITE;
 	data.myPosition = aPosition;
-	data.mySize = aSize;
 	data.myColor = aColor;
-	data.myHotspot = aHotspot;
+	data.mySizeAndHotspot.x = aSize.x;
+	data.mySizeAndHotspot.y = aSize.y;
+	data.mySizeAndHotspot.z = aHotspot.x;
+	data.mySizeAndHotspot.w = aHotspot.y;
 }
 
 void CE_RendererProxy::AddText(const CE_String& aString, const CE_Vector2f& aPosition, const CE_Vector4f& aColor)
 {
-	CE_TextData& data = myTextData.Add();
-	data.myString = aString;
+	CE_2DData& data = my2DData.Add();
+	data.myType = CE_2DData::TEXT;
 	data.myPosition = aPosition;
 	data.myColor = aColor;
+	data.myString = aString;
 }
 
 void CE_RendererProxy::AddPointLight(const CE_Matrix44f& anOrientation, const CE_Vector4f& aColorAndIntensity, float aRadius)
@@ -39,7 +43,6 @@ void CE_RendererProxy::AddPointLight(const CE_Matrix44f& anOrientation, const CE
 void CE_RendererProxy::Clear()
 {
 	myModelData.RemoveAll();
-	mySpriteData.RemoveAll();
-	myTextData.RemoveAll();
 	myPointLightData.RemoveAll();
+	my2DData.RemoveAll();
 }

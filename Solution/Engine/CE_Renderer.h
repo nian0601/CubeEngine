@@ -12,7 +12,9 @@ class CE_ConstantBuffer;
 
 class CE_ShaderPair;
 class CE_ShaderManager;
+
 #include "CE_DebugPrimitives.h"
+#include "CE_RendererProxy.h"
 
 class CE_Renderer
 {
@@ -27,8 +29,8 @@ public:
 
 private:
 	void RenderModels(const CE_RendererProxy& aRendererProxy);
-	void RenderSprites(const CE_RendererProxy& aRendererProxy);
-	void RenderTexts(const CE_RendererProxy& aRendererProxy);
+	void RenderText(const CE_2DData& aTextData);
+	void RenderSprite(const CE_2DData& aSpriteData);
 
 	CE_GPUContext& myGPUContext;
 

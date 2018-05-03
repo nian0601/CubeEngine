@@ -101,8 +101,15 @@ void CE_Renderer::Render3D(const CE_RendererProxy& aRendererProxy)
 
 void CE_Renderer::Render2D(const CE_RendererProxy& aRendererProxy)
 {
-	RenderSprites(aRendererProxy);
-	RenderTexts(aRendererProxy);
+	for (const CE_2DData& data : aRendererProxy.Get2DData())
+	{
+		if (data.myType == CE_2DData::SPRITE)
+			RenderSprite(data);
+		else if (data.myType == CE_2DData::TEXT)
+			RenderText(data);
+		else
+			CE_ASSERT_ALWAYS("Invalid 2D-data type!");
+	}
 }
 
 void CE_Renderer::RenderLines(const CE_GrowingArray<CE_Line>& someLines)
@@ -147,29 +154,13 @@ void CE_Renderer::RenderModels(const CE_RendererProxy& aRendererProxy)
 	}
 }
 
-void CE_Renderer::RenderSprites(const CE_RendererProxy& aRendererProxy)
+void CE_Renderer::RenderText(const CE_2DData& aTextData)
 {
+	if (aTextData.myString.Empty())
+		return;
+
 	CE_SetResetBlend blend(ALPHA_BLEND);
-
-	myOrthagonalConstantBuffer->SendToGPU();
-	mySpriteShader->Activate();
-
-	for (const CE_SpriteData& data : aRendererProxy.GetSpriteData())
-	{
-		CE_SpriteShaderData* spriteData = mySprite->GetObjectData<CE_SpriteShaderData>();
-
-		spriteData->myColor = data.myColor;
-		spriteData->mySize = data.mySize * 0.5f;
-		spriteData->myPosition = data.myPosition;
-		spriteData->myHotspot = data.myHotspot * 2.f;
-
-		mySprite->Render();
-	}
-}
-
-void CE_Renderer::RenderTexts(const CE_RendererProxy& aRendererProxy)
-{
-	CE_SetResetBlend blend(ALPHA_BLEND);
+	CE_SetResetDepth depth(NO_READ_NO_WRITE);
 
 	CE_ShaderPair* shader = myMSDFTextShader;
 	if (shader == nullptr)
@@ -180,24 +171,38 @@ void CE_Renderer::RenderTexts(const CE_RendererProxy& aRendererProxy)
 	myOrthagonalConstantBuffer->SendToGPU();
 	shader->Activate();
 
-	for (const CE_TextData& data : aRendererProxy.GetTextData())
+	if (myMSDFTextShader != nullptr)
 	{
-		if(data.myString.Empty())
-			continue;
-
-		if (myMSDFTextShader != nullptr)
-		{
-			myMSDFText->SetText(data.myString);
-			myMSDFText->SetPosition(data.myPosition);
-			myMSDFText->SetColor(data.myColor);
-			myMSDFText->Render();
-		}
-		else
-		{
-			myText->SetText(data.myString);
-			myText->SetPosition(data.myPosition);
-			myText->SetColor(data.myColor);
-			myText->Render();
-		}
+		myMSDFText->SetText(aTextData.myString);
+		myMSDFText->SetPosition(aTextData.myPosition);
+		myMSDFText->SetColor(aTextData.myColor);
+		myMSDFText->Render();
 	}
+	else
+	{
+		myText->SetText(aTextData.myString);
+		myText->SetPosition(aTextData.myPosition);
+		myText->SetColor(aTextData.myColor);
+		myText->Render();
+	}
+}
+
+void CE_Renderer::RenderSprite(const CE_2DData& aSpriteData)
+{
+	CE_SetResetBlend blend(ALPHA_BLEND);
+	CE_SetResetDepth depth(NO_READ_NO_WRITE);
+
+	myOrthagonalConstantBuffer->SendToGPU();
+	mySpriteShader->Activate();
+
+	CE_SpriteShaderData* spriteData = mySprite->GetObjectData<CE_SpriteShaderData>();
+
+	spriteData->myColor = aSpriteData.myColor;
+	spriteData->myPosition = aSpriteData.myPosition;
+	spriteData->mySize.x = aSpriteData.mySizeAndHotspot.y * 0.5f;
+	spriteData->mySize.y = aSpriteData.mySizeAndHotspot.x * 0.5f;
+	spriteData->myHotspot.x = aSpriteData.mySizeAndHotspot.z * 2.f;
+	spriteData->myHotspot.y = aSpriteData.mySizeAndHotspot.w * 2.f;
+
+	mySprite->Render();
 }

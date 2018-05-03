@@ -9,19 +9,20 @@ struct CE_ModelData
 	bool myIsSphere : 1;
 };
 
-struct CE_SpriteData
+struct CE_2DData
 {
-	CE_Vector4f myColor;
+	enum Type
+	{
+		TEXT,
+		SPRITE,
+	};
+	Type myType;
 	CE_Vector2f myPosition;
-	CE_Vector2f mySize;
-	CE_Vector2f myHotspot;
-};
+	CE_Vector4f myColor;
 
-struct CE_TextData
-{
+	// TODO(NA): Can we union these or some other smart thing?
+	CE_Vector4f mySizeAndHotspot;
 	CE_String myString;
-	CE_Vector2f myPosition;
-	CE_Vector4f myColor;
 };
 
 struct CE_PointLightData
@@ -40,15 +41,13 @@ public:
 	void AddPointLight(const CE_Matrix44f& anOrientation, const CE_Vector4f& aColorAndIntensity, float aRadius);
 
 	const CE_GrowingArray<CE_ModelData>& GetModelData() const { return myModelData; }
-	const CE_GrowingArray<CE_SpriteData>& GetSpriteData() const { return mySpriteData; }
-	const CE_GrowingArray<CE_TextData>& GetTextData() const { return myTextData; }
 	const CE_GrowingArray<CE_PointLightData>& GetPointLightData() const { return myPointLightData; }
+	const CE_GrowingArray<CE_2DData>& Get2DData() const { return my2DData; }
 	void Clear();
 
 private:
 	CE_GrowingArray<CE_ModelData> myModelData;
-	CE_GrowingArray<CE_SpriteData> mySpriteData;
-	CE_GrowingArray<CE_TextData> myTextData;
 	CE_GrowingArray<CE_PointLightData> myPointLightData;
+	CE_GrowingArray<CE_2DData> my2DData;
 };
 
