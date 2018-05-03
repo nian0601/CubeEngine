@@ -199,8 +199,8 @@ void CE_Renderer::RenderSprite(const CE_2DData& aSpriteData)
 
 	spriteData->myColor = aSpriteData.myColor;
 	spriteData->myPosition = aSpriteData.myPosition;
-	spriteData->mySize.x = aSpriteData.mySizeAndHotspot.y * 0.5f;
-	spriteData->mySize.y = aSpriteData.mySizeAndHotspot.x * 0.5f;
+	spriteData->mySize.x = aSpriteData.mySizeAndHotspot.x * 0.5f;
+	spriteData->mySize.y = aSpriteData.mySizeAndHotspot.y * 0.5f;
 	spriteData->myHotspot.x = aSpriteData.mySizeAndHotspot.z * 2.f;
 	spriteData->myHotspot.y = aSpriteData.mySizeAndHotspot.w * 2.f;
 
