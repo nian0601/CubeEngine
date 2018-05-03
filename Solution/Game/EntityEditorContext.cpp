@@ -25,9 +25,20 @@
 
 #include <CE_DebugDraw.h>
 #include <CE_FileSystem.h>
+#include "EntityFactory.h"
+
+#include <CE_PathFinder.h>
+#include <CE_Blackboard.h>
 
 EntityEditorContext::EntityEditorContext()
 {
+	CE_TYPE_REGISTER(float);
+	CE_TYPE_REGISTER(CE_Vector3f);
+	CE_TYPE_REGISTER(CE_Vector4f);
+	CE_TYPE_REGISTER(CE_World*);
+	CE_TYPE_REGISTER(double);
+	CE_TYPE_REGISTER(CE_PathFinder*);
+	CE_TYPE_REGISTER(CE_Blackboard*);
 }
 
 
@@ -51,6 +62,7 @@ void EntityEditorContext::Init(CE_Engine& anEngine)
 	myFont->LoadFromFile("Data/Font/Decent_Font.png", anEngine.GetGPUContext());
 
 	myWorld = new CE_World();
+	myEntityFactory = new EntityFactory(*myWorld);
 
 	RenderProcessor* renderProcessor = new RenderProcessor(*myWorld, anEngine.GetRendererProxy());
 	myWorld->AddProcessor(renderProcessor);
@@ -268,5 +280,11 @@ void EntityEditorContext::OnSelection(CUI_Widget* aWidget)
 {
 	CUI_Label* label = static_cast<CUI_Label*>(aWidget);
 	const CE_String& text = label->GetText();
-	text;
+	
+	CE_Entity entity = myEntityFactory->InstansiateEntity(text.c_str());
+	if (myWorld->HasComponent<TranslationComponent>(entity))
+	{
+		TranslationComponent& translation = myWorld->GetComponent<TranslationComponent>(entity);
+		myToolModule->AddToolEntity(entity, &translation.myOrientation, &translation.myScale);
+	}
 }

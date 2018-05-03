@@ -17,6 +17,8 @@ class CT_ToolModule;
 
 struct RenderComponent;
 
+class EntityFactory;
+
 #include <CUI_Widget.h>
 
 class EntityEditorContext : public GameContext
@@ -62,6 +64,7 @@ private:
 	CE_RendererProxy* myRendererProxy;
 
 	CE_World* myWorld;
+	EntityFactory* myEntityFactory;
 
 	int myNumEntries;
 
