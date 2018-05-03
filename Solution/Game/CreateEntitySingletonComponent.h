@@ -10,7 +10,7 @@ struct CreateEntitySingletonComponent : public CE_BaseComponent
 {
 	struct Entry
 	{
-		eEntityTypes myEntityType;
+		CE_String myEntityType;
 		CE_Matrix44f myOrientation;
 	};
 

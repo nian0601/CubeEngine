@@ -1,22 +1,5 @@
 #pragma once
 
-enum class eEntityTypes
-{
-	NONE,
-	GROUND,
-	PLAYER,
-	RESOURCE_STONE,
-	RESOURCE_WATER,
-	GATHERER,
-	STOCKPILE,
-	SPHERE,
-	TREE,
-	POINT_LIGHT,
-	PROJECTILE,
-	NN_ENTITY,
-	NN_TARGET,
-};
-
 //////////////////////////////////////////////////////////////////////////
 // Collision
 

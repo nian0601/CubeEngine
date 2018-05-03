@@ -55,7 +55,7 @@ void SelectionProcessor::Update(float /*aDelta*/)
 		orientation.SetRight(right);
 		orientation.SetPos({ 0.f, 1.f, 0.f });
 		CreateEntitySingletonComponent::Entry& entry = createComponent.myEntries.Add();
-		entry.myEntityType = eEntityTypes::PROJECTILE;
+		entry.myEntityType = "projectile";
 		entry.myOrientation = orientation;
 	}
 }

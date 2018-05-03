@@ -14,7 +14,7 @@ public:
 
 	void LoadTemplateEntities();
 
-	CE_Entity InstansiateEntity(eEntityTypes anIdentifier);
+	CE_Entity InstansiateEntity(const CE_String& anIdentifier);
 
 private:
 	CE_Entity LoadFromDisk(const char* aFilePath);
@@ -37,6 +37,7 @@ private:
 	CE_World* myTemplateWorld;
 
 	CE_Map<int, CE_Entity> myTemplateEntityMap;
+	CE_Map<CE_String, CE_Entity> myEntityMap;
 };
 
 template<typename T>

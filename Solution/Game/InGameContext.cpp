@@ -130,7 +130,7 @@ void InGameContext::Render()
 
 void InGameContext::InitWorld()
 {
-	CE_Entity gatherer = myEntityFactory->InstansiateEntity(eEntityTypes::GATHERER);
+	CE_Entity gatherer = myEntityFactory->InstansiateEntity("gatherer");
 	TranslationComponent& gathererTranslate = myWorld->GetComponent<TranslationComponent>(gatherer);
 	gathererTranslate.myOrientation.SetPos(CE_Vector3f(6.5f, 1.f, 1.f));
 
@@ -146,20 +146,20 @@ void InGameContext::InitWorld()
 
 	for (int i = 0; i < 25; ++i)
 	{
-		CE_Entity nn_entity = myEntityFactory->InstansiateEntity(eEntityTypes::NN_ENTITY);
+		CE_Entity nn_entity = myEntityFactory->InstansiateEntity("nn_entity");
 		TranslationComponent& treeTranslate = myWorld->GetComponent<TranslationComponent>(nn_entity);
 		treeTranslate.myOrientation.SetPos(CE_Vector3f(CE_RandFloat() * 10.f, 0.f, CE_RandFloat() * 10.f));
 
 		myWorld->AddComponent<NeuralNetworkComponent>(nn_entity);
 	}
 
-	CE_Entity nn_target = myEntityFactory->InstansiateEntity(eEntityTypes::NN_TARGET);
+	CE_Entity nn_target = myEntityFactory->InstansiateEntity("nn_target");
 	TranslationComponent& nn_target_translate = myWorld->GetComponent<TranslationComponent>(nn_target);
 	nn_target_translate.myOrientation.SetPos(CE_Vector3f(5.f, 0.f, 5.f));
 
-	myPointLight = myEntityFactory->InstansiateEntity(eEntityTypes::POINT_LIGHT);
-	myPointLight1 = myEntityFactory->InstansiateEntity(eEntityTypes::POINT_LIGHT);
-	myPointLight2 = myEntityFactory->InstansiateEntity(eEntityTypes::POINT_LIGHT);
+	myPointLight = myEntityFactory->InstansiateEntity("point_light");
+	myPointLight1 = myEntityFactory->InstansiateEntity("point_light");
+	myPointLight2 = myEntityFactory->InstansiateEntity("point_light");
 }
 
 void InGameContext::InitGrid()
@@ -171,7 +171,7 @@ void InGameContext::InitGrid()
 		{
 			CE_Vector3f pos(static_cast<float>(x), -1.f, static_cast<float>(z));
 	
-			CE_Entity entity = myEntityFactory->InstansiateEntity(eEntityTypes::GROUND);
+			CE_Entity entity = myEntityFactory->InstansiateEntity("ground");
 			TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(entity);
 			translate.myOrientation.SetPos(pos);
 		}
@@ -192,7 +192,7 @@ void InGameContext::InitGrid()
 			realY += static_cast<float>(y) + y;
 
 			CE_Vector3f pos(realX, realY, z);
-			CE_Entity metalness = myEntityFactory->InstansiateEntity(eEntityTypes::SPHERE);
+			CE_Entity metalness = myEntityFactory->InstansiateEntity("sphere");
 			TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(metalness);
 			translate.myOrientation.SetPos(pos);
 			translate.myScale = 2.f;
@@ -207,49 +207,49 @@ void InGameContext::InitGrid()
 
 void InGameContext::InitWater()
 {
-	CE_Entity water = myEntityFactory->InstansiateEntity(eEntityTypes::RESOURCE_WATER);
+	CE_Entity water = myEntityFactory->InstansiateEntity("water");
 	TranslationComponent& waterTranslate1 = myWorld->GetComponent<TranslationComponent>(water);
 	waterTranslate1.myOrientation.SetPos(CE_Vector3f(5.f, 1.f, 5.f));
 
-	water = myEntityFactory->InstansiateEntity(eEntityTypes::RESOURCE_WATER);
+	water = myEntityFactory->InstansiateEntity("water");
 	TranslationComponent& waterTranslate2 = myWorld->GetComponent<TranslationComponent>(water);
 	waterTranslate2.myOrientation.SetPos(CE_Vector3f(5.f, 1.f, 4.f));
 
-	water = myEntityFactory->InstansiateEntity(eEntityTypes::RESOURCE_WATER);
+	water = myEntityFactory->InstansiateEntity("water");
 	TranslationComponent& waterTranslate3 = myWorld->GetComponent<TranslationComponent>(water);
 	waterTranslate3.myOrientation.SetPos(CE_Vector3f(4.f, 1.f, 4.f));
 }
 
 void InGameContext::InitStone()
 {
-	CE_Entity stone = myEntityFactory->InstansiateEntity(eEntityTypes::RESOURCE_STONE);
+	CE_Entity stone = myEntityFactory->InstansiateEntity("stone");
 	TranslationComponent& stoneTranslate1 = myWorld->GetComponent<TranslationComponent>(stone);
 	stoneTranslate1.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 5.f));
 
-	stone = myEntityFactory->InstansiateEntity(eEntityTypes::RESOURCE_STONE);
+	stone = myEntityFactory->InstansiateEntity("stone");
 	TranslationComponent& stoneTranslate2 = myWorld->GetComponent<TranslationComponent>(stone);
 	stoneTranslate2.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 4.f));
 
-	stone = myEntityFactory->InstansiateEntity(eEntityTypes::RESOURCE_STONE);
+	stone = myEntityFactory->InstansiateEntity("stone");
 	TranslationComponent& stoneTranslate3 = myWorld->GetComponent<TranslationComponent>(stone);
 	stoneTranslate3.myOrientation.SetPos(CE_Vector3f(2.f, 1.f, 4.f));
 }
 
 void InGameContext::InitStockpile()
 {
-	CE_Entity stockpile = myEntityFactory->InstansiateEntity(eEntityTypes::STOCKPILE);
+	CE_Entity stockpile = myEntityFactory->InstansiateEntity("stockpile");
 	TranslationComponent& stockpileTranslate1 = myWorld->GetComponent<TranslationComponent>(stockpile);
 	stockpileTranslate1.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 1.f));
 
-	stockpile = myEntityFactory->InstansiateEntity(eEntityTypes::STOCKPILE);
+	stockpile = myEntityFactory->InstansiateEntity("stockpile");
 	TranslationComponent& stockpileTranslate2 = myWorld->GetComponent<TranslationComponent>(stockpile);
 	stockpileTranslate2.myOrientation.SetPos(CE_Vector3f(1.f, 1.f, 2.f));
 
-	stockpile = myEntityFactory->InstansiateEntity(eEntityTypes::STOCKPILE);
+	stockpile = myEntityFactory->InstansiateEntity("stockpile");
 	TranslationComponent& stockpileTranslate3 = myWorld->GetComponent<TranslationComponent>(stockpile);
 	stockpileTranslate3.myOrientation.SetPos(CE_Vector3f(2.f, 1.f, 2.f));
 
-	stockpile = myEntityFactory->InstansiateEntity(eEntityTypes::STOCKPILE);
+	stockpile = myEntityFactory->InstansiateEntity("stockpile");
 	TranslationComponent& stockpileTranslate4 = myWorld->GetComponent<TranslationComponent>(stockpile);
 	stockpileTranslate4.myOrientation.SetPos(CE_Vector3f(2.f, 1.f, 1.f));
 }

@@ -15,6 +15,7 @@
 #include <CE_BTInitNode.h>
 #include <CE_BTSequenceNode.h>
 #include <CE_FileParser.h>
+#include <CE_FileSystem.h>
 
 #include "BT_FindStockpileNode.h"
 #include "BT_GatherResourceNode.h"
@@ -35,27 +36,18 @@ EntityFactory::~EntityFactory()
 
 void EntityFactory::LoadTemplateEntities()
 {
-	//TODO: Make all this load automatically instead..
-	myTemplateEntityMap[static_cast<int>(eEntityTypes::GROUND)] = LoadFromDisk("Data/Entities/ground.ce_entity");
-	myTemplateEntityMap[static_cast<int>(eEntityTypes::PLAYER)] = LoadFromDisk("Data/Entities/player.ce_entity");
-	myTemplateEntityMap[static_cast<int>(eEntityTypes::RESOURCE_STONE)] = LoadFromDisk("Data/Entities/stone_resource.ce_entity");
-	myTemplateEntityMap[static_cast<int>(eEntityTypes::RESOURCE_WATER)] = LoadFromDisk("Data/Entities/water_resource.ce_entity");
-	myTemplateEntityMap[static_cast<int>(eEntityTypes::GATHERER)] = LoadFromDisk("Data/Entities/gatherer.ce_entity");
-	myTemplateEntityMap[static_cast<int>(eEntityTypes::STOCKPILE)] = LoadFromDisk("Data/Entities/stockpile.ce_entity");
-	myTemplateEntityMap[static_cast<int>(eEntityTypes::SPHERE)] = LoadFromDisk("Data/Entities/sphere.ce_entity");
-	myTemplateEntityMap[static_cast<int>(eEntityTypes::TREE)] = LoadFromDisk("Data/Entities/tree.ce_entity");
-	myTemplateEntityMap[static_cast<int>(eEntityTypes::POINT_LIGHT)] = LoadFromDisk("Data/Entities/point_light.ce_entity");
-	myTemplateEntityMap[static_cast<int>(eEntityTypes::PROJECTILE)] = LoadFromDisk("Data/Entities/projectile.ce_entity");
-	myTemplateEntityMap[static_cast<int>(eEntityTypes::NN_ENTITY)] = LoadFromDisk("Data/Entities/nn_entity.ce_entity");
-	myTemplateEntityMap[static_cast<int>(eEntityTypes::NN_TARGET)] = LoadFromDisk("Data/Entities/nn_target.ce_entity");
+	CE_GrowingArray<CE_FileSystem::FileInfo> entityFiles;
+	CE_FileSystem::GetAllFilesFromDirectory("Data/Entities", entityFiles);
+
+	for (const CE_FileSystem::FileInfo& file : entityFiles)
+		myEntityMap[file.myFileNameNoExtention] = LoadFromDisk(file.myFilePath.c_str());
 }
 
-CE_Entity EntityFactory::InstansiateEntity(eEntityTypes anIdentifier)
+CE_Entity EntityFactory::InstansiateEntity(const CE_String& anIdentifier)
 {
-	int intID = static_cast<int>(anIdentifier);
-	CE_ASSERT(myTemplateEntityMap.KeyExists(intID), "Couldnt find Entity %i to Instansiate");
+	CE_ASSERT(myEntityMap.KeyExists(anIdentifier), "Couldnt find Entity %i to Instansiate");
 
-	CE_Entity templateEntity = myTemplateEntityMap[intID];
+	CE_Entity templateEntity = myEntityMap[anIdentifier];
 	CE_Entity newEntity = myRealWorld.CreateEmptyEntity();
 
 	CopyComponent<MovementComponent>(templateEntity, newEntity);
