@@ -201,6 +201,9 @@
     <ClCompile Include="CE_Matrix44.cpp">
       <Filter>Utility\Math</Filter>
     </ClCompile>
+    <ClCompile Include="CUI_Dropbox.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -209,23 +212,11 @@
     <Filter Include="Debug">
       <UniqueIdentifier>{db58d6fd-001a-403c-9c36-e66bc54f8f25}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DirectX">
-      <UniqueIdentifier>{4f59e534-afaa-4e7a-8b8a-61c5b3b05204}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Rendering">
       <UniqueIdentifier>{ff1c7d03-2fd7-4e4a-ac57-057201fa0b4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility">
-      <UniqueIdentifier>{388e8702-2b6e-47a9-b006-eedcda3bb55a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utility\Math">
-      <UniqueIdentifier>{6e9bd263-f256-4572-a822-769f92a2f3fa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Entity">
       <UniqueIdentifier>{3ec3f9b9-8d72-49c1-b37a-a9c4a11e2998}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utility\String">
-      <UniqueIdentifier>{76d545d5-1bd8-4bbb-962b-cf6b9983c125}</UniqueIdentifier>
     </Filter>
     <Filter Include="Rendering\RenderObjects">
       <UniqueIdentifier>{0890ffd0-75cd-4bdf-a876-34da2f40d7d7}</UniqueIdentifier>
@@ -238,9 +229,6 @@
     </Filter>
     <Filter Include="Rendering\Text">
       <UniqueIdentifier>{5bd03dcc-bc75-4eda-94f1-7d55dd48f625}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utility\Files">
-      <UniqueIdentifier>{70e53c6f-81ae-41e1-a7b2-e91af36d9bd9}</UniqueIdentifier>
     </Filter>
     <Filter Include="AI">
       <UniqueIdentifier>{c9255e17-687f-4dee-9510-64a1c801d060}</UniqueIdentifier>
@@ -283,6 +271,21 @@
     </Filter>
     <Filter Include="Physics\Intersection">
       <UniqueIdentifier>{400193ed-6855-48af-b297-09e5827c75b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DirectX">
+      <UniqueIdentifier>{4f59e534-afaa-4e7a-8b8a-61c5b3b05204}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{388e8702-2b6e-47a9-b006-eedcda3bb55a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Math">
+      <UniqueIdentifier>{6e9bd263-f256-4572-a822-769f92a2f3fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\String">
+      <UniqueIdentifier>{76d545d5-1bd8-4bbb-962b-cf6b9983c125}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Files">
+      <UniqueIdentifier>{70e53c6f-81ae-41e1-a7b2-e91af36d9bd9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -566,6 +569,9 @@
     </ClInclude>
     <ClInclude Include="CE_Matrix44.h">
       <Filter>Utility\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_Dropbox.h">
+      <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

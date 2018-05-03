@@ -17,6 +17,7 @@ public:
 	void PrepareLayout() override;
 
 	void SetText(const CE_String& aString);
+	const CE_String& GetText() const { return myString; }
 
 private:
 	const CE_Font& myFont;

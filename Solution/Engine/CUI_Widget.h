@@ -23,7 +23,7 @@ public:
 	virtual void OnMouseMove(const CE_Vector2f& aNewMousePosition, const CE_Vector2f& aOldMousePosition);
 
 	void Show() { myIsVisible = true; }
-	void Hide() { myIsVisible = false; }
+	void Hide() { myIsVisible = false; myIsFocused = false; myIsHovered = false; }
 	bool IsVisible() const { return myIsVisible; }
 
 	bool Contains(const CE_Vector2f& aPosition) const;

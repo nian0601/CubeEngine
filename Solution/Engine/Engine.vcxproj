@@ -183,6 +183,7 @@
     <ClCompile Include="CT_ToolModule.cpp" />
     <ClCompile Include="CUI_Button.cpp" />
     <ClCompile Include="CUI_Container.cpp" />
+    <ClCompile Include="CUI_Dropbox.cpp" />
     <ClCompile Include="CUI_HBox.cpp" />
     <ClCompile Include="CUI_Image.cpp" />
     <ClCompile Include="CUI_Label.cpp" />
@@ -280,6 +281,7 @@
     <ClInclude Include="CT_ToolModule.h" />
     <ClInclude Include="CUI_Button.h" />
     <ClInclude Include="CUI_Container.h" />
+    <ClInclude Include="CUI_Dropbox.h" />
     <ClInclude Include="CUI_HBox.h" />
     <ClInclude Include="CUI_Image.h" />
     <ClInclude Include="CUI_Label.h" />
