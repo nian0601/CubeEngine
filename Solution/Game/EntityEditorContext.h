@@ -6,6 +6,7 @@ class CUI_Manager;
 class CUI_TreeView;
 class CUI_ValueController;
 class CUI_HBox;
+class CUI_Widget;
 
 class CE_Input;
 class CE_Font;
@@ -16,6 +17,7 @@ class CT_ToolModule;
 
 struct RenderComponent;
 
+#include <CUI_Widget.h>
 
 class EntityEditorContext : public GameContext
 {
@@ -30,8 +32,12 @@ public:
 private:
 	void RenderGrid();
 
+	void SetupTestEntities();
 	void InitGUI();
-	
+	void BuildEntityDropbox();
+
+
+
 	void CreateRenderComponentWidget();
 	void AddRenderEntry();
 	CUI_TreeView* CreateVectorWidget(const char* aText, CE_Vector3f& aVector);
@@ -42,6 +48,8 @@ private:
 
 	void ModifyValueController(CUI_ValueController* aController, float aModifier);
 	void ClearRenderEntries();
+
+	void OnSelection(CUI_Widget* aWidget);
 
 	RenderComponent* myRenderComponent;
 

@@ -16,12 +16,15 @@
 #include <CUI_Label.h>
 #include <CUI_Button.h>
 #include <CUI_ValueController.h>
+#include <CUI_Dropbox.h>
+
 #include <CE_Window.h>
 
 #include <CT_Gizmo.h>
 #include <CT_ToolModule.h>
 
 #include <CE_DebugDraw.h>
+#include <CE_FileSystem.h>
 
 EntityEditorContext::EntityEditorContext()
 {
@@ -56,6 +59,7 @@ void EntityEditorContext::Init(CE_Engine& anEngine)
 
 	myToolModule = new CT_ToolModule(*camera, *myInput);
 	InitGUI();
+	SetupTestEntities();
 }
 
 void EntityEditorContext::Update(float aDelta)
@@ -107,33 +111,55 @@ void EntityEditorContext::RenderGrid()
 	}
 }
 
-void EntityEditorContext::InitGUI()
+void EntityEditorContext::SetupTestEntities()
 {
-	myTreeView = new CUI_TreeView(*myFont, "Components");
-	myTreeView->SetExpanded(true);
-
-	myUIManager = new CUI_Manager(*myInput);
-	myUIManager->AddWidget(myTreeView);
-
 	CE_Entity entity = myWorld->CreateEmptyEntity();
+	RenderComponent& renderComponent = myWorld->AddComponent<RenderComponent>(entity);
+	RenderComponent::Entry& entry = renderComponent.myEntries.Add();
+	entry.myScale = CE_Vector3f(1.f);
+	entry.myColor = CE_Vector4f(0.25f, 0.5f, 0.75f, 1.f);
+
 	TranslationComponent& translation = myWorld->AddComponent<TranslationComponent>(entity);
-
-	myRenderComponent = &myWorld->AddComponent<RenderComponent>(entity);
-	myRenderComponent->myEntries.Respace(128);
-	CreateRenderComponentWidget();
-
 	myToolModule->AddToolEntity(entity, &translation.myOrientation, &translation.myScale);
 
 	CE_Entity entity2 = myWorld->CreateEmptyEntity();
+	RenderComponent& renderComponent2 = myWorld->AddComponent<RenderComponent>(entity2);
+	RenderComponent::Entry& entry2 = renderComponent2.myEntries.Add();
+	entry2.myScale = CE_Vector3f(1.f);
+	entry2.myColor = CE_Vector4f(0.75f, 0.5f, 0.75f, 1.f);
+
 	TranslationComponent& translation2 = myWorld->AddComponent<TranslationComponent>(entity2);
 	translation2.myOrientation.SetPos(2.f, 0.f, 0.f);
-
-	RenderComponent& renderComponent = myWorld->AddComponent<RenderComponent>(entity2);
-	RenderComponent::Entry& entry = renderComponent.myEntries.Add();
-	entry.myScale = CE_Vector3f(1.f);
-	entry.myColor = CE_Vector4f(0.75f, 0.5f, 0.75f, 1.f);
-
 	myToolModule->AddToolEntity(entity2, &translation2.myOrientation, &translation2.myScale);
+}
+
+void EntityEditorContext::InitGUI()
+{
+	//myTreeView = new CUI_TreeView(*myFont, "Components");
+	//myTreeView->SetExpanded(true);
+	//myUIManager->AddWidget(myTreeView);
+	//CE_Entity entity = myWorld->CreateEmptyEntity();
+	//myWorld->AddComponent<TranslationComponent>(entity);
+	//myRenderComponent = &myWorld->AddComponent<RenderComponent>(entity);
+	//myRenderComponent->myEntries.Respace(128);
+	//CreateRenderComponentWidget()
+
+	BuildEntityDropbox();
+}
+
+void EntityEditorContext::BuildEntityDropbox()
+{
+	CE_GrowingArray<CE_FileSystem::FileInfo> entityFiles;
+	CE_FileSystem::GetAllFilesFromDirectory("Data/Entities", entityFiles);
+
+	CUI_Dropbox* dropbox = new CUI_Dropbox(*myFont, "Entities");
+	for (const CE_FileSystem::FileInfo& file : entityFiles)
+		dropbox->AddLabel(file.myFileNameNoExtention.c_str());
+
+	dropbox->myOnSelection = std::bind(&EntityEditorContext::OnSelection, this, std::placeholders::_1);
+
+	myUIManager = new CUI_Manager(*myInput);
+	myUIManager->AddWidget(dropbox);
 }
 
 void EntityEditorContext::CreateRenderComponentWidget()
@@ -236,4 +262,11 @@ void EntityEditorContext::ClearRenderEntries()
 {
 	myRenderComponentView->DeleteChildren(2);
 	myRenderComponent->myEntries.RemoveAll();
+}
+
+void EntityEditorContext::OnSelection(CUI_Widget* aWidget)
+{
+	CUI_Label* label = static_cast<CUI_Label*>(aWidget);
+	const CE_String& text = label->GetText();
+	text;
 }
