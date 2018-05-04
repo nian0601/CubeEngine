@@ -5,28 +5,13 @@
 
 #include <WinUser.h>
 
+#define LOW_PART(l) ((unsigned short)(((unsigned long)(l)) & 0xffff))
+#define HIGH_PART(l) ((unsigned short)((((unsigned long)(l)) >> 16) & 0xffff))
+
 static MSG CE_WindowManager_EventMsg;
 LRESULT CALLBACK CE_WindowManager_StaticWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	CE_WindowManager* windowManager = CE_WindowManager::GetInstance();
-	//if (message == WM_NCCREATE)
-	//{
-	//	windowManager = static_cast<CE_WindowManager*>(reinterpret_cast<CREATESTRUCT*>(lParam)->lpCreateParams);
-	//	SetLastError(0);
-	//
-	//	if (!SetWindowLongPtr(hWnd, GWL_USERDATA, reinterpret_cast<LONG_PTR>(windowManager)))
-	//	{
-	//		if (GetLastError() != 0)
-	//		{
-	//			CE_ASSERT_ALWAYS("Failed to setup WndProc");
-	//			return FALSE;
-	//		}
-	//	}
-	//}
-	//else
-	//{
-	//	windowManager = reinterpret_cast<CE_WindowManager*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
-	//}
 
 	const CE_GrowingArray<CE_Window*>& windows = windowManager->GetWindows();
 	CE_Window* currentWindow = nullptr;
@@ -51,14 +36,19 @@ LRESULT CALLBACK CE_WindowManager_StaticWndProc(HWND hWnd, UINT message, WPARAM 
 		case WM_SIZE:			msg.myType = CE_WindowMessage::SIZE; break;
 		case WM_ENTERSIZEMOVE:	msg.myType = CE_WindowMessage::ENTER_SIZE_MOVE; break;
 		case WM_EXITSIZEMOVE:	msg.myType = CE_WindowMessage::EXIT_SIZE_MOVE; break;
+		case WM_CHAR:			msg.myType = CE_WindowMessage::CHARACTER; break;
 		}
 
 		if (msg.myType != CE_WindowMessage::NONE)
 		{
-			msg.myLowWordLParam = LOWORD(lParam);
-			msg.myHighWordLParam = HIWORD(lParam);
-			msg.myLowWordWParam = LOWORD(wParam);
-			msg.myHighWordWParam = HIWORD(wParam);
+			msg.myLParams = lParam;
+			msg.myWParams = wParam;
+
+			msg.myLParts.myLow = LOW_PART(msg.myLParams);
+			msg.myLParts.myHigh = HIGH_PART(msg.myLParams);
+
+			msg.myWParts.myLow = LOW_PART(msg.myWParams);
+			msg.myWParts.myHigh = HIGH_PART(msg.myWParams);
 
 			windowManager->HandleWindowMessage(currentWindow, msg);
 			return 0;
@@ -111,25 +101,18 @@ void CE_WindowManager::HandleWindowMessage(CE_Window* aWindow, const CE_WindowMe
 {
 	switch (aMessage.myType)
 	{
-	case CE_WindowMessage::PAINT:
-		PAINTSTRUCT ps;
-		BeginPaint(aWindow->GetHWND(), &ps);
-		EndPaint(aWindow->GetHWND(), &ps);
-		break;
 	case CE_WindowMessage::DESTROY:
 		PostQuitMessage(0);
-		break;
-	case CE_WindowMessage::ACTIVATE:
-		break;
-	case CE_WindowMessage::SIZE:
-		//int newX = aMessage.myLowWordLParam;
-		//int newY = aMessage.myHighWordLParam;
-		break;
-	case CE_WindowMessage::ENTER_SIZE_MOVE:
-		break;
-	case CE_WindowMessage::EXIT_SIZE_MOVE:
-		break;
+		return;
+	case CE_WindowMessage::CHARACTER:
+		if (!aWindow->HandleMessage(aMessage))
+		{
+			//Feed it into inputmanager
+		}
+		return;
 	}
+
+	aWindow->HandleMessage(aMessage);
 }
 
 CE_WindowManager::CE_WindowManager(CE_GPUContext& aGPUContext)

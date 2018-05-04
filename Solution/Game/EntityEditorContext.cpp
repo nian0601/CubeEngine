@@ -45,7 +45,6 @@ EntityEditorContext::EntityEditorContext()
 EntityEditorContext::~EntityEditorContext()
 {
 	CE_SAFE_DELETE(myToolModule);
-	CE_SAFE_DELETE(myUIManager);
 }
 
 void EntityEditorContext::Init(CE_Engine& anEngine)
@@ -55,6 +54,7 @@ void EntityEditorContext::Init(CE_Engine& anEngine)
 	camera->SetPosition(CE_Vector3f(0.f, 10.f, -5.f));
 	camera->Rotate(CE_Matrix44f::CreateRotateAroundX(3.14f * 0.30f));
 
+	myUIManager = &mainWindow.GetUIManager();
 	myInput = &anEngine.GetInput();
 	myRendererProxy = &anEngine.GetRendererProxy();
 
@@ -78,7 +78,6 @@ void EntityEditorContext::Update(float aDelta)
 {
 	myToolModule->Update(aDelta);
 	myWorld->Update(aDelta);
-	myUIManager->Update();
 }
 
 void EntityEditorContext::Render()
@@ -86,7 +85,6 @@ void EntityEditorContext::Render()
 	RenderGrid();
 
 	myToolModule->Render(*myRendererProxy);
-	myUIManager->Render(*myRendererProxy);
 }
 
 void EntityEditorContext::RenderGrid()
@@ -170,7 +168,6 @@ void EntityEditorContext::BuildEntityDropbox()
 
 	dropbox->myOnSelection = std::bind(&EntityEditorContext::OnSelection, this, std::placeholders::_1);
 
-	myUIManager = new CUI_Manager(*myInput);
 	myUIManager->AddWidget(dropbox);
 }
 

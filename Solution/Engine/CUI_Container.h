@@ -10,6 +10,7 @@ public:
 	virtual void OnMouseDown(const CE_Vector2f& aMousePosition) override;
 	virtual bool OnMouseUp(const CE_Vector2f& aMousePosition) override;
 	virtual void OnMouseMove(const CE_Vector2f& aNewMousePosition, const CE_Vector2f& aOldMousePosition) override;
+	virtual bool OnTextInput(const CE_WindowMessage& aMessage);
 
 	void AddWidget(CUI_Widget* aWidget) { myWidgets.Add(aWidget); }
 	

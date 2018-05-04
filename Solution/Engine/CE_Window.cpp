@@ -8,6 +8,8 @@
 #include "CE_SwapChain.h"
 #include "CE_Camera.h"
 
+#include "CUI_Manager.h"
+
 CE_Window::CE_Window(const CE_Vector2i& aSize, const char* aTitle, CE_WindowManager* aWindowManager, WNDPROC aWinProc)
 {
 	myWindowManager = aWindowManager;
@@ -55,11 +57,14 @@ CE_Window::CE_Window(const CE_Vector2i& aSize, const char* aTitle, CE_WindowMana
 	myRendererProxy = new CE_RendererProxy();
 	myCamera = new CE_Camera(myWindowSize);
 	mySwapChain = new CE_SwapChain(myWindowManager->GetGPUContext(), myWindowSize, myHWND);
+
+	myUIManager = new CUI_Manager();
 }
 
 
 CE_Window::~CE_Window()
 {
+	CE_SAFE_DELETE(myUIManager);
 	CE_SAFE_DELETE(mySwapChain);
 	CE_SAFE_DELETE(myCamera);
 	CE_SAFE_DELETE(myRendererProxy);
@@ -70,10 +75,39 @@ void CE_Window::PrepareForRender()
 	mySwapChain->PrepareForRender();
 }
 
+void CE_Window::ProcessUI(const CE_Input& someInput)
+{
+	myUIManager->Update(someInput);
+	myUIManager->Render(*myRendererProxy);
+}
+
 void CE_Window::FinishRender()
 {
 	mySwapChain->FinishRender();
 	myRendererProxy->Clear();
+}
+
+bool CE_Window::HandleMessage(const CE_WindowMessage& aMessage)
+{
+	switch (aMessage.myType)
+	{
+		case CE_WindowMessage::PAINT:
+		{
+			PAINTSTRUCT ps;
+			BeginPaint(myHWND, &ps);
+			EndPaint(myHWND, &ps);
+			return true;
+		}
+		case CE_WindowMessage::SIZE:
+		{
+			int newX = aMessage.myLParts.myLow;
+			int newY = aMessage.myLParts.myHigh;
+			newX;
+			newY;
+			return true;
+		}
+	}
+	return myUIManager->OnWindowMessage(aMessage);
 }
 
 CE_Texture* CE_Window::GetBackbuffer()

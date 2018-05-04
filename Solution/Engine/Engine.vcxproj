@@ -273,6 +273,7 @@
     <ClInclude Include="CE_GPUBuffer.h" />
     <ClInclude Include="CE_VertexShader.h" />
     <ClInclude Include="CE_Window.h" />
+    <ClInclude Include="CE_WindowMessage.h" />
     <ClInclude Include="CPY_AABB.h" />
     <ClInclude Include="CPY_Intersection.h" />
     <ClInclude Include="CPY_Line3D.h" />

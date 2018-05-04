@@ -1,4 +1,7 @@
 #pragma once
+
+struct CE_WindowMessage;
+
 class CE_RendererProxy;
 class CUI_Widget
 {
@@ -21,12 +24,15 @@ public:
 	virtual void OnMouseExit() { myIsHovered = false; };
 
 	virtual void OnMouseMove(const CE_Vector2f& aNewMousePosition, const CE_Vector2f& aOldMousePosition);
+	virtual bool OnTextInput(const CE_WindowMessage& aMessage) { aMessage; return false; }
 
 	void Show() { myIsVisible = true; }
 	void Hide() { myIsVisible = false; myIsFocused = false; myIsHovered = false; }
 	bool IsVisible() const { return myIsVisible; }
 
 	bool Contains(const CE_Vector2f& aPosition) const;
+
+	bool OnWindowMessage(const CE_WindowMessage& aMessage);
 
 protected:
 	CUI_Widget() 

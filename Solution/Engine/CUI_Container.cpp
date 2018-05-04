@@ -44,3 +44,14 @@ void CUI_Container::DeleteAllChildren()
 {
 	myWidgets.DeleteAll();
 }
+
+bool CUI_Container::OnTextInput(const CE_WindowMessage& aMessage)
+{
+	for (CUI_Widget* widget : myWidgets)
+	{
+		if (widget->OnTextInput(aMessage))
+			return true;
+	}
+
+	return CUI_Widget::OnTextInput(aMessage);
+}

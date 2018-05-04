@@ -84,6 +84,8 @@ void CE_Engine::Run()
 		{
 			CE_Camera* camera = window->GetCamera();
 			camera->Update();
+			window->ProcessUI(*myInput);
+
 			window->PrepareForRender();
 
 			myRenderer->UpdateConstantBuffers(*camera);

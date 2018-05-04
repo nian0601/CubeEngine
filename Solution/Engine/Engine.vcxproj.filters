@@ -80,12 +80,6 @@
     <ClCompile Include="CUI_ValueController.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="CE_Window.cpp">
-      <Filter>DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="CE_WindowManager.cpp">
-      <Filter>DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="CE_FileParser.cpp">
       <Filter>Utility\Files</Filter>
     </ClCompile>
@@ -204,6 +198,12 @@
     <ClCompile Include="CUI_Dropbox.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="CE_WindowManager.cpp">
+      <Filter>DirectX\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_Window.cpp">
+      <Filter>DirectX\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -286,6 +286,9 @@
     </Filter>
     <Filter Include="Utility\Files">
       <UniqueIdentifier>{70e53c6f-81ae-41e1-a7b2-e91af36d9bd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DirectX\Windows">
+      <UniqueIdentifier>{9c2cda16-f93c-4863-b3c3-22d2bb35718c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -418,12 +421,6 @@
     </ClInclude>
     <ClInclude Include="CUI_ValueController.h">
       <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_Window.h">
-      <Filter>DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_WindowManager.h">
-      <Filter>DirectX</Filter>
     </ClInclude>
     <ClInclude Include="CE_FileParser.h">
       <Filter>Utility\Files</Filter>
@@ -572,6 +569,15 @@
     </ClInclude>
     <ClInclude Include="CUI_Dropbox.h">
       <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_WindowManager.h">
+      <Filter>DirectX\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Window.h">
+      <Filter>DirectX\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_WindowMessage.h">
+      <Filter>DirectX\Windows</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

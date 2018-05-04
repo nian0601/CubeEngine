@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CUI_Widget.h"
+#include "CE_WindowMessage.h"
 
 void CUI_Widget::SetPosition(const CE_Vector2f& aPosition)
 {
@@ -63,4 +64,12 @@ bool CUI_Widget::Contains(const CE_Vector2f& aPosition) const
 	if (myPosition.y + mySize.y < aPosition.y) return false;
 
 	return true;
+}
+
+bool CUI_Widget::OnWindowMessage(const CE_WindowMessage& aMessage)
+{
+	if (aMessage.myType == CE_WindowMessage::CHARACTER)
+		return OnTextInput(aMessage);
+
+	return false;
 }
