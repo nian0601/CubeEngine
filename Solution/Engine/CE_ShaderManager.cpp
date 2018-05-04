@@ -47,8 +47,8 @@ void CE_ShaderManager::Update()
 {
 	if (CE_FileSystem::UpdateFileInfo(myFiles))
 	{
+		Sleep(200);
 		for (CE_GenericShader* shader : myShaders)
 			shader->Reload();
-		
 	}
 }
