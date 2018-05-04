@@ -66,14 +66,7 @@ void CE_DirextXFactory::SetDepthStencilState(CE_DepthState anState)
 void CE_DirextXFactory::SetBlendState(CE_BlendState anState)
 {
 	myCurrentBlendState = anState;
-
-	float blendFactor[4];
-	blendFactor[0] = 0.f;
-	blendFactor[1] = 0.f;
-	blendFactor[2] = 0.f;
-	blendFactor[3] = 0.f;
-
-	myContext->OMSetBlendState(myBlendStates[anState], blendFactor, 0xFFFFFFFF);
+	myContext->OMSetBlendState(myBlendStates[anState], NULL, 0xFFFFFFFF);
 }
 
 CE_DirextXFactory::CE_DirextXFactory(ID3D11Device* aDevice, ID3D11DeviceContext* aContext)
@@ -198,7 +191,7 @@ void CE_DirextXFactory::SetupBlendStates()
 	blendDesc.AlphaToCoverageEnable = true;
 	blendDesc.IndependentBlendEnable = false;
 	blendDesc.RenderTarget[0].BlendEnable = TRUE;
-	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
 	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
 	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
