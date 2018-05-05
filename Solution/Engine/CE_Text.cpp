@@ -167,7 +167,10 @@ void CE_Text::SetText(const CE_String& aString)
 	VertexType vert;
 	for (int i = 0; i < numOfLetters; ++i)
 	{
-		CE_CharData charData = myFont->GetCharData(aString[i]);
+		CE_CharData charData;
+		if (!myFont->GetCharData(aString[i], charData))
+			continue;
+
 		if (charData.myHeight > height)
 			height = static_cast<float>(charData.myHeight);
 

@@ -30,7 +30,7 @@ public:
 
 	void LoadFromFile(const CE_String& aFilePath, CE_GPUContext& aContext);
 
-	const CE_CharData& GetCharData(char aCharacter) const;
+	bool GetCharData(char aCharacter, CE_CharData& aOutData) const;
 	CE_Texture* GetTexture() { return myTexture; }
 
 	float GetScale() const { return myScale; }

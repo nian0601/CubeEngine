@@ -83,13 +83,16 @@ void CE_Font::LoadFromFile(const CE_String& aFilePath, CE_GPUContext& aContext)
 	}
 }
 
-const CE_CharData& CE_Font::GetCharData(char aCharacter) const
+bool CE_Font::GetCharData(char aCharacter, CE_CharData& aOutData) const
 {
 	if (myCharacters.KeyExists(aCharacter))
-		return myCharacters.Get(aCharacter);
+	{
+		aOutData = myCharacters.Get(aCharacter);
+		return true;
+	}
 
-	CE_ASSERT_ALWAYS("Failed to GetCharData from Font");
-	return myEmptyCharData;
+	CE_ERROR("No CharData for %i", aCharacter);
+	return false;
 }
 
 CE_Vector2f CE_Font::GetSize(const CE_String& aString) const
@@ -98,8 +101,9 @@ CE_Vector2f CE_Font::GetSize(const CE_String& aString) const
 
 	for (int i = 0; i < aString.Lenght()+1; ++i)
 	{
-		const CE_CharData& data = GetCharData(aString[i]);
-		size.x += data.myXAdvance * myScale;
+		CE_CharData data;
+		if(GetCharData(aString[i], data))
+			size.x += data.myXAdvance * myScale;
 	}
 
 	size.y = GetMaxHeight();
