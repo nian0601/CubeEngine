@@ -51,6 +51,7 @@ CE_String CE_CharData::LoadToken(const CE_String& aLine, const CE_String& aToken
 CE_Font::CE_Font()
 	: myScale(0.33f)
 {
+	CE_ZERO_MEMORY(myEmptyCharData);
 }
 
 void CE_Font::LoadFromFile(const CE_String& aFilePath, CE_GPUContext& aContext)
@@ -83,11 +84,13 @@ void CE_Font::LoadFromFile(const CE_String& aFilePath, CE_GPUContext& aContext)
 	}
 }
 
-bool CE_Font::GetCharData(char aCharacter, CE_CharData& aOutData) const
+bool CE_Font::GetCharData(char aCharacter, CE_CharData* aOutData) const
 {
 	if (myCharacters.KeyExists(aCharacter))
 	{
-		aOutData = myCharacters.Get(aCharacter);
+		if (aOutData)
+			*aOutData = myCharacters.Get(aCharacter);
+
 		return true;
 	}
 
@@ -102,7 +105,7 @@ CE_Vector2f CE_Font::GetSize(const CE_String& aString) const
 	for (int i = 0; i < aString.Lenght()+1; ++i)
 	{
 		CE_CharData data;
-		if(GetCharData(aString[i], data))
+		if(GetCharData(aString[i], &data))
 			size.x += data.myXAdvance * myScale;
 	}
 

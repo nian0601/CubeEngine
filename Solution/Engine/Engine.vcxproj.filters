@@ -204,6 +204,9 @@
     <ClCompile Include="CE_Window.cpp">
       <Filter>DirectX\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="CUI_EditBox.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -578,6 +581,9 @@
     </ClInclude>
     <ClInclude Include="CE_WindowMessage.h">
       <Filter>DirectX\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_EditBox.h">
+      <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

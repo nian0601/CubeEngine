@@ -17,10 +17,10 @@ void CUI_Widget::OnMouseDown(const CE_Vector2f& aMousePosition)
 	if (!myIsVisible)
 		return;
 
-	myIsFocused = false;
+	myHasLongPress = false;
 	if (Contains(aMousePosition))
 	{
-		myIsFocused = true;
+		myHasLongPress = true;
 	}
 }
 
@@ -29,13 +29,17 @@ bool CUI_Widget::OnMouseUp(const CE_Vector2f& aMousePosition)
 	if (!myIsVisible)
 		return false;
 
-	if (!myIsFocused)
-		return false;
-
 	myIsFocused = false;
 
+	if (!myHasLongPress)
+		return false;
+
+	myHasLongPress = false;
 	if (Contains(aMousePosition))
 	{
+		if(CanBeFocused())
+			myIsFocused = true;
+
 		return OnClick();
 	}
 

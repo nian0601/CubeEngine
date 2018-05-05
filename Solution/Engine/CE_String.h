@@ -50,6 +50,7 @@ public:
 	unsigned int GetHash() const;
 
 	void Clear();
+	void RemoveOne();
 
 private:
 	void UpdateHash();
@@ -452,6 +453,14 @@ inline void CE_String::Clear()
 		myData[i] = NullTermination;
 
 	myCurrentSize = 0;
+}
+
+inline void CE_String::RemoveOne()
+{
+	if (myCurrentSize <= 0)
+		return;
+
+	myCurrentSize -= 1;
 }
 
 inline void CE_String::UpdateHash()

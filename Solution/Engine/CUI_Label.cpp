@@ -39,7 +39,7 @@ CUI_Label::~CUI_Label()
 void CUI_Label::Render(CE_RendererProxy& anRendererProxy)
 {
 	CE_Vector4f color = myColor;
-	if (myIsFocused)
+	if (myHasLongPress)
 		color = CE_Vector4f(0.f, 1.f, 0.f, 1.f);
 	else if (myIsHovered)
 		color = CE_Vector4f(0.f, 0.f, 1.f, 1.f);

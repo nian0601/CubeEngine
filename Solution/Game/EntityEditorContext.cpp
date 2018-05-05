@@ -17,6 +17,7 @@
 #include <CUI_Button.h>
 #include <CUI_ValueController.h>
 #include <CUI_Dropbox.h>
+#include <CUI_EditBox.h>
 
 #include <CE_Window.h>
 
@@ -169,6 +170,15 @@ void EntityEditorContext::BuildEntityDropbox()
 	dropbox->myOnSelection = std::bind(&EntityEditorContext::OnSelection, this, std::placeholders::_1);
 
 	myUIManager->AddWidget(dropbox);
+
+	CUI_HBox* saveBox = new CUI_HBox();
+	myEditbox = new CUI_EditBox(*myFont, 256.f);
+	CUI_Button* saveButton = new CUI_Button(*myFont, "Save Level");
+	saveButton->myOnClick = std::bind(&EntityEditorContext::OnSaveLevel, this);
+
+	saveBox->AddWidget(myEditbox);
+	saveBox->AddWidget(saveButton);
+	myUIManager->AddWidget(saveBox);
 }
 
 void EntityEditorContext::CreateRenderComponentWidget()
@@ -284,4 +294,11 @@ void EntityEditorContext::OnSelection(CUI_Widget* aWidget)
 		TranslationComponent& translation = myWorld->GetComponent<TranslationComponent>(entity);
 		myToolModule->AddToolEntity(entity, &translation.myOrientation, &translation.myScale);
 	}
+}
+
+void EntityEditorContext::OnSaveLevel()
+{
+	const CE_String& name = myEditbox->GetText();
+	name;
+	myEditbox->SetText("");
 }

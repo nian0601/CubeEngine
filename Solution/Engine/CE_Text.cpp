@@ -168,7 +168,7 @@ void CE_Text::SetText(const CE_String& aString)
 	for (int i = 0; i < numOfLetters; ++i)
 	{
 		CE_CharData charData;
-		if (!myFont->GetCharData(aString[i], charData))
+		if (!myFont->GetCharData(aString[i], &charData))
 			continue;
 
 		if (charData.myHeight > height)
@@ -219,7 +219,8 @@ void CE_Text::SetText(const CE_String& aString)
 	myVertexCount = vertices.Size();
 	myIndexCount = indices.Size();
 
-	SetupVertexAndIndexBuffers(vertices.GetArrayAsPointer(), indices.GetArrayAsPointer());
+	if(myVertexCount > 0)
+		SetupVertexAndIndexBuffers(vertices.GetArrayAsPointer(), indices.GetArrayAsPointer());
 }
 
 void CE_Text::SetupObjectBuffer()

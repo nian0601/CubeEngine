@@ -19,7 +19,7 @@ public:
 	void SetText(const CE_String& aString);
 	const CE_String& GetText() const { return myString; }
 
-private:
+protected:
 	const CE_Font& myFont;
 	CE_String myString;
 	CUI_ValueController* myValueController;

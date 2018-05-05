@@ -7,6 +7,7 @@ class CUI_TreeView;
 class CUI_ValueController;
 class CUI_HBox;
 class CUI_Widget;
+class CUI_EditBox;
 
 class CE_Input;
 class CE_Font;
@@ -52,6 +53,7 @@ private:
 	void ClearRenderEntries();
 
 	void OnSelection(CUI_Widget* aWidget);
+	void OnSaveLevel();
 
 	RenderComponent* myRenderComponent;
 
@@ -69,5 +71,6 @@ private:
 	int myNumEntries;
 
 	CT_ToolModule* myToolModule;
+	CUI_EditBox* myEditbox;
 };
 

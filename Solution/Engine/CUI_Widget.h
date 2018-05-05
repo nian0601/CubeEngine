@@ -17,7 +17,8 @@ public:
 	virtual void SetPosition(const CE_Vector2f& aPosition);
 	virtual void SetSize(const CE_Vector2f& aSize);
 
-	virtual bool OnClick() { return false; };
+	virtual bool OnClick() { return false; }
+
 	virtual void OnMouseDown(const CE_Vector2f& aMousePosition);
 	virtual bool OnMouseUp(const CE_Vector2f& aMousePosition);
 	virtual void OnMouseEnter() { myIsHovered = true; };
@@ -27,8 +28,11 @@ public:
 	virtual bool OnTextInput(const CE_WindowMessage& aMessage) { aMessage; return false; }
 
 	void Show() { myIsVisible = true; }
-	void Hide() { myIsVisible = false; myIsFocused = false; myIsHovered = false; }
+	void Hide() { myIsVisible = false; myHasLongPress = false; myIsHovered = false; myIsFocused = false; }
 	bool IsVisible() const { return myIsVisible; }
+	bool IsFocused() const { return myIsFocused; }
+
+	virtual bool CanBeFocused() const { return false; }
 
 	bool Contains(const CE_Vector2f& aPosition) const;
 
@@ -37,8 +41,9 @@ public:
 protected:
 	CUI_Widget() 
 		: myIsVisible(true)
-		, myIsFocused(false)
+		, myHasLongPress(false)
 		, myIsHovered(false)
+		, myIsFocused(false)
 	{};
 
 	CE_Vector2f myPosition;
@@ -47,6 +52,7 @@ protected:
 	CE_Vector2f myWindowSize;
 
 	bool myIsVisible;
-	bool myIsFocused;
+	bool myHasLongPress;
 	bool myIsHovered;
+	bool myIsFocused;
 };
