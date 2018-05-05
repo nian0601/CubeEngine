@@ -11,6 +11,7 @@ public:
 	static CE_DebugLogger* GetInstance();
 
 	void Assert(char* aFile, char* aFunction, int aLine, const char* aFormattedString, ...);
+	void LogError(char* aFile, char* aFunction, int aLine, const char* aFormattedString, ...);
 
 private:
 	CE_DebugLogger();

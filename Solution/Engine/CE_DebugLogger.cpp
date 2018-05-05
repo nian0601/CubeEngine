@@ -52,6 +52,14 @@ void CE_DebugLogger::Assert(char* aFile, char* aFunction, int aLine, const char*
 	*assertPtr = 1;
 }
 
+void CE_DebugLogger::LogError(char* aFile, char* aFunction, int aLine, const char* aFormattedString, ...)
+{
+	aFile;
+	aFunction;
+	aLine;
+	aFormattedString;
+}
+
 CE_DebugLogger::CE_DebugLogger()
 {
 	time_t now = time(0);

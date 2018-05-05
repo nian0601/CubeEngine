@@ -16,3 +16,5 @@ if(!(anExpression)) \
 #define CE_CT_ASSERT(anExpression, aMessage) static_assert(anExpression, aMessage);
 
 #define CE_ARRAY_BOUNDS_CHECK
+
+#define CE_ERROR(...) CE_DebugLogger::GetInstance()->LogError(__FILE__, __FUNCTION__, __LINE__, __VA_ARGS__);
