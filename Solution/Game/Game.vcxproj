@@ -143,6 +143,7 @@
     <ClInclude Include="InGameContext.h" />
     <ClInclude Include="InputProcessor.h" />
     <ClInclude Include="InputSingletonComponent.h" />
+    <ClInclude Include="LevelEditorContext.h" />
     <ClInclude Include="LifetimeComponent.h" />
     <ClInclude Include="LifetimeProcessor.h" />
     <ClInclude Include="MovementComponent.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="EntityEditorContext.cpp" />
     <ClCompile Include="InGameContext.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
+    <ClCompile Include="LevelEditorContext.cpp" />
     <ClCompile Include="LifetimeProcessor.cpp" />
     <ClCompile Include="MovementProcessor.cpp" />
     <ClCompile Include="NeuralNetworkProcessor.cpp" />

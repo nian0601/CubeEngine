@@ -45,7 +45,6 @@ EntityEditorContext::EntityEditorContext()
 
 EntityEditorContext::~EntityEditorContext()
 {
-	CE_SAFE_DELETE(myToolModule);
 }
 
 void EntityEditorContext::Init(CE_Engine& anEngine)
@@ -70,22 +69,17 @@ void EntityEditorContext::Init(CE_Engine& anEngine)
 
 	myNumEntries = 0;
 
-	myToolModule = new CT_ToolModule(*camera, *myInput);
 	InitGUI();
-	SetupTestEntities();
 }
 
 void EntityEditorContext::Update(float aDelta)
 {
-	myToolModule->Update(aDelta);
 	myWorld->Update(aDelta);
 }
 
 void EntityEditorContext::Render()
 {
 	RenderGrid();
-
-	myToolModule->Render(*myRendererProxy);
 }
 
 void EntityEditorContext::RenderGrid()
@@ -94,11 +88,11 @@ void EntityEditorContext::RenderGrid()
 	const float halfCellSize = cellSize * 0.5f;
 	const int numPerSide = 11;
 	const CE_Vector4f color(0.3f, 0.3f, 0.3f, 1.f);
-	
+
 	int startX = -numPerSide / 2;
 	int endX = numPerSide / 2;
 
-	int startZ= -numPerSide / 2;
+	int startZ = -numPerSide / 2;
 	int endZ = numPerSide / 2;
 
 	for (int z = startZ; z < endZ; ++z)
@@ -106,13 +100,13 @@ void EntityEditorContext::RenderGrid()
 		for (int x = startX; x < endX; ++x)
 		{
 			CE_Vector3f horizontal1(x * cellSize + halfCellSize, 0.f, z * cellSize + halfCellSize);
-	
+
 			if (x < endX - 1)
 			{
 				CE_Vector3f horizontal2((x + 1) * cellSize + halfCellSize, 0.f, z * cellSize + halfCellSize);
 				CE_DRAW_LINE_COLOR(horizontal1, horizontal2, color);
 			}
-	
+
 			if (z < endZ - 1)
 			{
 				CE_Vector3f verticalPos(x * cellSize + halfCellSize, 0.f, (z + 1) * cellSize + halfCellSize);
@@ -122,64 +116,18 @@ void EntityEditorContext::RenderGrid()
 	}
 }
 
-void EntityEditorContext::SetupTestEntities()
-{
-	CE_Entity entity = myWorld->CreateEmptyEntity();
-	RenderComponent& renderComponent = myWorld->AddComponent<RenderComponent>(entity);
-	RenderComponent::Entry& entry = renderComponent.myEntries.Add();
-	entry.myScale = CE_Vector3f(1.f);
-	entry.myColor = CE_Vector4f(0.25f, 0.5f, 0.75f, 1.f);
-
-	TranslationComponent& translation = myWorld->AddComponent<TranslationComponent>(entity);
-	myToolModule->AddToolEntity(entity, &translation.myOrientation, &translation.myScale);
-
-	CE_Entity entity2 = myWorld->CreateEmptyEntity();
-	RenderComponent& renderComponent2 = myWorld->AddComponent<RenderComponent>(entity2);
-	RenderComponent::Entry& entry2 = renderComponent2.myEntries.Add();
-	entry2.myScale = CE_Vector3f(1.f);
-	entry2.myColor = CE_Vector4f(0.75f, 0.5f, 0.75f, 1.f);
-
-	TranslationComponent& translation2 = myWorld->AddComponent<TranslationComponent>(entity2);
-	translation2.myOrientation.SetPos(2.f, 0.f, 0.f);
-	myToolModule->AddToolEntity(entity2, &translation2.myOrientation, &translation2.myScale);
-}
-
 void EntityEditorContext::InitGUI()
 {
-	//myTreeView = new CUI_TreeView(*myFont, "Components");
-	//myTreeView->SetExpanded(true);
-	//myUIManager->AddWidget(myTreeView);
-	//CE_Entity entity = myWorld->CreateEmptyEntity();
-	//myWorld->AddComponent<TranslationComponent>(entity);
-	//myRenderComponent = &myWorld->AddComponent<RenderComponent>(entity);
-	//myRenderComponent->myEntries.Respace(128);
-	//CreateRenderComponentWidget()
-
-	BuildEntityDropbox();
+	myTreeView = new CUI_TreeView(*myFont, "Components");
+	myTreeView->SetExpanded(true);
+	myUIManager->AddWidget(myTreeView);
+	CE_Entity entity = myWorld->CreateEmptyEntity();
+	myWorld->AddComponent<TranslationComponent>(entity);
+	myRenderComponent = &myWorld->AddComponent<RenderComponent>(entity);
+	myRenderComponent->myEntries.Respace(128);
+	CreateRenderComponentWidget();
 }
 
-void EntityEditorContext::BuildEntityDropbox()
-{
-	CE_GrowingArray<CE_FileSystem::FileInfo> entityFiles;
-	CE_FileSystem::GetAllFilesFromDirectory("Data/Entities", entityFiles);
-
-	CUI_Dropbox* dropbox = new CUI_Dropbox(*myFont, "Entities");
-	for (const CE_FileSystem::FileInfo& file : entityFiles)
-		dropbox->AddLabel(file.myFileNameNoExtention.c_str());
-
-	dropbox->myOnSelection = std::bind(&EntityEditorContext::OnSelection, this, std::placeholders::_1);
-
-	myUIManager->AddWidget(dropbox);
-
-	CUI_HBox* saveBox = new CUI_HBox();
-	myEditbox = new CUI_EditBox(*myFont, 256.f);
-	CUI_Button* saveButton = new CUI_Button(*myFont, "Save Level");
-	saveButton->myOnClick = std::bind(&EntityEditorContext::OnSaveLevel, this);
-
-	saveBox->AddWidget(myEditbox);
-	saveBox->AddWidget(saveButton);
-	myUIManager->AddWidget(saveBox);
-}
 
 void EntityEditorContext::CreateRenderComponentWidget()
 {
@@ -281,24 +229,4 @@ void EntityEditorContext::ClearRenderEntries()
 {
 	myRenderComponentView->DeleteChildren(2);
 	myRenderComponent->myEntries.RemoveAll();
-}
-
-void EntityEditorContext::OnSelection(CUI_Widget* aWidget)
-{
-	CUI_Label* label = static_cast<CUI_Label*>(aWidget);
-	const CE_String& text = label->GetText();
-	
-	CE_Entity entity = myEntityFactory->InstansiateEntity(text.c_str());
-	if (myWorld->HasComponent<TranslationComponent>(entity))
-	{
-		TranslationComponent& translation = myWorld->GetComponent<TranslationComponent>(entity);
-		myToolModule->AddToolEntity(entity, &translation.myOrientation, &translation.myScale);
-	}
-}
-
-void EntityEditorContext::OnSaveLevel()
-{
-	const CE_String& name = myEditbox->GetText();
-	name;
-	myEditbox->SetText("");
 }

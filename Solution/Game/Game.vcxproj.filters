@@ -127,6 +127,9 @@
     <ClInclude Include="NeuralNetworkComponent.h">
       <Filter>Entity\Component</Filter>
     </ClInclude>
+    <ClInclude Include="LevelEditorContext.h">
+      <Filter>Contexts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -180,6 +183,9 @@
     </ClCompile>
     <ClCompile Include="NeuralNetworkProcessor.cpp">
       <Filter>Entity\Processor</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelEditorContext.cpp">
+      <Filter>Contexts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

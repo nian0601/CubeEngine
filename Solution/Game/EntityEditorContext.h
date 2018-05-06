@@ -35,11 +35,7 @@ public:
 private:
 	void RenderGrid();
 
-	void SetupTestEntities();
 	void InitGUI();
-	void BuildEntityDropbox();
-
-
 
 	void CreateRenderComponentWidget();
 	void AddRenderEntry();
@@ -51,9 +47,6 @@ private:
 
 	void ModifyValueController(CUI_ValueController* aController, float aModifier);
 	void ClearRenderEntries();
-
-	void OnSelection(CUI_Widget* aWidget);
-	void OnSaveLevel();
 
 	RenderComponent* myRenderComponent;
 
@@ -69,8 +62,5 @@ private:
 	EntityFactory* myEntityFactory;
 
 	int myNumEntries;
-
-	CT_ToolModule* myToolModule;
-	CUI_EditBox* myEditbox;
 };
 
