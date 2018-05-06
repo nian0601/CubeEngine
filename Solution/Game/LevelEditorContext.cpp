@@ -23,6 +23,9 @@
 #include "RenderProcessor.h"
 #include "TranslationComponent.h"
 
+#include <CE_BinaryFileReader.h>
+#include <CE_BinaryFileWriter.h>
+
 LevelEditorContext::LevelEditorContext()
 {
 	CE_TYPE_REGISTER(float);
@@ -61,6 +64,8 @@ void LevelEditorContext::Init(CE_Engine& anEngine)
 
 	InitWorld(anEngine);
 	myEntityFactory = new EntityFactory(*myWorld);
+
+	OnLoadLevel();
 }
 
 void LevelEditorContext::Update(float aDelta)
@@ -149,12 +154,7 @@ void LevelEditorContext::OnSelection(CUI_Widget* aWidget)
 	CUI_Label* label = static_cast<CUI_Label*>(aWidget);
 	const CE_String& text = label->GetText();
 
-	CE_Entity entity = myEntityFactory->InstansiateEntity(text.c_str());
-	if (myWorld->HasComponent<TranslationComponent>(entity) != -1)
-	{
-		TranslationComponent& translation = myWorld->GetComponent<TranslationComponent>(entity);
-		myToolModule->AddToolEntity(entity, &translation.myOrientation, &translation.myScale);
-	}
+	CE_Entity entity = CreateEntity(text);
 
 	EntityInfo& info = myEntityInfos.Add();
 	info.myType = text;
@@ -163,5 +163,72 @@ void LevelEditorContext::OnSelection(CUI_Widget* aWidget)
 
 void LevelEditorContext::OnSaveLevel()
 {
+	CE_BinaryFileWriter writer("testLevel.celevel");
 
+	writer.Write(myEntityInfos.Size());
+	for (EntityInfo& info : myEntityInfos)
+	{
+		//TODO: Create EntityInfo for *all* entities, saving/loading has to be able to deal with it
+		TranslationComponent& translation = myWorld->GetComponent<TranslationComponent>(info.myID);
+
+		int typeLenght = info.myType.Lenght() + 2;
+		writer.Write(typeLenght);
+		writer.Write(info.myType.c_str(), typeLenght);
+
+		writer.Write(translation.myOrientation.GetPos());
+		writer.Write(translation.myScale);
+	}
+}
+
+void LevelEditorContext::OnLoadLevel()
+{
+	CE_BinaryFileReader reader("testLevel.celevel");
+
+	int entityCount;
+	reader.Read(entityCount);
+
+	myEntityInfos.Reserve(entityCount);
+	for (EntityInfo& info : myEntityInfos)
+	{
+		int typeLength;
+		reader.Read(typeLength);
+
+		char typeBuffer[64];
+		reader.Read(typeBuffer, typeLength);
+
+		CE_Vector3f position;
+		reader.Read(position);
+		CE_Vector3f scale;
+		reader.Read(scale);
+		
+		info.myType = typeBuffer;
+		info.myID = CreateEntity(info.myType, position, scale);
+	}
+}
+
+CE_Entity LevelEditorContext::CreateEntity(const CE_String& aType)
+{
+	CE_Entity entity = myEntityFactory->InstansiateEntity(aType.c_str());
+	if (myWorld->HasComponent<TranslationComponent>(entity) != -1)
+	{
+		TranslationComponent& translation = myWorld->GetComponent<TranslationComponent>(entity);
+		myToolModule->AddToolEntity(entity, &translation.myOrientation, &translation.myScale);
+	}
+
+	return entity;
+}
+
+CE_Entity LevelEditorContext::CreateEntity(const CE_String& aType, const CE_Vector3f& aPosition, const CE_Vector3f& aScale)
+{
+	CE_Entity entity = myEntityFactory->InstansiateEntity(aType.c_str());
+	if (myWorld->HasComponent<TranslationComponent>(entity) != -1)
+	{
+		TranslationComponent& translation = myWorld->GetComponent<TranslationComponent>(entity);
+		translation.myOrientation.SetPos(aPosition);
+		translation.myScale = aScale;
+
+		myToolModule->AddToolEntity(entity, &translation.myOrientation, &translation.myScale);
+	}
+
+	return entity;
 }

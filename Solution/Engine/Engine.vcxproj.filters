@@ -207,6 +207,12 @@
     <ClCompile Include="CUI_EditBox.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="CE_BinaryFileWriter.cpp">
+      <Filter>Utility\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_BinaryFileReader.cpp">
+      <Filter>Utility\Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -584,6 +590,12 @@
     </ClInclude>
     <ClInclude Include="CUI_EditBox.h">
       <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_BinaryFileWriter.h">
+      <Filter>Utility\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_BinaryFileReader.h">
+      <Filter>Utility\Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

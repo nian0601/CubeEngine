@@ -138,6 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CE_BaseProcessor.cpp" />
+    <ClCompile Include="CE_BinaryFileReader.cpp" />
     <ClCompile Include="CE_Blackboard.cpp" />
     <ClCompile Include="CE_BTActionNode.cpp" />
     <ClCompile Include="CE_BTMoveToNode.cpp" />
@@ -147,6 +148,7 @@
     <ClCompile Include="CE_DeferredRenderer.cpp" />
     <ClCompile Include="CE_FileParser.cpp" />
     <ClCompile Include="CE_FileSystem.cpp" />
+    <ClCompile Include="CE_BinaryFileWriter.cpp" />
     <ClCompile Include="CE_Font.cpp" />
     <ClCompile Include="CE_GenericShader.cpp" />
     <ClCompile Include="CE_GeneticAlgorithm.cpp" />
@@ -214,6 +216,7 @@
     <ClInclude Include="CE_Assert.h" />
     <ClInclude Include="CE_BaseComponent.h" />
     <ClInclude Include="CE_BaseProcessor.h" />
+    <ClInclude Include="CE_BinaryFileReader.h" />
     <ClInclude Include="CE_Blackboard.h" />
     <ClInclude Include="CE_BTActionNode.h" />
     <ClInclude Include="CE_BTMoveToNode.h" />
@@ -228,6 +231,7 @@
     <ClInclude Include="CE_DeferredRenderer.h" />
     <ClInclude Include="CE_FileParser.h" />
     <ClInclude Include="CE_FileSystem.h" />
+    <ClInclude Include="CE_BinaryFileWriter.h" />
     <ClInclude Include="CE_Font.h" />
     <ClInclude Include="CE_Game.h" />
     <ClInclude Include="CE_GBuffer.h" />

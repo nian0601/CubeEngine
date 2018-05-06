@@ -33,6 +33,10 @@ private:
 
 	void OnSelection(CUI_Widget* aWidget);
 	void OnSaveLevel();
+	void OnLoadLevel();
+
+	CE_Entity CreateEntity(const CE_String& aType);
+	CE_Entity CreateEntity(const CE_String& aType, const CE_Vector3f& aPosition, const CE_Vector3f& aScale);
 
 	struct EntityInfo
 	{
