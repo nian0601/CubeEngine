@@ -1,10 +1,15 @@
 #pragma once
 #include "CUI_Container.h"
 
+class CUI_Label;
+
+class CE_Font;
+
 class CUI_VisualNode : public CUI_Container
 {
 public:
-	CUI_VisualNode();
+	CUI_VisualNode(const CE_Font& aFont, const char* aLabel);
+	~CUI_VisualNode();
 
 	void PrepareLayout() override;
 	void Render(CE_RendererProxy& anRendererProxy) override;
@@ -20,5 +25,6 @@ private:
 	CE_Vector2f myPositionOffset;
 
 	float myPinSize;
+	CUI_Label* myLabel;
 };
 

@@ -18,6 +18,7 @@ public:
 
 	void SetText(const CE_String& aString);
 	const CE_String& GetText() const { return myString; }
+	void SetColor(const CE_Vector4f& aColor) { myColor = aColor; }
 
 protected:
 	const CE_Font& myFont;
