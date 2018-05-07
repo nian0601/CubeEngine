@@ -4,6 +4,7 @@
 #include "InGameContext.h"
 #include "EntityEditorContext.h"
 #include "LevelEditorContext.h"
+#include "NodeEditorContext.h"
 
 Game::Game()
 	: myGameContext(nullptr)
@@ -20,7 +21,8 @@ void Game::Init(CE_Engine& anEngine)
 {
 	//myGameContext = new InGameContext();
 	//myGameContext = new EntityEditorContext();
-	myGameContext = new LevelEditorContext();
+	//myGameContext = new LevelEditorContext();
+	myGameContext = new NodeEditorContext();
 	myGameContext->Init(anEngine);
 }
 

@@ -41,12 +41,6 @@
     <ClCompile Include="CUI_Manager.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="CUI_Image.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="CUI_Widget.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
     <ClCompile Include="CUI_Container.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
@@ -54,9 +48,6 @@
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="CUI_VBox.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="CUI_Button.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="CE_Texture.cpp">
@@ -70,15 +61,6 @@
     </ClCompile>
     <ClCompile Include="CE_MSDFGenerator.cpp">
       <Filter>Rendering\Text</Filter>
-    </ClCompile>
-    <ClCompile Include="CUI_TreeView.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="CUI_Label.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="CUI_ValueController.cpp">
-      <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="CE_FileParser.cpp">
       <Filter>Utility\Files</Filter>
@@ -195,23 +177,50 @@
     <ClCompile Include="CE_Matrix44.cpp">
       <Filter>Utility\Math</Filter>
     </ClCompile>
-    <ClCompile Include="CUI_Dropbox.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
     <ClCompile Include="CE_WindowManager.cpp">
       <Filter>DirectX\Windows</Filter>
     </ClCompile>
     <ClCompile Include="CE_Window.cpp">
       <Filter>DirectX\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="CUI_EditBox.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
     <ClCompile Include="CE_BinaryFileWriter.cpp">
       <Filter>Utility\Files</Filter>
     </ClCompile>
     <ClCompile Include="CE_BinaryFileReader.cpp">
       <Filter>Utility\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_Button.cpp">
+      <Filter>GUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_Dropbox.cpp">
+      <Filter>GUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_EditBox.cpp">
+      <Filter>GUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_Image.cpp">
+      <Filter>GUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_Label.cpp">
+      <Filter>GUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_TreeView.cpp">
+      <Filter>GUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_Widget.cpp">
+      <Filter>GUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_ValueController.cpp">
+      <Filter>GUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_VisualNode.cpp">
+      <Filter>GUI\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_NodeEditor.cpp">
+      <Filter>GUI\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI_Pin.cpp">
+      <Filter>GUI\NodeEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -298,6 +307,12 @@
     </Filter>
     <Filter Include="DirectX\Windows">
       <UniqueIdentifier>{9c2cda16-f93c-4863-b3c3-22d2bb35718c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\NodeEditor">
+      <UniqueIdentifier>{91dab116-b77a-4ca0-b702-75cac5fe9001}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Widgets">
+      <UniqueIdentifier>{65c8a09c-36e1-4d1e-8f85-38ffd83ddabe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -389,12 +404,6 @@
     <ClInclude Include="CUI_Manager.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="CUI_Image.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="CUI_Widget.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
     <ClInclude Include="CUI_Container.h">
       <Filter>GUI</Filter>
     </ClInclude>
@@ -402,9 +411,6 @@
       <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="CUI_VBox.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="CUI_Button.h">
       <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="CE_CommonHelper.h">
@@ -421,15 +427,6 @@
     </ClInclude>
     <ClInclude Include="CE_MSDFGenerator.h">
       <Filter>Rendering\Text</Filter>
-    </ClInclude>
-    <ClInclude Include="CUI_TreeView.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="CUI_Label.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="CUI_ValueController.h">
-      <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="CE_FileParser.h">
       <Filter>Utility\Files</Filter>
@@ -576,9 +573,6 @@
     <ClInclude Include="CE_Matrix44.h">
       <Filter>Utility\Math</Filter>
     </ClInclude>
-    <ClInclude Include="CUI_Dropbox.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
     <ClInclude Include="CE_WindowManager.h">
       <Filter>DirectX\Windows</Filter>
     </ClInclude>
@@ -588,9 +582,6 @@
     <ClInclude Include="CE_WindowMessage.h">
       <Filter>DirectX\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="CUI_EditBox.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
     <ClInclude Include="CE_BinaryFileWriter.h">
       <Filter>Utility\Files</Filter>
     </ClInclude>
@@ -598,5 +589,38 @@
       <Filter>Utility\Files</Filter>
     </ClInclude>
     <ClInclude Include="CE_TypeRegistration.h" />
+    <ClInclude Include="CUI_Button.h">
+      <Filter>GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_Dropbox.h">
+      <Filter>GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_EditBox.h">
+      <Filter>GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_Image.h">
+      <Filter>GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_Label.h">
+      <Filter>GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_TreeView.h">
+      <Filter>GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_Widget.h">
+      <Filter>GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_ValueController.h">
+      <Filter>GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_VisualNode.h">
+      <Filter>GUI\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_NodeEditor.h">
+      <Filter>GUI\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_Pin.h">
+      <Filter>GUI\NodeEditor</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,6 +6,15 @@ CUI_Container::~CUI_Container()
 	myWidgets.DeleteAll();
 }
 
+void CUI_Container::PrepareLayout()
+{
+	for (CUI_Widget* widget : myWidgets)
+	{
+		if (widget->IsVisible())
+			widget->PrepareLayout();
+	}
+}
+
 void CUI_Container::Render(CE_RendererProxy& anRendererProxy)
 {
 	for (CUI_Widget* widget : myWidgets)
@@ -13,6 +22,22 @@ void CUI_Container::Render(CE_RendererProxy& anRendererProxy)
 		if (widget->IsVisible())
 			widget->Render(anRendererProxy);
 	}
+}
+
+void CUI_Container::OnMouseEnter()
+{
+	CUI_Widget::OnMouseEnter();
+
+	for (CUI_Widget* widget : myWidgets)
+		widget->OnMouseEnter();
+}
+
+void CUI_Container::OnMouseExit()
+{
+	CUI_Widget::OnMouseExit();
+
+	for (CUI_Widget* widget : myWidgets)
+		widget->OnMouseExit();
 }
 
 void CUI_Container::OnMouseDown(const CE_Vector2f& aMousePosition)

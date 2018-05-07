@@ -14,10 +14,11 @@ void CUI_Widget::SetSize(const CE_Vector2f& aSize)
 
 void CUI_Widget::OnMouseDown(const CE_Vector2f& aMousePosition)
 {
+	myHasLongPress = false;
+
 	if (!myIsVisible)
 		return;
 
-	myHasLongPress = false;
 	if (Contains(aMousePosition))
 	{
 		myHasLongPress = true;

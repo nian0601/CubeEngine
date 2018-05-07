@@ -6,7 +6,10 @@ class CUI_Container : public CUI_Widget
 public:
 	virtual ~CUI_Container() override;
 
+	virtual void PrepareLayout() override;
 	virtual void Render(CE_RendererProxy& anRendererProxy) override;
+	virtual void OnMouseEnter() override;
+	virtual void OnMouseExit() override;
 	virtual void OnMouseDown(const CE_Vector2f& aMousePosition) override;
 	virtual bool OnMouseUp(const CE_Vector2f& aMousePosition) override;
 	virtual void OnMouseMove(const CE_Vector2f& aNewMousePosition, const CE_Vector2f& aOldMousePosition) override;

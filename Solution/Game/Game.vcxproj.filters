@@ -130,6 +130,9 @@
     <ClInclude Include="LevelEditorContext.h">
       <Filter>Contexts</Filter>
     </ClInclude>
+    <ClInclude Include="NodeEditorContext.h">
+      <Filter>Contexts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -185,6 +188,9 @@
       <Filter>Entity\Processor</Filter>
     </ClCompile>
     <ClCompile Include="LevelEditorContext.cpp">
+      <Filter>Contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeEditorContext.cpp">
       <Filter>Contexts</Filter>
     </ClCompile>
   </ItemGroup>

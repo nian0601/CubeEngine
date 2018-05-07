@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CUI_NodeEditor.cpp" />
     <ClCompile Include="CE_BaseProcessor.cpp" />
     <ClCompile Include="CE_BinaryFileReader.cpp" />
     <ClCompile Include="CE_Blackboard.cpp" />
@@ -195,9 +196,11 @@
     <ClCompile Include="CE_GPUContext.cpp" />
     <ClCompile Include="CE_World.cpp" />
     <ClCompile Include="CE_ComponentStorage.cpp" />
+    <ClCompile Include="CUI_Pin.cpp" />
     <ClCompile Include="CUI_TreeView.cpp" />
     <ClCompile Include="CUI_ValueController.cpp" />
     <ClCompile Include="CUI_VBox.cpp" />
+    <ClCompile Include="CUI_VisualNode.cpp" />
     <ClCompile Include="CUI_Widget.cpp" />
     <ClCompile Include="CE_Text.cpp" />
     <ClCompile Include="CE_WindowManager.cpp" />
@@ -305,9 +308,12 @@
     <ClInclude Include="CE_World.h" />
     <ClInclude Include="CE_ComponentStorage.h" />
     <ClInclude Include="CE_Map.h" />
+    <ClInclude Include="CUI_NodeEditor.h" />
+    <ClInclude Include="CUI_Pin.h" />
     <ClInclude Include="CUI_TreeView.h" />
     <ClInclude Include="CUI_ValueController.h" />
     <ClInclude Include="CUI_VBox.h" />
+    <ClInclude Include="CUI_VisualNode.h" />
     <ClInclude Include="CUI_Widget.h" />
     <ClInclude Include="CE_Text.h" />
     <ClInclude Include="CE_WindowManager.h" />

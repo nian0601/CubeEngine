@@ -11,7 +11,7 @@ public:
 
 	void Render(CE_RendererProxy& anRendererProxy) override;
 
-private:
+protected:
 	CE_Vector4f myColor;
 	CE_Vector2f myHotspot;
 };
