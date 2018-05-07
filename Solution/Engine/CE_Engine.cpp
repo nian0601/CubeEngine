@@ -16,11 +16,15 @@
 
 #include "CE_ShaderManager.h"
 
+#include "CE_TypeRegistration.h"
+
 CE_DebugRenderManager* CE_Engine::myDebugRenderManager = nullptr;
 
 CE_Engine::CE_Engine(CE_Game* aGame)
 	: myGame(aGame)
 {
+	CE_TypeRegistration::Register();
+
 	HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 	CE_ASSERT(FAILED(hr) == false, "Failed to CoInitializeEx");
 

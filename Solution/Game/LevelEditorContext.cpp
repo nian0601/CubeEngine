@@ -1,12 +1,10 @@
 #include "stdafx.h"
 
-#include <CE_Blackboard.h>
 #include <CE_Camera.h>
 #include <CE_DebugDraw.h>
 #include <CE_Engine.h>
 #include <CE_FileSystem.h>
 #include <CE_Font.h>
-#include <CE_PathFinder.h>
 #include <CE_World.h>
 #include <CE_Window.h>
 
@@ -28,13 +26,6 @@
 
 LevelEditorContext::LevelEditorContext()
 {
-	CE_TYPE_REGISTER(float);
-	CE_TYPE_REGISTER(CE_Vector3f);
-	CE_TYPE_REGISTER(CE_Vector4f);
-	CE_TYPE_REGISTER(CE_World*);
-	CE_TYPE_REGISTER(double);
-	CE_TYPE_REGISTER(CE_PathFinder*);
-	CE_TYPE_REGISTER(CE_Blackboard*);
 }
 
 

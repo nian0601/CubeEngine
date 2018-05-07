@@ -21,25 +21,15 @@
 
 #include <CE_Window.h>
 
-#include <CT_Gizmo.h>
 #include <CT_ToolModule.h>
 
 #include <CE_DebugDraw.h>
 #include <CE_FileSystem.h>
 #include "EntityFactory.h"
 
-#include <CE_PathFinder.h>
-#include <CE_Blackboard.h>
 
 EntityEditorContext::EntityEditorContext()
 {
-	CE_TYPE_REGISTER(float);
-	CE_TYPE_REGISTER(CE_Vector3f);
-	CE_TYPE_REGISTER(CE_Vector4f);
-	CE_TYPE_REGISTER(CE_World*);
-	CE_TYPE_REGISTER(double);
-	CE_TYPE_REGISTER(CE_PathFinder*);
-	CE_TYPE_REGISTER(CE_Blackboard*);
 }
 
 

@@ -274,6 +274,7 @@
     <ClInclude Include="CE_Texture.h" />
     <ClInclude Include="CE_Time.h" />
     <ClInclude Include="CE_TypeID.h" />
+    <ClInclude Include="CE_TypeRegistration.h" />
     <ClInclude Include="CE_Types.h" />
     <ClInclude Include="CE_GPUBuffer.h" />
     <ClInclude Include="CE_VertexShader.h" />

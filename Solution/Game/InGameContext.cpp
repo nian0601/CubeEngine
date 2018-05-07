@@ -41,13 +41,6 @@
 
 InGameContext::InGameContext()
 {
-	CE_TYPE_REGISTER(float);
-	CE_TYPE_REGISTER(CE_Vector3f);
-	CE_TYPE_REGISTER(CE_Vector4f);
-	CE_TYPE_REGISTER(CE_World*);
-	CE_TYPE_REGISTER(double);
-	CE_TYPE_REGISTER(CE_PathFinder*);
-	CE_TYPE_REGISTER(CE_Blackboard*);
 }
 
 

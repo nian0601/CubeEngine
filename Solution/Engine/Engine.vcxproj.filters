@@ -597,5 +597,6 @@
     <ClInclude Include="CE_BinaryFileReader.h">
       <Filter>Utility\Files</Filter>
     </ClInclude>
+    <ClInclude Include="CE_TypeRegistration.h" />
   </ItemGroup>
 </Project>
