@@ -1,0 +1,33 @@
+#include "Shader_Variables.ce_shader"
+
+const float MAGIC_NUMBER = 1.f;
+static const float SMOOTHING = 1.0/32.0;
+static const float THRESHOLD = 0.5f;
+
+struct PosColorPixel
+{
+	float4 Position : SV_POSITION;
+	float4 Color : COLOR;
+	float2 Tex : TEXCOORD0;
+};
+
+float median(float r, float g, float b)
+{
+	return max(min(r, g), min(max(r, g), b));	
+};
+
+float4 main(PosColorPixel anInput) : SV_TARGET
+{
+	float3 sample = AlbedoTexture.Sample(PointSampler, anInput.Tex).rgb;
+	//float sigDist = median(sample.r, sample.g, sample.b) - MAGIC_NUMBER;
+
+	//float alpha = clamp(sigDist + MAGIC_NUMBER, 0.f, 1.f);
+	//float4 color = float4(1.f, 1.f, 1.f, alpha);
+	
+	float distAlphaMask = median(sample.r, sample.g, sample.b);
+	float alpha = smoothstep(THRESHOLD - SMOOTHING, THRESHOLD + SMOOTHING, distAlphaMask);
+
+	float4 color = float4(anInput.Color.xyz, alpha);
+
+	return color;
+};

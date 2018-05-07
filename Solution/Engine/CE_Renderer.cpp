@@ -14,16 +14,19 @@
 CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext, CE_ShaderManager& aShaderManager)
 	: myGPUContext(anGPUContext)
 {
-	CE_GenericShader* textVX = aShaderManager.GetShader("Text.vx");
-	CE_GenericShader* textPX = aShaderManager.GetShader("Text.px");
-	myTextShader = new CE_ShaderPair(textVX, textPX);
-	//myMSDFTextShader = new CE_Shader(L"Data/Shaders/MSDFText.ce_shader", myGPUContext);
+	//CE_GenericShader* textVX = aShaderManager.GetShader("Text.vx");
+	//CE_GenericShader* textPX = aShaderManager.GetShader("Text.px");
+	//myTextShader = new CE_ShaderPair(textVX, textPX);
 
-	myText = new CE_Text(myGPUContext);
-	myText->Init();
+	CE_GenericShader* textVX = aShaderManager.GetShader("MSDFText.vx");
+	CE_GenericShader* textPX = aShaderManager.GetShader("MSDFText.px");
+	myMSDFTextShader = new CE_ShaderPair(textVX, textPX);
 
-	//myMSDFText = new CE_Text();
-	//myMSDFText->InitMSDF(myGPUContext);
+	//myText = new CE_Text(myGPUContext);
+	//myText->Init();
+
+	myMSDFText = new CE_Text(myGPUContext);
+	myMSDFText->InitMSDF();
 
 	myLineObject = new CE_LineRenderObject();
 

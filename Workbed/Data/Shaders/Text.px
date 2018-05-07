@@ -1,13 +1,7 @@
 #include "Shader_Variables.ce_shader"
 
-static const float OUTLINE_MIN_VALUE0 = 0.3;
-static const float OUTLINE_MIN_VALUE1 = 0.4;
-static const float OUTLINE_MAX_VALUE0 = 0.6;
-static const float OUTLINE_MAX_VALUE1 = 0.7;
-static const float4 OUTLINE_COLOR = {0.f, 0.f, 0.f, 1.f};
-static const bool USE_OUTLINE = true;
-
 static const float SMOOTHING = 1.0/32.0;
+static const float THRESHOLD = 0.3f;
 
 struct PosColorPixel
 {
@@ -20,7 +14,7 @@ float4 main(PosColorPixel anInput) : SV_TARGET
 {
 	float distAlphaMask = AlbedoTexture.Sample(PointSampler, anInput.Tex).a;
 	
-	float alpha = smoothstep(0.55 - SMOOTHING, 0.55 + SMOOTHING, distAlphaMask);
+	float alpha = smoothstep(THRESHOLD - SMOOTHING, THRESHOLD + SMOOTHING, distAlphaMask);
 
 	float4 color = float4(anInput.Color.xyz, alpha);
 	return color;

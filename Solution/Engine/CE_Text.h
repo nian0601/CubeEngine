@@ -24,6 +24,11 @@ public:
 private:
 	void SetupObjectBuffer();
 	void SetupVertexAndIndexBuffers(void* aVertexData, void* aIndexData);
+
+	struct VertexType;
+	void BuildNormalText(const CE_String& aString, CE_GrowingArray<VertexType>& someVertices, CE_GrowingArray<int>& someIndices);
+	void BuildMSDFText(const CE_String& aString, CE_GrowingArray<VertexType>& someVertices, CE_GrowingArray<int>& someIndices);
+
 	CE_GPUContext& myGPUContext;
 
 	struct VertexType

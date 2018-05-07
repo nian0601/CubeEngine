@@ -33,72 +33,6 @@ void CE_Text::InitMSDF()
 	myMSDFFont = new CE_MSDFFont();
 	myMSDFFont->LoadFromFile("Data/Font/Consolas.ttf", myGPUContext);
 
-	//CE_String testString = "ABCDEFGHI";
-	//CE_String testString = "AAAAA";
-	CE_String testString = "BBBBB";
-	//CE_String testString = "123456789";
-	int numOfLetters = testString.Lenght() + 1;
-	float drawX = 0;
-	float drawY = 0;
-	float z = 1.f;
-	float height = 0.f;
-
-	CE_GrowingArray<VertexType> vertices;
-	CE_GrowingArray<int> indices;
-
-	VertexType vert;
-	for (int i = 0; i < numOfLetters; ++i)
-	{
-		CE_MSDFGlyphData charData = myMSDFFont->GetGlyphData(testString[i]);
-		if (charData.myHeight > height)
-			height = static_cast<float>(charData.myHeight);
-
-
-		float left = drawX;// +charData.myXOffset;
-		float right = left + charData.myWidth;
-		float top = drawY;// +charData.myYOffset;
-		float bottom = top - charData.myHeight;
-
-		left = static_cast<float>(static_cast<int>(left + 0.5f));
-		right = static_cast<float>(static_cast<int>(right + 0.5f));
-		top = static_cast<float>(static_cast<int>(top + 0.5f));
-		bottom = static_cast<float>(static_cast<int>(bottom + 0.5f));
-
-		vert.myPosition = CE_Vector4f(left, top, z, 1.f);
-		vert.myUV = charData.myTopLeftUV;
-		vertices.Add(vert);
-
-		vert.myPosition = CE_Vector4f(right, bottom, z, 1.f);
-		vert.myUV = charData.myBottomRightUV;
-		vertices.Add(vert);
-
-		vert.myPosition = CE_Vector4f(left, bottom, z, 1.f);
-		vert.myUV = { charData.myTopLeftUV.x, charData.myBottomRightUV.y };
-		vertices.Add(vert);
-
-		vert.myPosition = CE_Vector4f(right, top, z, 1.f);
-		vert.myUV = { charData.myBottomRightUV.x, charData.myTopLeftUV.y };
-		vertices.Add(vert);
-
-
-		int startIndex = i * 4;
-		indices.Add(startIndex + 0);
-		indices.Add(startIndex + 1);
-		indices.Add(startIndex + 2);
-
-		indices.Add(startIndex + 0);
-		indices.Add(startIndex + 3);
-		indices.Add(startIndex + 1);
-
-
-		drawX += charData.myXAdvance;
-		z -= 0.001f;
-	}
-
-	myVertexCount = vertices.Size();
-	myIndexCount = indices.Size();
-
-	SetupVertexAndIndexBuffers(vertices.GetArrayAsPointer(), indices.GetArrayAsPointer());
 	SetupObjectBuffer();
 }
 
@@ -106,6 +40,16 @@ void CE_Text::Render()
 {
 	if (!myGotText)
 		return;
+
+	float scale = 1.f;
+	if (myFont)
+		scale = 0.33f;
+
+	float maxHeight = 0.f;
+	if (myFont)
+		maxHeight = myFont->GetMaxHeight();
+	else if (myMSDFFont)
+		maxHeight = myMSDFFont->GetMaxHeight();
 
 	ID3D11DeviceContext* context = myGPUContext.GetContext();
 
@@ -115,12 +59,12 @@ void CE_Text::Render()
 	HRESULT result = context->Map(myObjectDataBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	CE_ASSERT(SUCCEEDED(result), "Mapping failed");
 	CE_Vector2f scaledSize;
-	scaledSize.x = myFont->GetScale();
-	scaledSize.y = myFont->GetScale();
+	scaledSize.x = scale;
+	scaledSize.y = scale;
 
 	CE_Vector2f scaledPosition;
 	scaledPosition.x = CE_RoundToInt(myPosition.x);
-	scaledPosition.y = CE_RoundToInt(myPosition.y + myFont->GetMaxHeight());
+	scaledPosition.y = CE_RoundToInt(myPosition.y + maxHeight);
 
 	ObjectData* dataPtr = (ObjectData*)mappedResource.pData;
 	dataPtr->myWorld = myOrientation;
@@ -154,67 +98,15 @@ void CE_Text::Render()
 
 void CE_Text::SetText(const CE_String& aString)
 {
-	int numOfLetters = aString.Lenght() + 1;
-	myGotText = numOfLetters > 0;
-	float drawX = 0;
-	float drawY = 0;
-	float z = 1.f;
-	float height = 0.f;
+	myGotText = (aString.Lenght() + 1) > 0;
 
 	CE_GrowingArray<VertexType> vertices;
 	CE_GrowingArray<int> indices;
 
-	VertexType vert;
-	for (int i = 0; i < numOfLetters; ++i)
-	{
-		CE_CharData charData;
-		if (!myFont->GetCharData(aString[i], &charData))
-			continue;
-
-		if (charData.myHeight > height)
-			height = static_cast<float>(charData.myHeight);
-
-
-		float left = drawX + charData.myXOffset;
-		float right = left + charData.myWidth;
-		float top = drawY + charData.myYOffset;
-		float bottom = top - charData.myHeight;
-
-		left = static_cast<float>(static_cast<int>(left + 0.5f));
-		right = static_cast<float>(static_cast<int>(right + 0.5f));
-		top = static_cast<float>(static_cast<int>(top + 0.5f));
-		bottom = static_cast<float>(static_cast<int>(bottom + 0.5f));
-
-		vert.myPosition = CE_Vector4f(left, top, z, 1.f);
-		vert.myUV = charData.myTopLeftUV;
-		vertices.Add(vert);
-
-		vert.myPosition = CE_Vector4f(right, bottom, z, 1.f);
-		vert.myUV = charData.myBottomRightUV;
-		vertices.Add(vert);
-
-		vert.myPosition = CE_Vector4f(left, bottom, z, 1.f);
-		vert.myUV = { charData.myTopLeftUV.x, charData.myBottomRightUV.y };
-		vertices.Add(vert);
-
-		vert.myPosition = CE_Vector4f(right, top, z, 1.f);
-		vert.myUV = { charData.myBottomRightUV.x, charData.myTopLeftUV.y };
-		vertices.Add(vert);
-
-
-		int startIndex = i * 4;
-		indices.Add(startIndex + 0);
-		indices.Add(startIndex + 1);
-		indices.Add(startIndex + 2);
-
-		indices.Add(startIndex + 0);
-		indices.Add(startIndex + 3);
-		indices.Add(startIndex + 1);
-
-
-		drawX += charData.myXAdvance;
-		z -= 0.001f;
-	}
+	if (myFont)
+		BuildNormalText(aString, vertices, indices);
+	else
+		BuildMSDFText(aString, vertices, indices);
 
 	myVertexCount = vertices.Size();
 	myIndexCount = indices.Size();
@@ -274,4 +166,125 @@ void CE_Text::SetupVertexAndIndexBuffers(void* aVertexData, void* aIndexData)
 	result = myGPUContext.GetDevice()->CreateBuffer(&indexBufferDesc, &indexData, &myIndexBuffer);
 	if (FAILED(result))
 		return;
+}
+
+void CE_Text::BuildNormalText(const CE_String& aString, CE_GrowingArray<VertexType>& someVertices, CE_GrowingArray<int>& someIndices)
+{
+	int numOfLetters = aString.Lenght() + 1;
+	float drawX = 0;
+	float drawY = 0;
+	float z = 1.f;
+	float height = 0.f;
+
+	VertexType vert;
+	for (int i = 0; i < numOfLetters; ++i)
+	{
+		CE_CharData charData;
+		if (!myFont->GetCharData(aString[i], &charData))
+			continue;
+
+		if (charData.myHeight > height)
+			height = static_cast<float>(charData.myHeight);
+
+
+		float left = drawX + charData.myXOffset;
+		float right = left + charData.myWidth;
+		float top = drawY + charData.myYOffset;
+		float bottom = top - charData.myHeight;
+
+		left = static_cast<float>(static_cast<int>(left + 0.5f));
+		right = static_cast<float>(static_cast<int>(right + 0.5f));
+		top = static_cast<float>(static_cast<int>(top + 0.5f));
+		bottom = static_cast<float>(static_cast<int>(bottom + 0.5f));
+
+		vert.myPosition = CE_Vector4f(left, top, z, 1.f);
+		vert.myUV = charData.myTopLeftUV;
+		someVertices.Add(vert);
+
+		vert.myPosition = CE_Vector4f(right, bottom, z, 1.f);
+		vert.myUV = charData.myBottomRightUV;
+		someVertices.Add(vert);
+
+		vert.myPosition = CE_Vector4f(left, bottom, z, 1.f);
+		vert.myUV = { charData.myTopLeftUV.x, charData.myBottomRightUV.y };
+		someVertices.Add(vert);
+
+		vert.myPosition = CE_Vector4f(right, top, z, 1.f);
+		vert.myUV = { charData.myBottomRightUV.x, charData.myTopLeftUV.y };
+		someVertices.Add(vert);
+
+
+		int startIndex = i * 4;
+		someIndices.Add(startIndex + 0);
+		someIndices.Add(startIndex + 1);
+		someIndices.Add(startIndex + 2);
+
+		someIndices.Add(startIndex + 0);
+		someIndices.Add(startIndex + 3);
+		someIndices.Add(startIndex + 1);
+
+		drawX += charData.myXAdvance;
+		z -= 0.001f;
+	}
+}
+
+void CE_Text::BuildMSDFText(const CE_String& aString, CE_GrowingArray<VertexType>& someVertices, CE_GrowingArray<int>& someIndices)
+{
+	int numOfLetters = aString.Lenght() + 1;
+	float drawX = 0;
+	float drawY = 0;
+	float z = 1.f;
+	float height = 0.f;
+
+	VertexType vert;
+	for (int i = 0; i < numOfLetters; ++i)
+	{
+		CE_MSDFGlyphData charData;
+		if (!myMSDFFont->GetGlyphData(aString[i], &charData))
+			return;
+
+		if (charData.myHeight > height)
+			height = static_cast<float>(charData.myHeight);
+
+
+		float left = drawX;// +charData.myXOffset;
+		float right = left + charData.myWidth;
+		float top = drawY;// +charData.myYOffset;
+		float bottom = top - charData.myHeight;
+
+		left = static_cast<float>(static_cast<int>(left + 0.5f));
+		right = static_cast<float>(static_cast<int>(right + 0.5f));
+		top = static_cast<float>(static_cast<int>(top + 0.5f));
+		bottom = static_cast<float>(static_cast<int>(bottom + 0.5f));
+
+		vert.myPosition = CE_Vector4f(left, top, z, 1.f);
+		vert.myUV = charData.myTopLeftUV;
+		someVertices.Add(vert);
+
+		vert.myPosition = CE_Vector4f(right, bottom, z, 1.f);
+		vert.myUV = charData.myBottomRightUV;
+		someVertices.Add(vert);
+
+		vert.myPosition = CE_Vector4f(left, bottom, z, 1.f);
+		vert.myUV = { charData.myTopLeftUV.x, charData.myBottomRightUV.y };
+		someVertices.Add(vert);
+
+		vert.myPosition = CE_Vector4f(right, top, z, 1.f);
+		vert.myUV = { charData.myBottomRightUV.x, charData.myTopLeftUV.y };
+		someVertices.Add(vert);
+
+
+		int startIndex = i * 4;
+		someIndices.Add(startIndex + 0);
+		someIndices.Add(startIndex + 1);
+		someIndices.Add(startIndex + 2);
+
+		someIndices.Add(startIndex + 0);
+		someIndices.Add(startIndex + 3);
+		someIndices.Add(startIndex + 1);
+
+
+		drawX += charData.myXAdvance;
+		z -= 0.001f;
+	}
 }

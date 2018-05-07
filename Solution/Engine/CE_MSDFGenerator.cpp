@@ -12,10 +12,20 @@ namespace CE_MSDFGenerator_priv
 	const int locGlyphSize = 32;
 	const int locSheetSize = locGlyphSize * locGlyphsPerRow;
 
+	float DistVal(float aDistance, float aPXRange)
+	{
+		if (!aPXRange)
+			return aDistance > .5;
+		return (float)clamp((aDistance - .5)*aPXRange + .5);
+	}
+
 	CE_MSDFGlyphData LoadGlyph(FontHandle* aFont, char aGlyph, Bitmap<FloatRGB>& aGlyphSheet, int aSheetX, int aSheetY)
 	{
 		CE_MSDFGlyphData data;
 
+		float avgScale = 0.5f;
+		double range = 1.f;
+		double pxRange = range * avgScale;
 		Shape shape;
 		double advance;
 		if (loadGlyph(shape, aFont, aGlyph, &advance))
@@ -27,12 +37,19 @@ namespace CE_MSDFGenerator_priv
 			Bitmap<FloatRGB> msdf(glyphSize, glyphSize);
 			generateMSDF(msdf, shape, 4.0, 1.0, Vector2(4.0, 4.0));
 
-			for (int y = 0; y < glyphSize; ++y)
+			int w = aGlyphSheet.width();
+			int h = aGlyphSheet.height();
+			float scaledPxRange = (float)pxRange * (w + h) / (msdf.width() + msdf.height());
+			for (int x = 0; x < glyphSize; ++x)
 			{
-				for (int x = 0; x < glyphSize; ++x)
+				for (int y = 0; y < glyphSize; ++y)
 				{
 					FloatRGB& pixel = aGlyphSheet(aSheetX + x, aSheetY + y);
-					pixel = msdf(x, y);
+					FloatRGB& msdfData = msdf(x, y);
+
+					pixel.r = DistVal(msdfData.r, scaledPxRange);
+					pixel.g = DistVal(msdfData.g, scaledPxRange);
+					pixel.b = DistVal(msdfData.b, scaledPxRange);
 				}
 			}
 
@@ -47,11 +64,11 @@ namespace CE_MSDFGenerator_priv
 			data.myWidth = static_cast<int>(right + 0.5);
 			data.myXAdvance = static_cast<float>(advance);
 
-			data.myTopLeftUV.x = static_cast<float>(aSheetX) / locSheetSize;
-			data.myTopLeftUV.y = static_cast<float>(aSheetY) / locSheetSize;
-
 			data.myBottomRightUV.x = static_cast<float>(aSheetX + locGlyphSize) / locSheetSize;
-			data.myBottomRightUV.y = static_cast<float>(aSheetY + locGlyphSize) / locSheetSize;
+			data.myBottomRightUV.y = 1.f - static_cast<float>(aSheetY) / locSheetSize;
+			
+			data.myTopLeftUV.x = static_cast<float>(aSheetX) / locSheetSize;
+			data.myTopLeftUV.y = 1.f -static_cast<float>(aSheetY + locGlyphSize) / locSheetSize;
 
 			data.myID = aGlyph;
 			
@@ -61,31 +78,7 @@ namespace CE_MSDFGenerator_priv
 	}
 }
 
-CE_MSDFGenerator::CE_MSDFGenerator()
-{
-}
-
-
-CE_MSDFGenerator::~CE_MSDFGenerator()
-{
-}
-
-const char anArray[] =
-{
-	//'A',
-	//'B',
-	//'C',
-	//'D',
-	//'E',
-	65,
-	66,
-	67,
-	68,
-	69,
-	70,
-};
-
-void CE_MSDFGenerator::GenerateFont(const CE_String& aFontPath, CE_GrowingArray<CE_MSDFGlyphData>& outGlyphData)
+void CE_MSDFGenerator::GenerateFont(const CE_String& aFontPath, float& aMaxHeight, CE_GrowingArray<CE_MSDFGlyphData>& outGlyphData)
 {
 	FreetypeHandle* ft = initializeFreetype();
 	CE_ASSERT(ft != nullptr, "Failed to initialize FreeType");
@@ -104,21 +97,14 @@ void CE_MSDFGenerator::GenerateFont(const CE_String& aFontPath, CE_GrowingArray<
 	{
 		for (int x = 0; x < glyphsPerRow; ++x)
 		{
-			int sheetX = y * glyphSize;
-			int sheetY = x * glyphSize;
+			int sheetX = x * glyphSize;
+			int sheetY = y * glyphSize;
 
-			//if (index >= sizeof(anArray) / sizeof(char))
-			//	outGlyphData.Add(CE_MSDFGenerator_priv::LoadGlyph(font, index, glyphSheet, sheetX, sheetY));
-			//else
-			//	outGlyphData.Add(CE_MSDFGenerator_priv::LoadGlyph(font, anArray[index], glyphSheet, sheetX, sheetY));
+			CE_MSDFGlyphData& data = outGlyphData.Add();
+			data = CE_MSDFGenerator_priv::LoadGlyph(font, index, glyphSheet, sheetX, sheetY);
 
-			outGlyphData.Add(CE_MSDFGenerator_priv::LoadGlyph(font, 'B', glyphSheet, sheetX, sheetY));
-
-			//outGlyphData[index] = CE_MSDFGenerator_priv::LoadGlyph(font, index, glyphSheet, sheetX, sheetY);
-			//outGlyphData[65] = CE_MSDFGenerator_priv::LoadGlyph(font, 65, glyphSheet, sheetX, sheetY);
-
-			//outGlyphData['A'] = CE_MSDFGenerator_priv::LoadGlyph(font, 'A', glyphSheet, sheetX, sheetY);
-
+			if (data.myHeight > aMaxHeight)
+				aMaxHeight = static_cast<float>(data.myHeight);
 
 			++index;
 		}

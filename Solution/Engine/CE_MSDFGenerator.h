@@ -18,9 +18,6 @@ struct CE_MSDFGlyphData
 class CE_MSDFGenerator
 {
 public:
-	CE_MSDFGenerator();
-	~CE_MSDFGenerator();
-
-	void GenerateFont(const CE_String& aFontPath, CE_GrowingArray<CE_MSDFGlyphData>& ourGlyphData);
+	void GenerateFont(const CE_String& aFontPath, float& aMaxHeight, CE_GrowingArray<CE_MSDFGlyphData>& ourGlyphData);
 };
 
