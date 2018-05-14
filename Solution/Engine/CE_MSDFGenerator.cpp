@@ -24,12 +24,13 @@ namespace CE_MSDFGenerator_priv
 		CE_MSDFGlyphData data;
 
 		float avgScale = 0.5f;
-		double range = 1.f;
+		double range = 4.f;
 		double pxRange = range * avgScale;
 		Shape shape;
 		double advance;
 		if (loadGlyph(shape, aFont, aGlyph, &advance))
 		{
+			
 			shape.normalize();
 			edgeColoringSimple(shape, 3.0);
 
@@ -102,6 +103,7 @@ void CE_MSDFGenerator::GenerateFont(const CE_String& aFontPath, float& aMaxHeigh
 
 			CE_MSDFGlyphData& data = outGlyphData.Add();
 			data = CE_MSDFGenerator_priv::LoadGlyph(font, index, glyphSheet, sheetX, sheetY);
+			data.myXAdvance *= 0.75f;
 
 			if (data.myHeight > aMaxHeight)
 				aMaxHeight = static_cast<float>(data.myHeight);

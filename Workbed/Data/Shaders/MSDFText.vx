@@ -31,12 +31,12 @@ PosColorPixel main(PosVertex aInput)
 	output.Position = aInput.Position;
 
 	//Scale it up from 1x1 to SizeX x SizeY
-	output.Position.xy *= 3.f;
+	output.Position.xy *= 1.f;
 
 	//Movement
 	output.Position.x += Position.x;
 	output.Position.y -= Position.y;
-	output.Position.y += 3;
+	//output.Position.y += 3;
 
 	output.Position = mul(Projection, output.Position);
 

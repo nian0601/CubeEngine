@@ -11,22 +11,26 @@
 #include "CE_ShaderPair.h"
 #include "CE_ShaderManager.h"
 
+#define USE_MSDF 0
+
 CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext, CE_ShaderManager& aShaderManager)
 	: myGPUContext(anGPUContext)
 {
-	//CE_GenericShader* textVX = aShaderManager.GetShader("Text.vx");
-	//CE_GenericShader* textPX = aShaderManager.GetShader("Text.px");
-	//myTextShader = new CE_ShaderPair(textVX, textPX);
-
+#if USE_MSDF == 1
 	CE_GenericShader* textVX = aShaderManager.GetShader("MSDFText.vx");
 	CE_GenericShader* textPX = aShaderManager.GetShader("MSDFText.px");
 	myMSDFTextShader = new CE_ShaderPair(textVX, textPX);
 
-	//myText = new CE_Text(myGPUContext);
-	//myText->Init();
-
 	myMSDFText = new CE_Text(myGPUContext);
 	myMSDFText->InitMSDF();
+#else
+	CE_GenericShader* textVX = aShaderManager.GetShader("Text.vx");
+	CE_GenericShader* textPX = aShaderManager.GetShader("Text.px");
+	myTextShader = new CE_ShaderPair(textVX, textPX);
+
+	myText = new CE_Text(myGPUContext);
+	myText->Init();
+#endif
 
 	myLineObject = new CE_LineRenderObject();
 

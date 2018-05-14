@@ -96,6 +96,13 @@ void CE_Text::Render()
 	context->DrawIndexed(myIndexCount, 0, 0);
 }
 
+void CE_Text::SetPosition(const CE_Vector2f& aPosition)
+{
+	myPosition = aPosition;
+	if (myMSDFFont)
+		myPosition.y -= myMSDFFont->GetMaxHeight();
+}
+
 void CE_Text::SetText(const CE_String& aString)
 {
 	myGotText = (aString.Lenght() + 1) > 0;

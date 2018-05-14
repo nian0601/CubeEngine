@@ -4,6 +4,9 @@ const float MAGIC_NUMBER = 1.f;
 static const float SMOOTHING = 1.0/32.0;
 static const float THRESHOLD = 0.5f;
 
+static const float2 PXRANGE = float2(2.f, 2.f);
+
+static const bool USE_MSDF_MAGIC = true;
 struct PosColorPixel
 {
 	float4 Position : SV_POSITION;
@@ -17,17 +20,30 @@ float median(float r, float g, float b)
 };
 
 float4 main(PosColorPixel anInput) : SV_TARGET
-{
-	float3 sample = AlbedoTexture.Sample(PointSampler, anInput.Tex).rgb;
-	//float sigDist = median(sample.r, sample.g, sample.b) - MAGIC_NUMBER;
+{	
+	if(USE_MSDF_MAGIC == true)
+	{
+		float2 textureSize;
+		AlbedoTexture.GetDimensions(textureSize.x, textureSize.y);
 
-	//float alpha = clamp(sigDist + MAGIC_NUMBER, 0.f, 1.f);
-	//float4 color = float4(1.f, 1.f, 1.f, alpha);
-	
-	float distAlphaMask = median(sample.r, sample.g, sample.b);
-	float alpha = smoothstep(THRESHOLD - SMOOTHING, THRESHOLD + SMOOTHING, distAlphaMask);
+		float2 msdfUnit = PXRANGE/textureSize;
+		float3 sample = AlbedoTexture.Sample(PointSampler, anInput.Tex).rgb;
+		float sigDist = median(sample.r, sample.g, sample.b) - 0.5;
+		sigDist *= dot(msdfUnit, 0.5/fwidth(anInput.Tex));
+		float opacity = clamp(sigDist + 0.5, 0.0, 1.0);
 
-	float4 color = float4(anInput.Color.xyz, alpha);
+		float4 bgColor = float4(0.f, 0.f, 0.f, 0.f);
+		float4 fgColor = float4(anInput.Color.xyz, 1.f);
+		float4 color = lerp(bgColor, fgColor, opacity);
 
-	return color;
+		return color;
+	}
+	else
+	{
+		float3 sample = AlbedoTexture.Sample(PointSampler, anInput.Tex).rgb;
+		float distAlphaMask = median(sample.r, sample.g, sample.b);
+		float alpha = smoothstep(THRESHOLD - SMOOTHING, THRESHOLD + SMOOTHING, distAlphaMask);
+		float4 color = float4(anInput.Color.xyz, alpha);
+		return color;
+	}
 };

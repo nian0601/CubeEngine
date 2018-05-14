@@ -18,7 +18,7 @@ public:
 	void Render();
 
 	void SetColor(const CE_Vector4f& aColor) { myColor = aColor; }
-	void SetPosition(const CE_Vector2f& aPosition) { myPosition = aPosition; }
+	void SetPosition(const CE_Vector2f& aPosition);
 	void SetText(const CE_String& aString);
 
 private:
