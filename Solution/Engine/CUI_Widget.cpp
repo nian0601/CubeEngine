@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CUI_Widget.h"
 #include "CE_WindowMessage.h"
+#include "CUI_Message.h"
 
 void CUI_Widget::SetPosition(const CE_Vector2f& aPosition)
 {
@@ -12,20 +13,26 @@ void CUI_Widget::SetSize(const CE_Vector2f& aSize)
 	mySize = aSize;
 }
 
-void CUI_Widget::OnMouseDown(const CE_Vector2f& aMousePosition)
+bool CUI_Widget::OnMouseDown(const CUI_MouseMessage& aMessage)
 {
 	myHasLongPress = false;
 
 	if (!myIsVisible)
-		return;
+		return false;
 
-	if (Contains(aMousePosition))
+	if (Contains(aMessage.myNewPosition))
 	{
 		myHasLongPress = true;
+
+		OnMouseMessage(aMessage);
+
+		return true;
 	}
+
+	return false;
 }
 
-bool CUI_Widget::OnMouseUp(const CE_Vector2f& aMousePosition)
+bool CUI_Widget::OnMouseUp(const CUI_MouseMessage& aMessage)
 {
 	if (!myIsVisible)
 		return false;
@@ -36,10 +43,12 @@ bool CUI_Widget::OnMouseUp(const CE_Vector2f& aMousePosition)
 		return false;
 
 	myHasLongPress = false;
-	if (Contains(aMousePosition))
+	if (Contains(aMessage.myNewPosition))
 	{
 		if(CanBeFocused())
 			myIsFocused = true;
+
+		OnMouseMessage(aMessage);
 
 		return OnClick();
 	}
@@ -47,18 +56,49 @@ bool CUI_Widget::OnMouseUp(const CE_Vector2f& aMousePosition)
 	return false;
 }
 
-void CUI_Widget::OnMouseMove(const CE_Vector2f& aNewMousePosition, const CE_Vector2f& aOldMousePosition)
+bool CUI_Widget::OnMouseMove(const CUI_MouseMessage& aMessage)
 {
 	if (!myIsVisible)
-		return;
+		return false;
 
-	bool curr = Contains(aNewMousePosition);
-	bool old = Contains(aOldMousePosition);
+	bool curr = Contains(aMessage.myNewPosition);
+	bool old = Contains(aMessage.myOldPosition);
 
-	if (curr && !old)
-		OnMouseEnter();
-	else if (!curr && old)
+	if (curr)
+	{
+		if (!old)
+			OnMouseEnter();
+
+		OnMouseMessage(aMessage);
+		return true;
+	}
+
+	if (old)
 		OnMouseExit();
+
+	return false;
+}
+
+bool CUI_Widget::OnDragBegin(CUI_DragMessage& aMessage)
+{
+	if (!myIsVisible)
+		return false;
+
+	if (!myHasLongPress)
+		return false;
+
+	return OnDragMessage(aMessage);
+}
+
+bool CUI_Widget::OnDragEnd(CUI_DragMessage& aMessage)
+{
+	if (!myIsVisible)
+		return false;
+
+	if (!myIsHovered)
+		return false;
+
+	return OnDragMessage(aMessage);
 }
 
 bool CUI_Widget::Contains(const CE_Vector2f& aPosition) const

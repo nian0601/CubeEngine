@@ -622,5 +622,8 @@
     <ClInclude Include="CUI_Pin.h">
       <Filter>GUI\NodeEditor</Filter>
     </ClInclude>
+    <ClInclude Include="CUI_Message.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

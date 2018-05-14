@@ -2,7 +2,11 @@
 
 struct CE_WindowMessage;
 
+struct CUI_DragMessage;
+struct CUI_MouseMessage;
+
 class CE_RendererProxy;
+
 class CUI_Widget
 {
 public:
@@ -19,20 +23,25 @@ public:
 
 	virtual bool OnClick() { return false; }
 
-	virtual void OnMouseDown(const CE_Vector2f& aMousePosition);
-	virtual bool OnMouseUp(const CE_Vector2f& aMousePosition);
+	virtual bool OnMouseDown(const CUI_MouseMessage& aMessage);
+	virtual bool OnMouseUp(const CUI_MouseMessage& aMessage);
 	virtual void OnMouseEnter() { myIsHovered = true; };
 	virtual void OnMouseExit() { myIsHovered = false; };
+	virtual bool OnMouseMove(const CUI_MouseMessage& aMessage);
 
-	virtual void OnMouseMove(const CE_Vector2f& aNewMousePosition, const CE_Vector2f& aOldMousePosition);
+	virtual bool OnDragBegin(CUI_DragMessage& aMessage);
+	virtual bool OnDragEnd(CUI_DragMessage& aMessage);
+
+	virtual bool OnMouseMessage(const CUI_MouseMessage& aMessage) { aMessage; return false; }
 	virtual bool OnTextInput(const CE_WindowMessage& aMessage) { aMessage; return false; }
+	virtual bool OnDragMessage(CUI_DragMessage& aMessage) { aMessage; return false; }
+
+	virtual bool CanBeFocused() const { return false; }
 
 	void Show() { myIsVisible = true; }
 	void Hide() { myIsVisible = false; myHasLongPress = false; myIsHovered = false; myIsFocused = false; }
 	bool IsVisible() const { return myIsVisible; }
 	bool IsFocused() const { return myIsFocused; }
-
-	virtual bool CanBeFocused() const { return false; }
 
 	bool Contains(const CE_Vector2f& aPosition) const;
 

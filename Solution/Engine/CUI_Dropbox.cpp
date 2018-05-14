@@ -3,6 +3,7 @@
 #include "CUI_Button.h"
 #include "CUI_Label.h"
 #include "CUI_Image.h"
+#include "CUI_Message.h"
 
 CUI_Dropbox::CUI_Dropbox(const CE_Font& aFont, const CE_String& aString)
 	: myIsExpanded(false)
@@ -75,9 +76,9 @@ void CUI_Dropbox::Render(CE_RendererProxy& anRendererProxy)
 	}
 }
 
-bool CUI_Dropbox::OnMouseUp(const CE_Vector2f& aMousePosition)
+bool CUI_Dropbox::OnMouseUp(const CUI_MouseMessage& aMessage)
 {
-	if (myWidgets[0]->OnMouseUp(aMousePosition))
+	if (myWidgets[0]->OnMouseUp(aMessage))
 		return true;
 
 	if (IsEmpty())
@@ -87,7 +88,7 @@ bool CUI_Dropbox::OnMouseUp(const CE_Vector2f& aMousePosition)
 	for (int i = 2; i < myWidgets.Size(); ++i)
 	{
 		CUI_Widget* widget = myWidgets[i];
-		if (widget->OnMouseUp(aMousePosition) || widget->Contains(aMousePosition))
+		if (widget->OnMouseUp(aMessage) || widget->Contains(aMessage.myNewPosition))
 			clickedWidget = widget;
 	}
 
@@ -98,7 +99,7 @@ bool CUI_Dropbox::OnMouseUp(const CE_Vector2f& aMousePosition)
 		return true;
 	}
 
-	return CUI_Widget::OnMouseUp(aMousePosition);
+	return CUI_Widget::OnMouseUp(aMessage);
 }
 
 void CUI_Dropbox::DeleteAllChildren()

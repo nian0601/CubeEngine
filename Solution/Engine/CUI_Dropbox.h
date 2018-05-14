@@ -11,7 +11,7 @@ public:
 	virtual void PrepareLayout() override;
 	virtual void Render(CE_RendererProxy& anRendererProxy) override;
 
-	virtual bool OnMouseUp(const CE_Vector2f& aMousePosition) override;
+	virtual bool OnMouseUp(const CUI_MouseMessage& aMessage) override;
 
 	virtual void DeleteAllChildren() override;
 

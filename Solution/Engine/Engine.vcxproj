@@ -308,6 +308,7 @@
     <ClInclude Include="CE_World.h" />
     <ClInclude Include="CE_ComponentStorage.h" />
     <ClInclude Include="CE_Map.h" />
+    <ClInclude Include="CUI_Message.h" />
     <ClInclude Include="CUI_NodeEditor.h" />
     <ClInclude Include="CUI_Pin.h" />
     <ClInclude Include="CUI_TreeView.h" />

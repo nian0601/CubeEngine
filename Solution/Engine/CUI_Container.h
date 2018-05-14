@@ -8,12 +8,17 @@ public:
 
 	virtual void PrepareLayout() override;
 	virtual void Render(CE_RendererProxy& anRendererProxy) override;
-	virtual void OnMouseEnter() override;
-	virtual void OnMouseExit() override;
-	virtual void OnMouseDown(const CE_Vector2f& aMousePosition) override;
-	virtual bool OnMouseUp(const CE_Vector2f& aMousePosition) override;
-	virtual void OnMouseMove(const CE_Vector2f& aNewMousePosition, const CE_Vector2f& aOldMousePosition) override;
-	virtual bool OnTextInput(const CE_WindowMessage& aMessage);
+
+	bool OnMouseDown(const CUI_MouseMessage& aMessage) override;
+	bool OnMouseUp(const CUI_MouseMessage& aMessage) override;
+	void OnMouseEnter();
+	void OnMouseExit();
+
+	bool OnMouseMove(const CUI_MouseMessage& aMessage) override;
+	bool OnTextInput(const CE_WindowMessage& aMessage);
+
+	bool OnDragBegin(CUI_DragMessage& aMessage);
+	bool OnDragEnd(CUI_DragMessage& aMessage);
 
 	void AddWidget(CUI_Widget* aWidget) { myWidgets.Add(aWidget); }
 	

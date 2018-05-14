@@ -3,6 +3,7 @@
 #include "CE_RendererProxy.h"
 
 #include "CE_DebugDraw.h"
+#include "CUI_Message.h"
 
 CUI_Pin::CUI_Pin(bool aIsInput, const CE_Vector2f& aSize, const CE_Vector4f& aColor)
 	: myColor(aColor)
@@ -13,11 +14,30 @@ CUI_Pin::CUI_Pin(bool aIsInput, const CE_Vector2f& aSize, const CE_Vector4f& aCo
 
 void CUI_Pin::Render(CE_RendererProxy& anRendererProxy)
 {
-	anRendererProxy.AddSprite(myPosition, mySize, myColor);
+	CE_Vector4f color = myColor;
+	if (myIsFocused)
+		color.x += 0.2f;
+	else if (myHasLongPress)
+		color.y += 0.1f;
+	else if (myIsHovered)
+		color.z += 0.1f;
+
+	anRendererProxy.AddSprite(myPosition, mySize, color);
 }
 
-void CUI_Pin::OnMouseMove(const CE_Vector2f& aNewMousePosition, const CE_Vector2f& /*aOldMousePosition*/)
+bool CUI_Pin::OnDragMessage(CUI_DragMessage& aMessage)
 {
-	aNewMousePosition;
-	//CE_DRAW_LINE(myPosition, aNewMousePosition);
+	if (aMessage.myType == CUI_DragMessage::DRAG_START)
+	{
+		aMessage.myIntVar = 123;
+		return true;
+	}
+
+	if (aMessage.myType == CUI_DragMessage::DRAG_END)
+	{
+		CE_ASSERT(aMessage.myIntVar == 123, "Something isnt working!");
+		return true;
+	}
+
+	return false;
 }

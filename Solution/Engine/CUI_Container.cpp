@@ -24,6 +24,28 @@ void CUI_Container::Render(CE_RendererProxy& anRendererProxy)
 	}
 }
 
+bool CUI_Container::OnMouseDown(const CUI_MouseMessage& aMessage)
+{
+	for (CUI_Widget* widget : myWidgets)
+	{
+		if (widget->OnMouseDown(aMessage))
+			return true;
+	}
+
+	return CUI_Widget::OnMouseDown(aMessage);
+}
+
+bool CUI_Container::OnMouseUp(const CUI_MouseMessage& aMessage)
+{
+	for (CUI_Widget* widget : myWidgets)
+	{
+		if (widget->OnMouseUp(aMessage))
+			return true;
+	}
+
+	return CUI_Widget::OnMouseUp(aMessage);
+}
+
 void CUI_Container::OnMouseEnter()
 {
 	CUI_Widget::OnMouseEnter();
@@ -40,35 +62,17 @@ void CUI_Container::OnMouseExit()
 		widget->OnMouseExit();
 }
 
-void CUI_Container::OnMouseDown(const CE_Vector2f& aMousePosition)
-{
-	CUI_Widget::OnMouseDown(aMousePosition);
-
-	for (CUI_Widget* widget : myWidgets)
-		widget->OnMouseDown(aMousePosition);
-}
-
-bool CUI_Container::OnMouseUp(const CE_Vector2f& aMousePosition)
+bool CUI_Container::OnMouseMove(const CUI_MouseMessage& aMessage)
 {
 	for (CUI_Widget* widget : myWidgets)
 	{
-		if (widget->OnMouseUp(aMousePosition))
+		if (widget->OnMouseMove(aMessage))
 			return true;
 	}
 
-	return CUI_Widget::OnMouseUp(aMousePosition);
+	return CUI_Widget::OnMouseMove(aMessage);
 }
 
-void CUI_Container::OnMouseMove(const CE_Vector2f& aNewMousePosition, const CE_Vector2f& aOldMousePosition)
-{
-	for (CUI_Widget* widget : myWidgets)
-		widget->OnMouseMove(aNewMousePosition, aOldMousePosition);
-}
-
-void CUI_Container::DeleteAllChildren()
-{
-	myWidgets.DeleteAll();
-}
 
 bool CUI_Container::OnTextInput(const CE_WindowMessage& aMessage)
 {
@@ -79,4 +83,31 @@ bool CUI_Container::OnTextInput(const CE_WindowMessage& aMessage)
 	}
 
 	return CUI_Widget::OnTextInput(aMessage);
+}
+
+bool CUI_Container::OnDragBegin(CUI_DragMessage& aMessage)
+{
+	for (CUI_Widget* widget : myWidgets)
+	{
+		if (widget->OnDragBegin(aMessage))
+			return true;
+	}
+
+	return CUI_Widget::OnDragBegin(aMessage);
+}
+
+bool CUI_Container::OnDragEnd(CUI_DragMessage& aMessage)
+{
+	for (CUI_Widget* widget : myWidgets)
+	{
+		if (widget->OnDragEnd(aMessage))
+			return true;
+	}
+
+	return CUI_Widget::OnDragEnd(aMessage);
+}
+
+void CUI_Container::DeleteAllChildren()
+{
+	myWidgets.DeleteAll();
 }

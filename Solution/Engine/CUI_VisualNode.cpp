@@ -4,6 +4,7 @@
 #include "CUI_Image.h"
 #include "CUI_Pin.h"
 #include "CUI_Label.h"
+#include "CUI_Message.h"
 
 
 CUI_VisualNode::CUI_VisualNode(const CE_Font& aFont, const char* aLabel)
@@ -81,27 +82,32 @@ void CUI_VisualNode::Render(CE_RendererProxy& anRendererProxy)
 	CUI_Container::Render(anRendererProxy);
 }
 
-void CUI_VisualNode::OnMouseDown(const CE_Vector2f& aMousePosition)
+bool CUI_VisualNode::OnMouseMessage(const CUI_MouseMessage& aMessage)
 {
-	CUI_Widget::OnMouseDown(aMousePosition);
-
-	if (myHasLongPress)
+	if (aMessage.myType == CUI_MouseMessage::MOUSE_DOWN)
 	{
-		myPositionOffset = myPosition - aMousePosition;
-	}
-}
+		if (myHasLongPress)
+			myPositionOffset = myPosition - aMessage.myNewPosition;
 
-void CUI_VisualNode::OnMouseMove(const CE_Vector2f& aNewMousePosition, const CE_Vector2f& aOldMousePosition)
-{
-	CUI_Widget::OnMouseMove(aNewMousePosition, aOldMousePosition);
-	
-	if (myHasLongPress)
-		myPosition = aNewMousePosition + myPositionOffset;
+		return true;
+	}
+
+	if (aMessage.myType == CUI_MouseMessage::MOUSE_MOVE)
+	{
+		if (myHasLongPress)
+		{
+			myPosition = aMessage.myNewPosition+ myPositionOffset;
+			return true;
+		}
+
+	}
+
+	return false;
 }
 
 void CUI_VisualNode::AddPin(bool aIsInput)
 {
-	CUI_Pin* pin = new CUI_Pin(aIsInput, { myPinSize, myPinSize }, { 0.2f, 0.9f, 0.12f, 1.f });
+	CUI_Pin* pin = new CUI_Pin(aIsInput, { myPinSize, myPinSize }, { 0.2f, 0.2f, 0.2f, 1.f });
 
 	AddWidget(pin);
 }

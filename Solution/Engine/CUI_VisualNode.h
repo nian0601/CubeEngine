@@ -14,8 +14,8 @@ public:
 	void PrepareLayout() override;
 	void Render(CE_RendererProxy& anRendererProxy) override;
 
-	void OnMouseDown(const CE_Vector2f& aMousePosition) override;
-	void OnMouseMove(const CE_Vector2f& aNewMousePosition, const CE_Vector2f& aOldMousePosition) override;
+	bool OnMouseMessage(const CUI_MouseMessage& aMessage) override;
+
 	bool CanBeFocused() const override { return true; }
 
 	void AddPin(bool aIsInput);
