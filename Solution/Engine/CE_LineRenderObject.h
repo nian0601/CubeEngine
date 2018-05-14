@@ -12,6 +12,7 @@ public:
 	CE_LineRenderObject();
 	~CE_LineRenderObject();
 
+	void SetLine(const CE_Line& aLine, const CE_GPUContext& aGPUContext);
 	void SetLines(const CE_GrowingArray<CE_Line>& someLines, const CE_GPUContext& aGPUContext);
 
 	void Render(const CE_GPUContext& aGPUContext);

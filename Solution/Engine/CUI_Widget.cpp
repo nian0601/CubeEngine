@@ -68,7 +68,10 @@ bool CUI_Widget::OnMouseMove(const CUI_MouseMessage& aMessage)
 	{
 		if (!old)
 			OnMouseEnter();
+	}
 
+	if (curr || myHasLongPress)
+	{
 		OnMouseMessage(aMessage);
 		return true;
 	}

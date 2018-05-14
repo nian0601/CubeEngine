@@ -31,6 +31,7 @@ private:
 	void RenderModels(const CE_RendererProxy& aRendererProxy);
 	void RenderText(const CE_2DData& aTextData);
 	void RenderSprite(const CE_2DData& aSpriteData);
+	void Render2DLine(const CE_2DData& aLineData);
 
 	CE_GPUContext& myGPUContext;
 
@@ -55,5 +56,6 @@ private:
 
 	CE_ShaderPair* myCubeShader;
 	CE_ShaderPair* myLineShader;
+	CE_ShaderPair* myLine2DShader;
 };
 

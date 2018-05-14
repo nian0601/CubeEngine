@@ -62,6 +62,9 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext, CE_ShaderManager& aShaderM
 	CE_GenericShader* linePX = aShaderManager.GetShader("Line.px");
 	myLineShader = new CE_ShaderPair(lineVX, linePX);
 
+	CE_GenericShader* line2DVX = aShaderManager.GetShader("Line2D.vx");
+	myLine2DShader = new CE_ShaderPair(line2DVX, linePX);
+
 	CE_GenericShader* spriteVX = aShaderManager.GetShader("Sprite.vx");
 	CE_GenericShader* spritePX = aShaderManager.GetShader("Sprite.px");
 	mySpriteShader = new CE_ShaderPair(spriteVX, spritePX);
@@ -86,6 +89,7 @@ CE_Renderer::~CE_Renderer()
 	CE_SAFE_DELETE(myMSDFTextShader);
 	CE_SAFE_DELETE(myTextShader);
 	CE_SAFE_DELETE(myLineShader);
+	CE_SAFE_DELETE(myLine2DShader);
 	CE_SAFE_DELETE(mySpriteShader);
 
 	CE_SAFE_DELETE(myCubeShader);
@@ -116,6 +120,8 @@ void CE_Renderer::Render2D(const CE_RendererProxy& aRendererProxy)
 			RenderSprite(data);
 		else if (data.myType == CE_2DData::TEXT)
 			RenderText(data);
+		else if (data.myType == CE_2DData::LINE)
+			Render2DLine(data);
 		else
 			CE_ASSERT_ALWAYS("Invalid 2D-data type!");
 	}
@@ -214,4 +220,26 @@ void CE_Renderer::RenderSprite(const CE_2DData& aSpriteData)
 	spriteData->myHotspot.y = aSpriteData.mySizeAndHotspot.w * 2.f;
 
 	mySprite->Render();
+}
+
+void CE_Renderer::Render2DLine(const CE_2DData& aLineData)
+{
+	CE_SetResetBlend blend(ALPHA_BLEND);
+	CE_SetResetDepth depth(NO_READ_NO_WRITE);
+
+	myOrthagonalConstantBuffer->SendToGPU();
+	myLine2DShader->Activate();
+
+	CE_Line line;
+	line.myStart.x = aLineData.myPosition.x;
+	line.myStart.y = aLineData.myPosition.y;
+
+	line.myEnd.x = aLineData.mySizeAndHotspot.x;
+	line.myEnd.y = aLineData.mySizeAndHotspot.y;
+
+	line.myStartColor = aLineData.myColor;
+	line.myEndColor = aLineData.myColor;
+
+	myLineObject->SetLine(line, myGPUContext);
+	myLineObject->Render(myGPUContext);
 }

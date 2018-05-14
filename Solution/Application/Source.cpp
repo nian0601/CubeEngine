@@ -9,4 +9,6 @@ int main()
 	CE_Engine myEngine(myGame);
 
 	myEngine.Run();
+
+	delete myGame;
 }

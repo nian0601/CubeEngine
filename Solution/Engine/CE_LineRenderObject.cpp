@@ -23,6 +23,36 @@ CE_LineRenderObject::~CE_LineRenderObject()
 	CE_SAFE_RELEASE(myVertexBuffer);
 }
 
+void CE_LineRenderObject::SetLine(const CE_Line& aLine, const CE_GPUContext& aGPUContext)
+{
+	if (myVertexCount < 2)
+	{
+		myVertexCount = 2;
+		myIndexCount = myVertexCount;
+
+		CE_SAFE_DELETE_ARRAY(myVertices);
+		CE_SAFE_DELETE_ARRAY(myIndices);
+
+		myVertices = new VertexType[myVertexCount];
+		myIndices = new UINT[myIndexCount];
+	}
+
+
+	myVertices[0].myPosition = aLine.myStart;
+	myVertices[0].myColor = aLine.myStartColor;
+
+	myVertices[1].myPosition = aLine.myEnd;
+	myVertices[1].myColor = aLine.myEndColor;
+
+	myIndices[0] = 0; 
+	myIndices[1] = 1;
+
+	myRealVertexCount = 2;
+	myRealIndexCount = 2;
+
+	InitVertexAndIndexBuffers(aGPUContext, myVertices, myIndices, 2);
+}
+
 void CE_LineRenderObject::SetLines(const CE_GrowingArray<CE_Line>& someLines, const CE_GPUContext& aGPUContext)
 {
 	if (myVertexCount < someLines.Size() * 2)

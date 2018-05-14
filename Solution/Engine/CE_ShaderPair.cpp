@@ -20,8 +20,6 @@ CE_ShaderPair::CE_ShaderPair(CE_GenericShader* aVertexShader, CE_GenericShader* 
 
 CE_ShaderPair::~CE_ShaderPair()
 {
-	CE_SAFE_DELETE(myPixelShader);
-	CE_SAFE_DELETE(myVertexShader);
 }
 
 void CE_ShaderPair::Activate()

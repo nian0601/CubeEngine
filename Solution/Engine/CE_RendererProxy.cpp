@@ -32,6 +32,16 @@ void CE_RendererProxy::AddText(const CE_String& aString, const CE_Vector2f& aPos
 	data.myString = aString;
 }
 
+void CE_RendererProxy::Add2DLine(const CE_Vector2f& aStart, const CE_Vector2f& aEnd, const CE_Vector4f& aColor)
+{
+	CE_2DData& data = my2DData.Add();
+	data.myType = CE_2DData::LINE;
+	data.myPosition = aStart;
+	data.mySizeAndHotspot.x = aEnd.x;
+	data.mySizeAndHotspot.y = aEnd.y;
+	data.myColor = aColor;
+}
+
 void CE_RendererProxy::AddPointLight(const CE_Matrix44f& anOrientation, const CE_Vector4f& aColorAndIntensity, float aRadius)
 {
 	CE_PointLightData& data = myPointLightData.Add();

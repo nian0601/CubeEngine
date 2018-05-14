@@ -28,13 +28,17 @@ void NodeEditorContext::Init(CE_Engine& anEngine)
 
 	CUI_NodeEditor* nodeEditor = new CUI_NodeEditor();
 
-	//CUI_VisualNode* node = new CUI_VisualNode(*myFont, "Test Node");
 	CUI_VisualNode* node = new CUI_VisualNode(*myFont, "TEST NODE");
 	node->AddPin(true);
 	node->AddPin(true);
 	node->AddPin(false);
 	node->AddPin(false);
 	nodeEditor->AddWidget(node);
+
+	CUI_VisualNode* node2 = new CUI_VisualNode(*myFont, "TEST NODE 2");
+	node2->AddPin(true);
+	node2->AddPin(true);
+	nodeEditor->AddWidget(node2);
 
 	mainWindow.GetUIManager().AddWidget(nodeEditor);
 }

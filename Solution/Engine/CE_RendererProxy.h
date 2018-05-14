@@ -15,6 +15,7 @@ struct CE_2DData
 	{
 		TEXT,
 		SPRITE,
+		LINE,
 	};
 	Type myType;
 	CE_Vector2f myPosition;
@@ -38,6 +39,7 @@ public:
 	void AddModel(const CE_Matrix44f& anOrientation, const CE_Vector3f& aScale, const CE_Vector4f& aColor, float aMetalness, float aRoughness, bool aIsSphere = false);
 	void AddSprite(const CE_Vector2f& aPosition, const CE_Vector2f& aSize, const CE_Vector4f& aColor, const CE_Vector2f& aHotspot = CE_Vector2f(0.f, 0.f));
 	void AddText(const CE_String& aString, const CE_Vector2f& aPosition, const CE_Vector4f& aColor = CE_Vector4f(1.f, 1.f, 1.f, 1.f));
+	void Add2DLine(const CE_Vector2f& aStart, const CE_Vector2f& aEnd, const CE_Vector4f& aColor = CE_Vector4f(1.f, 1.f, 1.f, 1.f));
 	void AddPointLight(const CE_Matrix44f& anOrientation, const CE_Vector4f& aColorAndIntensity, float aRadius);
 
 	const CE_GrowingArray<CE_ModelData>& GetModelData() const { return myModelData; }

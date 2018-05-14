@@ -48,13 +48,14 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 
 CE_Engine::~CE_Engine()
 {
-	CE_SAFE_DELETE(myGame);
 	CE_SAFE_DELETE(myDebugRenderManager);
 	CE_SAFE_DELETE(myInput);
 	CE_SAFE_DELETE(myTime);
 	CE_SAFE_DELETE(myDeferredRenderer);
 	CE_SAFE_DELETE(myRenderer);
+	CE_SAFE_DELETE(myShaderManager);
 	CE_SAFE_DELETE(myGPUContext);
+	CE_SAFE_DELETE(myDirectX);
 	CE_WindowManager::Destory();
 }
 

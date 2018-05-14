@@ -9,10 +9,15 @@ public:
 	void Render(CE_RendererProxy& anRendererProxy) override;
 
 	bool OnDragMessage(CUI_DragMessage& aMessage) override;
+	bool OnMouseMessage(const CUI_MouseMessage& aMessage) override;
 
 	bool IsInput() const { return myIsInput; }
+
 private:
 	CE_Vector4f myColor;
 	bool myIsInput;
+
+	CE_Vector2f myMousePosition;
+	bool myHasStartedDrag;
 };
 
