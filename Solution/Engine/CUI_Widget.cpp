@@ -38,6 +38,7 @@ bool CUI_Widget::OnMouseUp(const CUI_MouseMessage& aMessage)
 		return false;
 
 	myIsFocused = false;
+	OnLostFocus();
 
 	if (!myHasLongPress)
 		return false;
@@ -45,8 +46,11 @@ bool CUI_Widget::OnMouseUp(const CUI_MouseMessage& aMessage)
 	myHasLongPress = false;
 	if (Contains(aMessage.myNewPosition))
 	{
-		if(CanBeFocused())
+		if (CanBeFocused())
+		{
 			myIsFocused = true;
+			OnGainedFocus();
+		}
 
 		OnMouseMessage(aMessage);
 

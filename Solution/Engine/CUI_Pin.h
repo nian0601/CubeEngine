@@ -13,6 +13,8 @@ public:
 
 	bool IsInput() const { return myIsInput; }
 
+	void OnLostFocus() override;
+
 private:
 	CE_Vector4f myColor;
 	bool myIsInput;

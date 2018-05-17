@@ -25,8 +25,12 @@ void CUI_Pin::Render(CE_RendererProxy& anRendererProxy)
 
 	anRendererProxy.AddSprite(myPosition, mySize, color);
 
-	if(myHasStartedDrag)
-		anRendererProxy.Add2DLine(myPosition, myMousePosition);
+	if (myHasStartedDrag)
+	{
+		CE_Vector2f position = myPosition;
+		position += mySize * 0.5f;
+		anRendererProxy.Add2DLine(position, myMousePosition);
+	}
 }
 
 bool CUI_Pin::OnDragMessage(CUI_DragMessage& aMessage)
@@ -52,4 +56,9 @@ bool CUI_Pin::OnMouseMessage(const CUI_MouseMessage& aMessage)
 {
 	myMousePosition = aMessage.myNewPosition;
 	return false;
+}
+
+void CUI_Pin::OnLostFocus()
+{
+	myHasStartedDrag = false;
 }

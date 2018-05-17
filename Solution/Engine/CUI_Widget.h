@@ -36,6 +36,8 @@ public:
 	virtual bool OnTextInput(const CE_WindowMessage& aMessage) { aMessage; return false; }
 	virtual bool OnDragMessage(CUI_DragMessage& aMessage) { aMessage; return false; }
 
+	virtual void OnGainedFocus() {}
+	virtual void OnLostFocus() {}
 	virtual bool CanBeFocused() const { return false; }
 
 	void Show() { myIsVisible = true; }
