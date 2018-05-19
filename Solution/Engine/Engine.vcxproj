@@ -137,6 +137,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CN_Node.cpp" />
+    <ClCompile Include="CN_Pin.cpp" />
     <ClCompile Include="CUI_NodeEditor.cpp" />
     <ClCompile Include="CE_BaseProcessor.cpp" />
     <ClCompile Include="CE_BinaryFileReader.cpp" />
@@ -216,6 +218,7 @@
     <ClCompile Include="CE_GBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CE_Any.h" />
     <ClInclude Include="CE_Assert.h" />
     <ClInclude Include="CE_BaseComponent.h" />
     <ClInclude Include="CE_BaseProcessor.h" />
@@ -278,11 +281,13 @@
     <ClInclude Include="CE_Time.h" />
     <ClInclude Include="CE_TypeID.h" />
     <ClInclude Include="CE_TypeRegistration.h" />
-    <ClInclude Include="CE_Types.h" />
+    <ClInclude Include="CE_RenderingTypes.h" />
     <ClInclude Include="CE_GPUBuffer.h" />
     <ClInclude Include="CE_VertexShader.h" />
     <ClInclude Include="CE_Window.h" />
     <ClInclude Include="CE_WindowMessage.h" />
+    <ClInclude Include="CN_Node.h" />
+    <ClInclude Include="CN_Pin.h" />
     <ClInclude Include="CPY_AABB.h" />
     <ClInclude Include="CPY_Intersection.h" />
     <ClInclude Include="CPY_Line3D.h" />

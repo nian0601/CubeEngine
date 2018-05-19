@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CE_Any.h"
 
 struct CUI_DragMessage
 {
@@ -8,8 +9,9 @@ struct CUI_DragMessage
 		DRAG_START,
 		DRAG_END
 	};
-	int myIntVar;
 	int myType;
+
+	CE_Any myData;
 };
 
 struct CUI_MouseMessage

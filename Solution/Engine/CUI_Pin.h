@@ -15,11 +15,16 @@ public:
 
 	void OnLostFocus() override;
 
+	const CE_GrowingArray<CUI_Pin*>& GetConnections() const { return myConnections; }
+
 private:
+	void RenderSteppedLine(CE_RendererProxy& anRendererProxy, const CE_Vector2f& aStartPos, const CE_Vector2f& aEndPos, float aCutPoint);
 	CE_Vector4f myColor;
 	bool myIsInput;
 
 	CE_Vector2f myMousePosition;
 	bool myHasStartedDrag;
+
+	CE_GrowingArray<CUI_Pin*> myConnections;
 };
 

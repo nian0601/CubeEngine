@@ -34,12 +34,12 @@ void CUI_Manager::Update(const CE_Input& someInput)
 		OnMouseDown(mouseMessage);
 
 		myDragMessage->myType = CUI_DragMessage::DRAG_START;
-		myDragMessage->myIntVar = -1;
+		myDragMessage->myData.Clear();
 		OnDragBegin(*myDragMessage);
 	}
 	else if (someInput.MouseUp(0))
 	{
-		if (myDragMessage->myIntVar != -1)
+		if (myDragMessage->myData.IsEmpty() == false)
 		{
 			myDragMessage->myType = CUI_DragMessage::DRAG_END;
 			OnDragEnd(*myDragMessage);

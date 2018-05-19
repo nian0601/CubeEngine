@@ -80,6 +80,8 @@ void CUI_VisualNode::Render(CE_RendererProxy& anRendererProxy)
 	anRendererProxy.AddSprite(myPosition, mySize, color);
 	myLabel->Render(anRendererProxy);
 	CUI_Container::Render(anRendererProxy);
+
+	RenderConnections(anRendererProxy);
 }
 
 bool CUI_VisualNode::OnMouseMessage(const CUI_MouseMessage& aMessage)
@@ -102,6 +104,7 @@ bool CUI_VisualNode::OnMouseMessage(const CUI_MouseMessage& aMessage)
 
 	}
 
+//	return CUI_Container::OnMouseMove(aMessage);
 	return false;
 }
 
@@ -110,4 +113,49 @@ void CUI_VisualNode::AddPin(bool aIsInput)
 	CUI_Pin* pin = new CUI_Pin(aIsInput, { myPinSize, myPinSize }, { 0.2f, 0.2f, 0.2f, 1.f });
 
 	AddWidget(pin);
+
+	if (aIsInput)
+		myInputs.Add(pin);
+	else
+		myOutPuts.Add(pin);
+}
+
+void CUI_VisualNode::RenderConnections(CE_RendererProxy& anRendererProxy)
+{
+	int numOutputs = myOutPuts.Size();
+	float startOffset = 0.1f;
+	float spacing = (1.f - startOffset * 2) / numOutputs;
+
+	for(int i = 0; i < numOutputs; ++i)
+	{
+		float cutPoint = startOffset + spacing * 0.5f + spacing * i;
+
+		const CUI_Pin* outputPin = myOutPuts[i];
+		CE_Vector2f startPosition = outputPin->GetPosition();
+		startPosition += outputPin->GetSize() * 0.5f;
+
+		const CE_GrowingArray<CUI_Pin*>& connections = outputPin->GetConnections();
+		for(const CUI_Pin* connection : connections)
+		{
+			CE_Vector2f endPosition = connection->GetPosition();
+			endPosition += connection->GetSize() * 0.5f;
+		
+			RenderSteppedLine(anRendererProxy, startPosition, endPosition, cutPoint);
+		}
+	}
+}
+
+void CUI_VisualNode::RenderSteppedLine(CE_RendererProxy& anRendererProxy, const CE_Vector2f& aStartPos, const CE_Vector2f& aEndPos, float aCutPoint)
+{
+	float cutPoint = aStartPos.x + (aEndPos.x - aStartPos.x) * aCutPoint;
+
+	CE_Vector2f cutPointA = aStartPos;
+	cutPointA.x = cutPoint;
+
+	CE_Vector2f cutPointB = aEndPos;
+	cutPointB.x = cutPoint;
+
+	anRendererProxy.Add2DLine(aStartPos, cutPointA);
+	anRendererProxy.Add2DLine(cutPointA, cutPointB);
+	anRendererProxy.Add2DLine(cutPointB, aEndPos);
 }

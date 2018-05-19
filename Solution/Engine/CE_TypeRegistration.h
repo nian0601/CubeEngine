@@ -6,10 +6,13 @@ class CE_World;
 class CE_PathFinder;
 class CE_Blackboard;
 
+class CUI_Pin;
+
 namespace CE_TypeRegistration
 {
 	void Register()
 	{
+		CE_TYPE_REGISTER(int);
 		CE_TYPE_REGISTER(float);
 		CE_TYPE_REGISTER(double);
 
@@ -20,5 +23,7 @@ namespace CE_TypeRegistration
 
 		CE_TYPE_REGISTER(CE_PathFinder*);
 		CE_TYPE_REGISTER(CE_Blackboard*);
+
+		CE_TYPE_REGISTER(CUI_Pin*);
 	}
 }

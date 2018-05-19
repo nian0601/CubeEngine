@@ -74,7 +74,6 @@
     <ClCompile Include="CE_BTSequenceNode.cpp">
       <Filter>AI\Behavior\Nodes</Filter>
     </ClCompile>
-    <ClCompile Include="CE_TypeID.cpp" />
     <ClCompile Include="CE_BehaviorTree.cpp">
       <Filter>AI\Behavior</Filter>
     </ClCompile>
@@ -222,6 +221,15 @@
     <ClCompile Include="CUI_Pin.cpp">
       <Filter>GUI\NodeEditor</Filter>
     </ClCompile>
+    <ClCompile Include="CN_Pin.cpp">
+      <Filter>NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="CN_Node.cpp">
+      <Filter>NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_TypeID.cpp">
+      <Filter>Reflection</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -314,6 +322,12 @@
     <Filter Include="GUI\Widgets">
       <UniqueIdentifier>{65c8a09c-36e1-4d1e-8f85-38ffd83ddabe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NodeEditor">
+      <UniqueIdentifier>{0df380d8-32c7-40ac-85f1-111abdb7ecb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Reflection">
+      <UniqueIdentifier>{dff15808-72cc-4445-b26b-2fbd891299f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -360,7 +374,6 @@
     <ClInclude Include="CE_Vector4_Decl.h">
       <Filter>Utility\Math</Filter>
     </ClInclude>
-    <ClInclude Include="CE_Types.h" />
     <ClInclude Include="CE_GPUContext.h">
       <Filter>DirectX</Filter>
     </ClInclude>
@@ -443,7 +456,6 @@
     <ClInclude Include="CE_BTSequenceNode.h">
       <Filter>AI\Behavior\Nodes</Filter>
     </ClInclude>
-    <ClInclude Include="CE_TypeID.h" />
     <ClInclude Include="CE_DebugDraw.h">
       <Filter>Debug</Filter>
     </ClInclude>
@@ -588,7 +600,6 @@
     <ClInclude Include="CE_BinaryFileReader.h">
       <Filter>Utility\Files</Filter>
     </ClInclude>
-    <ClInclude Include="CE_TypeRegistration.h" />
     <ClInclude Include="CUI_Button.h">
       <Filter>GUI\Widgets</Filter>
     </ClInclude>
@@ -624,6 +635,24 @@
     </ClInclude>
     <ClInclude Include="CUI_Message.h">
       <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CN_Pin.h">
+      <Filter>NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="CN_Node.h">
+      <Filter>NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_TypeID.h">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_TypeRegistration.h">
+      <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_RenderingTypes.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_Any.h">
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

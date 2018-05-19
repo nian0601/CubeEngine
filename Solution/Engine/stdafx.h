@@ -11,7 +11,7 @@
 
 #include "CE_Matrix44.h"
 
-#include "CE_Types.h"
+#include "CE_RenderingTypes.h"
 
 #include "CE_GrowingArray.h"
 #include "CE_StaticArray.h"
