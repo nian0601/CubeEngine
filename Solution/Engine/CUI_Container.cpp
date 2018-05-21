@@ -46,22 +46,6 @@ bool CUI_Container::OnMouseUp(const CUI_MouseMessage& aMessage)
 	return CUI_Widget::OnMouseUp(aMessage);
 }
 
-void CUI_Container::OnMouseEnter()
-{
-	CUI_Widget::OnMouseEnter();
-
-	for (CUI_Widget* widget : myWidgets)
-		widget->OnMouseEnter();
-}
-
-void CUI_Container::OnMouseExit()
-{
-	CUI_Widget::OnMouseExit();
-
-	for (CUI_Widget* widget : myWidgets)
-		widget->OnMouseExit();
-}
-
 bool CUI_Container::OnMouseMove(const CUI_MouseMessage& aMessage)
 {
 	for (CUI_Widget* widget : myWidgets)

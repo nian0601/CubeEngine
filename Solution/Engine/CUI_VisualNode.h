@@ -8,6 +8,8 @@ class CE_Font;
 
 class CUI_VisualNode : public CUI_Container
 {
+	friend class CUI_NodeEditor;
+
 public:
 	CUI_VisualNode(const CE_Font& aFont, const char* aLabel);
 	~CUI_VisualNode();
@@ -19,12 +21,10 @@ public:
 
 	bool CanBeFocused() const override { return true; }
 
-	void AddPin(bool aIsInput);
+	void AddPin(CUI_Pin* aPin);
 
+	unsigned int myID;
 private:
-	void RenderConnections(CE_RendererProxy& anRendererProxy);
-	void RenderSteppedLine(CE_RendererProxy& anRendererProxy, const CE_Vector2f& aStartPos, const CE_Vector2f& aEndPos, float aCutPoint);
-
 	CE_Vector4f myColor;
 	CE_Vector2f myPositionOffset;
 
@@ -33,5 +33,8 @@ private:
 
 	CE_GrowingArray<CUI_Pin*> myInputs;
 	CE_GrowingArray<CUI_Pin*> myOutPuts;
+
+	//Used only for saving and loading for now
+	CE_GrowingArray<CUI_Pin*> myPins;
 };
 

@@ -110,6 +110,8 @@ bool CUI_Widget::OnDragEnd(CUI_DragMessage& aMessage)
 
 bool CUI_Widget::Contains(const CE_Vector2f& aPosition) const
 {
+	if (mySize.x < 0.f && mySize.y < 0.f) return true;
+
 	if (myPosition.x > aPosition.x) return false;
 	if (myPosition.x + mySize.x < aPosition.x) return false;
 	if (myPosition.y > aPosition.y) return false;
