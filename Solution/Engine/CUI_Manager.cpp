@@ -28,26 +28,38 @@ void CUI_Manager::Update(const CE_Input& someInput)
 
 	OnMouseMove(mouseMessage);
 
-	if (someInput.MouseDown(0))
-	{
-		mouseMessage.myType = CUI_MouseMessage::MOUSE_DOWN;
-		OnMouseDown(mouseMessage);
+	SendMouseMessage(mouseMessage, 0, someInput);
+	SendMouseMessage(mouseMessage, 1, someInput);
+	SendMouseMessage(mouseMessage, 2, someInput);
 
-		myDragMessage->myType = CUI_DragMessage::DRAG_START;
-		myDragMessage->myData.Clear();
-		OnDragBegin(*myDragMessage);
-	}
-	else if (someInput.MouseUp(0))
+	myOldMousePosition = mousePos;
+}
+
+void CUI_Manager::SendMouseMessage(CUI_MouseMessage& aMessage, int aMouseButton, const CE_Input& someInput)
+{
+	aMessage.myMouseButton = aMouseButton;
+
+	if (someInput.MouseDown(aMouseButton))
 	{
-		if (myDragMessage->myData.IsEmpty() == false)
+		aMessage.myType = CUI_MouseMessage::MOUSE_DOWN;
+		OnMouseDown(aMessage);
+
+		if (aMouseButton == 0)
+		{
+			myDragMessage->myType = CUI_DragMessage::DRAG_START;
+			myDragMessage->myData.Clear();
+			OnDragBegin(*myDragMessage);
+		}
+	}
+	else if (someInput.MouseUp(aMouseButton))
+	{
+		if (aMouseButton == 0 && myDragMessage->myData.IsEmpty() == false)
 		{
 			myDragMessage->myType = CUI_DragMessage::DRAG_END;
 			OnDragEnd(*myDragMessage);
 		}
 
-		mouseMessage.myType = CUI_MouseMessage::MOUSE_UP;
-		OnMouseUp(mouseMessage);
+		aMessage.myType = CUI_MouseMessage::MOUSE_UP;
+		OnMouseUp(aMessage);
 	}
-
-	myOldMousePosition = mousePos;
 }

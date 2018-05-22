@@ -84,19 +84,22 @@ bool CUI_Dropbox::OnMouseUp(const CUI_MouseMessage& aMessage)
 	if (IsEmpty())
 		return false;
 
-	CUI_Widget* clickedWidget = nullptr;
-	for (int i = 2; i < myWidgets.Size(); ++i)
+	if (aMessage.myMouseButton == CUI_MouseMessage::MOUSE_LEFT)
 	{
-		CUI_Widget* widget = myWidgets[i];
-		if (widget->OnMouseUp(aMessage) || widget->Contains(aMessage.myNewPosition))
-			clickedWidget = widget;
-	}
+		CUI_Widget* clickedWidget = nullptr;
+		for (int i = 2; i < myWidgets.Size(); ++i)
+		{
+			CUI_Widget* widget = myWidgets[i];
+			if (widget->OnMouseUp(aMessage) || widget->Contains(aMessage.myNewPosition))
+				clickedWidget = widget;
+		}
 
-	myIsExpanded = false;
-	if (clickedWidget != nullptr && myOnSelection != nullptr)
-	{
-		myOnSelection(clickedWidget);
-		return true;
+		myIsExpanded = false;
+		if (clickedWidget != nullptr && myOnSelection != nullptr)
+		{
+			myOnSelection(clickedWidget);
+			return true;
+		}
 	}
 
 	return CUI_Widget::OnMouseUp(aMessage);

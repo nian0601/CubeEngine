@@ -95,3 +95,8 @@ void CUI_Container::DeleteAllChildren()
 {
 	myWidgets.DeleteAll();
 }
+
+void CUI_Container::DeleteWidget(CUI_Widget* aWidget)
+{
+	myWidgets.DeleteCyclic(aWidget);
+}

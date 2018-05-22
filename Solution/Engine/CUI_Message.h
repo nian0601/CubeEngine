@@ -23,7 +23,16 @@ struct CUI_MouseMessage
 		MOUSE_MOVE,
 	};
 
+	enum
+	{
+		MOUSE_LEFT,
+		MOUSE_RIGHT,
+		MOUSE_MIDDLE
+	};
+
 	int myType;
+	int myMouseButton;
 	CE_Vector2f myOldPosition;
 	CE_Vector2f myNewPosition;
+
 };

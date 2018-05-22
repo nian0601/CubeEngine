@@ -2,6 +2,7 @@
 #include "NodeEditorContext.h"
 
 #include <CE_Engine.h>
+#include <CE_Input.h>
 #include <CE_Window.h>
 
 #include <CUI_Manager.h>
@@ -9,15 +10,23 @@
 
 void NodeEditorContext::Init(CE_Engine& anEngine)
 {
-	CUI_NodeEditor* nodeEditor = new CUI_NodeEditor(anEngine.GetGPUContext());
+	myNodeEditor = new CUI_NodeEditor(anEngine.GetGPUContext());
 
 	CE_Window& mainWindow = anEngine.GetMainWindow();
-	mainWindow.GetUIManager().AddWidget(nodeEditor);
+	mainWindow.GetUIManager().AddWidget(myNodeEditor);
+
+	myInput = &anEngine.GetInput();
 }
 
 void NodeEditorContext::Update(float aDelta)
 {
 	aDelta;
+
+	if (myInput->KeyIsPressed(DIK_LCONTROL) && myInput->KeyDown(DIK_S))
+		myNodeEditor->SaveGraph();
+
+	if (myInput->KeyDown(DIK_DELETE))
+		myNodeEditor->DeleteSelectedNode();
 }
 
 void NodeEditorContext::Render()

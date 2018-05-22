@@ -16,6 +16,7 @@ public:
 	virtual void DeleteAllChildren() override;
 
 	void AddLabel(const char* aString);
+	void SetExpansion(bool aStatus) { myIsExpanded = aStatus; }
 
 	std::function<void(CUI_Widget*)> myOnSelection;
 

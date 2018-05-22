@@ -7,6 +7,7 @@
 #include "CE_BinaryFileWriter.h"
 #include "CE_BinaryFileReader.h"
 #include "CUI_Label.h"
+#include "CUI_Dropbox.h"
 
 namespace CUI_NodeEditor_priv
 {
@@ -14,7 +15,6 @@ namespace CUI_NodeEditor_priv
 	const CE_Vector4f locDefaultPinColor = CE_Vector4f(0.2f, 0.2f, 0.2f, 1.f);
 }
 
-#define SAVE_GRAPHS 0
 CUI_NodeEditor::CUI_NodeEditor(CE_GPUContext& aGPUContext)
 {
 	myNextPinID = 0;
@@ -26,34 +26,19 @@ CUI_NodeEditor::CUI_NodeEditor(CE_GPUContext& aGPUContext)
 	myFont = new CE_Font();
 	myFont->LoadFromFile("Data/Font/Decent_Font.png", aGPUContext);
 
-#if SAVE_GRAPHS == 1
-	CUI_VisualNode* node = CreateNode("TEST NODE", myNextNodeID++);
-	node->SetPosition({ 100.f, 100.f });
-	CreateAndAddPin(node, true, myNextPinID++);
-	CreateAndAddPin(node, true, myNextPinID++);
-	CreateAndAddPin(node, false, myNextPinID++);
-	CreateAndAddPin(node, false, myNextPinID++);
+	myFilePath = "testgraph.cegraph";
 
-	CUI_VisualNode* node2 = CreateNode("TEST NODE 2", myNextNodeID++);
-	node2->SetPosition({ 300.f, 100.f });
-	CreateAndAddPin(node2, true, myNextPinID++);
-	CreateAndAddPin(node2, false, myNextPinID++);
-	CreateAndAddPin(node2, true, myNextPinID++);
-
-	CUI_VisualNode* node3 = CreateNode("TEST NODE 3", myNextNodeID++);
-	node3->SetPosition({ 300.f, 200.f });
-	CreateAndAddPin(node3, true, myNextPinID++);
-	CreateAndAddPin(node3, true, myNextPinID++);
-	CreateAndAddPin(node3, false, myNextPinID++);
-	CreateAndAddPin(node3, true, myNextPinID++);
-
-	CUI_VisualNode* node4 = CreateNode("TEST NODE 4", myNextNodeID++);
-	node4->SetPosition({ 300.f, 200.f });
-	CreateAndAddPin(node4, false, myNextPinID++);
-#else
-	LoadGraph("testgraph.cegraph");
-#endif
+	LoadGraph(myFilePath.c_str());
 	
+	myNodeDropbox = new CUI_Dropbox(*myFont, "Nodes");
+	myNodeDropbox->Hide();
+	myNodeDropbox->myOnSelection = std::bind(&CUI_NodeEditor::OnNodeDropboxSelection, this, std::placeholders::_1);
+	AddWidget(myNodeDropbox);
+
+	myNodeDropbox->AddLabel("TEST NODE");
+	myNodeDropbox->AddLabel("TEST NODE 2");
+	myNodeDropbox->AddLabel("TEST NODE 3");
+	myNodeDropbox->AddLabel("TEST NODE 4");
 }
 
 CUI_NodeEditor::~CUI_NodeEditor()
@@ -76,16 +61,6 @@ void CUI_NodeEditor::Render(CE_RendererProxy& anRendererProxy)
 
 		RenderSteppedLine(anRendererProxy, startPos, myMousePosition, 0.5f);
 	}
-
-#if SAVE_GRAPHS == 1
-	static int counter = 0;
-	counter++;
-	if (counter > 1000) 
-	{
-		counter = 0;
-		SaveGraphToDisk("testgraph.cegraph");
-	}
-#endif
 }
 
 bool CUI_NodeEditor::OnMouseMessage(const CUI_MouseMessage& aMessage)
@@ -93,6 +68,25 @@ bool CUI_NodeEditor::OnMouseMessage(const CUI_MouseMessage& aMessage)
 	if (aMessage.myType == CUI_MouseMessage::MOUSE_MOVE)
 	{
 		myMousePosition = aMessage.myNewPosition;
+	}
+
+	if (aMessage.myType == CUI_MouseMessage::MOUSE_DOWN)
+	{
+		if (aMessage.myMouseButton == CUI_MouseMessage::MOUSE_LEFT)
+		{
+			if (myNodeDropbox->IsVisible())
+			{
+				myNodeDropbox->Hide();
+				return true;
+			}
+		}
+		else if (aMessage.myMouseButton == CUI_MouseMessage::MOUSE_RIGHT)
+		{
+			myNodeDropbox->SetPosition(aMessage.myNewPosition);
+			myNodeDropbox->Show();
+			myNodeDropbox->SetExpansion(true);
+			return true;
+		}
 	}
 
 	return false;
@@ -172,6 +166,50 @@ bool CUI_NodeEditor::OnDragEnd(CUI_DragMessage& aMessage)
 	return false;
 }
 
+void CUI_NodeEditor::SaveGraph()
+{
+	SaveGraphToDisk(myFilePath.c_str());
+}
+
+void CUI_NodeEditor::DeleteSelectedNode()
+{
+	CUI_VisualNode* selectedNode = nullptr;
+	for (CUI_VisualNode* node : myNodes)
+	{
+		if (node->IsFocused())
+		{
+			selectedNode = node;
+			break;
+		}
+	}
+
+	if (selectedNode == nullptr)
+		return;
+
+	for (CUI_Pin* input : selectedNode->myInputs)
+	{
+		CE_GrowingArray<CUI_Pin*>& connections = input->myConnections;
+		if (connections.Size() > 0)
+			connections[0]->myConnections.RemoveCyclic(input);
+
+		myInputPins.RemoveCyclic(input);
+		connections.RemoveAll();
+	}
+
+	for (CUI_Pin* output : selectedNode->myOutPuts)
+	{
+		CE_GrowingArray<CUI_Pin*>& connections = output->myConnections;
+		for (CUI_Pin* connection : connections)
+			connection->myConnections.RemoveCyclic(output);
+
+		myOutputPins.RemoveCyclic(output);
+		connections.RemoveAll();
+	}
+
+	myNodes.RemoveCyclic(selectedNode);
+	DeleteWidget(selectedNode);
+}
+
 void CUI_NodeEditor::RenderNodeConnections(CE_RendererProxy& anRendererProxy, CUI_VisualNode* aNode)
 {
 	int numOutputs = aNode->myOutPuts.Size();
@@ -219,6 +257,39 @@ CUI_VisualNode* CUI_NodeEditor::CreateNode(const char* aTitle, unsigned int anID
 
 	myNodes.Add(node);
 	AddWidget(node);
+
+	return node;
+}
+
+CUI_VisualNode* CUI_NodeEditor::CreateNode(const char* aNodeType)
+{
+	CUI_VisualNode* node = CreateNode(aNodeType, myNextNodeID++);
+	node->SetPosition(myMousePosition);
+
+	if (strcmp(aNodeType, "TEST NODE") == 0)
+	{
+		CreateAndAddPin(node, true, myNextPinID++);
+		CreateAndAddPin(node, true, myNextPinID++);
+		CreateAndAddPin(node, false, myNextPinID++);
+		CreateAndAddPin(node, false, myNextPinID++);
+	}
+	else if (strcmp(aNodeType, "TEST NODE 2") == 0)
+	{
+		CreateAndAddPin(node, true, myNextPinID++);
+		CreateAndAddPin(node, false, myNextPinID++);
+		CreateAndAddPin(node, true, myNextPinID++);
+	}
+	else if (strcmp(aNodeType, "TEST NODE 3") == 0)
+	{
+		CreateAndAddPin(node, true, myNextPinID++);
+		CreateAndAddPin(node, true, myNextPinID++);
+		CreateAndAddPin(node, false, myNextPinID++);
+		CreateAndAddPin(node, true, myNextPinID++);
+	}
+	else
+	{
+		CreateAndAddPin(node, false, myNextPinID++);
+	}
 
 	return node;
 }
@@ -284,6 +355,8 @@ CUI_Pin* CUI_NodeEditor::FindPin(unsigned int anID)
 void CUI_NodeEditor::SaveGraphToDisk(const char* aFilePath)
 {
 	CE_BinaryFileWriter writer(aFilePath);
+	if (!writer.IsOpen())
+		return;
 
 	writer.Write(myInputPins.Size());
 	for (CUI_Pin* input : myInputPins)
@@ -319,6 +392,8 @@ void CUI_NodeEditor::SaveGraphToDisk(const char* aFilePath)
 void CUI_NodeEditor::LoadGraph(const char* aFilePath)
 {
 	CE_BinaryFileReader reader(aFilePath);
+	if (!reader.IsOpen())
+		return;
 
 	int inputCount;
 	reader.Read(inputCount);
@@ -388,4 +463,14 @@ void CUI_NodeEditor::LoadGraph(const char* aFilePath)
 			node->AddPin(pin);
 		}
 	}
+}
+
+void CUI_NodeEditor::OnNodeDropboxSelection(CUI_Widget* aWidget)
+{
+	myNodeDropbox->SetExpansion(false);
+	myNodeDropbox->Hide();
+
+	CUI_Label* label = static_cast<CUI_Label*>(aWidget);
+	const CE_String& text = label->GetText();
+	CreateNode(text.c_str());
 }

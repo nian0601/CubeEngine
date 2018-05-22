@@ -18,6 +18,8 @@ public:
 	void Update(const CE_Input& someInput);
 	
 private:
+	void SendMouseMessage(CUI_MouseMessage& aMessage, int aMouseButton, const CE_Input& someInput);
+
 	CE_Vector2f myOldMousePosition;
 	CUI_DragMessage* myDragMessage;
 };

@@ -6,6 +6,7 @@
 
 class CUI_Pin;
 class CUI_VisualNode;
+class CUI_Dropbox;
 
 class CE_GPUContext;
 class CUI_NodeEditor : public CUI_Container
@@ -20,10 +21,14 @@ public:
 	bool OnDragBegin(CUI_DragMessage& aMessage) override;
 	bool OnDragEnd(CUI_DragMessage& aMessage) override;
 
+	void SaveGraph();
+	void DeleteSelectedNode();
+
 private:
 	void RenderNodeConnections(CE_RendererProxy& anRendererProxy, CUI_VisualNode* aNode);
 	void RenderSteppedLine(CE_RendererProxy& anRendererProxy, const CE_Vector2f& aStartPos, const CE_Vector2f& aEndPos, float aCutPoint);
 
+	CUI_VisualNode* CreateNode(const char* aNodeType);
 	CUI_VisualNode* CreateNode(const char* aTitle, unsigned int anID);
 	CUI_Pin* CreatePin(bool aIsInput, unsigned int anID);
 	void CreateAndAddPin(CUI_VisualNode* aNode, bool aIsInput, unsigned int anID);
@@ -33,6 +38,9 @@ private:
 
 	void SaveGraphToDisk(const char* aFilePath);
 	void LoadGraph(const char* aFilePath);
+	void OnNodeDropboxSelection(CUI_Widget* aWidget);
+
+	CE_String myFilePath;
 
 	CE_Vector2f myMousePosition;
 	CE_Font* myFont;
@@ -44,5 +52,7 @@ private:
 	CE_GrowingArray<CUI_Pin*> myInputPins;
 	CE_GrowingArray<CUI_Pin*> myOutputPins;
 	CE_GrowingArray<CUI_VisualNode*> myNodes;
+
+	CUI_Dropbox* myNodeDropbox;
 };
 
