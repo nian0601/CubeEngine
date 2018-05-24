@@ -25,8 +25,8 @@ public:
 
 	virtual bool OnMouseDown(const CUI_MouseMessage& aMessage);
 	virtual bool OnMouseUp(const CUI_MouseMessage& aMessage);
-	virtual void OnMouseEnter() { myIsHovered = true; };
-	virtual void OnMouseExit() { myIsHovered = false; };
+	virtual void OnMouseEnter();
+	virtual void OnMouseExit();
 	virtual bool OnMouseMove(const CUI_MouseMessage& aMessage);
 
 	virtual bool OnDragBegin(CUI_DragMessage& aMessage);
@@ -40,8 +40,8 @@ public:
 	virtual void OnLostFocus() {}
 	virtual bool CanBeFocused() const { return false; }
 
-	void Show() { myIsVisible = true; }
-	void Hide() { myIsVisible = false; myHasLongPress = false; myIsHovered = false; myIsFocused = false; }
+	virtual void Show() { myIsVisible = true; }
+	virtual void Hide() { myIsVisible = false; myHasLongPress = false; myIsHovered = false; myIsFocused = false; }
 	bool IsVisible() const { return myIsVisible; }
 	bool IsFocused() const { return myIsFocused; }
 

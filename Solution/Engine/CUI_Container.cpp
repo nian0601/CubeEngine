@@ -100,3 +100,19 @@ void CUI_Container::DeleteWidget(CUI_Widget* aWidget)
 {
 	myWidgets.DeleteCyclic(aWidget);
 }
+
+void CUI_Container::Show()
+{
+	for (CUI_Widget* widget : myWidgets)
+		widget->Show();
+
+	CUI_Widget::Show();
+}
+
+void CUI_Container::Hide()
+{
+	for (CUI_Widget* widget : myWidgets)
+		widget->Hide();
+
+	CUI_Widget::Hide();
+}

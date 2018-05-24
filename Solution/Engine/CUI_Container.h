@@ -23,6 +23,9 @@ public:
 	virtual void DeleteAllChildren();
 	void DeleteWidget(CUI_Widget* aWidget);
 
+	void Show() override;
+	void Hide() override;
+
 protected:
 	CUI_Container() {};
 

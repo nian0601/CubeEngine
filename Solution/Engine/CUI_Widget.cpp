@@ -60,6 +60,18 @@ bool CUI_Widget::OnMouseUp(const CUI_MouseMessage& aMessage)
 	return false;
 }
 
+void CUI_Widget::OnMouseEnter()
+{
+	if(myIsVisible)
+		myIsHovered = true;
+}
+
+void CUI_Widget::OnMouseExit()
+{
+	if (myIsVisible)
+		myIsHovered = false;
+}
+
 bool CUI_Widget::OnMouseMove(const CUI_MouseMessage& aMessage)
 {
 	if (!myIsVisible)

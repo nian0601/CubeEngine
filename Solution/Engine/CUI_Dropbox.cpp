@@ -78,6 +78,9 @@ void CUI_Dropbox::Render(CE_RendererProxy& anRendererProxy)
 
 bool CUI_Dropbox::OnMouseUp(const CUI_MouseMessage& aMessage)
 {
+	if (!IsVisible())
+		return false;
+
 	if (myWidgets[0]->OnMouseUp(aMessage))
 		return true;
 
