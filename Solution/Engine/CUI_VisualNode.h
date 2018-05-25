@@ -6,6 +6,8 @@ class CUI_Pin;
 
 class CE_Font;
 
+class CN_Node;
+
 class CUI_VisualNode : public CUI_Container
 {
 	friend class CUI_NodeEditor;
@@ -24,6 +26,9 @@ public:
 	void AddPin(CUI_Pin* aPin);
 
 	unsigned int myID;
+
+	CUI_Pin* GetPin(u32 aID);
+
 private:
 	CE_Vector4f myColor;
 	CE_Vector2f myPositionOffset;

@@ -1,9 +1,11 @@
 #pragma once
 #include "CUI_Widget.h"
 
+class CUI_VisualNode;
 class CUI_Pin : public CUI_Widget
 {
 	friend class CUI_NodeEditor;
+	friend class CUI_VisualNode;
 
 public:
 	CUI_Pin(bool aIsInput, const CE_Vector2f& aSize, const CE_Vector4f& aColor);
@@ -20,6 +22,7 @@ private:
 	CE_Vector4f myColor;
 	bool myIsInput;
 
+	CUI_VisualNode* myNode;
 	CE_GrowingArray<CUI_Pin*> myConnections;
 };
 

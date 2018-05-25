@@ -30,6 +30,20 @@ CUI_VisualNode::CUI_VisualNode(const CE_Font& aFont, const char* aLabel)
 CUI_VisualNode::~CUI_VisualNode()
 {
 	CE_SAFE_DELETE(myLabel);
+
+	for (CUI_Pin* input : myInputs)
+	{
+		CE_GrowingArray<CUI_Pin*>& connections = input->myConnections;
+		if (connections.Size() > 0)
+			connections[0]->myConnections.RemoveCyclic(input);
+	}
+
+	for (CUI_Pin* output : myOutPuts)
+	{
+		CE_GrowingArray<CUI_Pin*>& connections = output->myConnections;
+		for (CUI_Pin* connection : connections)
+			connection->myConnections.RemoveCyclic(output);
+	}
 }
 
 void CUI_VisualNode::PrepareLayout()
@@ -116,4 +130,15 @@ void CUI_VisualNode::AddPin(CUI_Pin* aPin)
 		myOutPuts.Add(aPin);
 
 	myPins.Add(aPin);
+}
+
+CUI_Pin* CUI_VisualNode::GetPin(u32 aID)
+{
+	for (CUI_Pin* pin : myPins)
+	{
+		if (pin->myID == aID)
+			return pin;
+	}
+
+	return nullptr;
 }

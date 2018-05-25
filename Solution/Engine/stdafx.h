@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CE_EngineDefines.h"
+
 #include "CE_Memory.h"
 #include "CE_Assert.h"
 

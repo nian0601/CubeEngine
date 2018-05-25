@@ -1,7 +1,6 @@
 #pragma once
-
+#include "CE_EngineDefines.h"
 #include "CUI_Container.h"
-
 #include "CE_Font.h"
 
 class CUI_Pin;
@@ -9,6 +8,10 @@ class CUI_VisualNode;
 class CUI_Dropbox;
 
 class CE_GPUContext;
+
+class CN_Node;
+class CN_Pin;
+
 class CUI_NodeEditor : public CUI_Container
 {
 public:
@@ -28,13 +31,17 @@ private:
 	void RenderNodeConnections(CE_RendererProxy& anRendererProxy, CUI_VisualNode* aNode);
 	void RenderSteppedLine(CE_RendererProxy& anRendererProxy, const CE_Vector2f& aStartPos, const CE_Vector2f& aEndPos, float aCutPoint);
 
-	CUI_VisualNode* CreateNode(const char* aNodeType);
-	CUI_VisualNode* CreateNode(const char* aTitle, unsigned int anID);
-	CUI_Pin* CreatePin(bool aIsInput, unsigned int anID);
-	void CreateAndAddPin(CUI_VisualNode* aNode, bool aIsInput, unsigned int anID);
-	void ConnectPins(CUI_Pin* aInputPin, CUI_Pin* aOutputPin);
-	CUI_Pin* FindPin(unsigned int anID, bool aIsInput);
-	CUI_Pin* FindPin(unsigned int anID);
+
+	CUI_Pin* GetDragEndPin(CUI_DragMessage& aMessage, bool aGetInputPin);
+
+	CN_Node* CreateRealNode(const char* aNodeType);
+	CUI_VisualNode* CreateVisualNode(CN_Node* aRealNode);
+
+	CN_Node* FindRealNode(u32 aNodeID);
+	CUI_VisualNode* FindVisualNode(u32 aNodeID);
+
+	void ConnectPins(u32 aOutputNode, u32 aOutputPin, u32 aInputNode, u32 aInputPin);
+
 
 	void SaveGraphToDisk(const char* aFilePath);
 	void LoadGraph(const char* aFilePath);
@@ -47,12 +54,11 @@ private:
 
 	CUI_Pin* mySelectedPin;
 
-	unsigned int myNextPinID;
-	unsigned int myNextNodeID;
-	CE_GrowingArray<CUI_Pin*> myInputPins;
-	CE_GrowingArray<CUI_Pin*> myOutputPins;
-	CE_GrowingArray<CUI_VisualNode*> myNodes;
+	u32 myNextNodeID;
+	CE_GrowingArray<CUI_VisualNode*> myVisualNodes;
 
 	CUI_Dropbox* myNodeDropbox;
+
+	CE_GrowingArray<CN_Node*> myRealNodes;
 };
 
