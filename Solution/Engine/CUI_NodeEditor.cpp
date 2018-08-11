@@ -12,6 +12,7 @@
 
 #include "CN_ScriptInitNode.h"
 #include "CN_ScriptDrawLineNode.h"
+#include "CN_Script2In3OutNode.h"
 #include "CN_Pin.h"
 
 namespace CUI_NodeEditor_priv
@@ -41,6 +42,13 @@ CUI_NodeEditor::CUI_NodeEditor(CE_GPUContext& aGPUContext)
 
 	myNodeDropbox->AddLabel("Init");
 	myNodeDropbox->AddLabel("Line Node");
+	myNodeDropbox->AddLabel("2 In - 3 Out");
+
+	for (CN_Node* realNode : myRealNodes)
+	{
+		if (strcmp(realNode->myTempName.c_str(), "Init") == 0)
+			myInitNode = realNode;
+	}
 }
 
 CUI_NodeEditor::~CUI_NodeEditor()
@@ -62,6 +70,8 @@ void CUI_NodeEditor::Render(CE_RendererProxy& anRendererProxy)
 
 		RenderSteppedLine(anRendererProxy, startPos, myMousePosition, 0.5f);
 	}
+
+	static_cast<CN_ScriptInitNode*>(myInitNode)->Execute();
 }
 
 bool CUI_NodeEditor::OnMouseMessage(const CUI_MouseMessage& aMessage)
@@ -245,14 +255,12 @@ CN_Node* CUI_NodeEditor::CreateRealNode(const char* aNodeType)
 {
 	CN_Node* node = nullptr;
 	if (strcmp(aNodeType, "Init") == 0)
-	{
 		node = new CN_ScriptInitNode();
-	}
 	else if (strcmp(aNodeType, "Line Node") == 0)
-	{
 		node = new CN_ScriptDrawLineNode();
-	}
-
+	else if (strcmp(aNodeType, "2 In - 3 Out") == 0)
+		node = new CN_Script2In3OutNode();
+	
 	if (node)
 		myRealNodes.Add(node);
 

@@ -236,6 +236,9 @@
     <ClCompile Include="CN_ScriptInitNode.cpp">
       <Filter>NodeEditor</Filter>
     </ClCompile>
+    <ClCompile Include="CN_Script2In3OutNode.cpp">
+      <Filter>NodeEditor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -668,6 +671,9 @@
       <Filter>NodeEditor</Filter>
     </ClInclude>
     <ClInclude Include="CN_ScriptInitNode.h">
+      <Filter>NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="CN_Script2In3OutNode.h">
       <Filter>NodeEditor</Filter>
     </ClInclude>
   </ItemGroup>

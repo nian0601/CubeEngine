@@ -31,7 +31,7 @@ private:
 	void RenderNodeConnections(CE_RendererProxy& anRendererProxy, CUI_VisualNode* aNode);
 	void RenderSteppedLine(CE_RendererProxy& anRendererProxy, const CE_Vector2f& aStartPos, const CE_Vector2f& aEndPos, float aCutPoint);
 
-
+	CN_Node* myInitNode;
 	CUI_Pin* GetDragEndPin(CUI_DragMessage& aMessage, bool aGetInputPin);
 
 	CN_Node* CreateRealNode(const char* aNodeType);

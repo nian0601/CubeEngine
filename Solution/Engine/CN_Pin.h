@@ -6,6 +6,8 @@ class CN_Pin
 public:
 	CN_Pin(u32 aDataType, u32 aPinID, bool aIsInput, CN_Node* aNode);
 
+	void Execute();
+
 	u32 GetPinID() const { return myPinID; }
 	u32 GetDataType() const { return myDataType; }
 	bool GetIsInput() const { return myIsInput; }
@@ -21,4 +23,3 @@ private:
 	CN_Node* myNode;
 	CE_GrowingArray<CN_Pin*> myConnectedPins;
 };
-

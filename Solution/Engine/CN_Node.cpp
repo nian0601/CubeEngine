@@ -30,7 +30,7 @@ CN_Pin* CN_Node::GetPin(u32 aPinIndex)
 	return nullptr;
 }
 
-void CN_Node::AddPin(u32 aDataType, u32 aPinID, bool aIsInput)
+CN_Pin* CN_Node::AddPin(u32 aDataType, u32 aPinID, bool aIsInput)
 {
 	CN_Pin* pin = new CN_Pin(aDataType, aPinID, aIsInput, this);
 	if (pin->GetIsInput())
@@ -39,4 +39,6 @@ void CN_Node::AddPin(u32 aDataType, u32 aPinID, bool aIsInput)
 		myOutputPins.Add(pin);
 
 	myAllPins.Add(pin);
+
+	return pin;
 }

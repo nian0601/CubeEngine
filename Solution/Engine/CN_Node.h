@@ -8,6 +8,8 @@ public:
 	CN_Node();
 	virtual ~CN_Node();
 
+	virtual void Execute(const CN_Pin& anExecutingPin) = 0;
+
 	CN_Pin* GetPin(u32 aPinIndex);
 
 	s32 GetNodeID() const { return myNodeID; }
@@ -16,7 +18,7 @@ public:
 	CE_String myTempName;
 
 protected:
-	void AddPin(u32 aDataType, u32 aPinID, bool aIsInput);
+	CN_Pin* AddPin(u32 aDataType, u32 aPinID, bool aIsInput);
 
 private:
 	u32 myNodeID;
