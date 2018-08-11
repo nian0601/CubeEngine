@@ -4,6 +4,7 @@ class CN_Pin;
 class CN_Node
 {
 	friend class CUI_NodeEditor;
+	friend class CUI_VisualNode;
 public:
 	CN_Node();
 	virtual ~CN_Node();

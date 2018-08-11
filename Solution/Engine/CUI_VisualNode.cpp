@@ -1,14 +1,26 @@
 #include "stdafx.h"
-#include "CUI_VisualNode.h"
+
 #include "CE_RendererProxy.h"
+
+#include "CUI_VisualNode.h"
 #include "CUI_Image.h"
 #include "CUI_Pin.h"
 #include "CUI_Label.h"
 #include "CUI_Message.h"
 
+#include "CN_Node.h"
+#include "CN_Pin.h"
 
-CUI_VisualNode::CUI_VisualNode(const CE_Font& aFont, const char* aLabel)
-	: myID(0)
+namespace CUI_VisualNode_priv
+{
+	const CE_Vector2f locPinSize = CE_Vector2f(16.f, 16.f);
+	const CE_Vector4f locDefaultPinColor = CE_Vector4f(0.2f, 0.2f, 0.2f, 1.f);
+}
+
+CUI_VisualNode::CUI_VisualNode(const CE_Font& aFont, CN_Node* aRealNode)
+	: myID(aRealNode->GetNodeID())
+	, myRealNode(aRealNode)
+	, myNumOutputPins(0)
 {
 	myPosition.x = 256.f;
 	myPosition.y = 256.f;
@@ -21,28 +33,33 @@ CUI_VisualNode::CUI_VisualNode(const CE_Font& aFont, const char* aLabel)
 	myColor.z = 0.78f;
 	myColor.w = 1.f;
 
-	myPinSize = 16.f;
-
-	myLabel = new CUI_Label(aFont, aLabel);
+	myLabel = new CUI_Label(aFont, aRealNode->myTempName);
 	myLabel->SetColor({ 0.34f, 0.34f, 0.34f, 1.f });
+
+	for (CN_Pin* realPin : myRealNode->myAllPins)
+	{
+		CUI_Pin* uiPin = new CUI_Pin(realPin->GetIsInput(), CUI_VisualNode_priv::locPinSize, CUI_VisualNode_priv::locDefaultPinColor);
+		uiPin->myID = realPin->GetPinID();
+		uiPin->myNode = this;
+
+		AddWidget(uiPin);
+
+		if (!uiPin->IsInput())
+			++myNumOutputPins;
+
+		myPins.Add(uiPin);
+	}
 }
 
 CUI_VisualNode::~CUI_VisualNode()
 {
 	CE_SAFE_DELETE(myLabel);
 
-	for (CUI_Pin* input : myInputs)
+	for (CUI_Pin* pin : myPins)
 	{
-		CE_GrowingArray<CUI_Pin*>& connections = input->myConnections;
-		if (connections.Size() > 0)
-			connections[0]->myConnections.RemoveCyclic(input);
-	}
-
-	for (CUI_Pin* output : myOutPuts)
-	{
-		CE_GrowingArray<CUI_Pin*>& connections = output->myConnections;
+		CE_GrowingArray<CUI_Pin*>& connections = pin->myConnections;
 		for (CUI_Pin* connection : connections)
-			connection->myConnections.RemoveCyclic(output);
+			connection->myConnections.RemoveCyclic(pin);
 	}
 }
 
@@ -56,15 +73,20 @@ void CUI_VisualNode::PrepareLayout()
 
 	position.y += myLabel->GetSize().y;
 
+
+	float pinSize = 0.f;
+	if(myWidgets.Size() > 0)
+		pinSize = myWidgets[0]->GetSize().x * 0.5f;
+
 	for (CUI_Widget* widget : myWidgets)
 	{
 		CUI_Pin* pin = static_cast<CUI_Pin*>(widget);
-		if(pin->IsInput())
-			position.x = myPosition.x - myPinSize*0.5f;
+		if (pin->IsInput())
+			position.x = myPosition.x - pinSize;
 		else
-			position.x = myPosition.x + mySize.x - myPinSize*0.5f;
+			position.x = myPosition.x + mySize.x - pinSize;
 
-		position.y += myPinSize*0.5f;
+		position.y += pinSize;
 
 		widget->SetPosition(position);
 		widget->PrepareLayout();
@@ -120,16 +142,42 @@ bool CUI_VisualNode::OnMouseMessage(const CUI_MouseMessage& aMessage)
 	return false;
 }
 
-void CUI_VisualNode::AddPin(CUI_Pin* aPin)
+void CUI_VisualNode::ConnectWithNode(CUI_VisualNode* aNode, s32 aPinID, s32 aOtherPinID)
 {
-	AddWidget(aPin);
+	CUI_Pin* outputPin = GetPin(aPinID);
+	CUI_Pin* inputPin = aNode->GetPin(aOtherPinID);
 
-	if (aPin->IsInput())
-		myInputs.Add(aPin);
-	else
-		myOutPuts.Add(aPin);
+	if (inputPin->myConnections.Size() == 0)
+	{
+		inputPin->myConnections.Add(outputPin);
+		outputPin->myConnections.Add(inputPin);
+	}
 
-	myPins.Add(aPin);
+	// Make sure we update the real nodes aswell, for realtime-execution updates and such
+	CN_Pin* realOutputPin = myRealNode->GetPin(aPinID);
+	CN_Pin* realInputPin = aNode->myRealNode->GetPin(aOtherPinID);
+
+	if (realInputPin->myConnectedPins.Size() == 0)
+	{
+		realInputPin->myConnectedPins.Add(realOutputPin);
+		realOutputPin->myConnectedPins.Add(realInputPin);
+	}
+}
+
+void CUI_VisualNode::DisconnectPin(s32 aPinID)
+{
+	CUI_Pin* pin = GetPin(aPinID);
+	for (CUI_Pin* connectedPin : pin->myConnections)
+		connectedPin->myConnections.RemoveCyclic(pin);
+
+	pin->myConnections.RemoveAll();
+
+	// Make sure we update the real node aswell, for realtime-execution updates and such
+	CN_Pin* realPin = myRealNode->GetPin(aPinID);
+	for (CN_Pin* connectedPin : realPin->myConnectedPins)
+		connectedPin->myConnectedPins.RemoveCyclic(realPin);
+
+	realPin->myConnectedPins.RemoveAll();
 }
 
 CUI_Pin* CUI_VisualNode::GetPin(u32 aID)

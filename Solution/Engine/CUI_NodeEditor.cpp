@@ -15,12 +15,6 @@
 #include "CN_Script2In3OutNode.h"
 #include "CN_Pin.h"
 
-namespace CUI_NodeEditor_priv
-{
-	const CE_Vector2f locPinSize = CE_Vector2f(16.f, 16.f);
-	const CE_Vector4f locDefaultPinColor = CE_Vector4f(0.2f, 0.2f, 0.2f, 1.f);
-}
-
 CUI_NodeEditor::CUI_NodeEditor(CE_GPUContext& aGPUContext)
 {
 	myNextNodeID = 0;
@@ -43,12 +37,6 @@ CUI_NodeEditor::CUI_NodeEditor(CE_GPUContext& aGPUContext)
 	myNodeDropbox->AddLabel("Init");
 	myNodeDropbox->AddLabel("Line Node");
 	myNodeDropbox->AddLabel("2 In - 3 Out");
-
-	for (CN_Node* realNode : myRealNodes)
-	{
-		if (strcmp(realNode->myTempName.c_str(), "Init") == 0)
-			myInitNode = realNode;
-	}
 }
 
 CUI_NodeEditor::~CUI_NodeEditor()
@@ -66,7 +54,7 @@ void CUI_NodeEditor::Render(CE_RendererProxy& anRendererProxy)
 	if (mySelectedPin)
 	{
 		CE_Vector2f startPos = mySelectedPin->GetPosition();
-		startPos += CUI_NodeEditor_priv::locPinSize * 0.5f;
+		startPos += mySelectedPin->GetSize() * 0.5f;
 
 		RenderSteppedLine(anRendererProxy, startPos, myMousePosition, 0.5f);
 	}
@@ -109,37 +97,11 @@ bool CUI_NodeEditor::OnDragBegin(CUI_DragMessage& aMessage)
 
 	for (CUI_VisualNode* node : myVisualNodes)
 	{
-		CE_GrowingArray<CUI_Pin*>& inputPins = node->myInputs;
-		for (CUI_Pin* input : inputPins)
+		CE_GrowingArray<CUI_Pin*>& pins = node->myPins;
+		for (CUI_Pin* pin : pins)
 		{
-			if (input->OnDragBegin(aMessage))
-			{
-				CE_GrowingArray<CUI_Pin*>& connections = input->myConnections;
-				if (connections.Size() > 0)
-				{
-					mySelectedPin = connections[0];
-					mySelectedPin->myConnections.RemoveCyclic(input);
-					connections.RemoveAll();
-				}
-				else
-				{
-					mySelectedPin = input;
-				}
-
-				aMessage.myData.Set<CUI_Pin*>(mySelectedPin);
+			if (OnPinDragBegin(aMessage, pin))
 				return true;
-			}
-		}
-
-		CE_GrowingArray<CUI_Pin*>& outputPins = node->myOutPuts;
-		for (CUI_Pin* output : outputPins)
-		{
-			if (output->OnDragBegin(aMessage))
-			{
-				mySelectedPin = output;
-				aMessage.myData.Set<CUI_Pin*>(mySelectedPin);
-				return true;
-			}
 		}
 	}
 
@@ -154,15 +116,49 @@ bool CUI_NodeEditor::OnDragEnd(CUI_DragMessage& aMessage)
 	if (!pin1)
 		return false;
 
-	bool findInputPin = !pin1->IsInput();
-	CUI_Pin* pin2 = GetDragEndPin(aMessage, findInputPin);
+	CUI_Pin* pin2 = GetDragEndPin(aMessage);
 	if (!pin2)
 		return false;
 
-	if (findInputPin)
-		ConnectPins(pin1->myNode->myID, pin1->myID, pin2->myNode->myID, pin2->myID);
+	bool firstPinIsOutput = !pin1->IsInput();
+	bool secondPinIsOutput = !pin2->IsInput();
+	//We cant connect input to input, or output to output
+	if (firstPinIsOutput == secondPinIsOutput)
+		return false;
+
+	if (firstPinIsOutput)
+		ConnectPins(pin1, pin2);
 	else
-		ConnectPins(pin2->myNode->myID, pin2->myID, pin1->myNode->myID, pin1->myID);
+		ConnectPins(pin2, pin1);
+
+	return true;
+}
+
+bool CUI_NodeEditor::OnPinDragBegin(CUI_DragMessage& aMessage, CUI_Pin* aPin)
+{
+	if (!aPin->OnDragBegin(aMessage))
+		return false;
+
+	if (aPin->IsInput())
+	{
+		CE_GrowingArray<CUI_Pin*>& connections = aPin->myConnections;
+		if (connections.Size() > 0)
+		{
+			mySelectedPin = connections[0];
+			aPin->myNode->DisconnectPin(aPin->myID);
+		}
+		else
+		{
+			mySelectedPin = aPin;
+		}
+
+		aMessage.myData.Set<CUI_Pin*>(mySelectedPin);
+	}
+	else
+	{
+		mySelectedPin = aPin;
+		aMessage.myData.Set<CUI_Pin*>(mySelectedPin);
+	}
 
 	return true;
 }
@@ -193,19 +189,22 @@ void CUI_NodeEditor::DeleteSelectedNode()
 
 void CUI_NodeEditor::RenderNodeConnections(CE_RendererProxy& anRendererProxy, CUI_VisualNode* aNode)
 {
-	int numOutputs = aNode->myOutPuts.Size();
+	int numOutputs = aNode->myNumOutputPins;
 	float startOffset = 0.1f;
 	float spacing = (1.f - startOffset * 2) / numOutputs;
 
-	for (int i = 0; i < numOutputs; ++i)
+	int count = 0;
+	for (const CUI_Pin* pin : aNode->myPins)
 	{
-		float cutPoint = startOffset + spacing * 0.5f + spacing * i;
+		if(pin->IsInput())
+			continue;
 
-		const CUI_Pin* outputPin = aNode->myOutPuts[i];
-		CE_Vector2f startPosition = outputPin->GetPosition();
-		startPosition += outputPin->GetSize() * 0.5f;
+		float cutPoint = startOffset + spacing * 0.5f + spacing * count;
 
-		const CE_GrowingArray<CUI_Pin*>& connections = outputPin->GetConnections();
+		CE_Vector2f startPosition = pin->GetPosition();
+		startPosition += pin->GetSize() * 0.5f;
+
+		const CE_GrowingArray<CUI_Pin*>& connections = pin->GetConnections();
 		for (const CUI_Pin* connection : connections)
 		{
 			CE_Vector2f endPosition = connection->GetPosition();
@@ -213,6 +212,8 @@ void CUI_NodeEditor::RenderNodeConnections(CE_RendererProxy& anRendererProxy, CU
 
 			RenderSteppedLine(anRendererProxy, startPosition, endPosition, cutPoint);
 		}
+
+		count++;
 	}
 }
 
@@ -231,17 +232,12 @@ void CUI_NodeEditor::RenderSteppedLine(CE_RendererProxy& anRendererProxy, const 
 	anRendererProxy.Add2DLine(cutPointB, aEndPos);
 }
 
-CUI_Pin* CUI_NodeEditor::GetDragEndPin(CUI_DragMessage& aMessage, bool aGetInputPin)
+CUI_Pin* CUI_NodeEditor::GetDragEndPin(CUI_DragMessage& aMessage)
 {
 	for (CUI_VisualNode* node : myVisualNodes)
 	{
-		CE_GrowingArray<CUI_Pin*>* pins = nullptr;
-		if (aGetInputPin)
-			pins = &node->myInputs;
-		else
-			pins = &node->myOutPuts;
-
-		for (CUI_Pin* pin : *pins)
+		CE_GrowingArray<CUI_Pin*>& pins = node->myPins;
+		for (CUI_Pin* pin : pins)
 		{
 			if (pin->OnDragEnd(aMessage))
 				return pin;
@@ -255,86 +251,50 @@ CN_Node* CUI_NodeEditor::CreateRealNode(const char* aNodeType)
 {
 	CN_Node* node = nullptr;
 	if (strcmp(aNodeType, "Init") == 0)
+	{
 		node = new CN_ScriptInitNode();
+		myInitNode = node;
+	}
 	else if (strcmp(aNodeType, "Line Node") == 0)
 		node = new CN_ScriptDrawLineNode();
 	else if (strcmp(aNodeType, "2 In - 3 Out") == 0)
 		node = new CN_Script2In3OutNode();
 	
-	if (node)
-		myRealNodes.Add(node);
-
 	return node;
 }
 
 CUI_VisualNode* CUI_NodeEditor::CreateVisualNode(CN_Node* aRealNode)
 {
-	CUI_VisualNode* visualNode = new CUI_VisualNode(*myFont, aRealNode->myTempName.c_str());
-	visualNode->myID = aRealNode->GetNodeID();
+	CUI_VisualNode* visualNode = new CUI_VisualNode(*myFont, aRealNode);
 
 	myVisualNodes.Add(visualNode);
 	AddWidget(visualNode);
 
-	for (CN_Pin* realPin : aRealNode->myAllPins)
-	{
-		CUI_Pin* uiPin = new CUI_Pin(realPin->GetIsInput(), CUI_NodeEditor_priv::locPinSize, CUI_NodeEditor_priv::locDefaultPinColor);
-		uiPin->myID = realPin->GetPinID();
-		uiPin->myNode = visualNode;
-
-		visualNode->AddPin(uiPin);
-	}
-
 	return visualNode;
-}
-
-CN_Node* CUI_NodeEditor::FindRealNode(u32 aNodeID)
-{
-	for (CN_Node* node : myRealNodes)
-	{
-		if (node->myNodeID == aNodeID)
-			return node;
-	}
-
-	return nullptr;
-}
-
-CUI_VisualNode* CUI_NodeEditor::FindVisualNode(u32 aNodeID)
-{
-	for (CUI_VisualNode* node : myVisualNodes)
-	{
-		if (node->myID == aNodeID)
-			return node;
-	}
-
-	return nullptr;
 }
 
 void CUI_NodeEditor::ConnectPins(u32 aOutputNode, u32 aOutputPin, u32 aInputNode, u32 aInputPin)
 {
-	CN_Node* realOutputNode = FindRealNode(aOutputNode);
-	CN_Node* realInputNode = FindRealNode(aInputNode);
+	CUI_VisualNode* outputNode = nullptr;
+	CUI_VisualNode* inputNode = nullptr;
 
-	CN_Pin* realOutputPin = realOutputNode->GetPin(aOutputPin);
-	CN_Pin* realInputPin = realInputNode->GetPin(aInputPin);
-
-	if (realInputPin->myConnectedPins.Size() == 0)
+	for (CUI_VisualNode* node : myVisualNodes)
 	{
-		realInputPin->myConnectedPins.Add(realOutputPin);
-		realOutputPin->myConnectedPins.Add(realInputPin);
+		if (node->myID == aOutputNode)
+			outputNode = node;
+		else if (node->myID == aInputNode)
+			inputNode = node;
 	}
 
+	outputNode->ConnectWithNode(inputNode, aOutputPin, aInputPin);
+}
 
-	CUI_VisualNode* visualOutputNode = FindVisualNode(aOutputNode);
-	CUI_VisualNode* visualInputNode = FindVisualNode(aInputNode);
+void CUI_NodeEditor::ConnectPins(CUI_Pin* aOutputPin, CUI_Pin* aInputPin)
+{
+	CUI_VisualNode* outputNode = aOutputPin->myNode;
+	CUI_VisualNode* inputNode = aInputPin->myNode;
 
-	CUI_Pin* visualOutputPin = visualOutputNode->GetPin(aOutputPin);
-	CUI_Pin* visualInputPin = visualInputNode->GetPin(aInputPin);
-
-	if (visualInputPin->myConnections.Size() == 0)
-	{
-		visualInputPin->myConnections.Add(visualOutputPin);
-		visualOutputPin->myConnections.Add(visualInputPin);
-	}
+	outputNode->ConnectWithNode(inputNode, aOutputPin->myID, aInputPin->myID);
 }
 
 void CUI_NodeEditor::SaveGraphToDisk(const char* aFilePath)
@@ -372,10 +332,12 @@ void CUI_NodeEditor::SaveGraphToDisk(const char* aFilePath)
 	{
 		writer.Write(node->myID);
 
-		CE_GrowingArray<CUI_Pin*> outputPins = node->myOutPuts;
-		writer.Write(outputPins.Size());
-		for (CUI_Pin* outputPin : outputPins)
+		writer.Write(node->myNumOutputPins);
+		for (CUI_Pin* outputPin : node->myPins)
 		{
+			if(outputPin->IsInput())
+				continue;
+
 			writer.Write(outputPin->myID);
 			writer.Write(outputPin->myConnections.Size());
 			for (CUI_Pin* connection : outputPin->myConnections)

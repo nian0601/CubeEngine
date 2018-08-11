@@ -24,6 +24,8 @@ public:
 	bool OnDragBegin(CUI_DragMessage& aMessage) override;
 	bool OnDragEnd(CUI_DragMessage& aMessage) override;
 
+	bool OnPinDragBegin(CUI_DragMessage& aMessage, CUI_Pin* aPin);
+
 	void SaveGraph();
 	void DeleteSelectedNode();
 
@@ -32,16 +34,13 @@ private:
 	void RenderSteppedLine(CE_RendererProxy& anRendererProxy, const CE_Vector2f& aStartPos, const CE_Vector2f& aEndPos, float aCutPoint);
 
 	CN_Node* myInitNode;
-	CUI_Pin* GetDragEndPin(CUI_DragMessage& aMessage, bool aGetInputPin);
+	CUI_Pin* GetDragEndPin(CUI_DragMessage& aMessage);
 
 	CN_Node* CreateRealNode(const char* aNodeType);
 	CUI_VisualNode* CreateVisualNode(CN_Node* aRealNode);
 
-	CN_Node* FindRealNode(u32 aNodeID);
-	CUI_VisualNode* FindVisualNode(u32 aNodeID);
-
+	void ConnectPins(CUI_Pin* aOutputPin, CUI_Pin* aInputPin);
 	void ConnectPins(u32 aOutputNode, u32 aOutputPin, u32 aInputNode, u32 aInputPin);
-
 
 	void SaveGraphToDisk(const char* aFilePath);
 	void LoadGraph(const char* aFilePath);
@@ -59,6 +58,9 @@ private:
 
 	CUI_Dropbox* myNodeDropbox;
 
-	CE_GrowingArray<CN_Node*> myRealNodes;
+	// This should be replaced with a proper NodeGraph object
+	// The NodeGraphObject should have ZERO dependencies on the UI-node-stuffs
+	// we should be able to instansiate a NodeGraph anywhere and run it, without any UI-stuff
+	//CE_GrowingArray<CN_Node*> myRealNodes;
 };
 
