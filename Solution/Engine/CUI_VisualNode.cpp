@@ -10,6 +10,7 @@
 
 #include "CN_Node.h"
 #include "CN_Pin.h"
+#include "CN_NodeFactory.h"
 
 namespace CUI_VisualNode_priv
 {
@@ -33,7 +34,7 @@ CUI_VisualNode::CUI_VisualNode(const CE_Font& aFont, CN_Node* aRealNode)
 	myColor.z = 0.78f;
 	myColor.w = 1.f;
 
-	myLabel = new CUI_Label(aFont, aRealNode->myTempName);
+	myLabel = new CUI_Label(aFont, CN_NodeFactory::GetNodeScreenName(aRealNode->GetIdentifier()));
 	myLabel->SetColor({ 0.34f, 0.34f, 0.34f, 1.f });
 
 	for (CN_Pin* realPin : myRealNode->myAllPins)

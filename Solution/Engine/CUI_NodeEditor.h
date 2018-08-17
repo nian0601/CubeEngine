@@ -36,7 +36,6 @@ private:
 	CN_Node* myInitNode;
 	CUI_Pin* GetDragEndPin(CUI_DragMessage& aMessage);
 
-	CN_Node* CreateRealNode(const char* aNodeType);
 	CUI_VisualNode* CreateVisualNode(CN_Node* aRealNode);
 
 	void ConnectPins(CUI_Pin* aOutputPin, CUI_Pin* aInputPin);

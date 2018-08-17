@@ -14,9 +14,12 @@
 #include "CN_ScriptDrawLineNode.h"
 #include "CN_Script2In3OutNode.h"
 #include "CN_Pin.h"
+#include "CN_NodeFactory.h"
 
 CUI_NodeEditor::CUI_NodeEditor(CE_GPUContext& aGPUContext)
 {
+	CN_NodeFactory::RegisterNodes();
+
 	myNextNodeID = 0;
 
 	mySize.x = -1.f;
@@ -34,9 +37,9 @@ CUI_NodeEditor::CUI_NodeEditor(CE_GPUContext& aGPUContext)
 	myNodeDropbox->myOnSelection = std::bind(&CUI_NodeEditor::OnNodeDropboxSelection, this, std::placeholders::_1);
 	AddWidget(myNodeDropbox);
 
-	myNodeDropbox->AddLabel("Init");
-	myNodeDropbox->AddLabel("Line Node");
-	myNodeDropbox->AddLabel("2 In - 3 Out");
+	myNodeDropbox->AddLabel("scriptInitNode");
+	myNodeDropbox->AddLabel("scriptDrawLine");
+	myNodeDropbox->AddLabel("script2In3Out");
 }
 
 CUI_NodeEditor::~CUI_NodeEditor()
@@ -59,7 +62,8 @@ void CUI_NodeEditor::Render(CE_RendererProxy& anRendererProxy)
 		RenderSteppedLine(anRendererProxy, startPos, myMousePosition, 0.5f);
 	}
 
-	static_cast<CN_ScriptInitNode*>(myInitNode)->Execute();
+	if(myInitNode)
+		static_cast<CN_ScriptInitNode*>(myInitNode)->Execute();
 }
 
 bool CUI_NodeEditor::OnMouseMessage(const CUI_MouseMessage& aMessage)
@@ -247,22 +251,6 @@ CUI_Pin* CUI_NodeEditor::GetDragEndPin(CUI_DragMessage& aMessage)
 	return nullptr;
 }
 
-CN_Node* CUI_NodeEditor::CreateRealNode(const char* aNodeType)
-{
-	CN_Node* node = nullptr;
-	if (strcmp(aNodeType, "Init") == 0)
-	{
-		node = new CN_ScriptInitNode();
-		myInitNode = node;
-	}
-	else if (strcmp(aNodeType, "Line Node") == 0)
-		node = new CN_ScriptDrawLineNode();
-	else if (strcmp(aNodeType, "2 In - 3 Out") == 0)
-		node = new CN_Script2In3OutNode();
-	
-	return node;
-}
-
 CUI_VisualNode* CUI_NodeEditor::CreateVisualNode(CN_Node* aRealNode)
 {
 	CUI_VisualNode* visualNode = new CUI_VisualNode(*myFont, aRealNode);
@@ -310,7 +298,7 @@ void CUI_NodeEditor::SaveGraphToDisk(const char* aFilePath)
 	writer.Write(myVisualNodes.Size());
 	for (CUI_VisualNode* node : myVisualNodes)
 	{
-		const CE_String& name = node->myLabel->GetText();
+		const CE_String& name = node->myRealNode->GetIdentifier();
 		int nameLenght = name.Lenght() + 2;
 		writer.Write(nameLenght);
 		writer.Write(name.c_str(), nameLenght);
@@ -371,7 +359,7 @@ void CUI_NodeEditor::LoadGraph(const char* aFilePath)
 		if (myNextNodeID <= nodeID)
 			myNextNodeID = nodeID + 1;
 
-		CN_Node* realNode = CreateRealNode(nameBuffer);
+		CN_Node* realNode = CN_NodeFactory::CreateNode(nameBuffer);
 		realNode->SetNodeID(nodeID);
 
 
@@ -419,7 +407,7 @@ void CUI_NodeEditor::OnNodeDropboxSelection(CUI_Widget* aWidget)
 	CUI_Label* label = static_cast<CUI_Label*>(aWidget);
 	const CE_String& text = label->GetText();
 
-	CN_Node* realNode = CreateRealNode(text.c_str());
+	CN_Node* realNode = CN_NodeFactory::CreateNode(text.c_str());
 	realNode->myNodeID = myNextNodeID++;
 
 	CUI_VisualNode* visualNode = CreateVisualNode(realNode);

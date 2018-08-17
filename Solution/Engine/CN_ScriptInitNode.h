@@ -4,6 +4,8 @@
 
 class CN_ScriptInitNode : public CN_Node
 {
+	CN_DEFINE_NODE(CN_ScriptInitNode);
+
 public:
 	CN_ScriptInitNode();
 

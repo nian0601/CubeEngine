@@ -4,6 +4,8 @@
 
 class CN_ScriptDrawLineNode : public CN_Node
 {
+	CN_DEFINE_NODE(CN_ScriptDrawLineNode);
+
 public:
 	CN_ScriptDrawLineNode();
 

@@ -214,6 +214,7 @@
     <ClCompile Include="CE_DebugRenderManager.cpp" />
     <ClCompile Include="CPY_CollisionEntity.cpp" />
     <ClCompile Include="CE_ModelSphereCreator.cpp" />
+    <ClCompile Include="CN_NodeFactory.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -337,6 +338,7 @@
     <ClInclude Include="CPY_CollisionEntity.h" />
     <ClInclude Include="CE_ModelSphereCreator.h" />
     <ClInclude Include="CE_ShaderSignature.h" />
+    <ClInclude Include="CN_NodeFactory.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
