@@ -34,12 +34,13 @@ CUI_NodeEditor::CUI_NodeEditor(CE_GPUContext& aGPUContext)
 	
 	myNodeDropbox = new CUI_Dropbox(*myFont, "Nodes");
 	myNodeDropbox->Hide();
-	myNodeDropbox->myOnSelection = std::bind(&CUI_NodeEditor::OnNodeDropboxSelection, this, std::placeholders::_1);
+	myNodeDropbox->myOnSelection = std::bind(&CUI_NodeEditor::OnNodeDropboxSelection, this, std::placeholders::_1, std::placeholders::_2);
 	AddWidget(myNodeDropbox);
 
-	myNodeDropbox->AddLabel("scriptInitNode");
-	myNodeDropbox->AddLabel("scriptDrawLine");
-	myNodeDropbox->AddLabel("script2In3Out");
+	CE_GrowingArray<CE_String> nodeNames;
+	CN_NodeFactory::GetNodeScreenNames(nodeNames);
+	for (const CE_String& nodeName : nodeNames)
+		myNodeDropbox->AddLabel(nodeName.c_str());
 }
 
 CUI_NodeEditor::~CUI_NodeEditor()
@@ -359,7 +360,7 @@ void CUI_NodeEditor::LoadGraph(const char* aFilePath)
 		if (myNextNodeID <= nodeID)
 			myNextNodeID = nodeID + 1;
 
-		CN_Node* realNode = CN_NodeFactory::CreateNode(nameBuffer);
+		CN_Node* realNode = CN_NodeFactory::CreateNodeFromIdentifier(nameBuffer);
 		realNode->SetNodeID(nodeID);
 
 
@@ -399,7 +400,7 @@ void CUI_NodeEditor::LoadGraph(const char* aFilePath)
 	}
 }
 
-void CUI_NodeEditor::OnNodeDropboxSelection(CUI_Widget* aWidget)
+void CUI_NodeEditor::OnNodeDropboxSelection(CUI_Widget* aWidget, int /*aWidgetIndex*/)
 {
 	myNodeDropbox->SetExpansion(false);
 	myNodeDropbox->Hide();
@@ -407,7 +408,7 @@ void CUI_NodeEditor::OnNodeDropboxSelection(CUI_Widget* aWidget)
 	CUI_Label* label = static_cast<CUI_Label*>(aWidget);
 	const CE_String& text = label->GetText();
 
-	CN_Node* realNode = CN_NodeFactory::CreateNode(text.c_str());
+	CN_Node* realNode = CN_NodeFactory::CreateNodeFromScreenName(text.c_str());
 	realNode->myNodeID = myNextNodeID++;
 
 	CUI_VisualNode* visualNode = CreateVisualNode(realNode);

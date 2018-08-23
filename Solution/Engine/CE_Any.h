@@ -37,7 +37,7 @@ template <typename T>
 void CE_Any::Set(const T& someData)
 {
 	CE_CT_ASSERT(sizeof(T) <= 24, "Trying to store a too large object by value in CE_Any. Theres only 24 available bytes");
-	CE_ASSERT(CE_TYPE_IS_REGISTERED(T), "CE_Any tried to use type that wasnt registered, thats not safe!");
+	CE_ASSERT(CE_IsTypeValid<T>(), "CE_Any tried to use type that wasnt registered, thats not safe!");
 
 	unsigned int typeID = CE_TypeID<CE_Any>::GetID<T>();
 	myTypeID = typeID;
@@ -45,7 +45,7 @@ void CE_Any::Set(const T& someData)
 	*(T*)myData = someData;
 
 #ifdef _DEBUG
-	myTypeName = CE_TYPE_GET_NAME(T);
+	myTypeName = CE_GetTypeInfo<T>().myName;
 #endif
 }
 
@@ -55,7 +55,7 @@ T& CE_Any::Get()
 	unsigned int typeID = CE_TypeID<CE_Any>::GetID<T>();
 
 #ifdef _DEBUG
-	const char* requestedTypeName = CE_TYPE_GET_NAME(T);
+	const char* requestedTypeName = CE_GetTypeInfo<T>().myName;
 	CE_ASSERT(myTypeID == typeID, "CE_Any::Get called with missmatching types. Stored Type: %s, Requested Type: %s", myTypeName, requestedTypeName);
 #else
 	CE_ASSERT(myTypeID == typeID, "CE_Any::Get called with missmatching types");

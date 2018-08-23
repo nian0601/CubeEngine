@@ -5,7 +5,7 @@
 
 CN_ScriptInitNode::CN_ScriptInitNode()
 {
-	myPin = AddPin(0, 0, false);
+	myPin = AddPin<int>(0, false);
 
 	myTempName = "Init";
 }

@@ -39,7 +39,7 @@ CUI_VisualNode::CUI_VisualNode(const CE_Font& aFont, CN_Node* aRealNode)
 
 	for (CN_Pin* realPin : myRealNode->myAllPins)
 	{
-		CUI_Pin* uiPin = new CUI_Pin(realPin->GetIsInput(), CUI_VisualNode_priv::locPinSize, CUI_VisualNode_priv::locDefaultPinColor);
+		CUI_Pin* uiPin = new CUI_Pin(realPin->GetIsInput(), CUI_VisualNode_priv::locPinSize, CE_GetTypeInfo(realPin->GetDataType()).myColor);
 		uiPin->myID = realPin->GetPinID();
 		uiPin->myNode = this;
 
@@ -145,6 +145,18 @@ bool CUI_VisualNode::OnMouseMessage(const CUI_MouseMessage& aMessage)
 
 void CUI_VisualNode::ConnectWithNode(CUI_VisualNode* aNode, s32 aPinID, s32 aOtherPinID)
 {
+	CN_Pin* realOutputPin = myRealNode->GetPin(aPinID);
+	CN_Pin* realInputPin = aNode->myRealNode->GetPin(aOtherPinID);
+
+	if (realOutputPin->GetDataType() != realInputPin->GetDataType())
+		return;
+
+	if (realInputPin->myConnectedPins.Size() == 0)
+	{
+		realInputPin->myConnectedPins.Add(realOutputPin);
+		realOutputPin->myConnectedPins.Add(realInputPin);
+	}
+
 	CUI_Pin* outputPin = GetPin(aPinID);
 	CUI_Pin* inputPin = aNode->GetPin(aOtherPinID);
 
@@ -152,17 +164,7 @@ void CUI_VisualNode::ConnectWithNode(CUI_VisualNode* aNode, s32 aPinID, s32 aOth
 	{
 		inputPin->myConnections.Add(outputPin);
 		outputPin->myConnections.Add(inputPin);
-	}
-
-	// Make sure we update the real nodes aswell, for realtime-execution updates and such
-	CN_Pin* realOutputPin = myRealNode->GetPin(aPinID);
-	CN_Pin* realInputPin = aNode->myRealNode->GetPin(aOtherPinID);
-
-	if (realInputPin->myConnectedPins.Size() == 0)
-	{
-		realInputPin->myConnectedPins.Add(realOutputPin);
-		realOutputPin->myConnectedPins.Add(realInputPin);
-	}
+	}	
 }
 
 void CUI_VisualNode::DisconnectPin(s32 aPinID)

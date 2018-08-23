@@ -23,12 +23,14 @@ public:
 	template <typename T>
 	static void RegisterNode(const char* anIdentifier, const char* anScreenName);
 
-	static CN_Node* CreateNode(const char* anIdentifier);
+	static CN_Node* CreateNodeFromIdentifier(const char* anIdentifier);
+	static CN_Node* CreateNodeFromScreenName(const char* anScreenName);
 	static const char* GetNodeScreenName(const char* anIdentifier);
 
+	static void GetNodeScreenNames(CE_GrowingArray<CE_String>& outNames);
+
 private:
-	CN_NodeFactory();
-	~CN_NodeFactory();
+	static CN_Node* CreateNodeInternal(const NodeInfo& someNodeInfo);
 
 	static CE_Map<CE_String, NodeInfo> myNodeInfos;
 	static bool myHasRegisteredNodes;

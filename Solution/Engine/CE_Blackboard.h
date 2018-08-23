@@ -37,7 +37,7 @@ template <typename T>
 void CE_Blackboard::Set(const CE_String& aName, const T& someData)
 {
 	CE_CT_ASSERT(sizeof(T) <= 24, "Trying to store a too large object by value in Blackboard. Theres only 24 available bytes");
-	CE_ASSERT(CE_TYPE_IS_REGISTERED(T), "Blackboard tried to use type that wasnt registered, thats not safe!");
+	CE_ASSERT(CE_IsTypeValid<T>(), "Blackboard tried to use type that wasnt registered, thats not safe!");
 
 	unsigned int typeID = CE_TypeID<Data>::GetID<T>();
 	if (myData.KeyExists(aName) == false)
@@ -46,7 +46,7 @@ void CE_Blackboard::Set(const CE_String& aName, const T& someData)
 		data.myTypeID = typeID;
 
 		#ifdef _DEBUG
-			data.myTypeName = CE_TYPE_GET_NAME(T);
+			data.myTypeName = CE_GetTypeInfo<T>().myName;
 		#endif
 	}
 
@@ -62,7 +62,7 @@ bool CE_Blackboard::Get(const CE_String& aName, T& someData)
 	if (myData.KeyExists(aName) == false)
 		return false;
 	
-	CE_ASSERT(CE_TYPE_IS_REGISTERED(T), "Blackboard tried to use type that wasnt registered, thats not safe!");
+	CE_ASSERT(CE_IsTypeValid<T>(), "Blackboard tried to use type that wasnt registered, thats not safe!");
 
 	Data& data = myData[aName];
 	AssertDataType<T>(aName, data);
@@ -76,7 +76,7 @@ template <typename T>
 T CE_Blackboard::Get(const CE_String& aName)
 {
 	CE_ASSERT(myData.KeyExists(aName), "Blackboard tried to get variable [%s] that wasnt set.", aName.c_str());
-	CE_ASSERT(CE_TYPE_IS_REGISTERED(T), "Blackboard tried to use type that wasnt registered, thats not safe!");
+	CE_ASSERT(CE_IsTypeValid<T>(), "Blackboard tried to use type that wasnt registered, thats not safe!");
 
 	Data& data = myData[aName];
 	AssertDataType<T>(aName, data);
@@ -92,7 +92,7 @@ void CE_Blackboard::AssertDataType(const CE_String& aName, const Data& someData)
 	#ifdef _DEBUG
 	if (someData.myTypeID != requestedTypeID)
 	{
-		const char* requestedTypeName = CE_TYPE_GET_NAME(T);
+		const char* requestedTypeName = CE_GetTypeInfo<T>().myName;
 		CE_ASSERT_ALWAYS("Missmatching datatype in Blackboard. Name: %s, Stored Type: %s, Requested Type: %s", aName.c_str(), someData.myTypeName, requestedTypeName);
 	}
 	#else

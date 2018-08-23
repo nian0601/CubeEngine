@@ -4,12 +4,12 @@
 
 CN_Script2In3OutNode::CN_Script2In3OutNode()
 {
-	AddPin(0, 0, true);
-	AddPin(0, 1, true);
+	AddPin<int>(0, true);
+	AddPin<int>(1, true);
 
-	AddPin(0, 2, false);
-	AddPin(0, 3, false);
-	AddPin(0, 4, false);
+	AddPin<int>(2, false);
+	AddPin<int>(3, false);
+	AddPin<int>(4, false);
 
 	myTempName = "2 In - 3 Out";
 }

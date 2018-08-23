@@ -18,7 +18,7 @@ public:
 	void AddLabel(const char* aString);
 	void SetExpansion(bool aStatus) { myIsExpanded = aStatus; }
 
-	std::function<void(CUI_Widget*)> myOnSelection;
+	std::function<void(CUI_Widget*, int)> myOnSelection;
 
 private:
 	bool IsEmpty() const { return myWidgets.Size() <= 2; }

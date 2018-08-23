@@ -5,7 +5,9 @@ private:\
 friend class CN_NodeFactory;\
 static CN_Node* CreateNode() { return new NODE_CLASS(); }\
 
-class CN_Pin;
+#include "CN_Pin.h"
+#include "CE_TypeID.h"
+
 class CN_Node
 {
 	friend class CUI_NodeEditor;
@@ -26,7 +28,8 @@ public:
 	const char* GetIdentifier() const { return myIdentifier.c_str(); }
 
 protected:
-	CN_Pin* AddPin(u32 aDataType, u32 aPinID, bool aIsInput);
+	template <typename T>
+	CN_Pin* AddPin(u32 aPinID, bool aIsInput);
 
 private:
 	u32 myNodeID;
@@ -35,3 +38,12 @@ private:
 	CE_GrowingArray<CN_Pin*> myAllPins;
 };
 
+
+template <typename T>
+CN_Pin* CN_Node::AddPin(u32 aPinID, bool aIsInput)
+{
+	CN_Pin* pin = new CN_Pin(CE_GetTypeID<T>(), aPinID, aIsInput, this);
+	myAllPins.Add(pin);
+
+	return pin;
+}

@@ -55,7 +55,7 @@ public:
 	Value& operator[](const Key &aKey);
 
 	CE_MapIterator<Key, Value> Begin();
-	CE_MapIterator<Key, Value> Next(CE_MapIterator<Key, Value>& aCurrent);
+	CE_MapIterator<Key, Value> Next(const CE_MapIterator<Key, Value>& aCurrent);
 	CE_MapIterator<Key, Value> End();
 
 	void Clear();
@@ -217,15 +217,18 @@ CE_MapIterator<Key, Value> CE_Map<Key, Value, StartSize, BucketSize>::Begin()
 
 			key = &myBuckets[first][second].myKey;
 			value = &myBuckets[first][second].myValue;
-			break;
+
+			return CE_MapIterator<Key, Value>(first, second, key, value);
 		}
 	}
 
-	return CE_MapIterator<Key, Value>(first, second, key, value);
+	return End();
 }
 
+#pragma warning(push)
+#pragma warning(disable: 4702)
 template<typename Key, typename Value, int StartSize = 67, int BucketSize = 3>
-CE_MapIterator<Key, Value> CE_Map<Key, Value, StartSize, BucketSize>::Next(CE_MapIterator<Key, Value>& aCurrent)
+CE_MapIterator<Key, Value> CE_Map<Key, Value, StartSize, BucketSize>::Next(const CE_MapIterator<Key, Value>& aCurrent)
 {
 	int first = -1;
 	int second = -1;
@@ -236,7 +239,7 @@ CE_MapIterator<Key, Value> CE_Map<Key, Value, StartSize, BucketSize>::Next(CE_Ma
 
 	for (int i = aCurrent.myFirstIndex; i < myBuckets.Size(); ++i)
 	{
-		CE_GrowingArray<KeyValuePair>& bucket = myBuckets[i];
+		const CE_GrowingArray<KeyValuePair>& bucket = myBuckets[i];
 		for (int j = innerIndex; j < bucket.Size(); ++j)
 		{
 			first = i;
@@ -244,19 +247,16 @@ CE_MapIterator<Key, Value> CE_Map<Key, Value, StartSize, BucketSize>::Next(CE_Ma
 
 			key = &myBuckets[first][second].myKey;
 			value = &myBuckets[first][second].myValue;
-			break;
+
+			return CE_MapIterator<Key, Value>(first, second, key, value);
 		}
 
 		innerIndex = 0;
-		if (key != nullptr)
-		{
-			break;
-		}
-
 	}
 
-	return CE_MapIterator<Key, Value>(first, second, key, value);
+	return End();
 }
+#pragma warning(pop)
 
 template<typename Key, typename Value, int StartSize = 67, int BucketSize = 3>
 CE_MapIterator<Key, Value> CE_Map<Key, Value, StartSize, BucketSize>::End()

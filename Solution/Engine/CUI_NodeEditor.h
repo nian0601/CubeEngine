@@ -43,7 +43,7 @@ private:
 
 	void SaveGraphToDisk(const char* aFilePath);
 	void LoadGraph(const char* aFilePath);
-	void OnNodeDropboxSelection(CUI_Widget* aWidget);
+	void OnNodeDropboxSelection(CUI_Widget* aWidget, int aWidgetIndex);
 
 	CE_String myFilePath;
 
