@@ -13,6 +13,8 @@ class CN_Node
 	friend class CUI_NodeEditor;
 	friend class CUI_VisualNode;
 	friend class CN_NodeFactory;
+	friend class CN_NodeGraph;
+
 public:
 	CN_Node();
 	virtual ~CN_Node();
@@ -21,11 +23,12 @@ public:
 
 	CN_Pin* GetPin(u32 aPinIndex);
 
-	s32 GetNodeID() const { return myNodeID; }
-	void SetNodeID(s32 aNodeID) { myNodeID = aNodeID; }
-	CE_String myTempName;
+	u32 GetNodeID() const { return myNodeID; }
+	void SetNodeID(u32 aNodeID) { myNodeID = aNodeID; }
 
 	const char* GetIdentifier() const { return myIdentifier.c_str(); }
+
+	virtual bool IsInitNode() const { return false; }
 
 protected:
 	template <typename T>
@@ -34,6 +37,7 @@ protected:
 private:
 	u32 myNodeID;
 	CE_String myIdentifier;
+	CE_Vector2f myPosition;
 
 	CE_GrowingArray<CN_Pin*> myAllPins;
 };

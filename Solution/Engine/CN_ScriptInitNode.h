@@ -9,6 +9,8 @@ class CN_ScriptInitNode : public CN_Node
 public:
 	CN_ScriptInitNode();
 
+	bool IsInitNode() const override { return true; }
+
 	void Execute();
 	void Execute(const CN_Pin& anExecutingPin) override;
 

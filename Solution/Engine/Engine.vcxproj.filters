@@ -225,22 +225,25 @@
       <Filter>Reflection</Filter>
     </ClCompile>
     <ClCompile Include="CN_Node.cpp">
-      <Filter>NodeEditor\NativeNodes</Filter>
+      <Filter>NodeGraph\NativeNodes</Filter>
     </ClCompile>
     <ClCompile Include="CN_Pin.cpp">
-      <Filter>NodeEditor\NativeNodes</Filter>
-    </ClCompile>
-    <ClCompile Include="CN_ScriptDrawLineNode.cpp">
-      <Filter>NodeEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="CN_ScriptInitNode.cpp">
-      <Filter>NodeEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="CN_Script2In3OutNode.cpp">
-      <Filter>NodeEditor</Filter>
+      <Filter>NodeGraph\NativeNodes</Filter>
     </ClCompile>
     <ClCompile Include="CN_NodeFactory.cpp">
-      <Filter>NodeEditor</Filter>
+      <Filter>NodeGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="CN_ScriptDrawLineNode.cpp">
+      <Filter>NodeGraph\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="CN_ScriptInitNode.cpp">
+      <Filter>NodeGraph\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="CN_NodeGraph.cpp">
+      <Filter>NodeGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="CN_Script3In3OutNode.cpp">
+      <Filter>NodeGraph\Nodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -334,14 +337,17 @@
     <Filter Include="GUI\Widgets">
       <UniqueIdentifier>{65c8a09c-36e1-4d1e-8f85-38ffd83ddabe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NodeEditor">
-      <UniqueIdentifier>{0df380d8-32c7-40ac-85f1-111abdb7ecb4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="NodeEditor\NativeNodes">
-      <UniqueIdentifier>{27a8559d-3eb1-450d-bf8f-f9d0d6066d6d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Reflection">
       <UniqueIdentifier>{dff15808-72cc-4445-b26b-2fbd891299f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NodeGraph">
+      <UniqueIdentifier>{0df380d8-32c7-40ac-85f1-111abdb7ecb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NodeGraph\NativeNodes">
+      <UniqueIdentifier>{27a8559d-3eb1-450d-bf8f-f9d0d6066d6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NodeGraph\Nodes">
+      <UniqueIdentifier>{021d84e9-aa62-4107-9cf3-b02ee37485a3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -665,22 +671,25 @@
     </ClInclude>
     <ClInclude Include="CE_EngineDefines.h" />
     <ClInclude Include="CN_Pin.h">
-      <Filter>NodeEditor\NativeNodes</Filter>
+      <Filter>NodeGraph\NativeNodes</Filter>
     </ClInclude>
     <ClInclude Include="CN_Node.h">
-      <Filter>NodeEditor\NativeNodes</Filter>
-    </ClInclude>
-    <ClInclude Include="CN_ScriptDrawLineNode.h">
-      <Filter>NodeEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="CN_ScriptInitNode.h">
-      <Filter>NodeEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="CN_Script2In3OutNode.h">
-      <Filter>NodeEditor</Filter>
+      <Filter>NodeGraph\NativeNodes</Filter>
     </ClInclude>
     <ClInclude Include="CN_NodeFactory.h">
-      <Filter>NodeEditor</Filter>
+      <Filter>NodeGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="CN_ScriptDrawLineNode.h">
+      <Filter>NodeGraph\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="CN_ScriptInitNode.h">
+      <Filter>NodeGraph\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="CN_NodeGraph.h">
+      <Filter>NodeGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="CN_Script3In3OutNode.h">
+      <Filter>NodeGraph\Nodes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

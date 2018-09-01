@@ -17,6 +17,8 @@ public:
 	~CUI_VisualNode();
 
 	void PrepareLayout() override;
+	void SetPosition(const CE_Vector2f& aPosition) override;
+
 	void Render(CE_RendererProxy& anRendererProxy) override;
 
 	bool OnMouseMessage(const CUI_MouseMessage& aMessage) override;
@@ -27,6 +29,7 @@ public:
 	//aPinID will always be an output-pin on THIS node
 	//aOtherPinID will always be an input-pin on the other node
 	void ConnectWithNode(CUI_VisualNode* aNode, s32 aPinID, s32 aOtherPinID);
+	void ConnectWithNodeOnlyVisual(CUI_VisualNode* aNode, s32 aPinID, s32 aOtherPinID);
 	void DisconnectPin(s32 aPinID);
 
 	const unsigned int myID;

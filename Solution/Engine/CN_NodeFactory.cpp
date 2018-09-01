@@ -5,7 +5,7 @@
 
 #include "CN_ScriptInitNode.h"
 #include "CN_ScriptDrawLineNode.h"
-#include "CN_Script2In3OutNode.h"
+#include "CN_Script3In3OutNode.h"
 
 
 CE_Map<CE_String, CN_NodeFactory::NodeInfo> CN_NodeFactory::myNodeInfos;
@@ -18,7 +18,7 @@ void CN_NodeFactory::RegisterNodes()
 
 	RegisterNode<CN_ScriptInitNode>("scriptInitNode", "Init");
 	RegisterNode<CN_ScriptDrawLineNode>("scriptDrawLine", "Draw Line");
-	RegisterNode<CN_Script2In3OutNode>("script2In3Out", "2 In - 3 Out");
+	RegisterNode<CN_Script3In3OutNode>("script3In3Out", "3 In - 3 Out");
 }
 
 CN_Node* CN_NodeFactory::CreateNodeFromIdentifier(const char* anIdentifier)

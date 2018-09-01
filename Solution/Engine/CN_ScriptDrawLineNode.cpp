@@ -6,10 +6,8 @@
 CN_ScriptDrawLineNode::CN_ScriptDrawLineNode()
 {
 	AddPin<int>(0, true);
-	AddPin<CE_Vector3f>(1, true);
-	AddPin<CE_Vector3f>(2, true);
-
-	myTempName = "Line Node";
+	AddPin<int>(1, true);
+	AddPin<int>(2, true);
 }
 
 void CN_ScriptDrawLineNode::Execute(const CN_Pin& anExecutingPin)

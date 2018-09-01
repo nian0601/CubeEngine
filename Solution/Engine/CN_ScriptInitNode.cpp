@@ -6,8 +6,6 @@
 CN_ScriptInitNode::CN_ScriptInitNode()
 {
 	myPin = AddPin<int>(0, false);
-
-	myTempName = "Init";
 }
 
 void CN_ScriptInitNode::Execute(const CN_Pin& /*anExecutingPin*/)

@@ -8,6 +8,13 @@ CN_Node::CN_Node()
 
 CN_Node::~CN_Node()
 {
+	for (CN_Pin* pin : myAllPins)
+	{
+		CE_GrowingArray<CN_Pin*>& connections = pin->GetConnectedPins();
+		for (CN_Pin* connection : connections)
+			connection->GetConnectedPins().RemoveCyclic(pin);
+	}
+
 	myAllPins.DeleteAll();
 }
 

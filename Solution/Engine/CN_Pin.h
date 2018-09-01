@@ -4,6 +4,7 @@ class CN_Pin
 {
 	friend class CUI_NodeEditor;
 	friend class CUI_VisualNode;
+	friend class CN_NodeGraph;
 public:
 	CN_Pin(u32 aDataType, u32 aPinID, bool aIsInput, CN_Node* aNode);
 

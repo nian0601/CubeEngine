@@ -105,6 +105,12 @@ void CUI_VisualNode::PrepareLayout()
 	myLabel->SetPosition(position);
 }
 
+void CUI_VisualNode::SetPosition(const CE_Vector2f& aPosition)
+{
+	CUI_Container::SetPosition(aPosition);
+	myRealNode->myPosition = aPosition;
+}
+
 void CUI_VisualNode::Render(CE_RendererProxy& anRendererProxy)
 {
 	CE_Vector4f color = myColor;
@@ -136,6 +142,7 @@ bool CUI_VisualNode::OnMouseMessage(const CUI_MouseMessage& aMessage)
 		if (myHasLongPress)
 		{
 			myPosition = aMessage.myNewPosition + myPositionOffset;
+			myRealNode->myPosition = myPosition + myPositionOffset;
 			return true;
 		}
 	}
@@ -157,6 +164,11 @@ void CUI_VisualNode::ConnectWithNode(CUI_VisualNode* aNode, s32 aPinID, s32 aOth
 		realOutputPin->myConnectedPins.Add(realInputPin);
 	}
 
+	ConnectWithNodeOnlyVisual(aNode, aPinID, aOtherPinID);
+}
+
+void CUI_VisualNode::ConnectWithNodeOnlyVisual(CUI_VisualNode* aNode, s32 aPinID, s32 aOtherPinID)
+{
 	CUI_Pin* outputPin = GetPin(aPinID);
 	CUI_Pin* inputPin = aNode->GetPin(aOtherPinID);
 
@@ -164,7 +176,7 @@ void CUI_VisualNode::ConnectWithNode(CUI_VisualNode* aNode, s32 aPinID, s32 aOth
 	{
 		inputPin->myConnections.Add(outputPin);
 		outputPin->myConnections.Add(inputPin);
-	}	
+	}
 }
 
 void CUI_VisualNode::DisconnectPin(s32 aPinID)

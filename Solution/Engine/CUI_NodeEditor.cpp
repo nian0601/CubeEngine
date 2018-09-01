@@ -12,9 +12,10 @@
 
 #include "CN_ScriptInitNode.h"
 #include "CN_ScriptDrawLineNode.h"
-#include "CN_Script2In3OutNode.h"
+#include "CN_Script3In3OutNode.h"
 #include "CN_Pin.h"
 #include "CN_NodeFactory.h"
+#include "CN_NodeGraph.h"
 
 CUI_NodeEditor::CUI_NodeEditor(CE_GPUContext& aGPUContext)
 {
@@ -62,9 +63,8 @@ void CUI_NodeEditor::Render(CE_RendererProxy& anRendererProxy)
 
 		RenderSteppedLine(anRendererProxy, startPos, myMousePosition, 0.5f);
 	}
-
-	if(myInitNode)
-		static_cast<CN_ScriptInitNode*>(myInitNode)->Execute();
+	
+	myNodeGraph->Execute();
 }
 
 bool CUI_NodeEditor::OnMouseMessage(const CUI_MouseMessage& aMessage)
@@ -170,7 +170,7 @@ bool CUI_NodeEditor::OnPinDragBegin(CUI_DragMessage& aMessage, CUI_Pin* aPin)
 
 void CUI_NodeEditor::SaveGraph()
 {
-	SaveGraphToDisk(myFilePath.c_str());
+	myNodeGraph->Save(myFilePath.c_str());
 }
 
 void CUI_NodeEditor::DeleteSelectedNode()
@@ -188,6 +188,7 @@ void CUI_NodeEditor::DeleteSelectedNode()
 	if (selectedNode == nullptr)
 		return;
 
+	myNodeGraph->DeleteNode(selectedNode->myRealNode);
 	myVisualNodes.RemoveCyclic(selectedNode);
 	DeleteWidget(selectedNode);
 }
@@ -286,115 +287,55 @@ void CUI_NodeEditor::ConnectPins(CUI_Pin* aOutputPin, CUI_Pin* aInputPin)
 	outputNode->ConnectWithNode(inputNode, aOutputPin->myID, aInputPin->myID);
 }
 
-void CUI_NodeEditor::SaveGraphToDisk(const char* aFilePath)
+void CUI_NodeEditor::ConnectVisualPins(u32 aOutputNode, u32 aOutputPin, u32 aInputNode, u32 aInputPin)
 {
-	CE_BinaryFileWriter writer(aFilePath);
-	if (!writer.IsOpen())
-		return;
-
-	// Write information about the nodes:
-	// - Name (should not be needed, a NodeType-ID should be enough)
-	// - ID (to differentiate nodes of the same type)
-	// - Position (for UI)
-	writer.Write(myVisualNodes.Size());
-	for (CUI_VisualNode* node : myVisualNodes)
-	{
-		const CE_String& name = node->myRealNode->GetIdentifier();
-		int nameLenght = name.Lenght() + 2;
-		writer.Write(nameLenght);
-		writer.Write(name.c_str(), nameLenght);
-
-		writer.Write(node->myID);
-		writer.Write(node->GetPosition());
-	}
-
-	// Write information about the connections:
-	// We only need to store connections in one directions, we're going to use output
-	// so we write the following info for each output node:
-		// For each pin:
-		// - ID of the pin
-			// For each connection:
-			// - NodeID (ID of the node we're connected to)
-			// - PinID (ID of the pin on the node we're connected to)
+	CUI_VisualNode* outputNode = nullptr;
+	CUI_VisualNode* inputNode = nullptr;
 
 	for (CUI_VisualNode* node : myVisualNodes)
 	{
-		writer.Write(node->myID);
-
-		writer.Write(node->myNumOutputPins);
-		for (CUI_Pin* outputPin : node->myPins)
-		{
-			if(outputPin->IsInput())
-				continue;
-
-			writer.Write(outputPin->myID);
-			writer.Write(outputPin->myConnections.Size());
-			for (CUI_Pin* connection : outputPin->myConnections)
-			{
-				CUI_VisualNode* connectedNode = connection->myNode;
-				writer.Write(connectedNode->myID);
-				writer.Write(connection->myID);
-			}
-		}
+		if (node->myID == aOutputNode)
+			outputNode = node;
+		else if (node->myID == aInputNode)
+			inputNode = node;
 	}
+
+	outputNode->ConnectWithNodeOnlyVisual(inputNode, aOutputPin, aInputPin);
 }
 
 void CUI_NodeEditor::LoadGraph(const char* aFilePath)
 {
-	CE_BinaryFileReader reader(aFilePath);
-	if (!reader.IsOpen())
-		return;
+	myNodeGraph = new CN_NodeGraph();
+	myNodeGraph->Load(aFilePath);
+	myNextNodeID = myNodeGraph->myMaxNodeID;
 
-	int nodeCount;
-	reader.Read(nodeCount);
-	for (int i = 0; i < nodeCount; ++i)
+	CreateVisualNodesFromNodeGraph();
+}
+
+void CUI_NodeEditor::CreateVisualNodesFromNodeGraph()
+{
+	for (CN_Node* realNode : myNodeGraph->myNodes)
 	{
-		int nameLenght;
-		reader.Read(nameLenght);
-
-		char nameBuffer[64];
-		reader.Read(nameBuffer, nameLenght);
-
-		u32 nodeID;
-		reader.Read(nodeID);
-		if (myNextNodeID <= nodeID)
-			myNextNodeID = nodeID + 1;
-
-		CN_Node* realNode = CN_NodeFactory::CreateNodeFromIdentifier(nameBuffer);
-		realNode->SetNodeID(nodeID);
-
-
-		CE_Vector2f position;
-		reader.Read(position);
-
 		CUI_VisualNode* visualNode = CreateVisualNode(realNode);
-		visualNode->SetPosition(position);
+		visualNode->SetPosition(realNode->myPosition);
 	}
 
-
-	for (int i = 0; i < nodeCount; ++i)
+	for (CN_Node* realNode : myNodeGraph->myNodes)
 	{
-		u32 nodeID;
-		reader.Read(nodeID);
-
-		int pinCount;
-		reader.Read(pinCount);
-		for (int j = 0; j < pinCount; ++j)
+		u32 outputNodeID = realNode->GetNodeID();
+		for (CN_Pin* pin : realNode->myAllPins)
 		{
-			u32 pinID;
-			reader.Read(pinID);
+			if (pin->GetIsInput())
+				continue;
 
-			int connectionCount;
-			reader.Read(connectionCount);
-			for (int k = 0; k < connectionCount; ++k)
+			u32 outputPinID = pin->GetPinID();
+
+			for (CN_Pin* connectedPin : pin->GetConnectedPins())
 			{
-				u32 connectedNodeID;
-				u32 connectedPinID;
+				u32 inputNodeID = connectedPin->GetNode()->GetNodeID();
+				u32 inputPInID = connectedPin->GetPinID();
 
-				reader.Read(connectedNodeID);
-				reader.Read(connectedPinID);
-
-				ConnectPins(nodeID, pinID, connectedNodeID, connectedPinID);
+				ConnectVisualPins(outputNodeID, outputPinID, inputNodeID, inputPInID);
 			}
 		}
 	}
@@ -410,6 +351,7 @@ void CUI_NodeEditor::OnNodeDropboxSelection(CUI_Widget* aWidget, int /*aWidgetIn
 
 	CN_Node* realNode = CN_NodeFactory::CreateNodeFromScreenName(text.c_str());
 	realNode->myNodeID = myNextNodeID++;
+	myNodeGraph->AddNode(realNode);
 
 	CUI_VisualNode* visualNode = CreateVisualNode(realNode);
 	visualNode->SetPosition(myMousePosition);
