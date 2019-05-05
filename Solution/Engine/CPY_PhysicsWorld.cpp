@@ -57,15 +57,12 @@ const CPY_CollisionEntity* CPY_PhysicsWorld::RayCast(const CE_Vector3f& aRayStar
 		if ((entity->myCollisionLayers & someCollisionFlags) == 0)
 			continue;
 
-		if (CPY_Intersection::LineVSAABB(entity->myAABB, line, &intersectionPoint))
+		float distance = CPY_Intersection::LineVSAABB(entity->myAABB, line, &intersectionPoint);
+		if (distance > -1 && distance < bestDist)
 		{
-			float dist = CE_Length2(intersectionPoint - aRayStart);
-			if (dist < bestDist)
-			{
-				bestDist = dist;
-				bestEntity = entity;
-				bestIntersectionPoint = intersectionPoint;
-			}
+			bestDist = distance;
+			bestEntity = entity;
+			bestIntersectionPoint = intersectionPoint;
 		}
 	}
 
