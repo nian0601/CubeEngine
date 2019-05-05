@@ -36,8 +36,8 @@ void CE_Path::DebugDraw(const CE_Vector3f& aCurrentPosition)
 
 	CE_DRAW_LINE_COLOR_HEIGHT(aCurrentPosition, myWaypoints[myNextWaypoint-1].myPosition, 0.5f, CE_Vector4f(1.f, 1.f, 0.f, 1.f));
 
-	for (int i = myNextWaypoint; i < myWaypoints.Size() - 1; ++i)
-		CE_DRAW_LINE_COLOR_HEIGHT(myWaypoints[i].myPosition, myWaypoints[i+1].myPosition, 0.5f, CE_Vector4f(1.f, 1.f, 0.f, 1.f));
+	for (int i = myNextWaypoint; i < myWaypoints.Size(); ++i)
+		CE_DRAW_LINE_COLOR_HEIGHT(myWaypoints[i-1].myPosition, myWaypoints[i].myPosition, 0.5f, CE_Vector4f(1.f, 1.f, 0.f, 1.f));
 }
 
 void CE_Path::DebugDrawTriangle(const CE_NavTriangle* aTriangle, float aHeight, const CE_Vector4f aColor) const
