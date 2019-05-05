@@ -4,7 +4,6 @@ struct ID3D11Buffer;
 
 class CE_GPUContext;
 class CE_Font;
-class CE_MSDFFont;
 
 class CE_Text
 {
@@ -13,7 +12,6 @@ public:
 	~CE_Text();
 
 	void Init();
-	void InitMSDF();
 
 	void Render();
 
@@ -27,7 +25,6 @@ private:
 
 	struct VertexType;
 	void BuildNormalText(const CE_String& aString, CE_GrowingArray<VertexType>& someVertices, CE_GrowingArray<int>& someIndices);
-	void BuildMSDFText(const CE_String& aString, CE_GrowingArray<VertexType>& someVertices, CE_GrowingArray<int>& someIndices);
 
 	CE_GPUContext& myGPUContext;
 
@@ -57,7 +54,6 @@ private:
 	CE_Vector2f myPosition;
 
 	CE_Font* myFont;
-	CE_MSDFFont* myMSDFFont;
 
 	bool myGotText;
 };

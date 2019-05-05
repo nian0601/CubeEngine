@@ -11,26 +11,15 @@
 #include "CE_ShaderPair.h"
 #include "CE_ShaderManager.h"
 
-#define USE_MSDF 0
-
 CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext, CE_ShaderManager& aShaderManager)
 	: myGPUContext(anGPUContext)
 {
-#if USE_MSDF == 1
-	CE_GenericShader* textVX = aShaderManager.GetShader("MSDFText.vx");
-	CE_GenericShader* textPX = aShaderManager.GetShader("MSDFText.px");
-	myMSDFTextShader = new CE_ShaderPair(textVX, textPX);
-
-	myMSDFText = new CE_Text(myGPUContext);
-	myMSDFText->InitMSDF();
-#else
 	CE_GenericShader* textVX = aShaderManager.GetShader("Text.vx");
 	CE_GenericShader* textPX = aShaderManager.GetShader("Text.px");
 	myTextShader = new CE_ShaderPair(textVX, textPX);
 
 	myText = new CE_Text(myGPUContext);
 	myText->Init();
-#endif
 
 	myLineObject = new CE_LineRenderObject();
 
@@ -83,10 +72,8 @@ CE_Renderer::~CE_Renderer()
 
 	CE_SAFE_DELETE(myLineObject);
 
-	CE_SAFE_DELETE(myMSDFText);
 	CE_SAFE_DELETE(myText);
 
-	CE_SAFE_DELETE(myMSDFTextShader);
 	CE_SAFE_DELETE(myTextShader);
 	CE_SAFE_DELETE(myLineShader);
 	CE_SAFE_DELETE(myLine2DShader);
@@ -177,29 +164,16 @@ void CE_Renderer::RenderText(const CE_2DData& aTextData)
 	CE_SetResetBlend blend(ALPHA_BLEND);
 	CE_SetResetDepth depth(NO_READ_NO_WRITE);
 
-	CE_ShaderPair* shader = myMSDFTextShader;
-	if (shader == nullptr)
-		shader = myTextShader;
-
+	CE_ShaderPair* shader = myTextShader;
 	CE_ASSERT(shader != nullptr, "We dont have a textshader????");
 
 	myOrthagonalConstantBuffer->SendToGPU();
 	shader->Activate();
 
-	if (myMSDFTextShader != nullptr)
-	{
-		myMSDFText->SetText(aTextData.myString);
-		myMSDFText->SetPosition(aTextData.myPosition);
-		myMSDFText->SetColor(aTextData.myColor);
-		myMSDFText->Render();
-	}
-	else
-	{
-		myText->SetText(aTextData.myString);
-		myText->SetPosition(aTextData.myPosition);
-		myText->SetColor(aTextData.myColor);
-		myText->Render();
-	}
+	myText->SetText(aTextData.myString);
+	myText->SetPosition(aTextData.myPosition);
+	myText->SetColor(aTextData.myColor);
+	myText->Render();
 }
 
 void CE_Renderer::RenderSprite(const CE_2DData& aSpriteData)

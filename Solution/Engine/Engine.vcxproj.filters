@@ -56,12 +56,6 @@
     <ClCompile Include="CE_Font.cpp">
       <Filter>Rendering\Text</Filter>
     </ClCompile>
-    <ClCompile Include="CE_MSDFFont.cpp">
-      <Filter>Rendering\Text</Filter>
-    </ClCompile>
-    <ClCompile Include="CE_MSDFGenerator.cpp">
-      <Filter>Rendering\Text</Filter>
-    </ClCompile>
     <ClCompile Include="CE_FileParser.cpp">
       <Filter>Utility\Files</Filter>
     </ClCompile>
@@ -454,12 +448,6 @@
       <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="CE_Font.h">
-      <Filter>Rendering\Text</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_MSDFFont.h">
-      <Filter>Rendering\Text</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_MSDFGenerator.h">
       <Filter>Rendering\Text</Filter>
     </ClInclude>
     <ClInclude Include="CE_FileParser.h">

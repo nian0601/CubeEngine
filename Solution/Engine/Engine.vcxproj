@@ -72,8 +72,8 @@
     <OutDir>$(SolutionDir)..\Libs\</OutDir>
     <IntDir>$(SolutionDir)..\temp\$(ProjectName)_$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)_$(Configuration)</TargetName>
-    <IncludePath>$(SolutionDir)..\ThirdParty\MSDFGen\Inc\;$(SolutionDir)..\ThirdParty\DirectXTK\Inc\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\ThirdParty\MSDFGen\Lib\;$(SolutionDir)..\ThirdParty\DirectXTK\Lib\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\ThirdParty\DirectXTK\Inc\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\ThirdParty\DirectXTK\Lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\Libs\</OutDir>
@@ -92,7 +92,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Lib>
-      <AdditionalDependencies>D3D11.lib;D3DCompiler.lib;dxguid.lib;dxgi.lib;DirectXTK_$(Configuration).lib;msdfgen_$(Configuration).lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>D3D11.lib;D3DCompiler.lib;dxguid.lib;dxgi.lib;DirectXTK_$(Configuration).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4099,4221,4006 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
   </ItemDefinitionGroup>
@@ -163,8 +163,6 @@
     <ClCompile Include="CE_Input.cpp" />
     <ClCompile Include="CE_LightSphereCreator.cpp" />
     <ClCompile Include="CE_LineRenderObject.cpp" />
-    <ClCompile Include="CE_MSDFFont.cpp" />
-    <ClCompile Include="CE_MSDFGenerator.cpp" />
     <ClCompile Include="CE_NavMesh.cpp" />
     <ClCompile Include="CE_NavMeshPrimitives.cpp" />
     <ClCompile Include="CE_NeuralNetwork.cpp" />
@@ -256,8 +254,6 @@
     <ClInclude Include="CE_LightSphereCreator.h" />
     <ClInclude Include="CE_LineRenderObject.h" />
     <ClInclude Include="CE_Math.h" />
-    <ClInclude Include="CE_MSDFFont.h" />
-    <ClInclude Include="CE_MSDFGenerator.h" />
     <ClInclude Include="CE_NavMesh.h" />
     <ClInclude Include="CE_NavMeshPrimitives.h" />
     <ClInclude Include="CE_NeuralNetwork.h" />

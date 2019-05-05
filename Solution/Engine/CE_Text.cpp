@@ -5,12 +5,10 @@
 #include "CE_GPUContext.h"
 #include "CE_Font.h"
 #include "CE_Texture.h"
-#include "CE_MSDFFont.h"
 
 CE_Text::CE_Text(CE_GPUContext& aGPUContext)
 	: myGPUContext(aGPUContext)
 	, myFont(nullptr)
-	, myMSDFFont(nullptr)
 	, myGotText(false)
 {
 }
@@ -28,28 +26,13 @@ void CE_Text::Init()
 	SetupObjectBuffer();
 }
 
-void CE_Text::InitMSDF()
-{
-	myMSDFFont = new CE_MSDFFont();
-	myMSDFFont->LoadFromFile("Data/Font/Consolas.ttf", myGPUContext);
-
-	SetupObjectBuffer();
-}
-
 void CE_Text::Render()
 {
 	if (!myGotText)
 		return;
 
-	float scale = 1.f;
-	if (myFont)
-		scale = 0.33f;
-
-	float maxHeight = 0.f;
-	if (myFont)
-		maxHeight = myFont->GetMaxHeight();
-	else if (myMSDFFont)
-		maxHeight = myMSDFFont->GetMaxHeight();
+	float scale = 0.33f;
+	float maxHeight = myFont->GetMaxHeight();
 
 	ID3D11DeviceContext* context = myGPUContext.GetContext();
 
@@ -76,14 +59,9 @@ void CE_Text::Render()
 
 	context->VSSetConstantBuffers(1, 1, &myObjectDataBuffer);
 
-	ID3D11ShaderResourceView* shaderResource = nullptr;
-	if(myMSDFFont != nullptr)
-		shaderResource = myMSDFFont->GetTexture()->GetShaderView();
-	else
-		shaderResource = myFont->GetTexture()->GetShaderView();
-
+	ID3D11ShaderResourceView* shaderResource = myFont->GetTexture()->GetShaderView();
 	context->PSSetShaderResources(0, 1, &shaderResource);
-	// Set Vertex/Indexbuffers and Topology
+
 	unsigned int stride = sizeof(VertexType);
 	unsigned int offset = 0;
 
@@ -99,8 +77,6 @@ void CE_Text::Render()
 void CE_Text::SetPosition(const CE_Vector2f& aPosition)
 {
 	myPosition = aPosition;
-	if (myMSDFFont)
-		myPosition.y -= myMSDFFont->GetMaxHeight();
 }
 
 void CE_Text::SetText(const CE_String& aString)
@@ -110,10 +86,7 @@ void CE_Text::SetText(const CE_String& aString)
 	CE_GrowingArray<VertexType> vertices;
 	CE_GrowingArray<int> indices;
 
-	if (myFont)
-		BuildNormalText(aString, vertices, indices);
-	else
-		BuildMSDFText(aString, vertices, indices);
+	BuildNormalText(aString, vertices, indices);
 
 	myVertexCount = vertices.Size();
 	myIndexCount = indices.Size();
@@ -229,67 +202,6 @@ void CE_Text::BuildNormalText(const CE_String& aString, CE_GrowingArray<VertexTy
 		someIndices.Add(startIndex + 0);
 		someIndices.Add(startIndex + 3);
 		someIndices.Add(startIndex + 1);
-
-		drawX += charData.myXAdvance;
-		z -= 0.001f;
-	}
-}
-
-void CE_Text::BuildMSDFText(const CE_String& aString, CE_GrowingArray<VertexType>& someVertices, CE_GrowingArray<int>& someIndices)
-{
-	int numOfLetters = aString.Lenght() + 1;
-	float drawX = 0;
-	float drawY = 0;
-	float z = 1.f;
-	float height = 0.f;
-
-	VertexType vert;
-	for (int i = 0; i < numOfLetters; ++i)
-	{
-		CE_MSDFGlyphData charData;
-		if (!myMSDFFont->GetGlyphData(aString[i], &charData))
-			return;
-
-		if (charData.myHeight > height)
-			height = static_cast<float>(charData.myHeight);
-
-
-		float left = drawX;// +charData.myXOffset;
-		float right = left + charData.myWidth;
-		float top = drawY;// +charData.myYOffset;
-		float bottom = top - charData.myHeight;
-
-		left = static_cast<float>(static_cast<int>(left + 0.5f));
-		right = static_cast<float>(static_cast<int>(right + 0.5f));
-		top = static_cast<float>(static_cast<int>(top + 0.5f));
-		bottom = static_cast<float>(static_cast<int>(bottom + 0.5f));
-
-		vert.myPosition = CE_Vector4f(left, top, z, 1.f);
-		vert.myUV = charData.myTopLeftUV;
-		someVertices.Add(vert);
-
-		vert.myPosition = CE_Vector4f(right, bottom, z, 1.f);
-		vert.myUV = charData.myBottomRightUV;
-		someVertices.Add(vert);
-
-		vert.myPosition = CE_Vector4f(left, bottom, z, 1.f);
-		vert.myUV = { charData.myTopLeftUV.x, charData.myBottomRightUV.y };
-		someVertices.Add(vert);
-
-		vert.myPosition = CE_Vector4f(right, top, z, 1.f);
-		vert.myUV = { charData.myBottomRightUV.x, charData.myTopLeftUV.y };
-		someVertices.Add(vert);
-
-
-		int startIndex = i * 4;
-		someIndices.Add(startIndex + 0);
-		someIndices.Add(startIndex + 1);
-		someIndices.Add(startIndex + 2);
-
-		someIndices.Add(startIndex + 0);
-		someIndices.Add(startIndex + 3);
-		someIndices.Add(startIndex + 1);
-
 
 		drawX += charData.myXAdvance;
 		z -= 0.001f;

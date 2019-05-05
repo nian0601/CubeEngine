@@ -44,9 +44,6 @@ private:
 	CE_Text* myText;
 	CE_ShaderPair* myTextShader;
 
-	CE_Text* myMSDFText;
-	CE_ShaderPair* myMSDFTextShader;
-
 	CE_LineRenderObject* myLineObject;
 
 	CE_ConstantBuffer* myViewProjectionConstantBuffer;
