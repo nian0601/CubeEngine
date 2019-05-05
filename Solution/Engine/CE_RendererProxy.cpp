@@ -6,6 +6,10 @@ void CE_RendererProxy::AddModel(const CE_Matrix44f& anOrientation, const CE_Vect
 {
 	CE_ModelData& data = myModelData.Add();
 	data.myOrientation = anOrientation;
+	CE_Vector3f pos = data.myOrientation.GetPos();
+	pos.y += aScale.y * 0.5f;
+	data.myOrientation.SetPos(pos);
+
 	data.myScaleAndRoughness = CE_Vector4f(aScale.x, aScale.y, aScale.z, aRoughness);
 	data.myColorAndMetalness = CE_Vector4f(aColor.x, aColor.y, aColor.z, aMetalness);
 	data.myIsSphere = aIsSphere;
