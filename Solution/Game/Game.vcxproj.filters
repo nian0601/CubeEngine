@@ -133,6 +133,12 @@
     <ClInclude Include="NodeEditorContext.h">
       <Filter>Contexts</Filter>
     </ClInclude>
+    <ClInclude Include="NeuralNetworkContext.h">
+      <Filter>Contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="LightingTestContext.h">
+      <Filter>Contexts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -191,6 +197,12 @@
       <Filter>Contexts</Filter>
     </ClCompile>
     <ClCompile Include="NodeEditorContext.cpp">
+      <Filter>Contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="NeuralNetworkContext.cpp">
+      <Filter>Contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="LightingTestContext.cpp">
       <Filter>Contexts</Filter>
     </ClCompile>
   </ItemGroup>

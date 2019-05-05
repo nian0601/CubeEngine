@@ -5,6 +5,8 @@
 #include "EntityEditorContext.h"
 #include "LevelEditorContext.h"
 #include "NodeEditorContext.h"
+#include "NeuralNetworkContext.h"
+#include "LightingTestContext.h"
 
 Game::Game()
 	: myGameContext(nullptr)
@@ -19,10 +21,12 @@ Game::~Game()
 
 void Game::Init(CE_Engine& anEngine)
 {
-	//myGameContext = new InGameContext();
+	myGameContext = new InGameContext();
 	//myGameContext = new EntityEditorContext();
 	//myGameContext = new LevelEditorContext();
-	myGameContext = new NodeEditorContext();
+	//myGameContext = new NodeEditorContext();
+	//myGameContext = new NeuralNetworkContext();
+	//myGameContext = new LightingTestContext();
 	myGameContext->Init(anEngine);
 }
 

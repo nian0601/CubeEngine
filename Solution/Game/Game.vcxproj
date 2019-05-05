@@ -146,10 +146,12 @@
     <ClInclude Include="LevelEditorContext.h" />
     <ClInclude Include="LifetimeComponent.h" />
     <ClInclude Include="LifetimeProcessor.h" />
+    <ClInclude Include="LightingTestContext.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="MovementProcessor.h" />
     <ClInclude Include="InventoryComponent.h" />
     <ClInclude Include="NeuralNetworkComponent.h" />
+    <ClInclude Include="NeuralNetworkContext.h" />
     <ClInclude Include="NeuralNetworkProcessor.h" />
     <ClInclude Include="NodeEditorContext.h" />
     <ClInclude Include="RenderComponent.h" />
@@ -177,7 +179,9 @@
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="LevelEditorContext.cpp" />
     <ClCompile Include="LifetimeProcessor.cpp" />
+    <ClCompile Include="LightingTestContext.cpp" />
     <ClCompile Include="MovementProcessor.cpp" />
+    <ClCompile Include="NeuralNetworkContext.cpp" />
     <ClCompile Include="NeuralNetworkProcessor.cpp" />
     <ClCompile Include="NodeEditorContext.cpp" />
     <ClCompile Include="RenderProcessor.cpp" />
