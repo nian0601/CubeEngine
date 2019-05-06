@@ -22,7 +22,7 @@ float4 main(PosUVPixel anInput) : SV_TARGET
 	//float3 ambientDiffuse = cubemapColor
 	//	* ao * pixelData.myMetalnessAlbedo * (1.f - reflectionFresnel);
 
-	float3 reflectionVector = reflect(pixelData.myToEye, pixelData.myNormal);
+	float3 reflectionVector = reflect(pixelData.myNormal, pixelData.myToEye);
 	float fakeLysSpecularPower = RoughToSPow(pixelData.myRoughness);
 	float lysMipMap = GetSpecPowToMip(fakeLysSpecularPower, 12);
 
