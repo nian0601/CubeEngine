@@ -59,7 +59,7 @@ void CUI_NodeEditor::Render(CE_RendererProxy& anRendererProxy)
 	if (mySelectedPin)
 	{
 		CE_Vector2f startPos = mySelectedPin->GetPosition();
-		startPos += mySelectedPin->GetSize() * 0.5f;
+		startPos += mySelectedPin->GetPinWidth() * 0.5f;
 
 		RenderSteppedLine(anRendererProxy, startPos, myMousePosition, 0.5f);
 	}
