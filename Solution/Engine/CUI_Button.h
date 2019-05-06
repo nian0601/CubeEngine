@@ -13,6 +13,12 @@ public:
 	virtual void PrepareLayout() override;
 	virtual bool OnClick() override;
 
+	virtual bool OnMouseDown(const CUI_MouseMessage& aMessage) override;
+	virtual bool OnMouseUp(const CUI_MouseMessage& aMessage) override;
+
 	std::function<void()> myOnClick;
+
+private:
+	CUI_Widget* myWidget;
 };
 

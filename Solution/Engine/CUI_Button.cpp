@@ -19,17 +19,27 @@ bool CUI_Button::OnClick()
 	return true;
 }
 
+bool CUI_Button::OnMouseDown(const CUI_MouseMessage& aMessage)
+{
+	return CUI_Widget::OnMouseDown(aMessage);
+}
+
+bool CUI_Button::OnMouseUp(const CUI_MouseMessage& aMessage)
+{
+	return CUI_Widget::OnMouseUp(aMessage);
+}
+
 void CUI_Button::PrepareLayout()
 {
 	CE_Vector2f position = GetPosition();
-	mySize = CE_Vector2f(0.f);
 
+	mySize = CE_Vector2f(0.f);
 	for (int i = 0; i < myWidgets.Size(); ++i)
 	{
 		CUI_Widget* child = myWidgets[i];
 		child->SetPosition(position);
 		child->PrepareLayout();
-
+	
 		CE_Vector2f childSize = child->GetSize();
 		mySize.x = CE_Max(childSize.x, mySize.x);
 		mySize.y = CE_Max(childSize.y, mySize.y);
