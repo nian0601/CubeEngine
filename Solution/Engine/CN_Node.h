@@ -32,7 +32,7 @@ public:
 
 protected:
 	template <typename T>
-	CN_Pin* AddPin(u32 aPinID, bool aIsInput);
+	CN_Pin* AddPin(u32 aPinID, bool aIsInput, const char* aName);
 
 private:
 	u32 myNodeID;
@@ -44,9 +44,9 @@ private:
 
 
 template <typename T>
-CN_Pin* CN_Node::AddPin(u32 aPinID, bool aIsInput)
+CN_Pin* CN_Node::AddPin(u32 aPinID, bool aIsInput, const char* aName)
 {
-	CN_Pin* pin = new CN_Pin(CE_GetTypeID<T>(), aPinID, aIsInput, this);
+	CN_Pin* pin = new CN_Pin(CE_GetTypeID<T>(), aPinID, aIsInput, aName, this);
 	myAllPins.Add(pin);
 
 	return pin;

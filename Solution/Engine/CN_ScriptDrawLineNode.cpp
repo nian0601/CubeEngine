@@ -5,9 +5,9 @@
 
 CN_ScriptDrawLineNode::CN_ScriptDrawLineNode()
 {
-	AddPin<int>(0, true);
-	AddPin<int>(1, true);
-	AddPin<int>(2, true);
+	AddPin<int>(0, true, "Green");
+	AddPin<int>(1, true, "Red");
+	AddPin<int>(2, true, "Blue");
 }
 
 void CN_ScriptDrawLineNode::Execute(const CN_Pin& anExecutingPin)

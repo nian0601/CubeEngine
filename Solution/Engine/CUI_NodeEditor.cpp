@@ -150,7 +150,7 @@ bool CUI_NodeEditor::OnPinDragBegin(CUI_DragMessage& aMessage, CUI_Pin* aPin)
 		if (connections.Size() > 0)
 		{
 			mySelectedPin = connections[0];
-			aPin->myNode->DisconnectPin(aPin->myID);
+			aPin->myNode.DisconnectPin(aPin->myID);
 		}
 		else
 		{
@@ -208,13 +208,13 @@ void CUI_NodeEditor::RenderNodeConnections(CE_RendererProxy& anRendererProxy, CU
 		float cutPoint = startOffset + spacing * 0.5f + spacing * count;
 
 		CE_Vector2f startPosition = pin->GetPosition();
-		startPosition += pin->GetSize() * 0.5f;
+		startPosition += pin->GetPinWidth() * 0.5f;
 
 		const CE_GrowingArray<CUI_Pin*>& connections = pin->GetConnections();
 		for (const CUI_Pin* connection : connections)
 		{
 			CE_Vector2f endPosition = connection->GetPosition();
-			endPosition += connection->GetSize() * 0.5f;
+			endPosition += connection->GetPinWidth() * 0.5f;
 
 			RenderSteppedLine(anRendererProxy, startPosition, endPosition, cutPoint);
 		}
@@ -281,10 +281,10 @@ void CUI_NodeEditor::ConnectPins(u32 aOutputNode, u32 aOutputPin, u32 aInputNode
 
 void CUI_NodeEditor::ConnectPins(CUI_Pin* aOutputPin, CUI_Pin* aInputPin)
 {
-	CUI_VisualNode* outputNode = aOutputPin->myNode;
-	CUI_VisualNode* inputNode = aInputPin->myNode;
+	CUI_VisualNode& outputNode = aOutputPin->myNode;
+	CUI_VisualNode& inputNode = aInputPin->myNode;
 
-	outputNode->ConnectWithNode(inputNode, aOutputPin->myID, aInputPin->myID);
+	outputNode.ConnectWithNode(&inputNode, aOutputPin->myID, aInputPin->myID);
 }
 
 void CUI_NodeEditor::ConnectVisualPins(u32 aOutputNode, u32 aOutputPin, u32 aInputNode, u32 aInputPin)

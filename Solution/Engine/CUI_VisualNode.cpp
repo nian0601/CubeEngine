@@ -12,12 +12,6 @@
 #include "CN_Pin.h"
 #include "CN_NodeFactory.h"
 
-namespace CUI_VisualNode_priv
-{
-	const CE_Vector2f locPinSize = CE_Vector2f(16.f, 16.f);
-	const CE_Vector4f locDefaultPinColor = CE_Vector4f(0.2f, 0.2f, 0.2f, 1.f);
-}
-
 CUI_VisualNode::CUI_VisualNode(const CE_Font& aFont, CN_Node* aRealNode)
 	: myID(aRealNode->GetNodeID())
 	, myRealNode(aRealNode)
@@ -39,10 +33,7 @@ CUI_VisualNode::CUI_VisualNode(const CE_Font& aFont, CN_Node* aRealNode)
 
 	for (CN_Pin* realPin : myRealNode->myAllPins)
 	{
-		CUI_Pin* uiPin = new CUI_Pin(realPin->GetIsInput(), CUI_VisualNode_priv::locPinSize, CE_GetTypeInfo(realPin->GetDataType()).myColor);
-		uiPin->myID = realPin->GetPinID();
-		uiPin->myNode = this;
-
+		CUI_Pin* uiPin = new CUI_Pin(*this, realPin, aFont);
 		AddWidget(uiPin);
 
 		if (!uiPin->IsInput())
@@ -75,19 +66,32 @@ void CUI_VisualNode::PrepareLayout()
 	position.y += myLabel->GetSize().y;
 
 
-	float pinSize = 0.f;
-	if(myWidgets.Size() > 0)
-		pinSize = myWidgets[0]->GetSize().x * 0.5f;
+	// Should split PrepareLayout into two steps:
+	// - PrepareSize
+	// - PreparePosition/Layout
+	//
+	// Sometimes the Position depends on the Size, so we cant set the position
+	// of the child before calculating the size, which is done in PrepareLayout,
+	// but we also need the position inside PrepareLayout so that we can
+	// layout any children of the child.
 
+	for (CUI_Widget* widget : myWidgets)
+	{
+		widget->PrepareLayout();
+		if (mySize.x < widget->GetSize().x)
+			mySize.x = widget->GetSize().x;
+	}
+
+	
 	for (CUI_Widget* widget : myWidgets)
 	{
 		CUI_Pin* pin = static_cast<CUI_Pin*>(widget);
 		if (pin->IsInput())
-			position.x = myPosition.x - pinSize;
+			position.x = myPosition.x - 8.f;
 		else
-			position.x = myPosition.x + mySize.x - pinSize;
+			position.x = myPosition.x + mySize.x - 8.f;
 
-		position.y += pinSize;
+		position.y += 8.f;
 
 		widget->SetPosition(position);
 		widget->PrepareLayout();

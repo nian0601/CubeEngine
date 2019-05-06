@@ -2,10 +2,11 @@
 #include "CN_Pin.h"
 #include "CN_Node.h"
 
-CN_Pin::CN_Pin(u32 aDataType, u32 aPinID, bool aIsInput, CN_Node* aNode)
+CN_Pin::CN_Pin(u32 aDataType, u32 aPinID, bool aIsInput, const char* aName, CN_Node* aNode)
 	: myDataType(aDataType)
 	, myPinID(aPinID)
 	, myIsInput(aIsInput)
+	, myName(aName)
 	, myNode(aNode)
 {
 }

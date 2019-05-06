@@ -4,13 +4,13 @@
 
 CN_Script3In3OutNode::CN_Script3In3OutNode()
 {
-	AddPin<int>(0, true);
-	AddPin<int>(1, true);
-	AddPin<int>(2, true);
+	AddPin<int>(0, true, "In 1");
+	AddPin<int>(1, true, "In 2");
+	AddPin<int>(2, true, "In 3");
 
-	myPin1 = AddPin<int>(3, false);
-	myPin2 = AddPin<int>(4, false);
-	myPin3 = AddPin<int>(5, false);
+	myPin1 = AddPin<int>(3, false, "Out 1");
+	myPin2 = AddPin<int>(4, false, "Out 2");
+	myPin3 = AddPin<int>(5, false, "Out 3");
 }
 
 void CN_Script3In3OutNode::Execute(const CN_Pin& anExecutingPin)

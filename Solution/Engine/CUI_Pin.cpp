@@ -4,17 +4,41 @@
 
 #include "CE_DebugDraw.h"
 #include "CUI_Message.h"
+#include "CN_Pin.h"
+#include "CUI_Label.h"
+#include "CUI_Image.h"
 
-CUI_Pin::CUI_Pin(bool aIsInput, const CE_Vector2f& aSize, const CE_Vector4f& aColor)
-	: myColor(aColor)
-	, myIsInput(aIsInput)
-	, myID(0)
+namespace CUI_Pin_priv
 {
-	mySize = aSize;
+	const float locPinSize = 16.f;
+	const float locLabelSpacing = 3.f;
 }
 
-void CUI_Pin::Render(CE_RendererProxy& anRendererProxy)
+
+CUI_Pin::CUI_Pin(CUI_VisualNode& aNode, const CN_Pin* aRealPin, const CE_Font& aFont)
+	: myNode(aNode)
+	, myColor(CE_GetTypeInfo(aRealPin->GetDataType()).myColor)
+	, myIsInput(aRealPin->GetIsInput())
+	, myID(aRealPin->GetPinID())
 {
+	myLabel = new CUI_Label(aFont, aRealPin->GetName());
+	myLabel->SetColor({ 0.f, 0.f, 0.f, 1.f });
+	myImage = new CUI_Image({ CUI_Pin_priv::locPinSize, CUI_Pin_priv::locPinSize });
+}
+
+void CUI_Pin::PrepareLayout()
+{
+	myLabel->PrepareLayout();
+	myImage->PrepareLayout();
+
+	mySize = myImage->GetSize();
+
+	CE_Vector2f labelSize = myLabel->GetSize();
+	mySize.x += labelSize.x + CUI_Pin_priv::locLabelSpacing;
+
+	if (mySize.y < labelSize.y)
+		mySize.y = labelSize.y;
+
 	CE_Vector4f color = myColor;
 	if (myIsFocused)
 		color.x += 0.2f;
@@ -23,7 +47,22 @@ void CUI_Pin::Render(CE_RendererProxy& anRendererProxy)
 	else if (myIsHovered)
 		color.z += 0.1f;
 
-	anRendererProxy.AddSprite(myPosition, mySize, color);
+	myImage->SetColor(color);
+	myImage->SetPosition(myPosition);
+
+	CE_Vector2f textPos = myPosition;
+	if (myIsInput)
+		textPos.x += CUI_Pin_priv::locPinSize + CUI_Pin_priv::locLabelSpacing;
+	else
+		textPos.x -= myLabel->GetSize().x + CUI_Pin_priv::locLabelSpacing;
+
+	myLabel->SetPosition(textPos);
+}
+
+void CUI_Pin::Render(CE_RendererProxy& anRendererProxy)
+{
+	myImage->Render(anRendererProxy);
+	myLabel->Render(anRendererProxy);
 }
 
 bool CUI_Pin::OnDragMessage(CUI_DragMessage& aMessage)
@@ -39,4 +78,9 @@ bool CUI_Pin::OnDragMessage(CUI_DragMessage& aMessage)
 	}
 
 	return false;
+}
+
+float CUI_Pin::GetPinWidth() const
+{
+	return CUI_Pin_priv::locPinSize;
 }
