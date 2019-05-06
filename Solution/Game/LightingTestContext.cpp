@@ -87,6 +87,14 @@ void LightingTestContext::InitWorld()
 	}
 
 	myPointLight = myEntityFactory->InstansiateEntity("point_light");
+	RenderComponent& light = myWorld->GetComponent<RenderComponent>(myPointLight);
+	light.myEntries[1].myColor = { 1.f, 0.f, 0.f, 10.f };
+
 	myPointLight1 = myEntityFactory->InstansiateEntity("point_light");
+	RenderComponent& lightOne = myWorld->GetComponent<RenderComponent>(myPointLight1);
+	lightOne.myEntries[1].myColor = { 0.f, 1.f, 0.f, 10.f };
+
 	myPointLight2 = myEntityFactory->InstansiateEntity("point_light");
+	RenderComponent& lightTwo = myWorld->GetComponent<RenderComponent>(myPointLight2);
+	lightTwo.myEntries[1].myColor = { 0.f, 0.f, 1.f, 10.f };
 }
