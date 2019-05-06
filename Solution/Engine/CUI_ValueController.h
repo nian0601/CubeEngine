@@ -1,4 +1,6 @@
 #pragma once
+
+struct CUI_MouseMessage;
 class CUI_ValueController
 {
 public:
@@ -11,6 +13,8 @@ public:
 
 	float Get() const;
 	void Set(float aValue);
+
+	void OnScroll(const CUI_MouseMessage& aMessage);
 
 private:
 	float myCachedValue;

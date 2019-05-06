@@ -60,6 +60,20 @@ bool CUI_Widget::OnMouseUp(const CUI_MouseMessage& aMessage)
 	return false;
 }
 
+bool CUI_Widget::OnMouseWheel(const CUI_MouseMessage& aMessage)
+{
+	if (!myIsVisible && myIsFocused)
+		return false;
+
+	if (Contains(aMessage.myNewPosition))
+	{
+		OnMouseMessage(aMessage);
+		return true;
+	}
+
+	return false;
+}
+
 void CUI_Widget::OnMouseEnter()
 {
 	if(myIsVisible)

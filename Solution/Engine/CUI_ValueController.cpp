@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CUI_ValueController.h"
+#include "CUI_Message.h"
 
 CUI_ValueController::CUI_ValueController(float* aValue)
 	: myValuePtr(aValue)
@@ -37,4 +38,19 @@ void CUI_ValueController::Set(float aValue)
 	CE_ASSERT(myValuePtr != nullptr, "Invalid ValuePtr in CUI_ValueController");
 
 	*myValuePtr = aValue;
+}
+
+void CUI_ValueController::OnScroll(const CUI_MouseMessage& aMessage)
+{
+	float currValue = myCachedValue;
+	float speed = 0.01f;
+	if (aMessage.ShiftDown())
+		speed = 1.f;
+
+	if (aMessage.myMouseWheelDelta > 0)
+		currValue += speed;
+	else
+		currValue -= speed;
+
+	Set(currValue);
 }

@@ -25,6 +25,7 @@ public:
 
 	virtual bool OnMouseDown(const CUI_MouseMessage& aMessage);
 	virtual bool OnMouseUp(const CUI_MouseMessage& aMessage);
+	virtual bool OnMouseWheel(const CUI_MouseMessage& aMessage);
 	virtual void OnMouseEnter();
 	virtual void OnMouseExit();
 	virtual bool OnMouseMove(const CUI_MouseMessage& aMessage);

@@ -24,6 +24,18 @@ void CUI_Manager::Update(const CE_Input& someInput)
 	CUI_MouseMessage mouseMessage;
 	mouseMessage.myNewPosition = mousePos;
 	mouseMessage.myOldPosition = myOldMousePosition;
+	mouseMessage.myMouseWheelDelta = someInput.GetMouseDZ();
+	mouseMessage.myModifiers = 0;
+
+	if (someInput.KeyIsPressed(DIK_LSHIFT))
+		mouseMessage.myModifiers |= CUI_MouseMessage::SHIFT;
+
+	if (someInput.KeyIsPressed(DIK_LALT))
+		mouseMessage.myModifiers |= CUI_MouseMessage::ALT;
+
+	if (someInput.KeyIsPressed(DIK_LCONTROL))
+		mouseMessage.myModifiers |= CUI_MouseMessage::CTRL;
+
 	mouseMessage.myType = CUI_MouseMessage::MOUSE_MOVE;
 
 	OnMouseMove(mouseMessage);
@@ -31,6 +43,12 @@ void CUI_Manager::Update(const CE_Input& someInput)
 	SendMouseMessage(mouseMessage, 0, someInput);
 	SendMouseMessage(mouseMessage, 1, someInput);
 	SendMouseMessage(mouseMessage, 2, someInput);
+
+	if (mouseMessage.myMouseWheelDelta != 0.f)
+	{
+		mouseMessage.myType = CUI_MouseMessage::MOUSE_WHEEL;
+		OnMouseWheel(mouseMessage);
+	}
 
 	myOldMousePosition = mousePos;
 }

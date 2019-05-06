@@ -5,6 +5,7 @@
 
 #include "CUI_Label.h"
 #include "CUI_ValueController.h"
+#include "CUI_Message.h"
 
 CUI_Label::CUI_Label(const CE_Font& aFont)
 	: myFont(aFont)
@@ -56,6 +57,15 @@ void CUI_Label::PrepareLayout()
 	}
 
 	mySize = myFont.GetSize(myString);
+}
+
+bool CUI_Label::OnMouseMessage(const CUI_MouseMessage& aMessage)
+{
+	if (aMessage.myType != CUI_MouseMessage::MOUSE_WHEEL || !myValueController)
+		return false;
+
+	myValueController->OnScroll(aMessage);
+	return true;
 }
 
 void CUI_Label::SetText(const CE_String& aString)

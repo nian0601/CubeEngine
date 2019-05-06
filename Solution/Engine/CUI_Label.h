@@ -16,6 +16,8 @@ public:
 	void Render(CE_RendererProxy& anRendererProxy) override;
 	void PrepareLayout() override;
 
+	bool OnMouseMessage(const CUI_MouseMessage& aMessage) override;
+
 	void SetText(const CE_String& aString);
 	const CE_String& GetText() const { return myString; }
 	void SetColor(const CE_Vector4f& aColor) { myColor = aColor; }

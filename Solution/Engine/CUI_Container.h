@@ -11,6 +11,7 @@ public:
 
 	bool OnMouseDown(const CUI_MouseMessage& aMessage) override;
 	bool OnMouseUp(const CUI_MouseMessage& aMessage) override;
+	bool OnMouseWheel(const CUI_MouseMessage& aMessage) override;
 
 	bool OnMouseMove(const CUI_MouseMessage& aMessage) override;
 	bool OnTextInput(const CE_WindowMessage& aMessage);

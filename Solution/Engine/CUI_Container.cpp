@@ -46,6 +46,17 @@ bool CUI_Container::OnMouseUp(const CUI_MouseMessage& aMessage)
 	return CUI_Widget::OnMouseUp(aMessage);
 }
 
+bool CUI_Container::OnMouseWheel(const CUI_MouseMessage& aMessage)
+{
+	for (CUI_Widget* widget : myWidgets)
+	{
+		if (widget->OnMouseWheel(aMessage))
+			return true;
+	}
+
+	return CUI_Widget::OnMouseWheel(aMessage);
+}
+
 bool CUI_Container::OnMouseMove(const CUI_MouseMessage& aMessage)
 {
 	for (CUI_Widget* widget : myWidgets)
