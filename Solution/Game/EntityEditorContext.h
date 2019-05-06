@@ -43,9 +43,6 @@ private:
 	CUI_TreeView* CreateColorWidget(const char* aText, CE_Vector4f& aVector);
 
 	CUI_HBox* CreateFloatController(const char* aText, float& aValue);
-	void AddModifyButtons(CUI_ValueController* aController, CUI_HBox* aParent);
-
-	void ModifyValueController(CUI_ValueController* aController, float aModifier);
 	void ClearRenderEntries();
 
 	RenderComponent* myRenderComponent;

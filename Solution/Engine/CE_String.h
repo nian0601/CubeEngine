@@ -133,7 +133,7 @@ inline CE_String& CE_String::operator+=(const float aFloat)
 		Resize(myCurrentSize * 2);
 
 	char buffer[CE_STRING_MAX_NUMBER_CHARACTERS];
-	_snprintf_s(buffer, CE_STRING_MAX_NUMBER_CHARACTERS, "%f", aFloat);
+	_snprintf_s(buffer, CE_STRING_MAX_NUMBER_CHARACTERS, "%.3f", aFloat);
 
 	CE_String newString(buffer);
 	*this += newString;

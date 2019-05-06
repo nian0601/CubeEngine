@@ -157,9 +157,9 @@ void EntityEditorContext::AddRenderEntry()
 
 CUI_TreeView* EntityEditorContext::CreateVectorWidget(const char* aText, CE_Vector3f& aVector)
 {
-	CUI_HBox* xBox = CreateFloatController("X:   ", aVector.x);
-	CUI_HBox* yBox = CreateFloatController("Y:   ", aVector.y);
-	CUI_HBox* zBox = CreateFloatController("Z:   ", aVector.z);
+	CUI_HBox* xBox = CreateFloatController("X: ", aVector.x);
+	CUI_HBox* yBox = CreateFloatController("Y: ", aVector.y);
+	CUI_HBox* zBox = CreateFloatController("Z: ", aVector.z);
 
 	CUI_TreeView* view = new CUI_TreeView(*myFont, aText);
 	view->AddWidget(xBox);
@@ -170,9 +170,9 @@ CUI_TreeView* EntityEditorContext::CreateVectorWidget(const char* aText, CE_Vect
 
 CUI_TreeView* EntityEditorContext::CreateColorWidget(const char* aText, CE_Vector4f& aVector)
 {
-	CUI_HBox* rBox = CreateFloatController("R:   ", aVector.x);
-	CUI_HBox* gBox = CreateFloatController("G:   ", aVector.y);
-	CUI_HBox* bBox = CreateFloatController("B:   ", aVector.z);
+	CUI_HBox* rBox = CreateFloatController("R: ", aVector.x);
+	CUI_HBox* gBox = CreateFloatController("G: ", aVector.y);
+	CUI_HBox* bBox = CreateFloatController("B: ", aVector.z);
 
 	CUI_TreeView* view = new CUI_TreeView(*myFont, aText);
 	view->AddWidget(rBox);
@@ -188,31 +188,8 @@ CUI_HBox* EntityEditorContext::CreateFloatController(const char* aText, float& a
 
 	CUI_ValueController* controller = new CUI_ValueController(&aValue);
 	box->AddWidget(new CUI_Label(*myFont, controller));
-	AddModifyButtons(controller, box);
 
 	return box;
-}
-
-void EntityEditorContext::AddModifyButtons(CUI_ValueController* aController, CUI_HBox* aParent)
-{
-	CUI_Button* incrementButton = new CUI_Button(*myFont, " + ");
-	incrementButton->myOnClick = std::bind(&EntityEditorContext::ModifyValueController, this, aController, 0.1f);
-	aParent->AddWidget(incrementButton);
-
-	CUI_Button* decrementButton = new CUI_Button(*myFont, " - ");
-	decrementButton->myOnClick = std::bind(&EntityEditorContext::ModifyValueController, this, aController, -0.1f);
-	aParent->AddWidget(decrementButton);
-}
-
-void EntityEditorContext::ModifyValueController(CUI_ValueController* aController, float aModifier)
-{
-	float value = aController->Get();
-
-	value += aModifier;
-	value = CE_Min(value, 1.f);
-	value = CE_Max(value, 0.f);
-
-	aController->Set(value);
 }
 
 void EntityEditorContext::ClearRenderEntries()
