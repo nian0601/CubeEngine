@@ -30,6 +30,13 @@ public:
 
 	virtual bool IsInitNode() const { return false; }
 
+
+	template <typename T>
+	void Write(u32 aPinID, const T& someData);
+
+	template <typename T>
+	T& Read(u32 aPinID);
+
 protected:
 	template <typename T>
 	CN_Pin* AddPin(u32 aPinID, bool aIsInput, const char* aName);
@@ -42,6 +49,22 @@ private:
 	CE_GrowingArray<CN_Pin*> myAllPins;
 };
 
+
+template <typename T>
+void CN_Node::Write(u32 aPinID, const T& someData)
+{
+	if(CN_Pin* pin = GetPin(aPinID))
+		pin->Write(someData);
+}
+
+template <typename T>
+T& CN_Node::Read(u32 aPinID)
+{
+	if (CN_Pin* pin = GetPin(aPinID))
+		return pin->Read();
+
+	return T();
+}
 
 template <typename T>
 CN_Pin* CN_Node::AddPin(u32 aPinID, bool aIsInput, const char* aName)

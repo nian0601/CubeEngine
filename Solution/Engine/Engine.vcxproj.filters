@@ -239,6 +239,9 @@
     <ClCompile Include="CN_Script3In3OutNode.cpp">
       <Filter>NodeGraph\Nodes</Filter>
     </ClCompile>
+    <ClCompile Include="CN_PositionNodes.cpp">
+      <Filter>NodeGraph\Nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -677,6 +680,9 @@
       <Filter>NodeGraph</Filter>
     </ClInclude>
     <ClInclude Include="CN_Script3In3OutNode.h">
+      <Filter>NodeGraph\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="CN_PositionNodes.h">
       <Filter>NodeGraph\Nodes</Filter>
     </ClInclude>
   </ItemGroup>

@@ -16,6 +16,7 @@ namespace CE_TypeRegistration
 		CE_TYPE_REGISTER(float, CE_Vector4f(0.2f, 0.5f, 0.2f, 1.f));
 		CE_TYPE_REGISTER(double, CE_Vector4f(0.2f, 0.2f, 0.2f, 1.f));
 
+		CE_TYPE_REGISTER(CE_Vector2f, CE_Vector4f(0.7f, 0.5f, 0.2f, 1.f));
 		CE_TYPE_REGISTER(CE_Vector3f, CE_Vector4f(0.5f, 0.5f, 0.2f, 1.f));
 		CE_TYPE_REGISTER(CE_Vector4f, CE_Vector4f(0.5f, 0.5f, 0.7f, 1.f));
 

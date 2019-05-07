@@ -140,6 +140,7 @@
     <ClCompile Include="CN_Node.cpp" />
     <ClCompile Include="CN_NodeGraph.cpp" />
     <ClCompile Include="CN_Pin.cpp" />
+    <ClCompile Include="CN_PositionNodes.cpp" />
     <ClCompile Include="CN_Script3In3OutNode.cpp" />
     <ClCompile Include="CN_ScriptDrawLineNode.cpp" />
     <ClCompile Include="CN_ScriptInitNode.cpp" />
@@ -291,6 +292,7 @@
     <ClInclude Include="CN_Node.h" />
     <ClInclude Include="CN_NodeGraph.h" />
     <ClInclude Include="CN_Pin.h" />
+    <ClInclude Include="CN_PositionNodes.h" />
     <ClInclude Include="CN_Script3In3OutNode.h" />
     <ClInclude Include="CN_ScriptDrawLineNode.h" />
     <ClInclude Include="CN_ScriptInitNode.h" />

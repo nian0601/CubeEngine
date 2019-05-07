@@ -10,5 +10,9 @@ public:
 	CN_ScriptDrawLineNode();
 
 	void Execute(const CN_Pin& anExecutingPin) override;
+
+private:
+	CN_Pin* myInputOne;
+	CN_Pin* myInputTwo;
 };
 
