@@ -18,6 +18,8 @@
 #include "CN_NodeGraph.h"
 
 CUI_NodeEditor::CUI_NodeEditor(CE_GPUContext& aGPUContext)
+	: mySelectedNode(nullptr)
+	, mySelectedPin(nullptr)
 {
 	CN_NodeFactory::RegisterNodes();
 
@@ -33,6 +35,10 @@ CUI_NodeEditor::CUI_NodeEditor(CE_GPUContext& aGPUContext)
 
 	LoadGraph(myFilePath.c_str());
 	
+	// Make sure any non-nodewidgets handle OnMouseUp in CUI_NodeEditor::OnMouseUp, 
+	// currently we dont rely on CUI_Container::myWidgets to iterate over everything,
+	// since the VisualNodes needs specialhandling.
+	// Should clean that up at some point.
 	myNodeDropbox = new CUI_Dropbox(*myFont, "Nodes");
 	myNodeDropbox->Hide();
 	myNodeDropbox->myOnSelection = std::bind(&CUI_NodeEditor::OnNodeDropboxSelection, this, std::placeholders::_1, std::placeholders::_2);
@@ -63,8 +69,28 @@ void CUI_NodeEditor::Render(CE_RendererProxy& anRendererProxy)
 
 		RenderSteppedLine(anRendererProxy, startPos, myMousePosition, 0.5f);
 	}
-	
+
 	myNodeGraph->Execute();
+}
+
+bool CUI_NodeEditor::OnMouseUp(const CUI_MouseMessage& aMessage)
+{
+	mySelectedNode = nullptr;
+	for (CUI_VisualNode* node : myVisualNodes)
+	{
+		bool handled = node->OnMouseUp(aMessage);
+
+		if (node->IsFocused())
+			mySelectedNode = node;
+
+		if (handled)
+			return true;
+	}
+
+	if (myNodeDropbox->OnMouseUp(aMessage))
+		return true;
+
+	return CUI_Widget::OnMouseUp(aMessage);
 }
 
 bool CUI_NodeEditor::OnMouseMessage(const CUI_MouseMessage& aMessage)
@@ -175,22 +201,14 @@ void CUI_NodeEditor::SaveGraph()
 
 void CUI_NodeEditor::DeleteSelectedNode()
 {
-	CUI_VisualNode* selectedNode = nullptr;
-	for (CUI_VisualNode* node : myVisualNodes)
+	if (mySelectedNode)
 	{
-		if (node->IsFocused())
-		{
-			selectedNode = node;
-			break;
-		}
+		myNodeGraph->DeleteNode(mySelectedNode->myRealNode);
+		myVisualNodes.RemoveCyclic(mySelectedNode);
+		DeleteWidget(mySelectedNode);
+
+		mySelectedNode = nullptr;
 	}
-
-	if (selectedNode == nullptr)
-		return;
-
-	myNodeGraph->DeleteNode(selectedNode->myRealNode);
-	myVisualNodes.RemoveCyclic(selectedNode);
-	DeleteWidget(selectedNode);
 }
 
 void CUI_NodeEditor::RenderNodeConnections(CE_RendererProxy& anRendererProxy, CUI_VisualNode* aNode)

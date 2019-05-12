@@ -21,6 +21,7 @@ public:
 
 	void Render(CE_RendererProxy& anRendererProxy) override;
 
+	bool OnMouseUp(const CUI_MouseMessage& aMessage) override;
 	bool OnMouseMessage(const CUI_MouseMessage& aMessage) override;
 	bool OnDragBegin(CUI_DragMessage& aMessage) override;
 	bool OnDragEnd(CUI_DragMessage& aMessage) override;
@@ -52,6 +53,7 @@ private:
 	CE_Font* myFont;
 
 	CUI_Pin* mySelectedPin;
+	CUI_VisualNode* mySelectedNode;
 
 	u32 myNextNodeID;
 	CE_GrowingArray<CUI_VisualNode*> myVisualNodes;
