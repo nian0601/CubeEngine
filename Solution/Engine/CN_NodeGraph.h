@@ -19,6 +19,7 @@ public:
 
 private:
 	void ConnectPins(u32 aOutputNode, u32 aOutputPin, u32 aInputNode, u32 aInputPin);
+	CN_Node* GetNode(u32 aNodeID);
 
 	CE_String myFilePath;
 	CN_Node* myInitNode;

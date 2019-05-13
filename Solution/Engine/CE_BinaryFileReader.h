@@ -1,4 +1,6 @@
 #pragma once
+
+class CE_Any;
 class CE_BinaryFileReader
 {
 public:
@@ -9,6 +11,7 @@ public:
 
 	template<typename T>
 	void Read(T& someData);
+	void Read(CE_Any& someData);
 
 	void Read(void* someData, int someDataLenght);
 private:

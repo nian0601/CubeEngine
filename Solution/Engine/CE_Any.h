@@ -24,10 +24,14 @@ public:
 	void Clear() { myTypeID = static_cast<unsigned int>(-1); myTypeName = nullptr; }
 	bool IsEmpty() { return myTypeID == static_cast<unsigned int>(-1); }
 
+	unsigned int GetSerializationSize() const { return sizeof(CE_Any) - sizeof(const char*); }
+
 private:
 	char myData[24];
 	unsigned int myTypeID;
 
+	// Dont add any members below this comment, as it will mess with serialization
+	// if you add ANY new fields you have to make sure to update all existing savefiles as well...
 #ifdef _DEBUG
 	const char* myTypeName;
 #endif

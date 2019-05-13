@@ -1,4 +1,7 @@
 #pragma once
+
+class CE_Any;
+
 class CE_BinaryFileWriter
 {
 public:
@@ -9,6 +12,7 @@ public:
 
 	template<typename T>
 	void Write(const T& someData);
+	void Write(const CE_Any& someData);
 
 	void Write(const void* someData, int aDataLenght);
 

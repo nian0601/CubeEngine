@@ -75,24 +75,40 @@ void CN_NodeGraph::Load(const char* aFilePath)
 		u32 nodeID;
 		reader.Read(nodeID);
 
-		int pinCount;
-		reader.Read(pinCount);
-		for (int j = 0; j < pinCount; ++j)
+		CN_Node* node = GetNode(nodeID);
+		
+		for (CN_Pin* pin : node->myAllPins)
 		{
 			u32 pinID;
 			reader.Read(pinID);
 
-			int connectionCount;
-			reader.Read(connectionCount);
-			for (int k = 0; k < connectionCount; ++k)
+			// Need a nicer way of handling this, just disconnect the node and set default-vaules on all pins?
+			CE_ASSERT(pinID == pin->GetPinID(), "Pins changed ID since the graph was saved");
+
+			if (pin->GetIsInput())
 			{
-				u32 connectedNodeID;
-				u32 connectedPinID;
+				bool isConst;
+				reader.Read(isConst);
 
-				reader.Read(connectedNodeID);
-				reader.Read(connectedPinID);
+				if (isConst)
+				{
+					reader.Read(pin->myData);
+				}
+			}
+			else
+			{
+				int connectionCount;
+				reader.Read(connectionCount);
+				for (int k = 0; k < connectionCount; ++k)
+				{
+					u32 connectedNodeID;
+					u32 connectedPinID;
 
-				ConnectPins(nodeID, pinID, connectedNodeID, connectedPinID);
+					reader.Read(connectedNodeID);
+					reader.Read(connectedPinID);
+
+					ConnectPins(nodeID, pinID, connectedNodeID, connectedPinID);
+				}
 			}
 		}
 	}
@@ -133,26 +149,31 @@ void CN_NodeGraph::Save(const char* aFilePath)
 	{
 		writer.Write(node->GetNodeID());
 
-		int outputCount = 0;
-		for (CN_Pin* outputPin : node->myAllPins)
+		for (CN_Pin* pin : node->myAllPins)
 		{
-			if (!outputPin->GetIsInput())
-				++outputCount;
-		}
+			writer.Write(pin->GetPinID());
 
-		writer.Write(outputCount);
-		for (CN_Pin* outputPin : node->myAllPins)
-		{
-			if (outputPin->GetIsInput())
-				continue;
-
-			writer.Write(outputPin->GetPinID());
-			writer.Write(outputPin->myConnectedPins.Size());
-			for (CN_Pin* connection : outputPin->myConnectedPins)
+			if (pin->GetIsInput())
 			{
-				CN_Node* connectedNode = connection->myNode;
-				writer.Write(connectedNode->GetNodeID());
-				writer.Write(connection->GetPinID());
+				if (pin->GetConnectedPins().Size() > 0)
+				{
+					writer.Write(false);
+				}
+				else
+				{
+					writer.Write(true);
+					writer.Write(pin->myData);
+				}
+			}
+			else
+			{
+				writer.Write(pin->myConnectedPins.Size());
+				for (CN_Pin* connection : pin->myConnectedPins)
+				{
+					CN_Node* connectedNode = connection->myNode;
+					writer.Write(connectedNode->GetNodeID());
+					writer.Write(connection->GetPinID());
+				}
 			}
 		}
 	}
@@ -189,4 +210,15 @@ void CN_NodeGraph::ConnectPins(u32 aOutputNode, u32 aOutputPin, u32 aInputNode, 
 		inputPin->myConnectedPins.Add(outputPin);
 		outputPin->myConnectedPins.Add(inputPin);
 	}
+}
+
+CN_Node* CN_NodeGraph::GetNode(u32 aNodeID)
+{
+	for (CN_Node* node : myNodes)
+	{
+		if (node->GetNodeID() == aNodeID)
+			return node;
+	}
+
+	return nullptr;
 }

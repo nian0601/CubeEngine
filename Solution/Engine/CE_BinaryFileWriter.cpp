@@ -20,3 +20,9 @@ void CE_BinaryFileWriter::Write(const void* someData, int aDataLenght)
 	CE_ASSERT(myStatus == 0, "Tried to write to a file that wasnt properly opened!");
 	fwrite(someData, aDataLenght, 1, myFile);
 }
+
+void CE_BinaryFileWriter::Write(const CE_Any& someData)
+{
+	CE_ASSERT(myStatus == 0, "Tried to write to a file that wasnt properly opened!");
+	fwrite(&someData, someData.GetSerializationSize(), 1, myFile);
+}

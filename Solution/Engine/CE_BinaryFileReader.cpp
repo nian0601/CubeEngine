@@ -20,3 +20,9 @@ void CE_BinaryFileReader::Read(void* someData, int someDataLenght)
 	CE_ASSERT(myStatus == 0, "Tried to read from a file that wasnt properly opened!");
 	fread(someData, someDataLenght, 1, myFile);
 }
+
+void CE_BinaryFileReader::Read(CE_Any& someData)
+{
+	CE_ASSERT(myStatus == 0, "Tried to read from a file that wasnt properly opened!");
+	fread(&someData, someData.GetSerializationSize(), 1, myFile);
+}
