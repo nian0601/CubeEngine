@@ -32,6 +32,8 @@ private:
 
 	// Dont add any members below this comment, as it will mess with serialization
 	// if you add ANY new fields you have to make sure to update all existing savefiles as well...
+
+	// Need to figure out a nice way of setting myTypeName when creating CE_Any from file.
 #ifdef _DEBUG
 	const char* myTypeName;
 #endif
