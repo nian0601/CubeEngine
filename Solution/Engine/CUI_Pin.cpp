@@ -15,11 +15,12 @@ namespace CUI_Pin_priv
 }
 
 
-CUI_Pin::CUI_Pin(CUI_VisualNode& aNode, const CN_Pin* aRealPin, const CE_Font& aFont)
+CUI_Pin::CUI_Pin(CUI_VisualNode& aNode, CN_Pin* aRealPin, const CE_Font& aFont)
 	: myNode(aNode)
 	, myColor(CE_GetTypeInfo(aRealPin->GetDataType()).myColor)
 	, myIsInput(aRealPin->GetIsInput())
 	, myID(aRealPin->GetPinID())
+	, myRealPin(aRealPin)
 {
 	myLabel = new CUI_Label(aFont, aRealPin->GetName());
 	myLabel->SetColor({ 0.f, 0.f, 0.f, 1.f });
@@ -83,4 +84,9 @@ bool CUI_Pin::OnDragMessage(CUI_DragMessage& aMessage)
 float CUI_Pin::GetPinWidth() const
 {
 	return CUI_Pin_priv::locPinSize;
+}
+
+unsigned int CUI_Pin::GetDataType() const
+{
+	return myRealPin->GetDataType();
 }

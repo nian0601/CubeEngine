@@ -10,7 +10,7 @@ class CN_Pin
 	friend class CUI_VisualNode;
 	friend class CN_NodeGraph;
 public:
-	CN_Pin(u32 aDataType, u32 aPinID, bool aIsInput, const char* aName, CN_Node* aNode);
+	CN_Pin(u32 aDataType, u32 aPinID, bool aIsInput, const char* aName, CN_Node* aNode, const CE_Any& aDefaultvalue);
 
 	void Execute();
 
@@ -53,9 +53,8 @@ T& CN_Pin::Read()
 	CE_ASSERT(myIsInput, "Tried to read from an output pin, cant do that!");
 	CE_ASSERT(myConnectedPins.Size() <= 1, "More than one connection to input-pin somehow..");
 
-	static T dummyValue;
 	if (myConnectedPins.Size() == 0)
-		return dummyValue;
+		return myData.Get<T>();
 
 	CN_Pin* pinOnConnectedNode = myConnectedPins[0];
 	CE_ASSERT(CE_GetTypeID<T>() == pinOnConnectedNode->GetDataType(), "Trying to read missmatching datatype from pin!");

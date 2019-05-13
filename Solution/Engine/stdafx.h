@@ -25,3 +25,4 @@
 #include "CE_DebugDraw.h"
 
 #include "CE_CustomEntityTypes.h"
+#include "CE_TypeReflection.h"

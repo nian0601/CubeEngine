@@ -15,7 +15,7 @@ class CUI_Pin : public CUI_Widget
 	friend class CUI_VisualNode;
 
 public:
-	CUI_Pin(CUI_VisualNode& aNode, const CN_Pin* aRealPin, const CE_Font& aFont);
+	CUI_Pin(CUI_VisualNode& aNode, CN_Pin* aRealPin, const CE_Font& aFont);
 
 	void PrepareLayout() override;
 	void Render(CE_RendererProxy& anRendererProxy) override;
@@ -24,8 +24,10 @@ public:
 
 	bool IsInput() const { return myIsInput; }
 	const CE_GrowingArray<CUI_Pin*>& GetConnections() const { return myConnections; }
+	bool IsConnected() const { return myConnections.Size() > 0; }
 
 	float GetPinWidth() const;
+	unsigned int GetDataType() const;
 
 	unsigned int myID;
 private:
@@ -36,4 +38,5 @@ private:
 	CUI_Label* myLabel;
 	CUI_Image* myImage;
 	CE_GrowingArray<CUI_Pin*> myConnections;
+	CN_Pin* myRealPin;
 };

@@ -16,10 +16,14 @@
 #include "CN_Pin.h"
 #include "CN_NodeFactory.h"
 #include "CN_NodeGraph.h"
+#include "CUI_HBox.h"
+#include "CUI_ValueController.h"
+#include "CUI_VBox.h"
 
 CUI_NodeEditor::CUI_NodeEditor(CE_GPUContext& aGPUContext)
 	: mySelectedNode(nullptr)
 	, mySelectedPin(nullptr)
+	, myContextualProperties(nullptr)
 {
 	CN_NodeFactory::RegisterNodes();
 
@@ -75,19 +79,23 @@ void CUI_NodeEditor::Render(CE_RendererProxy& anRendererProxy)
 
 bool CUI_NodeEditor::OnMouseUp(const CUI_MouseMessage& aMessage)
 {
-	mySelectedNode = nullptr;
+	SelectNode(nullptr);
+
 	for (CUI_VisualNode* node : myVisualNodes)
 	{
 		bool handled = node->OnMouseUp(aMessage);
 
 		if (node->IsFocused())
-			mySelectedNode = node;
+			SelectNode(node);
 
 		if (handled)
 			return true;
 	}
 
 	if (myNodeDropbox->OnMouseUp(aMessage))
+		return true;
+
+	if (myContextualProperties && myContextualProperties->OnMouseUp(aMessage))
 		return true;
 
 	return CUI_Widget::OnMouseUp(aMessage);
@@ -205,9 +213,10 @@ void CUI_NodeEditor::DeleteSelectedNode()
 	{
 		myNodeGraph->DeleteNode(mySelectedNode->myRealNode);
 		myVisualNodes.RemoveCyclic(mySelectedNode);
-		DeleteWidget(mySelectedNode);
 
-		mySelectedNode = nullptr;
+		CUI_VisualNode* node = mySelectedNode;
+		SelectNode(nullptr);
+		DeleteWidget(node);
 	}
 }
 
@@ -373,4 +382,65 @@ void CUI_NodeEditor::OnNodeDropboxSelection(CUI_Widget* aWidget, int /*aWidgetIn
 
 	CUI_VisualNode* visualNode = CreateVisualNode(realNode);
 	visualNode->SetPosition(myMousePosition);
+}
+
+void CUI_NodeEditor::SelectNode(CUI_VisualNode* aNode)
+{
+	if (mySelectedNode != aNode && myContextualProperties)
+	{
+		DeleteWidget(myContextualProperties);
+		myContextualProperties = nullptr;
+	}
+
+	mySelectedNode = aNode;
+	if (mySelectedNode)
+	{
+		myContextualProperties = new CUI_VBox();
+
+		for (CUI_Pin* pin : mySelectedNode->myPins)
+		{
+			if (!pin->IsInput())
+				continue;
+
+			if (pin->IsConnected())
+				continue;
+
+			unsigned int pinDataType = pin->GetDataType();
+
+			CE_Any& pinData = pin->myRealPin->myData;
+			if (pinDataType == CE_GetTypeID<CE_Vector2f>())
+			{
+				CE_Vector2f& vector = pinData.Get<CE_Vector2f>();
+				
+				myContextualProperties->AddWidget(CreateVectorWidget(pin->myLabel->GetText().c_str(), vector));
+			}
+		}
+
+		AddWidget(myContextualProperties);
+	}
+
+	
+}
+
+CUI_HBox* CUI_NodeEditor::CreateVectorWidget(const char* aText, CE_Vector2f& aVector)
+{
+	CUI_HBox* xBox = CreateFloatController("X: ", aVector.x);
+	CUI_HBox* yBox = CreateFloatController("Y: ", aVector.y);
+
+	CUI_HBox* widget = new CUI_HBox();
+	widget->AddWidget(new CUI_Label(*myFont, aText));
+	widget->AddWidget(xBox);
+	widget->AddWidget(yBox);
+	return widget;
+}
+
+CUI_HBox* CUI_NodeEditor::CreateFloatController(const char* aText, float& aValue)
+{
+	CUI_HBox* box = new CUI_HBox();
+	box->AddWidget(new CUI_Label(*myFont, aText));
+
+	CUI_ValueController* controller = new CUI_ValueController(&aValue);
+	box->AddWidget(new CUI_Label(*myFont, controller));
+
+	return box;
 }

@@ -19,5 +19,6 @@ public:
 private:
 	float myCachedValue;
 	float* myValuePtr;
+	bool myHasCachedValue;
 };
 

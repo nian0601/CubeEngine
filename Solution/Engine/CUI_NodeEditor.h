@@ -6,6 +6,8 @@
 class CUI_Pin;
 class CUI_VisualNode;
 class CUI_Dropbox;
+class CUI_HBox;
+class CUI_VBox;
 
 class CE_GPUContext;
 
@@ -47,6 +49,12 @@ private:
 	void CreateVisualNodesFromNodeGraph();
 	void OnNodeDropboxSelection(CUI_Widget* aWidget, int aWidgetIndex);
 
+	void SelectNode(CUI_VisualNode* aNode);
+
+	CUI_HBox* CreateVectorWidget(const char* aText, CE_Vector2f& aVector);
+	CUI_HBox* CreateFloatController(const char* aText, float& aValue);
+	
+
 	CE_String myFilePath;
 
 	CE_Vector2f myMousePosition;
@@ -59,6 +67,7 @@ private:
 	CE_GrowingArray<CUI_VisualNode*> myVisualNodes;
 
 	CUI_Dropbox* myNodeDropbox;
+	CUI_VBox* myContextualProperties;
 
 	CN_NodeGraph* myNodeGraph;
 };

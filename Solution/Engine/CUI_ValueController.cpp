@@ -4,6 +4,7 @@
 
 CUI_ValueController::CUI_ValueController(float* aValue)
 	: myValuePtr(aValue)
+	, myHasCachedValue(false)
 {
 }
 
@@ -11,9 +12,10 @@ bool CUI_ValueController::UpdateValue()
 {
 	CE_ASSERT(myValuePtr != nullptr, "Invalid ValuePtr in CUI_ValueController");
 
-	if (myCachedValue != *myValuePtr)
+	if (!myHasCachedValue || myCachedValue != *myValuePtr)
 	{
 		myCachedValue = *myValuePtr;
+		myHasCachedValue = true;
 		return true;
 	}
 

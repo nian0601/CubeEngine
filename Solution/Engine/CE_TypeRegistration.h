@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CE_TypeID.h"
+#include "CE_TypeReflection.h"
 
 class CE_World;
 class CE_PathFinder;

@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CE_TypeReflection.cpp" />
     <ClCompile Include="CN_Node.cpp" />
     <ClCompile Include="CN_NodeGraph.cpp" />
     <ClCompile Include="CN_Pin.cpp" />
@@ -283,6 +284,7 @@
     <ClInclude Include="CE_Texture.h" />
     <ClInclude Include="CE_Time.h" />
     <ClInclude Include="CE_TypeID.h" />
+    <ClInclude Include="CE_TypeReflection.h" />
     <ClInclude Include="CE_TypeRegistration.h" />
     <ClInclude Include="CE_RenderingTypes.h" />
     <ClInclude Include="CE_GPUBuffer.h" />

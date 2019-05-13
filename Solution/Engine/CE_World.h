@@ -2,7 +2,7 @@
 
 #include "CE_ComponentStorage.h"
 #include "CE_CustomEntityTypes.h"
-#include "CE_TypeID.h"
+#include "CE_TypeReflection.h"
 #include "CE_GrowingArray.h"
 
 struct CE_ComponentFilter;

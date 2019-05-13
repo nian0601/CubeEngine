@@ -1,6 +1,6 @@
 #pragma once
 #include "CE_CustomEntityTypes.h"
-#include "CE_TypeID.h"
+#include "CE_TypeReflection.h"
 
 template <typename... Args>
 struct CE_TypeList { };

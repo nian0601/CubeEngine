@@ -69,7 +69,7 @@ T& CN_Node::Read(u32 aPinID)
 template <typename T>
 CN_Pin* CN_Node::AddPin(u32 aPinID, bool aIsInput, const char* aName)
 {
-	CN_Pin* pin = new CN_Pin(CE_GetTypeID<T>(), aPinID, aIsInput, aName, this);
+	CN_Pin* pin = new CN_Pin(CE_GetTypeID<T>(), aPinID, aIsInput, aName, this, CE_GetTypeInfo<T>().myDefaultValue);
 	myAllPins.Add(pin);
 
 	return pin;

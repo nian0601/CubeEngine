@@ -242,6 +242,9 @@
     <ClCompile Include="CN_PositionNodes.cpp">
       <Filter>NodeGraph\Nodes</Filter>
     </ClCompile>
+    <ClCompile Include="CE_TypeReflection.cpp">
+      <Filter>Reflection</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -684,6 +687,9 @@
     </ClInclude>
     <ClInclude Include="CN_PositionNodes.h">
       <Filter>NodeGraph\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_TypeReflection.h">
+      <Filter>Reflection</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
