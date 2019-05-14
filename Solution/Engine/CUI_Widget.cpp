@@ -2,6 +2,7 @@
 #include "CUI_Widget.h"
 #include "CE_WindowMessage.h"
 #include "CUI_Message.h"
+#include "CUI_Manager.h"
 
 void CUI_Widget::SetPosition(const CE_Vector2f& aPosition)
 {
@@ -152,4 +153,12 @@ bool CUI_Widget::OnWindowMessage(const CE_WindowMessage& aMessage)
 		return OnTextInput(aMessage);
 
 	return false;
+}
+
+const CUI_Manager& CUI_Widget::GetUIManager() const
+{
+	if (!myParent)
+		return *static_cast<const CUI_Manager*>(this);
+
+	return myParent->GetUIManager();
 }

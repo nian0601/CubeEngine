@@ -19,7 +19,7 @@ public:
 	bool OnDragBegin(CUI_DragMessage& aMessage);
 	bool OnDragEnd(CUI_DragMessage& aMessage);
 
-	void AddWidget(CUI_Widget* aWidget) { myWidgets.Add(aWidget); }
+	void AddWidget(CUI_Widget* aWidget) { myWidgets.Add(aWidget); aWidget->SetParent(this); }
 	
 	virtual void DeleteAllChildren();
 	void DeleteWidget(CUI_Widget* aWidget);

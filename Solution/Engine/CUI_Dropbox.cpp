@@ -5,11 +5,10 @@
 #include "CUI_Image.h"
 #include "CUI_Message.h"
 
-CUI_Dropbox::CUI_Dropbox(const CE_Font& aFont, const CE_String& aString)
+CUI_Dropbox::CUI_Dropbox(const CE_String& aString)
 	: myIsExpanded(false)
-	, myFont(aFont)
 {
-	CUI_Button* button = new CUI_Button(myFont, aString);
+	CUI_Button* button = new CUI_Button(aString);
 	button->myOnClick = std::bind(&CUI_Dropbox::OnToggleExpansionClick, this);
 
 	CUI_Image* background = new CUI_Image({ 0.17f, 0.17f, 0.17f, 1.f });
@@ -120,8 +119,8 @@ void CUI_Dropbox::DeleteAllChildren()
 
 void CUI_Dropbox::AddLabel(const char* aString)
 {
-	CUI_Label* label = new CUI_Label(myFont, aString);
-	myWidgets.Add(label);
+	CUI_Label* label = new CUI_Label(aString);
+	AddWidget(label);
 }
 
 void CUI_Dropbox::ExpandSize(const CE_Vector2f& aNewSize, CE_Vector2f& aSizeOut) const

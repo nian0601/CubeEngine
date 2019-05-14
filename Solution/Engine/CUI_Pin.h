@@ -1,8 +1,6 @@
 #pragma once
 #include "CUI_Widget.h"
 
-class CE_Font;
-
 class CUI_VisualNode;
 class CUI_Label;
 class CUI_Image;
@@ -15,7 +13,8 @@ class CUI_Pin : public CUI_Widget
 	friend class CUI_VisualNode;
 
 public:
-	CUI_Pin(CUI_VisualNode& aNode, CN_Pin* aRealPin, const CE_Font& aFont);
+	CUI_Pin(CUI_VisualNode& aNode, CN_Pin* aRealPin);
+	~CUI_Pin();
 
 	void PrepareLayout() override;
 	void Render(CE_RendererProxy& anRendererProxy) override;

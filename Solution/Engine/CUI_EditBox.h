@@ -4,7 +4,7 @@
 class CUI_EditBox : public CUI_Label
 {
 public:
-	CUI_EditBox(const CE_Font& aFont, float aWidth);
+	CUI_EditBox(float aWidth);
 	~CUI_EditBox();
 
 	virtual void PrepareLayout() override;

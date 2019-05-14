@@ -6,7 +6,7 @@ class CE_Font;
 class CUI_Dropbox : public CUI_Container
 {
 public:
-	CUI_Dropbox(const CE_Font& aFont, const CE_String& aString);
+	CUI_Dropbox(const CE_String& aString);
 
 	virtual void PrepareLayout() override;
 	virtual void Render(CE_RendererProxy& anRendererProxy) override;
@@ -26,6 +26,5 @@ private:
 	void OnToggleExpansionClick();
 
 	bool myIsExpanded;
-	const CE_Font& myFont;
 };
 

@@ -12,7 +12,7 @@
 #include "CN_Pin.h"
 #include "CN_NodeFactory.h"
 
-CUI_VisualNode::CUI_VisualNode(const CE_Font& aFont, CN_Node* aRealNode)
+CUI_VisualNode::CUI_VisualNode(CN_Node* aRealNode)
 	: myID(aRealNode->GetNodeID())
 	, myRealNode(aRealNode)
 	, myNumOutputPins(0)
@@ -28,12 +28,13 @@ CUI_VisualNode::CUI_VisualNode(const CE_Font& aFont, CN_Node* aRealNode)
 	myColor.z = 0.78f;
 	myColor.w = 1.f;
 
-	myLabel = new CUI_Label(aFont, CN_NodeFactory::GetNodeScreenName(aRealNode->GetIdentifier()));
+	myLabel = new CUI_Label(CN_NodeFactory::GetNodeScreenName(aRealNode->GetIdentifier()));
 	myLabel->SetColor({ 0.34f, 0.34f, 0.34f, 1.f });
+	myLabel->SetParent(this);
 
 	for (CN_Pin* realPin : myRealNode->myAllPins)
 	{
-		CUI_Pin* uiPin = new CUI_Pin(*this, realPin, aFont);
+		CUI_Pin* uiPin = new CUI_Pin(*this, realPin);
 		AddWidget(uiPin);
 
 		if (!uiPin->IsInput())

@@ -15,16 +15,26 @@ namespace CUI_Pin_priv
 }
 
 
-CUI_Pin::CUI_Pin(CUI_VisualNode& aNode, CN_Pin* aRealPin, const CE_Font& aFont)
+CUI_Pin::CUI_Pin(CUI_VisualNode& aNode, CN_Pin* aRealPin)
 	: myNode(aNode)
 	, myColor(CE_GetTypeInfo(aRealPin->GetDataType()).myColor)
 	, myIsInput(aRealPin->GetIsInput())
 	, myID(aRealPin->GetPinID())
 	, myRealPin(aRealPin)
 {
-	myLabel = new CUI_Label(aFont, aRealPin->GetName());
+	myLabel = new CUI_Label(aRealPin->GetName());
 	myLabel->SetColor({ 0.f, 0.f, 0.f, 1.f });
 	myImage = new CUI_Image({ CUI_Pin_priv::locPinSize, CUI_Pin_priv::locPinSize });
+
+	myLabel->SetParent(this);
+	myImage->SetParent(this);
+}
+
+
+CUI_Pin::~CUI_Pin()
+{
+	CE_SAFE_DELETE(myImage);
+	CE_SAFE_DELETE(myLabel);
 }
 
 void CUI_Pin::PrepareLayout()

@@ -13,7 +13,7 @@ class CUI_VisualNode : public CUI_Container
 	friend class CUI_NodeEditor;
 
 public:
-	CUI_VisualNode(const CE_Font& aFont, CN_Node* aRealNode);
+	CUI_VisualNode(CN_Node* aRealNode);
 	~CUI_VisualNode();
 
 	void PrepareLayout() override;

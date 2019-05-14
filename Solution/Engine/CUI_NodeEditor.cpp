@@ -20,7 +20,7 @@
 #include "CUI_ValueController.h"
 #include "CUI_VBox.h"
 
-CUI_NodeEditor::CUI_NodeEditor(CE_GPUContext& aGPUContext)
+CUI_NodeEditor::CUI_NodeEditor()
 	: mySelectedNode(nullptr)
 	, mySelectedPin(nullptr)
 	, myContextualProperties(nullptr)
@@ -32,9 +32,6 @@ CUI_NodeEditor::CUI_NodeEditor(CE_GPUContext& aGPUContext)
 	mySize.x = -1.f;
 	mySize.y = -1.f;
 
-	myFont = new CE_Font();
-	myFont->LoadFromFile("Data/Font/Decent_Font.png", aGPUContext);
-
 	myFilePath = "testgraph.cegraph";
 
 	LoadGraph(myFilePath.c_str());
@@ -43,7 +40,7 @@ CUI_NodeEditor::CUI_NodeEditor(CE_GPUContext& aGPUContext)
 	// currently we dont rely on CUI_Container::myWidgets to iterate over everything,
 	// since the VisualNodes needs specialhandling.
 	// Should clean that up at some point.
-	myNodeDropbox = new CUI_Dropbox(*myFont, "Nodes");
+	myNodeDropbox = new CUI_Dropbox("Nodes");
 	myNodeDropbox->Hide();
 	myNodeDropbox->myOnSelection = std::bind(&CUI_NodeEditor::OnNodeDropboxSelection, this, std::placeholders::_1, std::placeholders::_2);
 	AddWidget(myNodeDropbox);
@@ -56,7 +53,6 @@ CUI_NodeEditor::CUI_NodeEditor(CE_GPUContext& aGPUContext)
 
 CUI_NodeEditor::~CUI_NodeEditor()
 {
-	CE_SAFE_DELETE(myFont);
 }
 
 void CUI_NodeEditor::Render(CE_RendererProxy& anRendererProxy)
@@ -287,7 +283,7 @@ CUI_Pin* CUI_NodeEditor::GetDragEndPin(CUI_DragMessage& aMessage)
 
 CUI_VisualNode* CUI_NodeEditor::CreateVisualNode(CN_Node* aRealNode)
 {
-	CUI_VisualNode* visualNode = new CUI_VisualNode(*myFont, aRealNode);
+	CUI_VisualNode* visualNode = new CUI_VisualNode(aRealNode);
 
 	myVisualNodes.Add(visualNode);
 	AddWidget(visualNode);
@@ -442,7 +438,7 @@ CUI_HBox* CUI_NodeEditor::CreateVectorWidget(const char* aText, CE_Vector2f& aVe
 	CUI_HBox* yBox = CreateFloatController("Y: ", aVector.y);
 
 	CUI_HBox* widget = new CUI_HBox();
-	widget->AddWidget(new CUI_Label(*myFont, aText));
+	widget->AddWidget(new CUI_Label(aText));
 	widget->AddWidget(xBox);
 	widget->AddWidget(yBox);
 	return widget;
@@ -455,7 +451,7 @@ CUI_HBox* CUI_NodeEditor::CreateVectorWidget(const char* aText, CE_Vector3f& aVe
 	CUI_HBox* zBox = CreateFloatController("Z: ", aVector.z);
 
 	CUI_HBox* widget = new CUI_HBox();
-	widget->AddWidget(new CUI_Label(*myFont, aText));
+	widget->AddWidget(new CUI_Label(aText));
 	widget->AddWidget(xBox);
 	widget->AddWidget(yBox);
 	widget->AddWidget(zBox);
@@ -470,7 +466,7 @@ CUI_HBox* CUI_NodeEditor::CreateVectorWidget(const char* aText, CE_Vector4f& aVe
 	CUI_HBox* wBox = CreateFloatController("W: ", aVector.w);
 
 	CUI_HBox* widget = new CUI_HBox();
-	widget->AddWidget(new CUI_Label(*myFont, aText));
+	widget->AddWidget(new CUI_Label(aText));
 	widget->AddWidget(xBox);
 	widget->AddWidget(yBox);
 	widget->AddWidget(zBox);
@@ -481,10 +477,10 @@ CUI_HBox* CUI_NodeEditor::CreateVectorWidget(const char* aText, CE_Vector4f& aVe
 CUI_HBox* CUI_NodeEditor::CreateFloatController(const char* aText, float& aValue)
 {
 	CUI_HBox* box = new CUI_HBox();
-	box->AddWidget(new CUI_Label(*myFont, aText));
+	box->AddWidget(new CUI_Label(aText));
 
 	CUI_ValueController* controller = new CUI_ValueController(&aValue);
-	box->AddWidget(new CUI_Label(*myFont, controller));
+	box->AddWidget(new CUI_Label(controller));
 
 	return box;
 }

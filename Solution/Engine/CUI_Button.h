@@ -8,7 +8,7 @@ class CUI_Button : public CUI_Container
 {
 public:
 	CUI_Button(const CE_Vector2f& aSize, const CE_Vector4f& aColor);
-	CUI_Button(const CE_Font& aFont, const CE_String& aText);
+	CUI_Button(const CE_String& aText);
 
 	virtual void PrepareLayout() override;
 	virtual bool OnClick() override;

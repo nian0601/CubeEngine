@@ -10,7 +10,6 @@ class CUI_Widget;
 class CUI_EditBox;
 
 class CE_Input;
-class CE_Font;
 class CE_RendererProxy;
 class CE_World;
 
@@ -52,7 +51,6 @@ private:
 	CUI_TreeView* myRenderComponentView;
 
 	CE_Input* myInput;
-	CE_Font* myFont;
 	CE_RendererProxy* myRendererProxy;
 
 	CE_World* myWorld;

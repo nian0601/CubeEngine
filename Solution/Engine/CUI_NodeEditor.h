@@ -18,7 +18,7 @@ class CN_NodeGraph;
 class CUI_NodeEditor : public CUI_Container
 {
 public:
-	CUI_NodeEditor(CE_GPUContext& aGPUContext);
+	CUI_NodeEditor();
 	~CUI_NodeEditor();
 
 	void Render(CE_RendererProxy& anRendererProxy) override;
@@ -61,7 +61,6 @@ private:
 	CE_String myFilePath;
 
 	CE_Vector2f myMousePosition;
-	CE_Font* myFont;
 
 	CUI_Pin* mySelectedPin;
 	CUI_VisualNode* mySelectedNode;

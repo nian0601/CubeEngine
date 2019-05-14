@@ -7,6 +7,8 @@ struct CUI_MouseMessage;
 
 class CE_RendererProxy;
 
+class CUI_Manager;
+
 class CUI_Widget
 {
 public:
@@ -50,13 +52,20 @@ public:
 
 	bool OnWindowMessage(const CE_WindowMessage& aMessage);
 
+	void SetParent(const CUI_Widget* aParentWidget) { myParent = aParentWidget; }
+	const CUI_Widget* GetParent() const { return myParent; }
+	const CUI_Manager& GetUIManager() const;
+
 protected:
 	CUI_Widget() 
 		: myIsVisible(true)
 		, myHasLongPress(false)
 		, myIsHovered(false)
 		, myIsFocused(false)
+		, myParent(nullptr)
 	{};
+
+	const CUI_Widget* myParent;
 
 	CE_Vector2f myPosition;
 	CE_Vector2f mySize;

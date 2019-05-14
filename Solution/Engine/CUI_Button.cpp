@@ -5,12 +5,12 @@
 
 CUI_Button::CUI_Button(const CE_Vector2f& aSize, const CE_Vector4f& aColor)
 {
-	myWidgets.Add(new CUI_Image(aSize, aColor));
+	AddWidget(new CUI_Image(aSize, aColor));
 }
 
-CUI_Button::CUI_Button(const CE_Font& aFont, const CE_String& aText)
+CUI_Button::CUI_Button(const CE_String& aText)
 {
-	myWidgets.Add(new CUI_Label(aFont, aText));
+	AddWidget(new CUI_Label(aText));
 }
 
 bool CUI_Button::OnClick()

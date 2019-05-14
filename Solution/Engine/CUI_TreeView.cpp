@@ -12,10 +12,10 @@ CUI_TreeView::CUI_TreeView()
 	AddWidget(myButton);
 }
 
-CUI_TreeView::CUI_TreeView(const CE_Font& aFont, const CE_String& aString)
+CUI_TreeView::CUI_TreeView(const CE_String& aString)
 	: myIsExpanded(false)
 {
-	myButton = new CUI_Button(aFont, aString);
+	myButton = new CUI_Button(aString);
 	myButton->myOnClick = std::bind(&CUI_TreeView::OnToggleViewClick, this);
 
 	AddWidget(myButton);

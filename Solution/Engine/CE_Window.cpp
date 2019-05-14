@@ -58,7 +58,7 @@ CE_Window::CE_Window(const CE_Vector2i& aSize, const char* aTitle, CE_WindowMana
 	myCamera = new CE_Camera(myWindowSize);
 	mySwapChain = new CE_SwapChain(myWindowManager->GetGPUContext(), myWindowSize, myHWND);
 
-	myUIManager = new CUI_Manager();
+	myUIManager = new CUI_Manager(myWindowManager->GetGPUContext());
 }
 
 

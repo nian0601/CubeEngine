@@ -34,15 +34,11 @@ LevelEditorContext::~LevelEditorContext()
 	CE_SAFE_DELETE(myEntityFactory);
 	CE_SAFE_DELETE(myWorld);
 	CE_SAFE_DELETE(myToolModule);
-	CE_SAFE_DELETE(myFont);
 }
 
 void LevelEditorContext::Init(CE_Engine& anEngine)
 {
 	myRendererProxy = &anEngine.GetRendererProxy();
-
-	myFont = new CE_Font();
-	myFont->LoadFromFile("Data/Font/Decent_Font.png", anEngine.GetGPUContext());
 
 	CE_Window& mainWindow = anEngine.GetMainWindow();
 	InitGUI(mainWindow.GetUIManager());
@@ -122,7 +118,7 @@ void LevelEditorContext::BuildEntityDropbox(CUI_Manager& aUIManager)
 	CE_GrowingArray<CE_FileSystem::FileInfo> entityFiles;
 	CE_FileSystem::GetAllFilesFromDirectory("Data/Entities", entityFiles);
 
-	CUI_Dropbox* dropbox = new CUI_Dropbox(*myFont, "Entities");
+	CUI_Dropbox* dropbox = new CUI_Dropbox("Entities");
 	for (const CE_FileSystem::FileInfo& file : entityFiles)
 		dropbox->AddLabel(file.myFileNameNoExtention.c_str());
 
@@ -131,8 +127,8 @@ void LevelEditorContext::BuildEntityDropbox(CUI_Manager& aUIManager)
 	aUIManager.AddWidget(dropbox);
 
 	CUI_HBox* saveBox = new CUI_HBox();
-	myEditbox = new CUI_EditBox(*myFont, 256.f);
-	CUI_Button* saveButton = new CUI_Button(*myFont, "Save Level");
+	myEditbox = new CUI_EditBox(256.f);
+	CUI_Button* saveButton = new CUI_Button("Save Level");
 	saveButton->myOnClick = std::bind(&LevelEditorContext::OnSaveLevel, this);
 
 	saveBox->AddWidget(myEditbox);

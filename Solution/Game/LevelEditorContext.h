@@ -51,7 +51,6 @@ private:
 	CT_ToolModule* myToolModule;
 	CUI_EditBox* myEditbox;
 
-	CE_Font* myFont;
 	CE_RendererProxy* myRendererProxy;
 };
 

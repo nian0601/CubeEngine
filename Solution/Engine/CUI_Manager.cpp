@@ -5,14 +5,19 @@
 #include "CUI_WIdget.h"
 
 #include "CE_Input.h"
+#include "CE_Font.h"
 
-CUI_Manager::CUI_Manager()
+CUI_Manager::CUI_Manager(CE_GPUContext& aGPUContext)
 {
 	myDragMessage = new CUI_DragMessage();
+
+	myFont = new CE_Font();
+	myFont->LoadFromFile("Data/Font/Decent_Font.png", aGPUContext);
 }
 
 CUI_Manager::~CUI_Manager()
 {
+	CE_SAFE_DELETE(myFont);
 	CE_SAFE_DELETE(myDragMessage);
 }
 

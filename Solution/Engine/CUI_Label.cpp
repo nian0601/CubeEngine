@@ -6,28 +6,28 @@
 #include "CUI_Label.h"
 #include "CUI_ValueController.h"
 #include "CUI_Message.h"
+#include "CUI_Manager.h"
 
-CUI_Label::CUI_Label(const CE_Font& aFont)
-	: myFont(aFont)
-	, myValueController(nullptr)
+CUI_Label::CUI_Label()
+	: myValueController(nullptr)
 	, myColor(1.f, 1.f, 1.f, 1.f)
 {
 }
 
-CUI_Label::CUI_Label(const CE_Font& aFont, const CE_String& aString)
-	: CUI_Label(aFont)
+CUI_Label::CUI_Label(const CE_String& aString)
+	: CUI_Label()
 {
 	SetText(aString);
 }
 
-CUI_Label::CUI_Label(const CE_Font& aFont, const char* aString)
-	: CUI_Label(aFont)
+CUI_Label::CUI_Label(const char* aString)
+	: CUI_Label()
 {
 	SetText(aString);
 }
 
-CUI_Label::CUI_Label(const CE_Font& aFont, CUI_ValueController* aValueController)
-	: CUI_Label(aFont)
+CUI_Label::CUI_Label(CUI_ValueController* aValueController)
+	: CUI_Label()
 {
 	myValueController = aValueController;
 }
@@ -56,7 +56,8 @@ void CUI_Label::PrepareLayout()
 		myValueController->AsString(myString);
 	}
 
-	mySize = myFont.GetSize(myString);
+	const CUI_Manager& manager = GetUIManager();
+	mySize = manager.GetFont().GetSize(myString);
 }
 
 bool CUI_Label::OnMouseMessage(const CUI_MouseMessage& aMessage)

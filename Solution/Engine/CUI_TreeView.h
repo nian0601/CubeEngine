@@ -8,7 +8,7 @@ class CUI_TreeView : public CUI_VBox
 {
 public:
 	CUI_TreeView();
-	CUI_TreeView(const CE_Font& aFont, const CE_String& aString);
+	CUI_TreeView(const CE_String& aString);
 
 	void PrepareLayout();
 

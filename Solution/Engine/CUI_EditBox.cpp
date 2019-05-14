@@ -3,10 +3,11 @@
 #include "CE_Font.h"
 #include "CE_RendererProxy.h"
 #include "CE_WindowMessage.h"
+#include "CUI_Manager.h"
 
 
-CUI_EditBox::CUI_EditBox(const CE_Font& aFont, float aWidth)
-	: CUI_Label(aFont)
+CUI_EditBox::CUI_EditBox(float aWidth)
+	: CUI_Label()
 	, myWidth(aWidth)
 {
 }
@@ -18,7 +19,7 @@ CUI_EditBox::~CUI_EditBox()
 
 void CUI_EditBox::PrepareLayout()
 {
-	mySize.y = myFont.GetMaxHeight() + 6;
+	mySize.y = GetUIManager().GetFont().GetMaxHeight() + 6;
 	mySize.x = myWidth;
 }
 
@@ -54,7 +55,7 @@ bool CUI_EditBox::OnTextInput(const CE_WindowMessage& aMessage)
 	default:    // displayable character 
 	{
 		char character = (char)aMessage.myWParams;
-		if (myFont.GetCharData(character))
+		if (GetUIManager().GetFont().GetCharData(character))
 			myString += character;
 	}
 		

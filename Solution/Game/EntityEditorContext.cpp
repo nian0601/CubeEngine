@@ -48,9 +48,6 @@ void EntityEditorContext::Init(CE_Engine& anEngine)
 	myInput = &anEngine.GetInput();
 	myRendererProxy = &anEngine.GetRendererProxy();
 
-	myFont = new CE_Font();
-	myFont->LoadFromFile("Data/Font/Decent_Font.png", anEngine.GetGPUContext());
-
 	myWorld = new CE_World();
 	myEntityFactory = new EntityFactory(*myWorld);
 
@@ -108,7 +105,7 @@ void EntityEditorContext::RenderGrid()
 
 void EntityEditorContext::InitGUI()
 {
-	myTreeView = new CUI_TreeView(*myFont, "Components");
+	myTreeView = new CUI_TreeView("Components");
 	myTreeView->SetExpanded(true);
 	myUIManager->AddWidget(myTreeView);
 	CE_Entity entity = myWorld->CreateEmptyEntity();
@@ -121,16 +118,16 @@ void EntityEditorContext::InitGUI()
 
 void EntityEditorContext::CreateRenderComponentWidget()
 {
-	myRenderComponentView = new CUI_TreeView(*myFont, "Render Component");
+	myRenderComponentView = new CUI_TreeView("Render Component");
 	myRenderComponentView->SetExpanded(true);
 	myTreeView->AddWidget(myRenderComponentView);
 	
 
-	CUI_Button* addEntryButton = new CUI_Button(*myFont, "Add Entry");
+	CUI_Button* addEntryButton = new CUI_Button("Add Entry");
 	addEntryButton->myOnClick = std::bind(&EntityEditorContext::AddRenderEntry, this);
 	myRenderComponentView->AddWidget(addEntryButton);
 
-	CUI_Button* clearEntriesButton = new CUI_Button(*myFont, "Clear Entries");
+	CUI_Button* clearEntriesButton = new CUI_Button("Clear Entries");
 	clearEntriesButton->myOnClick = std::bind(&EntityEditorContext::ClearRenderEntries, this);
 	myRenderComponentView->AddWidget(clearEntriesButton);
 
@@ -147,7 +144,7 @@ void EntityEditorContext::AddRenderEntry()
 
 	CE_String text = "Entry ";
 	text += myNumEntries++;
-	CUI_TreeView* entryView = new CUI_TreeView(*myFont, text);
+	CUI_TreeView* entryView = new CUI_TreeView(text);
 
 	entryView->AddWidget(CreateVectorWidget("Scale", entry.myScale));
 	entryView->AddWidget(CreateColorWidget("Color", entry.myColor));
@@ -161,7 +158,7 @@ CUI_TreeView* EntityEditorContext::CreateVectorWidget(const char* aText, CE_Vect
 	CUI_HBox* yBox = CreateFloatController("Y: ", aVector.y);
 	CUI_HBox* zBox = CreateFloatController("Z: ", aVector.z);
 
-	CUI_TreeView* view = new CUI_TreeView(*myFont, aText);
+	CUI_TreeView* view = new CUI_TreeView(aText);
 	view->AddWidget(xBox);
 	view->AddWidget(yBox);
 	view->AddWidget(zBox);
@@ -174,7 +171,7 @@ CUI_TreeView* EntityEditorContext::CreateColorWidget(const char* aText, CE_Vecto
 	CUI_HBox* gBox = CreateFloatController("G: ", aVector.y);
 	CUI_HBox* bBox = CreateFloatController("B: ", aVector.z);
 
-	CUI_TreeView* view = new CUI_TreeView(*myFont, aText);
+	CUI_TreeView* view = new CUI_TreeView(aText);
 	view->AddWidget(rBox);
 	view->AddWidget(gBox);
 	view->AddWidget(bBox);
@@ -184,10 +181,10 @@ CUI_TreeView* EntityEditorContext::CreateColorWidget(const char* aText, CE_Vecto
 CUI_HBox* EntityEditorContext::CreateFloatController(const char* aText, float& aValue)
 {
 	CUI_HBox* box = new CUI_HBox();
-	box->AddWidget(new CUI_Label(*myFont, aText));
+	box->AddWidget(new CUI_Label(aText));
 
 	CUI_ValueController* controller = new CUI_ValueController(&aValue);
-	box->AddWidget(new CUI_Label(*myFont, controller));
+	box->AddWidget(new CUI_Label(controller));
 
 	return box;
 }

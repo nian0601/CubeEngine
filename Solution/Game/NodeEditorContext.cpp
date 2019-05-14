@@ -10,7 +10,7 @@
 
 void NodeEditorContext::Init(CE_Engine& anEngine)
 {
-	myNodeEditor = new CUI_NodeEditor(anEngine.GetGPUContext());
+	myNodeEditor = new CUI_NodeEditor();
 
 	CE_Window& mainWindow = anEngine.GetMainWindow();
 	mainWindow.GetUIManager().AddWidget(myNodeEditor);
