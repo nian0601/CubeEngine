@@ -12,7 +12,8 @@ public:
 	void Execute(const CN_Pin& anExecutingPin) override;
 
 private:
-	CN_Pin* myInputOne;
-	CN_Pin* myInputTwo;
+	CN_Pin* myStartInput;
+	CN_Pin* myEndInput;
+	CN_Pin* myColorInput;
 };
 

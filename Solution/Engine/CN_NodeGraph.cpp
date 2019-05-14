@@ -60,13 +60,7 @@ void CN_NodeGraph::Load(const char* aFilePath)
 
 		reader.Read(node->myPosition);
 		
-		myNodes.Add(node);
-
-		if (node->IsInitNode())
-		{
-			//CE_ASSERT(myInitNode == nullptr, "NodeGraph [%s] has multiple init-nodes, only one is supported for now.", myFilePath.c_str());
-			myInitNode = node;
-		}
+		AddNode(node);
 	}
 
 
@@ -182,10 +176,19 @@ void CN_NodeGraph::Save(const char* aFilePath)
 void CN_NodeGraph::AddNode(CN_Node* aNode)
 {
 	myNodes.Add(aNode);
+
+	if (!myInitNode && aNode->IsInitNode())
+	{
+		//CE_ASSERT(myInitNode == nullptr, "NodeGraph [%s] has multiple init-nodes, only one is supported for now.", myFilePath.c_str());
+		myInitNode = aNode;
+	}
 }
 
 void CN_NodeGraph::DeleteNode(CN_Node* aNode)
 {
+	if (myInitNode == aNode)
+		myInitNode = nullptr;
+
 	myNodes.DeleteCyclic(aNode);
 }
 

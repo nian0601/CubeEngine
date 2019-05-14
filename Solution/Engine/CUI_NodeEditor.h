@@ -36,6 +36,7 @@ public:
 private:
 	void RenderNodeConnections(CE_RendererProxy& anRendererProxy, CUI_VisualNode* aNode);
 	void RenderSteppedLine(CE_RendererProxy& anRendererProxy, const CE_Vector2f& aStartPos, const CE_Vector2f& aEndPos, float aCutPoint);
+	void RenderSteppedLine(CE_RendererProxy& anRendererProxy, const CE_Vector2f& aStartPos, const CE_Vector2f& aEndPos, float aCutPoint, const CE_Vector4f& aColor);
 
 	CUI_Pin* GetDragEndPin(CUI_DragMessage& aMessage);
 
@@ -52,6 +53,8 @@ private:
 	void SelectNode(CUI_VisualNode* aNode);
 
 	CUI_HBox* CreateVectorWidget(const char* aText, CE_Vector2f& aVector);
+	CUI_HBox* CreateVectorWidget(const char* aText, CE_Vector3f& aVector);
+	CUI_HBox* CreateVectorWidget(const char* aText, CE_Vector4f& aVector);
 	CUI_HBox* CreateFloatController(const char* aText, float& aValue);
 	
 

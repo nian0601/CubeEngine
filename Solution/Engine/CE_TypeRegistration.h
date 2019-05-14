@@ -25,6 +25,8 @@ namespace CE_TypeRegistration
 		CE_TYPE_REGISTER(CE_PathFinder*, CE_Vector4f(0.3f, 0.f, 0.5f, 1.f));
 		CE_TYPE_REGISTER(CE_Blackboard*, CE_Vector4f(0.f, 0.3f, 0.5f, 1.f));
 
+		CE_TYPE_REGISTER(CN_ExecutionImpulse, CE_Vector4f(0.6f, 0.0f, 0.2f, 1.f));
+
 		CE_TYPE_REGISTER_NO_COLOR(CUI_Pin*);
 	}
 }

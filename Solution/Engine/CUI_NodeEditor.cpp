@@ -243,7 +243,7 @@ void CUI_NodeEditor::RenderNodeConnections(CE_RendererProxy& anRendererProxy, CU
 			CE_Vector2f endPosition = connection->GetPosition();
 			endPosition += connection->GetPinWidth() * 0.5f;
 
-			RenderSteppedLine(anRendererProxy, startPosition, endPosition, cutPoint);
+			RenderSteppedLine(anRendererProxy, startPosition, endPosition, cutPoint, pin->myColor);
 		}
 
 		count++;
@@ -251,6 +251,11 @@ void CUI_NodeEditor::RenderNodeConnections(CE_RendererProxy& anRendererProxy, CU
 }
 
 void CUI_NodeEditor::RenderSteppedLine(CE_RendererProxy& anRendererProxy, const CE_Vector2f& aStartPos, const CE_Vector2f& aEndPos, float aCutPoint)
+{
+	RenderSteppedLine(anRendererProxy, aStartPos, aEndPos, aCutPoint, CE_Vector4f(1.f, 1.f, 1.f, 1.f));
+}
+
+void CUI_NodeEditor::RenderSteppedLine(CE_RendererProxy& anRendererProxy, const CE_Vector2f& aStartPos, const CE_Vector2f& aEndPos, float aCutPoint, const CE_Vector4f& aColor)
 {
 	float cutPoint = aStartPos.x + (aEndPos.x - aStartPos.x) * aCutPoint;
 
@@ -260,9 +265,9 @@ void CUI_NodeEditor::RenderSteppedLine(CE_RendererProxy& anRendererProxy, const 
 	CE_Vector2f cutPointB = aEndPos;
 	cutPointB.x = cutPoint;
 
-	anRendererProxy.Add2DLine(aStartPos, cutPointA);
-	anRendererProxy.Add2DLine(cutPointA, cutPointB);
-	anRendererProxy.Add2DLine(cutPointB, aEndPos);
+	anRendererProxy.Add2DLine(aStartPos, cutPointA, aColor);
+	anRendererProxy.Add2DLine(cutPointA, cutPointB, aColor);
+	anRendererProxy.Add2DLine(cutPointB, aEndPos, aColor);
 }
 
 CUI_Pin* CUI_NodeEditor::GetDragEndPin(CUI_DragMessage& aMessage)
@@ -411,7 +416,16 @@ void CUI_NodeEditor::SelectNode(CUI_VisualNode* aNode)
 			if (pinDataType == CE_GetTypeID<CE_Vector2f>())
 			{
 				CE_Vector2f& vector = pinData.Get<CE_Vector2f>();
-				
+				myContextualProperties->AddWidget(CreateVectorWidget(pin->myLabel->GetText().c_str(), vector));
+			}
+			else if (pinDataType == CE_GetTypeID<CE_Vector3f>())
+			{
+				CE_Vector3f& vector = pinData.Get<CE_Vector3f>();
+				myContextualProperties->AddWidget(CreateVectorWidget(pin->myLabel->GetText().c_str(), vector));
+			}
+			else if (pinDataType == CE_GetTypeID<CE_Vector4f>())
+			{
+				CE_Vector4f& vector = pinData.Get<CE_Vector4f>();
 				myContextualProperties->AddWidget(CreateVectorWidget(pin->myLabel->GetText().c_str(), vector));
 			}
 		}
@@ -431,6 +445,36 @@ CUI_HBox* CUI_NodeEditor::CreateVectorWidget(const char* aText, CE_Vector2f& aVe
 	widget->AddWidget(new CUI_Label(*myFont, aText));
 	widget->AddWidget(xBox);
 	widget->AddWidget(yBox);
+	return widget;
+}
+
+CUI_HBox* CUI_NodeEditor::CreateVectorWidget(const char* aText, CE_Vector3f& aVector)
+{
+	CUI_HBox* xBox = CreateFloatController("X: ", aVector.x);
+	CUI_HBox* yBox = CreateFloatController("Y: ", aVector.y);
+	CUI_HBox* zBox = CreateFloatController("Z: ", aVector.z);
+
+	CUI_HBox* widget = new CUI_HBox();
+	widget->AddWidget(new CUI_Label(*myFont, aText));
+	widget->AddWidget(xBox);
+	widget->AddWidget(yBox);
+	widget->AddWidget(zBox);
+	return widget;
+}
+
+CUI_HBox* CUI_NodeEditor::CreateVectorWidget(const char* aText, CE_Vector4f& aVector)
+{
+	CUI_HBox* xBox = CreateFloatController("X: ", aVector.x);
+	CUI_HBox* yBox = CreateFloatController("Y: ", aVector.y);
+	CUI_HBox* zBox = CreateFloatController("Z: ", aVector.z);
+	CUI_HBox* wBox = CreateFloatController("W: ", aVector.w);
+
+	CUI_HBox* widget = new CUI_HBox();
+	widget->AddWidget(new CUI_Label(*myFont, aText));
+	widget->AddWidget(xBox);
+	widget->AddWidget(yBox);
+	widget->AddWidget(zBox);
+	widget->AddWidget(wBox);
 	return widget;
 }
 

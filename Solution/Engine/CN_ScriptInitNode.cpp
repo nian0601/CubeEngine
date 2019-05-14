@@ -5,7 +5,7 @@
 
 CN_ScriptInitNode::CN_ScriptInitNode()
 {
-	myPin = AddPin<int>(0, false, "Init");
+	myPin = AddPin<CN_ExecutionImpulse>(0, false, "Init");
 }
 
 void CN_ScriptInitNode::Execute(const CN_Pin& /*anExecutingPin*/)

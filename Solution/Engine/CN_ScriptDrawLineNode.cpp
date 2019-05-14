@@ -5,26 +5,18 @@
 
 CN_ScriptDrawLineNode::CN_ScriptDrawLineNode()
 {
-	AddPin<int>(0, true, "Green");
-	AddPin<int>(1, true, "Red");
-	AddPin<int>(2, true, "Blue");
+	myColorInput = AddPin<CE_Vector4f>(1, true, "Color");
+	myStartInput = AddPin<CE_Vector2f>(2, true, "Start");
+	myEndInput = AddPin<CE_Vector2f>(3, true, "End");
 
-	myInputOne = AddPin<CE_Vector2f>(3, true, "Start");
-	myInputTwo = AddPin<CE_Vector2f>(4, true, "End");
+	AddPin<CN_ExecutionImpulse>(4, true, "Draw");
 }
 
-void CN_ScriptDrawLineNode::Execute(const CN_Pin& anExecutingPin)
+void CN_ScriptDrawLineNode::Execute(const CN_Pin& /*anExecutingPin*/)
 {
-	CE_Vector2f pos1 = myInputOne->Read<CE_Vector2f>();
-	CE_Vector2f pos2 = myInputTwo->Read<CE_Vector2f>();
-
-	CE_Vector4f color(0.f, 0.f, 0.f, 1.f);
-	if (anExecutingPin.GetPinID() == 0)
-		color = CE_Vector4f(0.4f, 1.f, 0.5f, 1.f);
-	else if (anExecutingPin.GetPinID() == 1)
-		color = CE_Vector4f(1.0f, 0.4f, 0.5f, 1.f);
-	else if (anExecutingPin.GetPinID() == 2)
-		color = CE_Vector4f(0.4f, 0.4f, 1.f, 1.f);
+	CE_Vector4f color = myColorInput->Read<CE_Vector4f>();
+	CE_Vector2f pos1 = myStartInput->Read<CE_Vector2f>();
+	CE_Vector2f pos2 = myEndInput->Read<CE_Vector2f>();
 
 	CE_DRAW_LINE_COLOR(CE_Vector3f(pos1.x, 0.f, pos1.y), CE_Vector3f(pos2.x, 0.f, pos2.y), color);
 }
