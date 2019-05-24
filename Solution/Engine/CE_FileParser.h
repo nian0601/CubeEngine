@@ -7,12 +7,14 @@ public:
 	~CE_FileParser();
 
 	bool ReadLine(CE_String& outLine);
-	void SplitLine(const CE_String& aLine, CE_GrowingArray<CE_String>& outWords);
 
-	void TrimBeginAndEnd(CE_String& aString);
+	void TrimBeginAndEnd(CE_String& aLine) const;
+	void SplitLine(const CE_String& aLine, CE_GrowingArray<CE_String>& outWords) const;
 
-	float GetFloat(CE_String& aWord) const;
-	int GetInt(CE_String& aWord) const;
+	void SplitWord(const CE_String& aLine, const char* aSeperator, CE_GrowingArray<CE_String>& outWords) const;
+
+	float GetFloat(const CE_String& aWord) const;
+	int GetInt(const CE_String& aWord) const;
 
 private:
 	FILE* myFile;

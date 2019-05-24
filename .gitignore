@@ -63,3 +63,4 @@ Release/
 *.VC.db
 /Workbed/Application_Release.ipdb
 /Workbed/Application_Release.iobj
+*.mtl

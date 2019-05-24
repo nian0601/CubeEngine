@@ -10,9 +10,13 @@
 #include "CE_ConstantBuffer.h"
 #include "CE_ShaderPair.h"
 #include "CE_ShaderManager.h"
+#include "CE_ObjLoader.h"
+#include "CE_ObjManager.h"
+#include "CE_MaterialManager.h"
 
-CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext, CE_ShaderManager& aShaderManager)
+CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext, CE_ShaderManager& aShaderManager, const CE_ObjManager& aObjManager)
 	: myGPUContext(anGPUContext)
+	, myObjManager(aObjManager)
 {
 	CE_GenericShader* textVX = aShaderManager.GetShader("Text.vx");
 	CE_GenericShader* textPX = aShaderManager.GetShader("Text.px");
@@ -97,6 +101,7 @@ void CE_Renderer::UpdateConstantBuffers(const CE_Camera& aCamera)
 void CE_Renderer::Render3D(const CE_RendererProxy& aRendererProxy)
 {
 	RenderModels(aRendererProxy);
+	RenderObjs(aRendererProxy);
 }
 
 void CE_Renderer::Render2D(const CE_RendererProxy& aRendererProxy)
@@ -153,6 +158,40 @@ void CE_Renderer::RenderModels(const CE_RendererProxy& aRendererProxy)
 		myModelObjectDataConstantBuffer->SendToGPU();
 
 		model->Render();
+	}
+}
+
+void CE_Renderer::RenderObjs(const CE_RendererProxy& aRendererProxy)
+{
+	CE_SetResetRasterizer raster(CULL_BACK);
+	CE_SetResetDepth depth(ENABLED);
+	CE_SetResetBlend blend(NO_BLEND);
+
+	myViewProjectionConstantBuffer->SendToGPU();
+	myCubeShader->Activate();
+
+	for (const CE_ObjRenderData& data : aRendererProxy.GetObjRenderData())
+	{
+		CE_ModelShaderData modelData;
+		modelData.myWorld = data.myOrientation;
+
+		const CE_ObjData* obj = myObjManager.GetObjData(data.myObjID);
+		for (const CE_ObjMesh& mesh : obj->myMeshes)
+		{	
+			const CE_Material& material = *mesh.myMaterial;
+			modelData.myColorAndMetalness = material.myDiffuse;
+			modelData.myColorAndMetalness.w = material.myMetalness;
+			modelData.myScaleAndRoughness.x = data.myScale.x;
+			modelData.myScaleAndRoughness.y = data.myScale.y;
+			modelData.myScaleAndRoughness.z = data.myScale.z;
+			modelData.myScaleAndRoughness.w = material.myRoughness;
+
+			myModelObjectDataConstantBuffer->Update(&modelData, sizeof(modelData));
+			myModelObjectDataConstantBuffer->SendToGPU();
+
+			mesh.myRenderObject->Render();
+		}
+		
 	}
 }
 

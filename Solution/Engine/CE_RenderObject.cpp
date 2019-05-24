@@ -6,6 +6,7 @@
 #include "CE_ShaderStructs.h"
 #include "CE_ModelSphereCreator.h"
 #include "CE_LightSphereCreator.h"
+#include "CE_ObjLoader.h"
 
 CE_RenderObject::CE_RenderObject()
 	: myGPUBuffer(nullptr)

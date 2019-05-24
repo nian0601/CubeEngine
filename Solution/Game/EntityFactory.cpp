@@ -20,9 +20,11 @@
 #include "BT_FindStockpileNode.h"
 #include "BT_GatherResourceNode.h"
 #include "LifetimeComponent.h"
+#include <CE_ObjManager.h>
 
-EntityFactory::EntityFactory(CE_World& anRealWorld)
+EntityFactory::EntityFactory(CE_World& anRealWorld, const CE_ObjManager& aObjManager)
 	: myRealWorld(anRealWorld)
+	, myObjManager(aObjManager)
 {
 	myTemplateWorld = new CE_World();
 	LoadTemplateEntities();
@@ -159,24 +161,31 @@ void EntityFactory::LoadRenderComponent(CE_Entity anEntity, CE_FileParser& aFile
 		}
 		else if (words[0] == "#type")
 		{
-			CE_ASSERT(openEntry == true, "Need '#entry' before you can specify a scale");
+			CE_ASSERT(openEntry == true, "Need '#entry' before you can specify a type");
 
 			RenderComponent::Entry& entry = entries.GetLast();
 			entry.myType = ModelType::FromString(words[1]);
 		}
 		else if (words[0] == "#metalness")
 		{
-			CE_ASSERT(openEntry == true, "Need '#entry' before you can specify a scale");
+			CE_ASSERT(openEntry == true, "Need '#entry' before you can specify a metalness");
 
 			RenderComponent::Entry& entry = entries.GetLast();
 			entry.myMetalness = aFileParser.GetFloat(words[1]);
 		}
 		else if (words[0] == "#roughness")
 		{
-			CE_ASSERT(openEntry == true, "Need '#entry' before you can specify a scale");
+			CE_ASSERT(openEntry == true, "Need '#entry' before you can specify a roughness");
 
 			RenderComponent::Entry& entry = entries.GetLast();
 			entry.myRoughness= aFileParser.GetFloat(words[1]);
+		}
+		else if (words[0] == "#model")
+		{
+			CE_ASSERT(openEntry == true, "Need '#entry' before you can specify a model");
+
+			RenderComponent::Entry& entry = entries.GetLast();
+			entry.myModelID = myObjManager.GetObjID(words[1].c_str());
 		}
 		else if (words[0] == "#entry")
 		{

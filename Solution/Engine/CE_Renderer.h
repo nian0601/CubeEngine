@@ -19,7 +19,7 @@ class CE_ShaderManager;
 class CE_Renderer
 {
 public:
-	CE_Renderer(CE_GPUContext& anGPUContext, CE_ShaderManager& aShaderManager);
+	CE_Renderer(CE_GPUContext& anGPUContext, CE_ShaderManager& aShaderManager, const CE_ObjManager& aObjManager);
 	~CE_Renderer();
 
 	void UpdateConstantBuffers(const CE_Camera& aCamera);
@@ -29,6 +29,7 @@ public:
 
 private:
 	void RenderModels(const CE_RendererProxy& aRendererProxy);
+	void RenderObjs(const CE_RendererProxy& aRendererProxy);
 	void RenderText(const CE_2DData& aTextData);
 	void RenderSprite(const CE_2DData& aSpriteData);
 	void Render2DLine(const CE_2DData& aLineData);
@@ -54,5 +55,7 @@ private:
 	CE_ShaderPair* myCubeShader;
 	CE_ShaderPair* myLineShader;
 	CE_ShaderPair* myLine2DShader;
+
+	const CE_ObjManager& myObjManager;
 };
 

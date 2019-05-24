@@ -62,6 +62,7 @@ namespace ModelType
 		CUBE,
 		SPHERE,
 		POINT_LIGHT,
+		OBJ_MODEL,
 	};
 
 	inline eType FromString(const CE_String& aString)
@@ -72,6 +73,8 @@ namespace ModelType
 			return eType::SPHERE;
 		else if (aString == "POINTLIGHT")
 			return eType::POINT_LIGHT;
+		else if (aString == "OBJ_MODEL")
+			return eType::OBJ_MODEL;
 
 		CE_ASSERT_ALWAYS("Invalid Model type");
 		return eType::INVALID;

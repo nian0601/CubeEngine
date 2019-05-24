@@ -17,6 +17,8 @@
 #include "CE_ShaderManager.h"
 
 #include "CE_TypeRegistration.h"
+#include "CE_MaterialManager.h"
+#include "CE_ObjManager.h"
 
 CE_DebugRenderManager* CE_Engine::myDebugRenderManager = nullptr;
 
@@ -34,7 +36,9 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 	myMainWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 1920, 1080 }, "Cube Engine");
 
 	myShaderManager = new CE_ShaderManager("Data/Shaders", *myGPUContext);
-	myRenderer = new CE_Renderer(*myGPUContext, *myShaderManager);
+	myMaterialManager = new CE_MaterialManager("Data/Materials");
+	myObjManager = new CE_ObjManager("Data/Models", *myGPUContext, *myMaterialManager);
+	myRenderer = new CE_Renderer(*myGPUContext, *myShaderManager, *myObjManager);
 	myDeferredRenderer = new CE_DeferredRenderer(*myGPUContext, myMainWindow->GetWindowSize(), *myShaderManager);
 
 	myTime = new CE_Time();
@@ -48,11 +52,14 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 
 CE_Engine::~CE_Engine()
 {
+
 	CE_SAFE_DELETE(myDebugRenderManager);
 	CE_SAFE_DELETE(myInput);
 	CE_SAFE_DELETE(myTime);
 	CE_SAFE_DELETE(myDeferredRenderer);
 	CE_SAFE_DELETE(myRenderer);
+	CE_SAFE_DELETE(myObjManager);
+	CE_SAFE_DELETE(myMaterialManager);
 	CE_SAFE_DELETE(myShaderManager);
 	CE_SAFE_DELETE(myGPUContext);
 	CE_SAFE_DELETE(myDirectX);
@@ -116,6 +123,11 @@ CE_RendererProxy& CE_Engine::GetRendererProxy()
 CE_Input& CE_Engine::GetInput()
 {
 	return *myInput;
+}
+
+const CE_ObjManager& CE_Engine::GetObjManager()
+{
+	return *myObjManager;
 }
 
 CE_DebugRenderManager& CE_Engine::GetDebugRenderManager()

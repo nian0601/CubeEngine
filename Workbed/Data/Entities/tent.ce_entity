@@ -1,0 +1,16 @@
+#components
+	#translate
+	#end
+
+	#render
+		#entry
+			#model cactus_large.obj
+			#scale 1 1 1
+			#type OBJ_MODEL
+		#end
+	#end
+
+	#aabb
+		#layer CLICKABLE
+	#end
+#end

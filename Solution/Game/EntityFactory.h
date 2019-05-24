@@ -5,11 +5,12 @@
 #include "Types.h"
 
 class CE_FileParser;
+class CE_ObjManager;
 
 class EntityFactory
 {
 public:
-	EntityFactory(CE_World& anRealWorld);
+	EntityFactory(CE_World& anRealWorld, const CE_ObjManager& aObjManager);
 	~EntityFactory();
 
 	void LoadTemplateEntities();
@@ -38,6 +39,8 @@ private:
 
 	CE_Map<int, CE_Entity> myTemplateEntityMap;
 	CE_Map<CE_String, CE_Entity> myEntityMap;
+
+	const CE_ObjManager& myObjManager;
 };
 
 template<typename T>

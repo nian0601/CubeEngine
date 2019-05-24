@@ -18,6 +18,7 @@ struct RenderComponent : public CE_BaseComponent
 		CE_Vector3f myScale;
 		float myMetalness;
 		float myRoughness;
+		int myModelID;
 		ModelType::eType myType;
 	};
 

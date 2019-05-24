@@ -26,7 +26,7 @@ LightingTestContext::~LightingTestContext()
 void LightingTestContext::Init(CE_Engine& anEngine)
 {
 	myWorld = new CE_World();
-	myEntityFactory = new EntityFactory(*myWorld);
+	myEntityFactory = new EntityFactory(*myWorld, anEngine.GetObjManager());
 
 	CE_Window& mainWindow = anEngine.GetMainWindow();
 	CE_Camera* camera = mainWindow.GetCamera();
@@ -63,10 +63,10 @@ void LightingTestContext::Render()
 void LightingTestContext::InitWorld()
 {
 	float z = 15.f;
-	for (int y = 0; y < 10; ++y)
+	for (int y = 0; y < 1; ++y)
 	{
-		float roughness = y / 10.f;
-		for (int x = 0; x < 10; ++x)
+		//float roughness = y / 10.f;
+		for (int x = 0; x < 1; ++x)
 		{
 			float realX = -5.f;
 			realX += static_cast<float>(x) + x;
@@ -75,14 +75,18 @@ void LightingTestContext::InitWorld()
 			realY += static_cast<float>(y) + y;
 
 			CE_Vector3f pos(realX, realY, z);
-			CE_Entity metalness = myEntityFactory->InstansiateEntity("sphere");
+			//CE_Entity metalness = myEntityFactory->InstansiateEntity("sphere");
+			CE_Entity metalness = myEntityFactory->InstansiateEntity("tent");
 			TranslationComponent& translate = myWorld->GetComponent<TranslationComponent>(metalness);
 			translate.myOrientation.SetPos(pos);
 			translate.myScale = 2.f;
 
 			RenderComponent& render = myWorld->GetComponent<RenderComponent>(metalness);
-			render.myEntries[0].myMetalness = x / 10.f;
-			render.myEntries[0].myRoughness = roughness;
+			//render.myEntries[0].myMetalness = x / 10.f;
+			//render.myEntries[0].myRoughness = roughness;
+			render.myEntries[0].myMetalness = 0.f;
+			render.myEntries[0].myRoughness = 1.f;
+			render.myEntries[0].myColor = { 1.f, 0.682353f, 0.4352941f, 1.f };
 		}
 	}
 

@@ -245,6 +245,15 @@
     <ClCompile Include="CE_TypeReflection.cpp">
       <Filter>Reflection</Filter>
     </ClCompile>
+    <ClCompile Include="CE_ObjLoader.cpp">
+      <Filter>Rendering\OBJ</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_MaterialManager.cpp">
+      <Filter>Rendering\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_ObjManager.cpp">
+      <Filter>Rendering\Assets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -348,6 +357,9 @@
     </Filter>
     <Filter Include="NodeGraph\Nodes">
       <UniqueIdentifier>{021d84e9-aa62-4107-9cf3-b02ee37485a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering\OBJ">
+      <UniqueIdentifier>{25e82127-d18c-42dd-9cdd-b9b315091119}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -690,6 +702,15 @@
     </ClInclude>
     <ClInclude Include="CE_TypeReflection.h">
       <Filter>Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_ObjLoader.h">
+      <Filter>Rendering\OBJ</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_MaterialManager.h">
+      <Filter>Rendering\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_ObjManager.h">
+      <Filter>Rendering\Assets</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -50,7 +50,7 @@ void LevelEditorContext::Init(CE_Engine& anEngine)
 	myToolModule = new CT_ToolModule(camera, anEngine.GetInput());
 
 	InitWorld(anEngine);
-	myEntityFactory = new EntityFactory(*myWorld);
+	myEntityFactory = new EntityFactory(*myWorld, anEngine.GetObjManager());
 
 	OnLoadLevel();
 }

@@ -137,6 +137,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CE_MaterialManager.cpp" />
+    <ClCompile Include="CE_ObjLoader.cpp" />
+    <ClCompile Include="CE_ObjManager.cpp" />
     <ClCompile Include="CE_TypeReflection.cpp" />
     <ClCompile Include="CN_Node.cpp" />
     <ClCompile Include="CN_NodeGraph.cpp" />
@@ -255,10 +258,13 @@
     <ClInclude Include="CE_Input.h" />
     <ClInclude Include="CE_LightSphereCreator.h" />
     <ClInclude Include="CE_LineRenderObject.h" />
+    <ClInclude Include="CE_MaterialManager.h" />
     <ClInclude Include="CE_Math.h" />
     <ClInclude Include="CE_NavMesh.h" />
     <ClInclude Include="CE_NavMeshPrimitives.h" />
     <ClInclude Include="CE_NeuralNetwork.h" />
+    <ClInclude Include="CE_ObjLoader.h" />
+    <ClInclude Include="CE_ObjManager.h" />
     <ClInclude Include="CE_Path.h" />
     <ClInclude Include="CE_PathFinder.h" />
     <ClInclude Include="CE_PixelShader.h" />

@@ -15,6 +15,14 @@ void CE_RendererProxy::AddModel(const CE_Matrix44f& anOrientation, const CE_Vect
 	data.myIsSphere = aIsSphere;
 }
 
+void CE_RendererProxy::AddObj(const CE_Matrix44f& anOrientation, const CE_Vector3f& aScale, int aObjID)
+{
+	CE_ObjRenderData& data = myObjRenderData.Add();
+	data.myOrientation = anOrientation;
+	data.myScale = aScale;
+	data.myObjID = aObjID;
+}
+
 void CE_RendererProxy::AddSprite(const CE_Vector2f& aPosition, const CE_Vector2f& aSize, const CE_Vector4f& aColor, const CE_Vector2f& aHotspot /*= CE_Vector2f(0.f, 0.f)*/)
 {
 	CE_2DData& data = my2DData.Add();
@@ -57,6 +65,7 @@ void CE_RendererProxy::AddPointLight(const CE_Matrix44f& anOrientation, const CE
 void CE_RendererProxy::Clear()
 {
 	myModelData.RemoveAll();
+	myObjRenderData.RemoveAll();
 	myPointLightData.RemoveAll();
 	my2DData.RemoveAll();
 }

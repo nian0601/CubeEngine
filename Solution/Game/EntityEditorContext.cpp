@@ -49,7 +49,7 @@ void EntityEditorContext::Init(CE_Engine& anEngine)
 	myRendererProxy = &anEngine.GetRendererProxy();
 
 	myWorld = new CE_World();
-	myEntityFactory = new EntityFactory(*myWorld);
+	myEntityFactory = new EntityFactory(*myWorld, anEngine.GetObjManager());
 
 	RenderProcessor* renderProcessor = new RenderProcessor(*myWorld, anEngine.GetRendererProxy());
 	myWorld->AddProcessor(renderProcessor);

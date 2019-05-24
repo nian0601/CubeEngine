@@ -38,6 +38,10 @@ void RenderProcessor::Update(float /*aDelta*/)
 			{
 				myRendererProxy.AddPointLight(orientation, entry.myColor, scale.x);
 			}
+			else if (entry.myType == ModelType::eType::OBJ_MODEL)
+			{
+				myRendererProxy.AddObj(orientation, scale, entry.myModelID);
+			}
 			else
 			{
 				CE_Vector4f color = entry.myColor;
