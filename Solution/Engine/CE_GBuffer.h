@@ -16,7 +16,7 @@ public:
 	~CE_GBuffer();
 
 	void SendToGPU(CE_GPUContext& aGPUContext);
-	void Clear(CE_GPUContext& aGPUContext, const CE_Vector4f& aClearColor);
+	void Clear(CE_GPUContext& aGPUContext, const CE_Vector3f& aClearColor);
 	CE_Texture* myTextures[__COUNT];
 
 	CE_Vector2i myScreenSize;

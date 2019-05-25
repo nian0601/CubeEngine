@@ -9,8 +9,11 @@
 #include "CE_Camera.h"
 
 #include "CUI_Manager.h"
+#include "CE_Renderer.h"
+#include "CE_DeferredRenderer.h"
 
 CE_Window::CE_Window(const CE_Vector2i& aSize, const char* aTitle, CE_WindowManager* aWindowManager, WNDPROC aWinProc)
+	: myClearColor(0.1f, 0.05f, 0.07f)
 {
 	myWindowManager = aWindowManager;
 	myWindowSize = aSize;
@@ -54,11 +57,15 @@ CE_Window::CE_Window(const CE_Vector2i& aSize, const char* aTitle, CE_WindowMana
 	ShowWindow(myHWND, 10);
 	UpdateWindow(myHWND);
 
-	myRendererProxy = new CE_RendererProxy();
-	myCamera = new CE_Camera(myWindowSize);
-	mySwapChain = new CE_SwapChain(myWindowManager->GetGPUContext(), myWindowSize, myHWND);
+	CE_GPUContext& gpuContext = myWindowManager->GetGPUContext();
+	mySwapChain = new CE_SwapChain(gpuContext, myWindowSize, myHWND);
 
-	myUIManager = new CUI_Manager(myWindowManager->GetGPUContext());
+	myCamera = new CE_Camera(myWindowSize);
+
+	myDeferredRenderer = new CE_DeferredRenderer(gpuContext, *mySwapChain->GetBackbuffer(), myWindowSize);
+	myRendererProxy = new CE_RendererProxy();
+
+	myUIManager = new CUI_Manager(gpuContext);
 }
 
 
@@ -68,23 +75,38 @@ CE_Window::~CE_Window()
 	CE_SAFE_DELETE(mySwapChain);
 	CE_SAFE_DELETE(myCamera);
 	CE_SAFE_DELETE(myRendererProxy);
+	CE_SAFE_DELETE(myDeferredRenderer);
 }
 
-void CE_Window::PrepareForRender()
+void CE_Window::BeginRender(CE_Renderer& aRenderer)
 {
-	mySwapChain->PrepareForRender();
+	myCamera->Update();
+
+	myDeferredRenderer->ClearGBuffer(myClearColor);
+
+	mySwapChain->PrepareForRender(myClearColor);
+	aRenderer.UpdateConstantBuffers(*myCamera);
+	myDeferredRenderer->UpdateConstantBuffers(*myCamera);
+}
+
+void CE_Window::Render(CE_Renderer& aRenderer)
+{
+	myDeferredRenderer->Render(aRenderer, GetRendererProxy());
+
+	myUIManager->Render(*myRendererProxy);
+
+	aRenderer.Render2D(*myRendererProxy);
+}
+
+void CE_Window::EndRender()
+{
+	mySwapChain->FinishRender();
+	myRendererProxy->Clear();
 }
 
 void CE_Window::ProcessUI(const CE_Input& someInput)
 {
 	myUIManager->Update(someInput);
-	myUIManager->Render(*myRendererProxy);
-}
-
-void CE_Window::FinishRender()
-{
-	mySwapChain->FinishRender();
-	myRendererProxy->Clear();
 }
 
 bool CE_Window::HandleMessage(const CE_WindowMessage& aMessage)

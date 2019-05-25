@@ -12,7 +12,7 @@ public:
 	CE_SwapChain(CE_GPUContext& aGPUContext, const CE_Vector2i& aWindowSize, HWND aHWND);
 	~CE_SwapChain();
 
-	void PrepareForRender();
+	void PrepareForRender(const CE_Vector3f& aClearColor);
 	void FinishRender();
 
 	CE_Texture* GetBackbuffer() { return myBackbuffer; }

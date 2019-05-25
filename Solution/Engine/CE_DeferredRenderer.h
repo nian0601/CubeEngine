@@ -15,10 +15,10 @@ class CE_ShaderPair;
 class CE_DeferredRenderer
 {
 public:
-	CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Vector2i& aWindowSize);
+	CE_DeferredRenderer(CE_GPUContext& aGPUContext, CE_Texture& aBackBuffer, const CE_Vector2i& aWindowSize);
 	~CE_DeferredRenderer();
 
-	void SetBackbuffer(CE_Texture* aBackbuffer) { myBackbuffer = aBackbuffer; }
+	void ClearGBuffer(const CE_Vector3f& aClearColor);
 
 	void UpdateConstantBuffers(const CE_Camera& aCamera);
 	void Render(CE_Renderer& aRenderer, const CE_RendererProxy& aRendererProxy);
@@ -43,6 +43,6 @@ private:
 	CE_RenderObject* myPointLightModel;
 	CE_ShaderPair* myPointLightShader;
 
-	CE_Texture* myBackbuffer;
+	CE_Texture& myBackbuffer;
 };
 

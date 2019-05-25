@@ -4,11 +4,14 @@
 
 class CE_Camera;
 class CE_DirectX;
+class CE_DeferredRenderer;
+class CE_Renderer;
 class CE_RendererProxy;
 class CE_SwapChain;
 class CE_Texture;
 class CE_WindowManager;
 class CE_Input;
+class CE_DebugRenderManager;
 
 struct CE_WindowMessage;
 
@@ -20,9 +23,13 @@ public:
 	CE_Window(const CE_Vector2i& aSize, const char* aTitle, CE_WindowManager* aWindowManager, WNDPROC aWinProc);
 	~CE_Window();
 
-	void PrepareForRender();
+	void BeginRender(CE_Renderer& aRenderer);
+	void Render(CE_Renderer& aRenderer);
+	void EndRender();
+
 	void ProcessUI(const CE_Input& someInput);
-	void FinishRender();
+
+	void SetClearColor(const CE_Vector3f& aColor) { myClearColor = aColor; }
 
 	bool HandleMessage(const CE_WindowMessage& aMessage);
 
@@ -41,9 +48,11 @@ private:
 	HWND myHWND;
 	CE_WindowManager* myWindowManager;
 	CE_RendererProxy* myRendererProxy;
+	CE_DeferredRenderer* myDeferredRenderer;
 	CE_Camera* myCamera;
 
 	CE_SwapChain* mySwapChain;
+	CE_Vector3f myClearColor;
 
 	CUI_Manager* myUIManager;
 };

@@ -15,8 +15,9 @@
 #include "CE_ShaderPair.h"
 #include "CE_ShaderManager.h"
 
-CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Vector2i& aWindowSize)
+CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, CE_Texture& aBackBuffer, const CE_Vector2i& aWindowSize)
 	: myGPUContext(aGPUContext)
+	, myBackbuffer(aBackBuffer)
 {
 	myGBuffer = new CE_GBuffer(aGPUContext, aWindowSize);
 
@@ -64,6 +65,11 @@ CE_DeferredRenderer::~CE_DeferredRenderer()
 	CE_SAFE_DELETE(myFullscreenShader);
 }
 
+void CE_DeferredRenderer::ClearGBuffer(const CE_Vector3f& aClearColor)
+{
+	myGBuffer->Clear(myGPUContext, aClearColor);
+}
+
 void CE_DeferredRenderer::UpdateConstantBuffers(const CE_Camera& aCamera)
 {
 	CE_GlobalPBLData shaderData;
@@ -82,8 +88,6 @@ void CE_DeferredRenderer::UpdateConstantBuffers(const CE_Camera& aCamera)
 
 void CE_DeferredRenderer::Render(CE_Renderer& aRenderer, const CE_RendererProxy& aRendererProxy)
 {
-	CE_ASSERT(myBackbuffer != nullptr, "DeferredRendrer is missing a backbuffer!");
-
 	BeginGBuffer();
 	aRenderer.Render3D(aRendererProxy);
 	EndGBuffer();
@@ -134,14 +138,12 @@ void CE_DeferredRenderer::RenderToScreen()
 
 void CE_DeferredRenderer::BeginGBuffer()
 {
-	myGBuffer->Clear(myGPUContext, { 0.f, 0.f, 0.f, 1.f });
-
 	ID3D11RenderTargetView* targets[3];
 	targets[0] = myGBuffer->myTextures[CE_GBuffer::ALBEDO_METALNESS]->GetRenderTarget();
 	targets[1] = myGBuffer->myTextures[CE_GBuffer::NORMAL_ROUGNESS]->GetRenderTarget();
 	targets[2] = myGBuffer->myTextures[CE_GBuffer::DEPTH]->GetRenderTarget();
 
-	ID3D11DepthStencilView* stencil = myBackbuffer->GetDepthStencil();
+	ID3D11DepthStencilView* stencil = myBackbuffer.GetDepthStencil();
 
 	ID3D11DeviceContext* context = myGPUContext.GetContext();
 	context->OMSetRenderTargets(3, targets, stencil);
@@ -151,7 +153,7 @@ void CE_DeferredRenderer::EndGBuffer()
 {
 	ID3D11DeviceContext* context = myGPUContext.GetContext();
 
-	ID3D11RenderTargetView* target = myBackbuffer->GetRenderTarget();
-	ID3D11DepthStencilView* stencil = myBackbuffer->GetDepthStencil();
+	ID3D11RenderTargetView* target = myBackbuffer.GetRenderTarget();
+	ID3D11DepthStencilView* stencil = myBackbuffer.GetDepthStencil();
 	context->OMSetRenderTargets(1, &target, stencil);
 }

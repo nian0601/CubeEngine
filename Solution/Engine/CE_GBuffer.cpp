@@ -50,13 +50,13 @@ void CE_GBuffer::SendToGPU(CE_GPUContext& aGPUContext)
 	context->PSSetShaderResources(0, 3, resources);
 }
 
-void CE_GBuffer::Clear(CE_GPUContext& aGPUContext, const CE_Vector4f& aClearColor)
+void CE_GBuffer::Clear(CE_GPUContext& aGPUContext, const CE_Vector3f& aClearColor)
 {
 	float clearColor[4];
 	clearColor[0] = aClearColor.x;
 	clearColor[1] = aClearColor.y;
 	clearColor[2] = aClearColor.z;
-	clearColor[3] = aClearColor.w;
+	clearColor[3] = 1.f;
 
 	ID3D11DeviceContext* context = aGPUContext.GetContext();
 	context->ClearRenderTargetView(myTextures[ALBEDO_METALNESS]->GetRenderTarget(), clearColor);

@@ -24,12 +24,12 @@ CE_SwapChain::~CE_SwapChain()
 	CE_SAFE_DELETE(myViewPort);
 }
 
-void CE_SwapChain::PrepareForRender()
+void CE_SwapChain::PrepareForRender(const CE_Vector3f& aClearColor)
 {
 	float clearColor[4];
-	clearColor[0] = 0.f;
-	clearColor[1] = 0.f;
-	clearColor[2] = 0.f;
+	clearColor[0] = aClearColor.x;
+	clearColor[1] = aClearColor.y;
+	clearColor[2] = aClearColor.z;
 	clearColor[3] = 1.f;
 
 	ID3D11DeviceContext* context = myGPUContext.GetContext();

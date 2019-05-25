@@ -40,7 +40,6 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 	myMainWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 1920, 1080 }, "Cube Engine");
 
 	myRenderer = new CE_Renderer(*myGPUContext);
-	myDeferredRenderer = new CE_DeferredRenderer(*myGPUContext, myMainWindow->GetWindowSize());
 
 	myTime = new CE_Time();
 	myInput = new CE_Input(myMainWindow->GetHWND(), GetModuleHandle(NULL), DISCL_NONEXCLUSIVE | DISCL_FOREGROUND, DISCL_NONEXCLUSIVE | DISCL_FOREGROUND);
@@ -57,7 +56,6 @@ CE_Engine::~CE_Engine()
 	CE_SAFE_DELETE(myDebugRenderManager);
 	CE_SAFE_DELETE(myInput);
 	CE_SAFE_DELETE(myTime);
-	CE_SAFE_DELETE(myDeferredRenderer);
 	CE_SAFE_DELETE(myRenderer);
 	CE_ObjManager::Destroy();
 	CE_MaterialManager::Destroy();
@@ -95,23 +93,18 @@ void CE_Engine::Run()
 		CE_GrowingArray<CE_Window*> windows = windowManager->GetWindows();
 		for (CE_Window* window : windows)
 		{
-			CE_Camera* camera = window->GetCamera();
-			camera->Update();
 			window->ProcessUI(*myInput);
 
-			window->PrepareForRender();
+			window->BeginRender(*myRenderer);
+			window->Render(*myRenderer);
 
-			myRenderer->UpdateConstantBuffers(*camera);
-			myDeferredRenderer->UpdateConstantBuffers(*camera);
+			if (window == myMainWindow)
+			{
+				myRenderer->RenderLines(myDebugRenderManager->myLines);
+				myDebugRenderManager->myLines.RemoveAll();
+			}
 
-			myDeferredRenderer->SetBackbuffer(window->GetBackbuffer());
-			myDeferredRenderer->Render(*myRenderer, window->GetRendererProxy());
-
-			myRenderer->Render2D(window->GetRendererProxy());
-			myRenderer->RenderLines(myDebugRenderManager->myLines);
-			myDebugRenderManager->myLines.RemoveAll();
-
-			window->FinishRender();
+			window->EndRender();
 		}
 	}
 }

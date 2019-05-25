@@ -42,7 +42,6 @@ private:
 	CE_Input* myInput;
 
 	CE_Renderer* myRenderer;
-	CE_DeferredRenderer* myDeferredRenderer;
 
 	static CE_DebugRenderManager* myDebugRenderManager;
 };
