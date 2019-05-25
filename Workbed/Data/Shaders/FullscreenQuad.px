@@ -16,11 +16,8 @@ float4 main(PosUVPixel anInput) : SV_TARGET
 	float3 reflectionFresnel = ReflectionFresnel(pixelData.mySubstance.xyz, pixelData.myNormal
 		, pixelData.myToEye, 1.f - pixelData.myRoughnessOffsetted);
 
-	float3 cubemapColor = float3(0.1f, 0.1f, 0.1f);
 	float3 ambientDiffuse = Cubemap.SampleLevel(LinearSampler, pixelData.myNormal, 9).xyz
 		* ao * pixelData.myMetalnessAlbedo * (1.f - reflectionFresnel);
-	//float3 ambientDiffuse = cubemapColor
-	//	* ao * pixelData.myMetalnessAlbedo * (1.f - reflectionFresnel);
 
 	float3 reflectionVector = reflect(pixelData.myNormal, pixelData.myToEye);
 	float fakeLysSpecularPower = RoughToSPow(pixelData.myRoughness);
@@ -28,7 +25,6 @@ float4 main(PosUVPixel anInput) : SV_TARGET
 
 	float3 ambientSpec = Cubemap.SampleLevel(LinearSampler, reflectionVector, lysMipMap).xyz
 		* ao * reflectionFresnel;
-	//float3 ambientSpec = cubemapColor * ao * reflectionFresnel;
 
 	float3 finalAmbientLight = (ambientDiffuse + ambientSpec);
 	

@@ -27,7 +27,7 @@ public:
 
 	CE_RendererProxy& GetRendererProxy();
 	CE_Input& GetInput();
-	const CE_ObjManager& GetObjManager();
+	CE_ObjManager& GetObjManager();
 
 	CE_GPUContext& GetGPUContext();
 	CE_Window& GetMainWindow();

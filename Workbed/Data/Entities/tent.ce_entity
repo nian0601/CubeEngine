@@ -4,7 +4,7 @@
 
 	#render
 		#entry
-			#model cactus_large.obj
+			#model tree_pine_tall_detailed.obj
 			#scale 1 1 1
 			#type OBJ_MODEL
 		#end

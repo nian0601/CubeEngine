@@ -125,7 +125,7 @@ CE_Input& CE_Engine::GetInput()
 	return *myInput;
 }
 
-const CE_ObjManager& CE_Engine::GetObjManager()
+CE_ObjManager& CE_Engine::GetObjManager()
 {
 	return *myObjManager;
 }

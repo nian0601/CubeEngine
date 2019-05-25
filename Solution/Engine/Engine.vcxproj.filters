@@ -254,6 +254,9 @@
     <ClCompile Include="CE_ObjManager.cpp">
       <Filter>Rendering\Assets</Filter>
     </ClCompile>
+    <ClCompile Include="CE_AssetManager.cpp">
+      <Filter>Rendering\Assets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -710,6 +713,9 @@
       <Filter>Rendering\Assets</Filter>
     </ClInclude>
     <ClInclude Include="CE_ObjManager.h">
+      <Filter>Rendering\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_AssetManager.h">
       <Filter>Rendering\Assets</Filter>
     </ClInclude>
   </ItemGroup>

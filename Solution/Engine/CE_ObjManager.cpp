@@ -5,19 +5,12 @@
 #include "CE_RenderObject.h"
 #include "CE_MaterialManager.h"
 
-CE_ObjManager::CE_ObjManager(const char* aObjFolder, const CE_GPUContext& aGPUContext, const CE_MaterialManager& aMaterialManager)
-	: myNextFreeID(0)
+CE_ObjManager::CE_ObjManager(const char* aObjFolder, const CE_GPUContext& aGPUContext, CE_MaterialManager& aMaterialManager)
+	: CE_AssetManager(aObjFolder, true)
+	, myNextFreeID(0)
+	, myGPUContext(aGPUContext)
 	, myMaterialManager(aMaterialManager)
 {
-	// We do this same in all the different asset-managers,
-	// just create a base AssetManager-class that handles searching for all the files
-	// and just calls a virtual LoadAsset-function?
-
-	CE_GrowingArray<CE_FileSystem::FileInfo> files;
-	CE_FileSystem::GetAllFilesFromDirectory(aObjFolder, files);
-
-	for (const CE_FileSystem::FileInfo& fileInfo : files)
-		LoadObj(fileInfo.myFilePath.c_str(), aGPUContext);
 }
 
 const CE_ObjData* CE_ObjManager::GetObjData(int aObjID) const
@@ -29,35 +22,32 @@ const CE_ObjData* CE_ObjManager::GetObjData(int aObjID) const
 	return nullptr;
 }
 
-int CE_ObjManager::GetObjID(const char* aObjName) const
+int CE_ObjManager::GetObjID(const char* aObjName)
 {
-	if (const int* id = myNameToIDMap.GetIfExists(aObjName))
-		return *id;
+	if (!myNameToIDMap.KeyExists(aObjName))
+		LoadObj(aObjName);
 
-	CE_ASSERT(false, "Obj %s wasnt loaded, make sure its placed in the Models-folder!", aObjName);
-	return -1;
+	return myNameToIDMap[aObjName];
 }
 
-void CE_ObjManager::LoadObj(const char* aFilePath, const CE_GPUContext& aGPUContext)
+void CE_ObjManager::LoadObj(const char* aObjName)
 {
-	CE_String fileName;
-	CE_FileSystem::GetFileName(aFilePath, fileName);
-
-	CE_ASSERT(myNameToIDMap.GetIfExists(fileName) == nullptr, "Obj %s was already loaded!", fileName);
+	const CE_String* fullFilePath = myFullFilePaths.GetIfExists(aObjName);
+	CE_ASSERT(fullFilePath, "Couldnt find full filepath for %s??", aObjName);
 
 	int objID = myNextFreeID++;
-	myNameToIDMap[fileName] = objID;
+	myNameToIDMap[aObjName] = objID;
 
 	CE_ObjData& objData = myObjDataMap[objID];
 
 	CE_ObjLoader loader;
-	loader.Load(aFilePath);
+	loader.Load(fullFilePath->c_str());
 
 	for (CE_ObjLoader::Model& model : loader.myModels)
 	{
 		CE_ObjMesh& mesh = objData.myMeshes.Add();
 		mesh.myRenderObject = new CE_RenderObject();
-		mesh.myRenderObject->Init<CE_PosNormColor_Vert>(aGPUContext, (void*)model.myVertices.GetArrayAsPointer(), model.myVertices.Size(), (void*)model.myIndices.GetArrayAsPointer(), model.myIndices.Size());
+		mesh.myRenderObject->Init<CE_PosNormColor_Vert>(myGPUContext, (void*)model.myVertices.GetArrayAsPointer(), model.myVertices.Size(), (void*)model.myIndices.GetArrayAsPointer(), model.myIndices.Size());
 		mesh.myMaterial = myMaterialManager.GetMaterial(model.myMaterial.c_str());
 	}
 }

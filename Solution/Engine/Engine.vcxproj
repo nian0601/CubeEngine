@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CE_AssetManager.cpp" />
     <ClCompile Include="CE_MaterialManager.cpp" />
     <ClCompile Include="CE_ObjLoader.cpp" />
     <ClCompile Include="CE_ObjManager.cpp" />
@@ -228,6 +229,7 @@
   <ItemGroup>
     <ClInclude Include="CE_Any.h" />
     <ClInclude Include="CE_Assert.h" />
+    <ClInclude Include="CE_AssetManager.h" />
     <ClInclude Include="CE_BaseComponent.h" />
     <ClInclude Include="CE_BaseProcessor.h" />
     <ClInclude Include="CE_BinaryFileReader.h" />

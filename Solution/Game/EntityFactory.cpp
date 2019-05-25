@@ -22,7 +22,7 @@
 #include "LifetimeComponent.h"
 #include <CE_ObjManager.h>
 
-EntityFactory::EntityFactory(CE_World& anRealWorld, const CE_ObjManager& aObjManager)
+EntityFactory::EntityFactory(CE_World& anRealWorld, CE_ObjManager& aObjManager)
 	: myRealWorld(anRealWorld)
 	, myObjManager(aObjManager)
 {
