@@ -19,8 +19,6 @@ struct RenderComponent;
 
 class EntityFactory;
 
-#include <CUI_Widget.h>
-
 class EntityEditorContext : public GameContext
 {
 public:

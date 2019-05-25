@@ -29,7 +29,7 @@ void NeuralNetworkContext::Init(CE_Engine& anEngine)
 {
 
 	myWorld = new CE_World();
-	myEntityFactory = new EntityFactory(*myWorld, anEngine.GetObjManager());
+	myEntityFactory = new EntityFactory(*myWorld);
 
 	CE_Window& mainWindow = anEngine.GetMainWindow();
 	CE_Camera* camera = mainWindow.GetCamera();

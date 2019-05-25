@@ -32,14 +32,15 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 
 	myDirectX = new CE_DirectX();
 	myGPUContext = new CE_GPUContext(*myDirectX);
+	CE_ShaderManager::Create("Data/Shaders", *myGPUContext);
+	CE_MaterialManager::Create("Data/Materials");
+	CE_ObjManager::Create("Data/Models", *myGPUContext);
+
 	CE_WindowManager::Create(*myGPUContext);
 	myMainWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 1920, 1080 }, "Cube Engine");
 
-	myShaderManager = new CE_ShaderManager("Data/Shaders", *myGPUContext);
-	myMaterialManager = new CE_MaterialManager("Data/Materials");
-	myObjManager = new CE_ObjManager("Data/Models", *myGPUContext, *myMaterialManager);
-	myRenderer = new CE_Renderer(*myGPUContext, *myShaderManager, *myObjManager);
-	myDeferredRenderer = new CE_DeferredRenderer(*myGPUContext, myMainWindow->GetWindowSize(), *myShaderManager);
+	myRenderer = new CE_Renderer(*myGPUContext);
+	myDeferredRenderer = new CE_DeferredRenderer(*myGPUContext, myMainWindow->GetWindowSize());
 
 	myTime = new CE_Time();
 	myInput = new CE_Input(myMainWindow->GetHWND(), GetModuleHandle(NULL), DISCL_NONEXCLUSIVE | DISCL_FOREGROUND, DISCL_NONEXCLUSIVE | DISCL_FOREGROUND);
@@ -58,9 +59,9 @@ CE_Engine::~CE_Engine()
 	CE_SAFE_DELETE(myTime);
 	CE_SAFE_DELETE(myDeferredRenderer);
 	CE_SAFE_DELETE(myRenderer);
-	CE_SAFE_DELETE(myObjManager);
-	CE_SAFE_DELETE(myMaterialManager);
-	CE_SAFE_DELETE(myShaderManager);
+	CE_ObjManager::Destroy();
+	CE_MaterialManager::Destroy();
+	CE_ShaderManager::Destroy();
 	CE_SAFE_DELETE(myGPUContext);
 	CE_SAFE_DELETE(myDirectX);
 	CE_WindowManager::Destory();
@@ -71,7 +72,7 @@ void CE_Engine::Run()
 	CE_WindowManager* windowManager = CE_WindowManager::GetInstance();
 	while (windowManager->PumpEvent())
 	{
-		myShaderManager->Update();
+		CE_ShaderManager::GetInstance()->Update();
 		myTime->Update();
 		myInput->Update();
 
@@ -123,11 +124,6 @@ CE_RendererProxy& CE_Engine::GetRendererProxy()
 CE_Input& CE_Engine::GetInput()
 {
 	return *myInput;
-}
-
-CE_ObjManager& CE_Engine::GetObjManager()
-{
-	return *myObjManager;
 }
 
 CE_DebugRenderManager& CE_Engine::GetDebugRenderManager()

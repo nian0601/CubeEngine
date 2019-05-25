@@ -10,7 +10,7 @@ class CE_ObjManager;
 class EntityFactory
 {
 public:
-	EntityFactory(CE_World& anRealWorld, CE_ObjManager& aObjManager);
+	EntityFactory(CE_World& anRealWorld);
 	~EntityFactory();
 
 	void LoadTemplateEntities();
@@ -39,8 +39,6 @@ private:
 
 	CE_Map<int, CE_Entity> myTemplateEntityMap;
 	CE_Map<CE_String, CE_Entity> myEntityMap;
-
-	CE_ObjManager& myObjManager;
 };
 
 template<typename T>

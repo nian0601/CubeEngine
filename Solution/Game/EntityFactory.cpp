@@ -22,9 +22,8 @@
 #include "LifetimeComponent.h"
 #include <CE_ObjManager.h>
 
-EntityFactory::EntityFactory(CE_World& anRealWorld, CE_ObjManager& aObjManager)
+EntityFactory::EntityFactory(CE_World& anRealWorld)
 	: myRealWorld(anRealWorld)
-	, myObjManager(aObjManager)
 {
 	myTemplateWorld = new CE_World();
 	LoadTemplateEntities();
@@ -185,7 +184,7 @@ void EntityFactory::LoadRenderComponent(CE_Entity anEntity, CE_FileParser& aFile
 			CE_ASSERT(openEntry == true, "Need '#entry' before you can specify a model");
 
 			RenderComponent::Entry& entry = entries.GetLast();
-			entry.myModelID = myObjManager.GetObjID(words[1].c_str());
+			entry.myModelID = CE_ObjManager::GetInstance()->GetObjID(words[1].c_str());
 		}
 		else if (words[0] == "#entry")
 		{

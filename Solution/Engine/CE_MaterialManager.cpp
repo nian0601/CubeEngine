@@ -3,6 +3,19 @@
 #include "CE_FileSystem.h"
 #include "CE_FileParser.h"
 
+CE_MaterialManager* CE_MaterialManager::ourInstance = nullptr;
+void CE_MaterialManager::Create(const char* aMaterialPath)
+{
+	CE_ASSERT(ourInstance == nullptr, "Tried to create MaterialManager twice!");
+	ourInstance = new CE_MaterialManager(aMaterialPath);
+}
+
+void CE_MaterialManager::Destroy()
+{
+	CE_SAFE_DELETE(ourInstance);
+}
+
+
 CE_MaterialManager::CE_MaterialManager(const char* aMaterialsPath)
 {
 	CE_GrowingArray<CE_FileSystem::FileInfo> files;

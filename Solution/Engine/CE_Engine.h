@@ -13,9 +13,6 @@ class CE_Window;
 class CE_DirectX;
 
 class CE_Game;
-class CE_ShaderManager;
-class CE_MaterialManager;
-class CE_ObjManager;
 
 class CE_Engine
 {
@@ -27,7 +24,6 @@ public:
 
 	CE_RendererProxy& GetRendererProxy();
 	CE_Input& GetInput();
-	CE_ObjManager& GetObjManager();
 
 	CE_GPUContext& GetGPUContext();
 	CE_Window& GetMainWindow();
@@ -45,9 +41,6 @@ private:
 	CE_Time* myTime;
 	CE_Input* myInput;
 
-	CE_ShaderManager* myShaderManager;
-	CE_MaterialManager* myMaterialManager;
-	CE_ObjManager* myObjManager;
 	CE_Renderer* myRenderer;
 	CE_DeferredRenderer* myDeferredRenderer;
 

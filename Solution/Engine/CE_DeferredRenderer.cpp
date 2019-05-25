@@ -15,7 +15,7 @@
 #include "CE_ShaderPair.h"
 #include "CE_ShaderManager.h"
 
-CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Vector2i& aWindowSize, CE_ShaderManager& aShaderManager)
+CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Vector2i& aWindowSize)
 	: myGPUContext(aGPUContext)
 {
 	myGBuffer = new CE_GBuffer(aGPUContext, aWindowSize);
@@ -37,12 +37,13 @@ CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, const CE_Ve
 	myPointLightModel->CreateObjectData(sizeof(CE_PointLightShaderData), 1);
 
 
-	CE_GenericShader* fullscreenVX = aShaderManager.GetShader("FullscreenQuad.vx");
-	CE_GenericShader* fullscreenPX = aShaderManager.GetShader("FullscreenQuad.px");
+	CE_ShaderManager* shaderManager = CE_ShaderManager::GetInstance();
+	CE_GenericShader* fullscreenVX = shaderManager->GetShader("FullscreenQuad.vx");
+	CE_GenericShader* fullscreenPX = shaderManager->GetShader("FullscreenQuad.px");
 	myFullscreenShader = new CE_ShaderPair(fullscreenVX, fullscreenPX);
 
-	CE_GenericShader* pointlightVX = aShaderManager.GetShader("Pointlight.vx");
-	CE_GenericShader* pointlightPX = aShaderManager.GetShader("Pointlight.px");
+	CE_GenericShader* pointlightVX = shaderManager->GetShader("Pointlight.vx");
+	CE_GenericShader* pointlightPX = shaderManager->GetShader("Pointlight.px");
 	myPointLightShader = new CE_ShaderPair(pointlightVX, pointlightPX);
 }
 

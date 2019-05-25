@@ -3,7 +3,6 @@
 #include "CE_AssetManager.h"
 
 class CE_GPUContext;
-class CE_MaterialManager;
 class CE_RenderObject;
 struct CE_Material;
 
@@ -21,12 +20,16 @@ struct CE_ObjData
 class CE_ObjManager : public CE_AssetManager
 {
 public:
-	CE_ObjManager(const char* aObjFolder, const CE_GPUContext& aGPUContext, CE_MaterialManager& aMaterialManager);
+	static void Create(const char* aObjFolder, const CE_GPUContext& aGPUContext);
+	static void Destroy();
+	static CE_ObjManager* GetInstance() { return ourInstance; }
 
 	const CE_ObjData* GetObjData(int aObjID) const;
 	int GetObjID(const char* aObjName);
 
 private:
+	CE_ObjManager(const char* aObjFolder, const CE_GPUContext& aGPUContext);
+
 	void LoadObj(const char* aObjName);
 
 	CE_Map<CE_String, int> myNameToIDMap;
@@ -34,5 +37,6 @@ private:
 	int myNextFreeID;
 
 	const CE_GPUContext& myGPUContext;
-	CE_MaterialManager& myMaterialManager;
+
+	static CE_ObjManager* ourInstance;
 };

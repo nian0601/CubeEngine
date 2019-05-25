@@ -14,12 +14,12 @@
 #include "CE_ObjManager.h"
 #include "CE_MaterialManager.h"
 
-CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext, CE_ShaderManager& aShaderManager, const CE_ObjManager& aObjManager)
+CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 	: myGPUContext(anGPUContext)
-	, myObjManager(aObjManager)
 {
-	CE_GenericShader* textVX = aShaderManager.GetShader("Text.vx");
-	CE_GenericShader* textPX = aShaderManager.GetShader("Text.px");
+	CE_ShaderManager* shaderManager = CE_ShaderManager::GetInstance();
+	CE_GenericShader* textVX = shaderManager->GetShader("Text.vx");
+	CE_GenericShader* textPX = shaderManager->GetShader("Text.px");
 	myTextShader = new CE_ShaderPair(textVX, textPX);
 
 	myText = new CE_Text(myGPUContext);
@@ -47,19 +47,19 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext, CE_ShaderManager& aShaderM
 	myModelObjectDataConstantBuffer->Init(sizeof(CE_ModelShaderData), 1);
 
 
-	CE_GenericShader* cubeVX = aShaderManager.GetShader("Cube.vx");
-	CE_GenericShader* cubePX = aShaderManager.GetShader("Cube.px");
+	CE_GenericShader* cubeVX = shaderManager->GetShader("Cube.vx");
+	CE_GenericShader* cubePX = shaderManager->GetShader("Cube.px");
 	myCubeShader = new CE_ShaderPair(cubeVX, cubePX);
 
-	CE_GenericShader* lineVX = aShaderManager.GetShader("Line.vx");
-	CE_GenericShader* linePX = aShaderManager.GetShader("Line.px");
+	CE_GenericShader* lineVX = shaderManager->GetShader("Line.vx");
+	CE_GenericShader* linePX = shaderManager->GetShader("Line.px");
 	myLineShader = new CE_ShaderPair(lineVX, linePX);
 
-	CE_GenericShader* line2DVX = aShaderManager.GetShader("Line2D.vx");
+	CE_GenericShader* line2DVX = shaderManager->GetShader("Line2D.vx");
 	myLine2DShader = new CE_ShaderPair(line2DVX, linePX);
 
-	CE_GenericShader* spriteVX = aShaderManager.GetShader("Sprite.vx");
-	CE_GenericShader* spritePX = aShaderManager.GetShader("Sprite.px");
+	CE_GenericShader* spriteVX = shaderManager->GetShader("Sprite.vx");
+	CE_GenericShader* spritePX = shaderManager->GetShader("Sprite.px");
 	mySpriteShader = new CE_ShaderPair(spriteVX, spritePX);
 }
 
@@ -175,7 +175,7 @@ void CE_Renderer::RenderObjs(const CE_RendererProxy& aRendererProxy)
 		CE_ModelShaderData modelData;
 		modelData.myWorld = data.myOrientation;
 
-		const CE_ObjData* obj = myObjManager.GetObjData(data.myObjID);
+		const CE_ObjData* obj = CE_ObjManager::GetInstance()->GetObjData(data.myObjID);
 		for (const CE_ObjMesh& mesh : obj->myMeshes)
 		{	
 			const CE_Material& material = *mesh.myMaterial;

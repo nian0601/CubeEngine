@@ -11,7 +11,6 @@ class CE_RenderObject;
 class CE_ConstantBuffer;
 
 class CE_ShaderPair;
-class CE_ShaderManager;
 
 #include "CE_DebugPrimitives.h"
 #include "CE_RendererProxy.h"
@@ -19,7 +18,7 @@ class CE_ShaderManager;
 class CE_Renderer
 {
 public:
-	CE_Renderer(CE_GPUContext& anGPUContext, CE_ShaderManager& aShaderManager, const CE_ObjManager& aObjManager);
+	CE_Renderer(CE_GPUContext& anGPUContext);
 	~CE_Renderer();
 
 	void UpdateConstantBuffers(const CE_Camera& aCamera);
@@ -55,7 +54,5 @@ private:
 	CE_ShaderPair* myCubeShader;
 	CE_ShaderPair* myLineShader;
 	CE_ShaderPair* myLine2DShader;
-
-	const CE_ObjManager& myObjManager;
 };
 

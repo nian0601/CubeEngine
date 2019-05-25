@@ -5,11 +5,23 @@
 #include "CE_RenderObject.h"
 #include "CE_MaterialManager.h"
 
-CE_ObjManager::CE_ObjManager(const char* aObjFolder, const CE_GPUContext& aGPUContext, CE_MaterialManager& aMaterialManager)
+CE_ObjManager* CE_ObjManager::ourInstance = nullptr;
+void CE_ObjManager::Create(const char* aObjFolder, const CE_GPUContext& aGPUContext)
+{
+	CE_ASSERT(ourInstance == nullptr, "Tried to create ObjManager twice!");
+	ourInstance = new CE_ObjManager(aObjFolder, aGPUContext);
+}
+
+void CE_ObjManager::Destroy()
+{
+	CE_SAFE_DELETE(ourInstance);
+}
+
+
+CE_ObjManager::CE_ObjManager(const char* aObjFolder, const CE_GPUContext& aGPUContext)
 	: CE_AssetManager(aObjFolder, true)
 	, myNextFreeID(0)
 	, myGPUContext(aGPUContext)
-	, myMaterialManager(aMaterialManager)
 {
 }
 
@@ -48,7 +60,7 @@ void CE_ObjManager::LoadObj(const char* aObjName)
 		CE_ObjMesh& mesh = objData.myMeshes.Add();
 		mesh.myRenderObject = new CE_RenderObject();
 		mesh.myRenderObject->Init<CE_PosNormColor_Vert>(myGPUContext, (void*)model.myVertices.GetArrayAsPointer(), model.myVertices.Size(), (void*)model.myIndices.GetArrayAsPointer(), model.myIndices.Size());
-		mesh.myMaterial = myMaterialManager.GetMaterial(model.myMaterial.c_str());
+		mesh.myMaterial = CE_MaterialManager::GetInstance()->GetMaterial(model.myMaterial.c_str());
 	}
 }
 
