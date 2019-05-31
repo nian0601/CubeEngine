@@ -19,6 +19,7 @@
 #include "CE_TypeRegistration.h"
 #include "CE_MaterialManager.h"
 #include "CE_ObjManager.h"
+#include "CE_TextureManager.h"
 
 CE_DebugRenderManager* CE_Engine::myDebugRenderManager = nullptr;
 
@@ -32,9 +33,10 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 
 	myDirectX = new CE_DirectX();
 	myGPUContext = new CE_GPUContext(*myDirectX);
-	CE_ShaderManager::Create("Data/Shaders", *myGPUContext);
-	CE_MaterialManager::Create("Data/Materials");
-	CE_ObjManager::Create("Data/Models", *myGPUContext);
+	CE_ShaderManager::Create(*myGPUContext);
+	CE_MaterialManager::Create();
+	CE_ObjManager::Create(*myGPUContext);
+	CE_TextureManager::Create(*myGPUContext);
 
 	CE_WindowManager::Create(*myGPUContext);
 	myMainWindow = CE_WindowManager::GetInstance()->CreateNewWindow({ 1920, 1080 }, "Cube Engine");

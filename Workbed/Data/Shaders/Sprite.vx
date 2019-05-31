@@ -12,18 +12,20 @@ cbuffer ObjectData
 	float2 padding;
 };
 
-struct PosVertex
+struct PosUVVertex
 {
 	float4 Position : POSITION;
+	float2 TextureCoord : TEXCOORD;
 };
 
 struct PosColorPixel
 {
 	float4 Position : SV_POSITION;
 	float4 Color : COLOR;
+	float2 TextureCoord : TEXCOORD;
 };
 
-PosColorPixel main(PosVertex aInput)
+PosColorPixel main(PosUVVertex aInput)
 {
 	PosColorPixel output;
 
@@ -52,5 +54,6 @@ PosColorPixel main(PosVertex aInput)
 	output.Position.y += 1;
 
 	output.Color = Color;
+	output.TextureCoord = aInput.TextureCoord;
 	return output;
 };

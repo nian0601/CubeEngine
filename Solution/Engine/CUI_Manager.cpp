@@ -6,6 +6,7 @@
 
 #include "CE_Input.h"
 #include "CE_Font.h"
+#include "CE_TextureManager.h"
 
 CUI_Manager::CUI_Manager(CE_GPUContext& aGPUContext)
 {
@@ -56,6 +57,11 @@ void CUI_Manager::Update(const CE_Input& someInput)
 	}
 
 	myOldMousePosition = mousePos;
+}
+
+const CE_Texture* CUI_Manager::GetTexture(const char* aTextureName) const
+{
+	return CE_TextureManager::GetInstance()->GetUITexture(THEME_GREEN, aTextureName);
 }
 
 void CUI_Manager::SendMouseMessage(CUI_MouseMessage& aMessage, int aMouseButton, const CE_Input& someInput)

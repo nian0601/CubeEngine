@@ -86,4 +86,16 @@ void CE_ObjLoader::AddVertex(Model& aModel, const CE_FileParser& aFileParser, co
 	vertex.myColor = { 1.f, 1.f, 1.f, 1.f };
 
 	aModel.myIndices.Add(aModel.myVertices.Size() - 1);
+
+
+	CE_Vector3f& min = aModel.myMin;
+	CE_Vector3f& max = aModel.myMax;
+
+	if (vertex.myPosition.x < min.x) min.x = vertex.myPosition.x;
+	if (vertex.myPosition.y < min.y) min.y = vertex.myPosition.y;
+	if (vertex.myPosition.z < min.z) min.z = vertex.myPosition.z;
+
+	if (vertex.myPosition.x > max.x) max.x = vertex.myPosition.x;
+	if (vertex.myPosition.y > max.y) max.y = vertex.myPosition.y;
+	if (vertex.myPosition.z > max.z) max.z = vertex.myPosition.z;
 }

@@ -1,10 +1,14 @@
+#include "Shader_Variables.ce_shader"
+
 struct PosColorPixel
 {
 	float4 Position : SV_POSITION;
 	float4 Color : COLOR;
+	float2 TextureCoord : TEXCOORD;
 };
 
 float4 main(PosColorPixel anInput) : SV_TARGET
 {
-	return anInput.Color;
+	float4 albedoSample = AlbedoTexture.Sample(PointSampler, anInput.TextureCoord);
+	return saturate(albedoSample * anInput.Color);
 };

@@ -9,7 +9,7 @@ class CE_GPUContext;
 class CE_ShaderManager
 {
 public:
-	static void Create(const char* aShaderDataPath, CE_GPUContext& aGPUContext);
+	static void Create(CE_GPUContext& aGPUContext);
 	static void Destroy();
 	static CE_ShaderManager* GetInstance() { return ourInstance; }
 
@@ -18,7 +18,7 @@ public:
 	void Update();
 
 private:
-	CE_ShaderManager(const char* aShaderDataPath, CE_GPUContext& aGPUContext);
+	CE_ShaderManager(CE_GPUContext& aGPUContext);
 	~CE_ShaderManager();
 
 	CE_Map<CE_String, CE_GenericShader*> myShaderMap;

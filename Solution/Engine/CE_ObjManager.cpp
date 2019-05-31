@@ -6,10 +6,10 @@
 #include "CE_MaterialManager.h"
 
 CE_ObjManager* CE_ObjManager::ourInstance = nullptr;
-void CE_ObjManager::Create(const char* aObjFolder, const CE_GPUContext& aGPUContext)
+void CE_ObjManager::Create(const CE_GPUContext& aGPUContext)
 {
 	CE_ASSERT(ourInstance == nullptr, "Tried to create ObjManager twice!");
-	ourInstance = new CE_ObjManager(aObjFolder, aGPUContext);
+	ourInstance = new CE_ObjManager(aGPUContext);
 }
 
 void CE_ObjManager::Destroy()
@@ -18,8 +18,8 @@ void CE_ObjManager::Destroy()
 }
 
 
-CE_ObjManager::CE_ObjManager(const char* aObjFolder, const CE_GPUContext& aGPUContext)
-	: CE_AssetManager(aObjFolder, true)
+CE_ObjManager::CE_ObjManager(const CE_GPUContext& aGPUContext)
+	: CE_AssetManager("Data/Models", true)
 	, myNextFreeID(0)
 	, myGPUContext(aGPUContext)
 {
@@ -61,6 +61,14 @@ void CE_ObjManager::LoadObj(const char* aObjName)
 		mesh.myRenderObject = new CE_RenderObject();
 		mesh.myRenderObject->Init<CE_PosNormColor_Vert>(myGPUContext, (void*)model.myVertices.GetArrayAsPointer(), model.myVertices.Size(), (void*)model.myIndices.GetArrayAsPointer(), model.myIndices.Size());
 		mesh.myMaterial = CE_MaterialManager::GetInstance()->GetMaterial(model.myMaterial.c_str());
+
+		if (model.myMin.x < objData.myMin.x) objData.myMin.x = model.myMin.x;
+		if (model.myMin.y < objData.myMin.y) objData.myMin.y = model.myMin.y;
+		if (model.myMin.z < objData.myMin.z) objData.myMin.z = model.myMin.z;
+
+		if (model.myMin.x > objData.myMax.x) objData.myMax.x = model.myMax.x;
+		if (model.myMin.y > objData.myMax.y) objData.myMax.y = model.myMax.y;
+		if (model.myMin.z > objData.myMax.z) objData.myMax.z = model.myMax.z;
 	}
 }
 

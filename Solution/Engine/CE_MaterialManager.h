@@ -12,14 +12,14 @@ struct CE_Material
 class CE_MaterialManager
 {
 public:
-	static void Create(const char* aMaterialPath);
+	static void Create();
 	static void Destroy();
 	static CE_MaterialManager* GetInstance() { return ourInstance; }
 
 	const CE_Material* GetMaterial(const char* aMaterialName) const;
 
 private:
-	CE_MaterialManager(const char* aMaterialsPath);
+	CE_MaterialManager();
 
 	void LoadMaterial(const char* aMaterialPath);
 

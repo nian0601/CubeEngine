@@ -141,6 +141,7 @@
     <ClCompile Include="CE_MaterialManager.cpp" />
     <ClCompile Include="CE_ObjLoader.cpp" />
     <ClCompile Include="CE_ObjManager.cpp" />
+    <ClCompile Include="CE_TextureManager.cpp" />
     <ClCompile Include="CE_TypeReflection.cpp" />
     <ClCompile Include="CN_Node.cpp" />
     <ClCompile Include="CN_NodeGraph.cpp" />
@@ -290,6 +291,7 @@
     <ClInclude Include="CE_String.h" />
     <ClInclude Include="CE_SwapChain.h" />
     <ClInclude Include="CE_Texture.h" />
+    <ClInclude Include="CE_TextureManager.h" />
     <ClInclude Include="CE_Time.h" />
     <ClInclude Include="CE_TypeID.h" />
     <ClInclude Include="CE_TypeReflection.h" />
@@ -314,6 +316,7 @@
     <ClInclude Include="CT_ToolModule.h" />
     <ClInclude Include="CUI_Button.h" />
     <ClInclude Include="CUI_Container.h" />
+    <ClInclude Include="CUI_Defines.h" />
     <ClInclude Include="CUI_Dropbox.h" />
     <ClInclude Include="CUI_EditBox.h" />
     <ClInclude Include="CUI_HBox.h" />

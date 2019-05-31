@@ -13,6 +13,9 @@
 #include "CE_ObjLoader.h"
 #include "CE_ObjManager.h"
 #include "CE_MaterialManager.h"
+#include "CE_GPUContext.h"
+#include "CE_Texture.h"
+#include "CE_TextureManager.h"
 
 CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 	: myGPUContext(anGPUContext)
@@ -61,6 +64,8 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 	CE_GenericShader* spriteVX = shaderManager->GetShader("Sprite.vx");
 	CE_GenericShader* spritePX = shaderManager->GetShader("Sprite.px");
 	mySpriteShader = new CE_ShaderPair(spriteVX, spritePX);
+
+	myEmptyTexture = CE_TextureManager::GetInstance()->GetEmptyTexture();
 }
 
 CE_Renderer::~CE_Renderer()
@@ -232,6 +237,13 @@ void CE_Renderer::RenderSprite(const CE_2DData& aSpriteData)
 	spriteData->myHotspot.x = aSpriteData.mySizeAndHotspot.z * 2.f;
 	spriteData->myHotspot.y = aSpriteData.mySizeAndHotspot.w * 2.f;
 
+	ID3D11DeviceContext* context = myGPUContext.GetContext();
+	ID3D11ShaderResourceView* resource = myEmptyTexture->GetShaderView();
+
+	if (const CE_Texture* texture = aSpriteData.myTexture)
+		resource = texture->GetShaderView();
+
+	context->PSSetShaderResources(0, 1, &resource);
 	mySprite->Render();
 }
 

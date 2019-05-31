@@ -7,11 +7,14 @@
 
 CUI_Dropbox::CUI_Dropbox(const CE_String& aString)
 	: myIsExpanded(false)
+	, myFirstListIndex(2)
+	, myMaxVisibleListCount(10)
 {
 	CUI_Button* button = new CUI_Button(aString);
 	button->myOnClick = std::bind(&CUI_Dropbox::OnToggleExpansionClick, this);
 
-	CUI_Image* background = new CUI_Image({ 0.17f, 0.17f, 0.17f, 1.f });
+	//CUI_Image* background = new CUI_Image({ 0.17f, 0.17f, 0.17f, 1.f });
+	CUI_Image* background = new CUI_Image("panel");
 
 	AddWidget(button);
 	AddWidget(background);
@@ -35,12 +38,16 @@ void CUI_Dropbox::PrepareLayout()
 	if (IsEmpty())
 		return;
 	
-	position.x += 10.f;
 	position.y += mySize.y;
 	background->SetPosition(position);
+	position.x += 10.f;
+
+	int iterations = myWidgets.Size() < myMaxVisibleListCount ? myWidgets.Size() : myMaxVisibleListCount;
+	iterations += myFirstListIndex;
 
 	CE_Vector2f totalChildSize;
-	for (int i = 2; i < myWidgets.Size(); ++i)
+	totalChildSize.x = mySize.x;
+	for (int i = myFirstListIndex; i < iterations; ++i)
 	{
 		CUI_Widget* child = myWidgets[i];
 		child->Show();
@@ -59,8 +66,8 @@ void CUI_Dropbox::PrepareLayout()
 
 	if (myIsExpanded && !IsEmpty())
 	{
-		myWidgets[1]->Show();
-		myWidgets[1]->SetSize(totalChildSize);
+		background->Show();
+		background->SetSize(totalChildSize);
 	}
 }
 
@@ -70,7 +77,11 @@ void CUI_Dropbox::Render(CE_RendererProxy& anRendererProxy)
 
 	if (myIsExpanded)
 	{
-		for (int i = 1; i < myWidgets.Size(); ++i)
+		myWidgets[1]->Render(anRendererProxy);
+
+		int iterations = myWidgets.Size() < myMaxVisibleListCount ? myWidgets.Size() : myMaxVisibleListCount;
+		iterations += myFirstListIndex;
+		for (int i = myFirstListIndex; i < iterations; ++i)
 			myWidgets[i]->Render(anRendererProxy);
 	}
 }
@@ -90,7 +101,10 @@ bool CUI_Dropbox::OnMouseUp(const CUI_MouseMessage& aMessage)
 	{
 		CUI_Widget* clickedWidget = nullptr;
 		int index = 0;
-		for (int i = 2; i < myWidgets.Size(); ++i)
+
+		int iterations = myWidgets.Size() < myMaxVisibleListCount ? myWidgets.Size() : myMaxVisibleListCount;
+		iterations += myFirstListIndex;
+		for (int i = myFirstListIndex; i < iterations; ++i)
 		{
 			CUI_Widget* widget = myWidgets[i];
 			if (widget->OnMouseUp(aMessage) || widget->Contains(aMessage.myNewPosition))
@@ -111,10 +125,48 @@ bool CUI_Dropbox::OnMouseUp(const CUI_MouseMessage& aMessage)
 	return CUI_Widget::OnMouseUp(aMessage);
 }
 
+bool CUI_Dropbox::OnMouseWheel(const CUI_MouseMessage& aMessage)
+{
+	if (myIsExpanded == false)
+		return false;
+
+	if (!myIsVisible && myIsFocused)
+		return false;
+
+	if (myWidgets[1]->Contains(aMessage.myNewPosition))
+	{
+		OnMouseMessage(aMessage);
+		return true;
+	}
+
+	return false;
+}
+
+bool CUI_Dropbox::OnMouseMessage(const CUI_MouseMessage& aMessage)
+{
+	if (aMessage.myType != CUI_MouseMessage::MOUSE_WHEEL)
+		return false;
+
+	if (aMessage.myMouseWheelDelta < 0)
+		--myFirstListIndex;
+	else if (aMessage.myMouseWheelDelta > 0)
+		++myFirstListIndex;
+
+	if (myFirstListIndex < 2)
+		myFirstListIndex = 2;
+	
+	if (myFirstListIndex + myMaxVisibleListCount > GetLabelCount())
+		myFirstListIndex = GetLabelCount() - myMaxVisibleListCount + 2;
+
+	return true;
+}
+
 void CUI_Dropbox::DeleteAllChildren()
 {
 	while (myWidgets.Size() > 2)
 		myWidgets.DeleteCyclicAtIndex(2);
+
+	myFirstListIndex = 2;
 }
 
 void CUI_Dropbox::AddLabel(const char* aString)

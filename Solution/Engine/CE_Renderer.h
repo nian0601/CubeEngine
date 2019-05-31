@@ -11,6 +11,7 @@ class CE_RenderObject;
 class CE_ConstantBuffer;
 
 class CE_ShaderPair;
+class CE_Texture;
 
 #include "CE_DebugPrimitives.h"
 #include "CE_RendererProxy.h"
@@ -54,5 +55,7 @@ private:
 	CE_ShaderPair* myCubeShader;
 	CE_ShaderPair* myLineShader;
 	CE_ShaderPair* myLine2DShader;
+
+	const CE_Texture* myEmptyTexture;
 };
 

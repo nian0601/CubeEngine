@@ -23,7 +23,7 @@ CT_ToolModule::~CT_ToolModule()
 void CT_ToolModule::Update(float aDelta)
 {
 	for (CT_ToolEntity& entity : myEntities)
-		UpdateAABB(entity);
+		entity.myAABB.Move(entity.myTransform->GetPos());
 
 	if (!myGizmo->Update(myInput, aDelta))
 	{
@@ -36,13 +36,16 @@ void CT_ToolModule::Render(CE_RendererProxy& aRenderProxy)
 	myGizmo->Render(aRenderProxy);
 }
 
-void CT_ToolModule::AddToolEntity(CE_Entity anEntity, CE_Matrix44f* aTransform, CE_Vector3f* aScale)
+void CT_ToolModule::AddToolEntity(CE_Entity anEntity, CE_Matrix44f* aTransform, CE_Vector3f* aScale, const CE_Vector3f& aMin, const CE_Vector3f& aMax)
 {
 	CT_ToolEntity& entity = myEntities.Add();
 	entity.myRealEntity = anEntity;
 	entity.myTransform = aTransform;
 	entity.myScale = aScale;
-	UpdateAABB(entity);
+
+	entity.myAABB.myExtents = aMax - aMin;
+	entity.myAABB.myExtents *= *entity.myScale;
+	entity.myAABB.Move(entity.myTransform->GetPos());
 }
 
 void CT_ToolModule::RemoveToolEntity(CE_Entity anEntity)
@@ -58,7 +61,7 @@ void CT_ToolModule::RemoveToolEntity(CE_Entity anEntity)
 			}
 
 			myEntities.RemoveCyclicAtIndex(i);
-			return;
+			--i;
 		}
 	}
 }
@@ -90,10 +93,4 @@ void CT_ToolModule::UpdateSelection()
 			myGizmo->SetTransformAndScale(toolEntity.myTransform, toolEntity.myScale);
 		}
 	}
-}
-
-void CT_ToolModule::UpdateAABB(CT_ToolEntity& anEntity)
-{
-	anEntity.myAABB.myExtents = *anEntity.myScale;
-	anEntity.myAABB.Move(anEntity.myTransform->GetPos());
 }

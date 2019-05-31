@@ -26,6 +26,8 @@
 #include <CE_DebugDraw.h>
 #include <CE_FileSystem.h>
 #include "EntityFactory.h"
+#include <CE_ObjManager.h>
+#include <CE_Input.h>
 
 
 EntityEditorContext::EntityEditorContext()
@@ -35,6 +37,9 @@ EntityEditorContext::EntityEditorContext()
 
 EntityEditorContext::~EntityEditorContext()
 {
+	CE_SAFE_DELETE(myToolModule);
+	CE_SAFE_DELETE(myEntityFactory);
+	CE_SAFE_DELETE(myWorld);
 }
 
 void EntityEditorContext::Init(CE_Engine& anEngine)
@@ -51,22 +56,36 @@ void EntityEditorContext::Init(CE_Engine& anEngine)
 	myWorld = new CE_World();
 	myEntityFactory = new EntityFactory(*myWorld);
 
+	myToolModule = new CT_ToolModule(*camera, *myInput);
+
 	RenderProcessor* renderProcessor = new RenderProcessor(*myWorld, anEngine.GetRendererProxy());
 	myWorld->AddProcessor(renderProcessor);
 
-	myNumEntries = 0;
+	myEntity = myWorld->CreateEmptyEntity();
+	myWorld->AddComponent<TranslationComponent>(myEntity);
+	myRenderComponent = &myWorld->AddComponent<RenderComponent>(myEntity);
+	myRenderComponent->myEntries.Respace(128);
 
-	InitGUI();
+	SetupConstantWidgets();
 }
 
 void EntityEditorContext::Update(float aDelta)
 {
+	myToolModule->Update(aDelta);
 	myWorld->Update(aDelta);
+
+	if (myInput->MouseDown(1))
+	{
+		myModelsDropbox->SetPosition(myInput->GetMousePosition());
+		myModelsDropbox->Show();
+		myModelsDropbox->SetExpansion(true);
+	}
 }
 
 void EntityEditorContext::Render()
 {
 	RenderGrid();
+	myToolModule->Render(*myRendererProxy);
 }
 
 void EntityEditorContext::RenderGrid()
@@ -103,94 +122,34 @@ void EntityEditorContext::RenderGrid()
 	}
 }
 
-void EntityEditorContext::InitGUI()
+void EntityEditorContext::SetupConstantWidgets()
 {
-	myTreeView = new CUI_TreeView("Components");
-	myTreeView->SetExpanded(true);
-	myUIManager->AddWidget(myTreeView);
-	CE_Entity entity = myWorld->CreateEmptyEntity();
-	myWorld->AddComponent<TranslationComponent>(entity);
-	myRenderComponent = &myWorld->AddComponent<RenderComponent>(entity);
-	myRenderComponent->myEntries.Respace(128);
-	CreateRenderComponentWidget();
+	myModelsDropbox= new CUI_Dropbox("Models");
+	myModelsDropbox->Hide();
+	myModelsDropbox->myOnSelection = std::bind(&EntityEditorContext::OnModelDropboxSelection, this, std::placeholders::_1, std::placeholders::_2);
+	myUIManager->AddWidget(myModelsDropbox);
+
+	CE_GrowingArray<CE_FileSystem::FileInfo> models;
+	CE_FileSystem::GetAllFilesFromDirectory("Data/Models/", models);
+
+	for (const CE_FileSystem::FileInfo& fileInfo : models)
+		myModelsDropbox->AddLabel(fileInfo.myFileNameNoExtention.c_str());
 }
 
-
-void EntityEditorContext::CreateRenderComponentWidget()
+void EntityEditorContext::OnModelDropboxSelection(CUI_Widget* aWidget, int /*aWidgetIndex*/)
 {
-	myRenderComponentView = new CUI_TreeView("Render Component");
-	myRenderComponentView->SetExpanded(true);
-	myTreeView->AddWidget(myRenderComponentView);
-	
+	myModelsDropbox->SetExpansion(false);
+	myModelsDropbox->Hide();
 
-	CUI_Button* addEntryButton = new CUI_Button("Add Entry");
-	addEntryButton->myOnClick = std::bind(&EntityEditorContext::AddRenderEntry, this);
-	myRenderComponentView->AddWidget(addEntryButton);
+	CUI_Label* label = static_cast<CUI_Label*>(aWidget);
+	CE_String text = label->GetText();
+	text += ".obj";
 
-	CUI_Button* clearEntriesButton = new CUI_Button("Clear Entries");
-	clearEntriesButton->myOnClick = std::bind(&EntityEditorContext::ClearRenderEntries, this);
-	myRenderComponentView->AddWidget(clearEntriesButton);
-
-
-	AddRenderEntry();
-	AddRenderEntry();
-}
-
-void EntityEditorContext::AddRenderEntry()
-{
 	RenderComponent::Entry& entry = myRenderComponent->myEntries.Add();
-	entry.myScale = CE_Vector3f(1.f);
-	entry.myColor = CE_Vector4f(0.25f, 0.5f, 0.75f, 1.f);
+	entry.myModelID = CE_ObjManager::GetInstance()->GetObjID(text.c_str());;
+	entry.myType = ModelType::eType::OBJ_MODEL;
 
-	CE_String text = "Entry ";
-	text += myNumEntries++;
-	CUI_TreeView* entryView = new CUI_TreeView(text);
 
-	entryView->AddWidget(CreateVectorWidget("Scale", entry.myScale));
-	entryView->AddWidget(CreateColorWidget("Color", entry.myColor));
-
-	myRenderComponentView->AddWidget(entryView);
-}
-
-CUI_TreeView* EntityEditorContext::CreateVectorWidget(const char* aText, CE_Vector3f& aVector)
-{
-	CUI_HBox* xBox = CreateFloatController("X: ", aVector.x);
-	CUI_HBox* yBox = CreateFloatController("Y: ", aVector.y);
-	CUI_HBox* zBox = CreateFloatController("Z: ", aVector.z);
-
-	CUI_TreeView* view = new CUI_TreeView(aText);
-	view->AddWidget(xBox);
-	view->AddWidget(yBox);
-	view->AddWidget(zBox);
-	return view;
-}
-
-CUI_TreeView* EntityEditorContext::CreateColorWidget(const char* aText, CE_Vector4f& aVector)
-{
-	CUI_HBox* rBox = CreateFloatController("R: ", aVector.x);
-	CUI_HBox* gBox = CreateFloatController("G: ", aVector.y);
-	CUI_HBox* bBox = CreateFloatController("B: ", aVector.z);
-
-	CUI_TreeView* view = new CUI_TreeView(aText);
-	view->AddWidget(rBox);
-	view->AddWidget(gBox);
-	view->AddWidget(bBox);
-	return view;
-}
-
-CUI_HBox* EntityEditorContext::CreateFloatController(const char* aText, float& aValue)
-{
-	CUI_HBox* box = new CUI_HBox();
-	box->AddWidget(new CUI_Label(aText));
-
-	CUI_ValueController* controller = new CUI_ValueController(&aValue);
-	box->AddWidget(new CUI_Label(controller));
-
-	return box;
-}
-
-void EntityEditorContext::ClearRenderEntries()
-{
-	myRenderComponentView->DeleteChildren(2);
-	myRenderComponent->myEntries.RemoveAll();
+	const CE_ObjData* objData = CE_ObjManager::GetInstance()->GetObjData(entry.myModelID);
+	myToolModule->AddToolEntity(myEntity, &entry.myOffsetMatrix, &entry.myScale, objData->myMin, objData->myMax);
 }

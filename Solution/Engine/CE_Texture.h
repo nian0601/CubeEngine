@@ -20,11 +20,11 @@ public:
 
 	const CE_Vector2i& GetSize() const { return mySize; }
 
-	ID3D11ShaderResourceView* GetShaderView() { return myShaderView; }
-	ID3D11RenderTargetView* GetRenderTarget() { return myRenderTarget; }
+	ID3D11ShaderResourceView* GetShaderView() const { return myShaderView; }
+	ID3D11RenderTargetView* GetRenderTarget() const { return myRenderTarget; }
 
-	ID3D11ShaderResourceView* GetDepthView() { return myDepthShaderView; }
-	ID3D11DepthStencilView* GetDepthStencil() { return myDepthStencil; }
+	ID3D11ShaderResourceView* GetDepthView() const { return myDepthShaderView; }
+	ID3D11DepthStencilView* GetDepthStencil() const { return myDepthStencil; }
 
 private:
 	void CreateRenderTarget(const CE_Vector2i& aSize, unsigned int aBindFlag, unsigned int aFormat, CE_GPUContext& aGPUContext);

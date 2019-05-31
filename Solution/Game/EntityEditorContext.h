@@ -2,12 +2,9 @@
 
 #include "GameContext.h"
 
+class CUI_Dropbox;
 class CUI_Manager;
-class CUI_TreeView;
-class CUI_ValueController;
-class CUI_HBox;
 class CUI_Widget;
-class CUI_EditBox;
 
 class CE_Input;
 class CE_RendererProxy;
@@ -32,21 +29,13 @@ public:
 private:
 	void RenderGrid();
 
-	void InitGUI();
+	void SetupConstantWidgets();
+	void OnModelDropboxSelection(CUI_Widget* aWidget, int aWidgetIndex);
 
-	void CreateRenderComponentWidget();
-	void AddRenderEntry();
-	CUI_TreeView* CreateVectorWidget(const char* aText, CE_Vector3f& aVector);
-	CUI_TreeView* CreateColorWidget(const char* aText, CE_Vector4f& aVector);
-
-	CUI_HBox* CreateFloatController(const char* aText, float& aValue);
-	void ClearRenderEntries();
-
+	CE_Entity myEntity;
 	RenderComponent* myRenderComponent;
 
 	CUI_Manager* myUIManager;
-	CUI_TreeView* myTreeView;
-	CUI_TreeView* myRenderComponentView;
 
 	CE_Input* myInput;
 	CE_RendererProxy* myRendererProxy;
@@ -54,6 +43,8 @@ private:
 	CE_World* myWorld;
 	EntityFactory* myEntityFactory;
 
-	int myNumEntries;
+	CUI_Dropbox* myModelsDropbox;
+
+	CT_ToolModule* myToolModule;
 };
 

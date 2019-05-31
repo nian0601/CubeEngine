@@ -146,14 +146,20 @@ void CE_RenderObject::InitCube(const CE_GPUContext& aGPUContext)
 void CE_RenderObject::InitSprite(const CE_GPUContext& aGPUContext)
 {
 	int vertexCount = 4;
-	CE_Pos_Vert* vertices = new CE_Pos_Vert[vertexCount];
+	CE_Pos_UV_Vert* vertices = new CE_Pos_UV_Vert[vertexCount];
 	vertices[0].myPosition = CE_Vector4f(-1.0f, -1.0f, 0.0f, 1.f); //topleft
-	vertices[1].myPosition = CE_Vector4f(1.0f, -1.0f, 0.0f, 1.f); //topright
-	vertices[2].myPosition = CE_Vector4f(-1.0f, 1.0f, 0.0f, 1.f); //bottomleft
-	vertices[3].myPosition = CE_Vector4f(1.0f, 1.0f, 0.0f, 1.f); //bottomright
+	vertices[0].myTexCoord = CE_Vector2f(0.f, 1.f);
 
-															// Load the index array with data.
-	unsigned int indexCount = 6;
+	vertices[1].myPosition = CE_Vector4f(1.0f, -1.0f, 0.0f, 1.f); //topright
+	vertices[1].myTexCoord = CE_Vector2f(1.f, 1.f);
+
+	vertices[2].myPosition = CE_Vector4f(-1.0f, 1.0f, 0.0f, 1.f); //bottomleft
+	vertices[2].myTexCoord = CE_Vector2f(0.f, 0.f);
+
+	vertices[3].myPosition = CE_Vector4f(1.0f, 1.0f, 0.0f, 1.f); //bottomright
+	vertices[3].myTexCoord = CE_Vector2f(1.f, 0.f);
+
+	int indexCount = 6;
 	UINT* indices = new UINT[indexCount];
 	indices[0] = 0;
 	indices[1] = 2;
@@ -161,10 +167,10 @@ void CE_RenderObject::InitSprite(const CE_GPUContext& aGPUContext)
 
 	indices[3] = 1;
 	indices[4] = 2;
-	indices[5] = 3;
+	indices[5] = 3;;
 
 	myGPUBuffer = new CE_GPUBuffer(aGPUContext);
-	myGPUBuffer->InitVertexBuffer(vertices, vertexCount, sizeof(CE_Pos_Vert));
+	myGPUBuffer->InitVertexBuffer(vertices, vertexCount, sizeof(CE_Pos_UV_Vert));
 	myGPUBuffer->InitIndexBuffer(indices, indexCount);
 	myGPUBuffer->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 

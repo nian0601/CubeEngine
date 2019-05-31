@@ -4,10 +4,10 @@
 #include "CE_FileParser.h"
 
 CE_MaterialManager* CE_MaterialManager::ourInstance = nullptr;
-void CE_MaterialManager::Create(const char* aMaterialPath)
+void CE_MaterialManager::Create()
 {
 	CE_ASSERT(ourInstance == nullptr, "Tried to create MaterialManager twice!");
-	ourInstance = new CE_MaterialManager(aMaterialPath);
+	ourInstance = new CE_MaterialManager();
 }
 
 void CE_MaterialManager::Destroy()
@@ -16,10 +16,10 @@ void CE_MaterialManager::Destroy()
 }
 
 
-CE_MaterialManager::CE_MaterialManager(const char* aMaterialsPath)
+CE_MaterialManager::CE_MaterialManager()
 {
 	CE_GrowingArray<CE_FileSystem::FileInfo> files;
-	CE_FileSystem::GetAllFilesFromDirectory(aMaterialsPath, files);
+	CE_FileSystem::GetAllFilesFromDirectory("Data/Materials", files);
 
 	for (const CE_FileSystem::FileInfo& fileInfo : files)
 	{

@@ -30,7 +30,7 @@ void CE_ComponentStorage::DestroyEntity(CE_Entity anEntity)
 {
 	for (int i = 0; i < MAX_NUMBER_OF_COMPONENTS; ++i)
 	{
-		if (HasComponent(anEntity, i) != -1)
+		if (HasComponent(anEntity, i))
 			RemoveComponent(anEntity, i);
 	}
 }
@@ -46,7 +46,7 @@ void CE_ComponentStorage::AddComponent(CE_Entity aEntity, CE_BaseComponent* aCom
 
 void CE_ComponentStorage::RemoveComponent(CE_Entity aEntity, unsigned int aComponentID)
 {
-	int index = HasComponent(aEntity, aComponentID);
+	int index = GetComponentIndex(aEntity, aComponentID);
 	CE_ASSERT(index != -1, "Tried to Remove an invalid component");
 	CE_SAFE_DELETE(myComponents[aComponentID][index]);
 	myEntityComponents[aEntity].RemoveComponent(aComponentID);
@@ -54,19 +54,17 @@ void CE_ComponentStorage::RemoveComponent(CE_Entity aEntity, unsigned int aCompo
 
 CE_BaseComponent& CE_ComponentStorage::GetComponent(CE_Entity aEntity, unsigned int aComponentID)
 {
-	int index = HasComponent(aEntity, aComponentID);
+	int index = GetComponentIndex(aEntity, aComponentID);
 	CE_ASSERT(index != -1, "Tried to Get an invalid component");
 	return *myComponents[aComponentID][index];
 }
 
-int CE_ComponentStorage::HasComponent(CE_Entity aEntity, unsigned int aComponentID)
+bool CE_ComponentStorage::HasComponent(CE_Entity aEntity, unsigned int aComponentID)
 {
 	if (myEntityComponents.Size() <= static_cast<int>(aEntity))
-	{
-		return -1;
-	}
+		return false;
 
-	return myEntityComponents[aEntity].myComponentIndices[aComponentID];
+	return myEntityComponents[aEntity].myComponentIndices[aComponentID] != -1;
 }
 
 const CE_GrowingArray<CE_Entity>& CE_ComponentStorage::GetEntities(const CE_ComponentFilter& aFilter)
@@ -90,4 +88,12 @@ bool CE_ComponentStorage::GetEntityComponentArray(CE_Entity aEntity, CE_EntityCo
 
 	outArray = myEntityComponents[aEntity];
 	return true;
+}
+
+int CE_ComponentStorage::GetComponentIndex(CE_Entity aEntity, unsigned int aComponentID)
+{
+	if (myEntityComponents.Size() <= static_cast<int>(aEntity))
+		return -1;
+
+	return myEntityComponents[aEntity].myComponentIndices[aComponentID];
 }

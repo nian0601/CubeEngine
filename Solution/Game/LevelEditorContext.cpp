@@ -115,6 +115,15 @@ void LevelEditorContext::InitGUI(CUI_Manager& aUIManager)
 
 void LevelEditorContext::BuildEntityDropbox(CUI_Manager& aUIManager)
 {
+	CUI_HBox* saveBox = new CUI_HBox();
+	myEditbox = new CUI_EditBox(256.f);
+	CUI_Button* saveButton = new CUI_Button("Save Level");
+	saveButton->myOnClick = std::bind(&LevelEditorContext::OnSaveLevel, this);
+
+	saveBox->AddWidget(myEditbox);
+	saveBox->AddWidget(saveButton);
+	aUIManager.AddWidget(saveBox);
+
 	CE_GrowingArray<CE_FileSystem::FileInfo> entityFiles;
 	CE_FileSystem::GetAllFilesFromDirectory("Data/Entities", entityFiles);
 
@@ -125,15 +134,6 @@ void LevelEditorContext::BuildEntityDropbox(CUI_Manager& aUIManager)
 	dropbox->myOnSelection = std::bind(&LevelEditorContext::OnSelection, this, std::placeholders::_1);
 
 	aUIManager.AddWidget(dropbox);
-
-	CUI_HBox* saveBox = new CUI_HBox();
-	myEditbox = new CUI_EditBox(256.f);
-	CUI_Button* saveButton = new CUI_Button("Save Level");
-	saveButton->myOnClick = std::bind(&LevelEditorContext::OnSaveLevel, this);
-
-	saveBox->AddWidget(myEditbox);
-	saveBox->AddWidget(saveButton);
-	aUIManager.AddWidget(saveBox);
 }
 
 void LevelEditorContext::OnSelection(CUI_Widget* aWidget)
@@ -196,10 +196,10 @@ void LevelEditorContext::OnLoadLevel()
 CE_Entity LevelEditorContext::CreateEntity(const CE_String& aType)
 {
 	CE_Entity entity = myEntityFactory->InstansiateEntity(aType.c_str());
-	if (myWorld->HasComponent<TranslationComponent>(entity) != -1)
+	if (myWorld->HasComponent<TranslationComponent>(entity))
 	{
 		TranslationComponent& translation = myWorld->GetComponent<TranslationComponent>(entity);
-		myToolModule->AddToolEntity(entity, &translation.myOrientation, &translation.myScale);
+		myToolModule->AddToolEntity(entity, &translation.myOrientation, &translation.myScale, { 0.f, 0.f, 0.f }, { 1.f, 1.f, 1.f });
 	}
 
 	return entity;
@@ -208,13 +208,13 @@ CE_Entity LevelEditorContext::CreateEntity(const CE_String& aType)
 CE_Entity LevelEditorContext::CreateEntity(const CE_String& aType, const CE_Vector3f& aPosition, const CE_Vector3f& aScale)
 {
 	CE_Entity entity = myEntityFactory->InstansiateEntity(aType.c_str());
-	if (myWorld->HasComponent<TranslationComponent>(entity) != -1)
+	if (myWorld->HasComponent<TranslationComponent>(entity))
 	{
 		TranslationComponent& translation = myWorld->GetComponent<TranslationComponent>(entity);
 		translation.myOrientation.SetPos(aPosition);
 		translation.myScale = aScale;
 
-		myToolModule->AddToolEntity(entity, &translation.myOrientation, &translation.myScale);
+		myToolModule->AddToolEntity(entity, &translation.myOrientation, &translation.myScale, { 0.f, 0.f, 0.f }, { 1.f, 1.f, 1.f });
 	}
 
 	return entity;

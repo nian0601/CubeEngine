@@ -257,6 +257,9 @@
     <ClCompile Include="CE_AssetManager.cpp">
       <Filter>Rendering\Assets</Filter>
     </ClCompile>
+    <ClCompile Include="CE_TextureManager.cpp">
+      <Filter>Rendering\Assets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Precompile">
@@ -716,6 +719,12 @@
       <Filter>Rendering\Assets</Filter>
     </ClInclude>
     <ClInclude Include="CE_AssetManager.h">
+      <Filter>Rendering\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="CUI_Defines.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_TextureManager.h">
       <Filter>Rendering\Assets</Filter>
     </ClInclude>
   </ItemGroup>

@@ -10,6 +10,8 @@ public:
 		CE_GrowingArray<CE_PosNormColor_Vert> myVertices;
 		CE_GrowingArray<unsigned int> myIndices;
 		CE_String myMaterial;
+		CE_Vector3f myMin;
+		CE_Vector3f myMax;
 	};
 
 	void Load(const char* aFilePath);

@@ -15,12 +15,15 @@ struct CE_ObjMesh
 struct CE_ObjData
 {
 	CE_GrowingArray<CE_ObjMesh> myMeshes;
+
+	CE_Vector3f myMin;
+	CE_Vector3f myMax;
 };
 
 class CE_ObjManager : public CE_AssetManager
 {
 public:
-	static void Create(const char* aObjFolder, const CE_GPUContext& aGPUContext);
+	static void Create(const CE_GPUContext& aGPUContext);
 	static void Destroy();
 	static CE_ObjManager* GetInstance() { return ourInstance; }
 
@@ -28,7 +31,7 @@ public:
 	int GetObjID(const char* aObjName);
 
 private:
-	CE_ObjManager(const char* aObjFolder, const CE_GPUContext& aGPUContext);
+	CE_ObjManager(const CE_GPUContext& aGPUContext);
 
 	void LoadObj(const char* aObjName);
 

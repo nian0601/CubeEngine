@@ -4,10 +4,10 @@
 #include "CE_VertexShader.h"
 
 CE_ShaderManager* CE_ShaderManager::ourInstance = nullptr;
-void CE_ShaderManager::Create(const char* aShaderDataPath, CE_GPUContext& aGPUContext)
+void CE_ShaderManager::Create(CE_GPUContext& aGPUContext)
 {
 	CE_ASSERT(ourInstance == nullptr, "Tried to create ShaderManager twice!");
-	ourInstance = new CE_ShaderManager(aShaderDataPath, aGPUContext);
+	ourInstance = new CE_ShaderManager(aGPUContext);
 }
 
 void CE_ShaderManager::Destroy()
@@ -15,10 +15,10 @@ void CE_ShaderManager::Destroy()
 	CE_SAFE_DELETE(ourInstance);
 }
 
-CE_ShaderManager::CE_ShaderManager(const char* aShaderDataPath, CE_GPUContext& aGPUContext)
+CE_ShaderManager::CE_ShaderManager(CE_GPUContext& aGPUContext)
 	: myGPUContext(aGPUContext)
 {
-	CE_FileSystem::GetAllFilesFromDirectory(aShaderDataPath, myFiles);
+	CE_FileSystem::GetAllFilesFromDirectory("Data/Shaders", myFiles);
 	
 	for (const CE_FileSystem::FileInfo& fileInfo : myFiles)
 	{
