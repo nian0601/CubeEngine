@@ -134,9 +134,6 @@
     <ClCompile Include="CE_ModelSphereCreator.cpp">
       <Filter>Rendering\RenderObjects\ModelCreator</Filter>
     </ClCompile>
-    <ClCompile Include="CE_ConstantBuffer.cpp">
-      <Filter>Rendering\Buffers</Filter>
-    </ClCompile>
     <ClCompile Include="CE_PixelShader.cpp">
       <Filter>Rendering\Shaders</Filter>
     </ClCompile>
@@ -575,9 +572,6 @@
     </ClInclude>
     <ClInclude Include="CE_ModelSphereCreator.h">
       <Filter>Rendering\RenderObjects\ModelCreator</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_ConstantBuffer.h">
-      <Filter>Rendering\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="CE_PixelShader.h">
       <Filter>Rendering\Shaders</Filter>

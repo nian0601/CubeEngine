@@ -7,7 +7,6 @@
 #include "CE_Camera.h"
 #include "CE_RenderObject.h"
 #include "CE_ShaderStructs.h"
-#include "CE_ConstantBuffer.h"
 #include "CE_ShaderPair.h"
 #include "CE_ShaderManager.h"
 #include "CE_ObjLoader.h"
