@@ -23,7 +23,7 @@ struct CE_ObjData
 class CE_ObjManager : public CE_AssetManager
 {
 public:
-	static void Create(const CE_GPUContext& aGPUContext);
+	static void Create();
 	static void Destroy();
 	static CE_ObjManager* GetInstance() { return ourInstance; }
 
@@ -31,15 +31,13 @@ public:
 	int GetObjID(const char* aObjName);
 
 private:
-	CE_ObjManager(const CE_GPUContext& aGPUContext);
+	CE_ObjManager();
 
 	void LoadObj(const char* aObjName);
 
 	CE_Map<CE_String, int> myNameToIDMap;
 	CE_Map<int, CE_ObjData> myObjDataMap;
 	int myNextFreeID;
-
-	const CE_GPUContext& myGPUContext;
 
 	static CE_ObjManager* ourInstance;
 };

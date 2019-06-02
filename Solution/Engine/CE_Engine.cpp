@@ -22,7 +22,7 @@
 #include "CE_TextureManager.h"
 
 CE_DebugRenderManager* CE_Engine::myDebugRenderManager = nullptr;
-
+CE_GPUContext* CE_Engine::myGPUContext = nullptr;
 CE_Engine::CE_Engine(CE_Game* aGame)
 	: myGame(aGame)
 {
@@ -35,7 +35,7 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 	myGPUContext = new CE_GPUContext(*myDirectX);
 	CE_ShaderManager::Create(*myGPUContext);
 	CE_MaterialManager::Create();
-	CE_ObjManager::Create(*myGPUContext);
+	CE_ObjManager::Create();
 	CE_TextureManager::Create(*myGPUContext);
 
 	CE_WindowManager::Create(*myGPUContext);
@@ -54,7 +54,6 @@ CE_Engine::CE_Engine(CE_Game* aGame)
 
 CE_Engine::~CE_Engine()
 {
-
 	CE_SAFE_DELETE(myDebugRenderManager);
 	CE_SAFE_DELETE(myInput);
 	CE_SAFE_DELETE(myTime);

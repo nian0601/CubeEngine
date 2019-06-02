@@ -24,8 +24,56 @@
 #include <CE_BinaryFileReader.h>
 #include <CE_BinaryFileWriter.h>
 
+
+int GetDenominatorCount(int aChange, int aDenominatorSize)
+{
+	if (aChange < aDenominatorSize)
+		return 0;
+
+	return aChange/ aDenominatorSize;
+}
+
+void TestSomeStuff()
+{
+	double doubleChange = 0.05f;
+
+	int change = static_cast<int>(doubleChange * 100.0);
+
+	int hundreds = GetDenominatorCount(change, 10000);
+	change -= hundreds * 10000;
+
+	int fifties = GetDenominatorCount(change, 5000);
+	change -= fifties * 5000;
+
+	int twenties = GetDenominatorCount(change, 2000);
+	change -= twenties * 2000;
+
+	int tens = GetDenominatorCount(change, 1000);
+	change -= tens * 1000;
+
+	int fives = GetDenominatorCount(change, 500);
+	change -= fives * 500;
+
+	int toonies = GetDenominatorCount(change, 200);
+	change -= toonies * 200;
+
+	int loonies = GetDenominatorCount(change, 100);
+	change -= loonies * 100;
+
+	int quaters = GetDenominatorCount(change, 25);
+	change -= quaters * 25;
+
+	int tenners = GetDenominatorCount(change, 10);
+	change -= tenners * 10;
+
+	int cents = (int)change;
+	cents;
+}
+
+
 LevelEditorContext::LevelEditorContext()
 {
+	TestSomeStuff();
 }
 
 

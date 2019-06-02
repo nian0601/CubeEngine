@@ -1,28 +1,43 @@
 #include "stdafx.h"
-#include "CE_RenderObject.h"
-#include <d3d11.h>
+
 #include "CE_GPUContext.h"
 #include "CE_GPUBuffer.h"
-#include "CE_ShaderStructs.h"
-#include "CE_ModelSphereCreator.h"
 #include "CE_LightSphereCreator.h"
+#include "CE_ModelSphereCreator.h"
 #include "CE_ObjLoader.h"
+#include "CE_RenderObject.h"
+#include "CE_ShaderStructs.h"
+
+#include <d3d11.h>
 
 CE_RenderObject::CE_RenderObject()
-	: myGPUBuffer(nullptr)
+	: myVertexBuffer(nullptr)
+	, myIndexBuffer(nullptr)
+	, myObjectBuffer(nullptr)
 {
 }
 
 CE_RenderObject::~CE_RenderObject()
 {
-	CE_SAFE_DELETE(myGPUBuffer);
+	CE_SAFE_DELETE(myObjectBuffer);
+	CE_SAFE_DELETE(myIndexBuffer);
+	CE_SAFE_DELETE(myVertexBuffer);
 }
 
-void CE_RenderObject::InitCube(const CE_GPUContext& aGPUContext)
+void CE_RenderObject::Init(void* someVertexData, int aVertexCount, int aVertexSize, void* someIndexData, int aIndexCount)
+{
+	myVertexBuffer = new CE_GPUVertexBuffer();
+	myVertexBuffer->InitStatic(someVertexData, aVertexCount, aVertexSize);
+
+	myIndexBuffer = new CE_GPUIndexBuffer();
+	myIndexBuffer->InitStatic(someIndexData, aIndexCount, sizeof(UINT));
+}
+
+void CE_RenderObject::InitCube()
 {
 #pragma region Vertices
-	int vertexCount = 24;
-	CE_PosNormColor_Vert* vertices = new CE_PosNormColor_Vert[vertexCount];
+	const int vertexCount = 24;
+	CE_PosNormColor_Vert vertices[vertexCount];
 
 	float size = 1.f;
 	float halfWidth = size / 2.f;
@@ -77,8 +92,8 @@ void CE_RenderObject::InitCube(const CE_GPUContext& aGPUContext)
 #pragma endregion
 
 #pragma region Indices
-	int indexCount = 36;
-	UINT* indices = new UINT[indexCount];
+	const int indexCount = 36;
+	UINT indices[indexCount];
 	//Top
 	indices[0] = 3;
 	indices[1] = 1;
@@ -134,19 +149,17 @@ void CE_RenderObject::InitCube(const CE_GPUContext& aGPUContext)
 	indices[35] = 22;
 #pragma endregion
 
-	myGPUBuffer = new CE_GPUBuffer(aGPUContext);
-	myGPUBuffer->InitVertexBuffer(vertices, vertexCount, sizeof(CE_PosNormColor_Vert));
-	myGPUBuffer->InitIndexBuffer(indices, indexCount);
-	myGPUBuffer->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	myVertexBuffer = new CE_GPUVertexBuffer();
+	myVertexBuffer->InitStatic(vertices, vertexCount, sizeof(CE_PosNormColor_Vert));
 
-	CE_SAFE_DELETE_ARRAY(vertices);
-	CE_SAFE_DELETE_ARRAY(indices);
+	myIndexBuffer = new CE_GPUIndexBuffer();
+	myIndexBuffer->InitStatic(indices, indexCount, sizeof(UINT));
 }
 
-void CE_RenderObject::InitSprite(const CE_GPUContext& aGPUContext)
+void CE_RenderObject::InitSprite()
 {
-	int vertexCount = 4;
-	CE_Pos_UV_Vert* vertices = new CE_Pos_UV_Vert[vertexCount];
+	const int vertexCount = 4;
+	CE_Pos_UV_Vert vertices[vertexCount];
 	vertices[0].myPosition = CE_Vector4f(-1.0f, -1.0f, 0.0f, 1.f); //topleft
 	vertices[0].myTexCoord = CE_Vector2f(0.f, 1.f);
 
@@ -159,29 +172,27 @@ void CE_RenderObject::InitSprite(const CE_GPUContext& aGPUContext)
 	vertices[3].myPosition = CE_Vector4f(1.0f, 1.0f, 0.0f, 1.f); //bottomright
 	vertices[3].myTexCoord = CE_Vector2f(1.f, 0.f);
 
-	int indexCount = 6;
-	UINT* indices = new UINT[indexCount];
+	const int indexCount = 6;
+	UINT indices[indexCount];
 	indices[0] = 0;
 	indices[1] = 2;
 	indices[2] = 1;
 
 	indices[3] = 1;
 	indices[4] = 2;
-	indices[5] = 3;;
+	indices[5] = 3;
 
-	myGPUBuffer = new CE_GPUBuffer(aGPUContext);
-	myGPUBuffer->InitVertexBuffer(vertices, vertexCount, sizeof(CE_Pos_UV_Vert));
-	myGPUBuffer->InitIndexBuffer(indices, indexCount);
-	myGPUBuffer->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	myVertexBuffer = new CE_GPUVertexBuffer();
+	myVertexBuffer->InitStatic(vertices, vertexCount, sizeof(CE_Pos_UV_Vert));
 
-	CE_SAFE_DELETE_ARRAY(vertices);
-	CE_SAFE_DELETE_ARRAY(indices);
+	myIndexBuffer = new CE_GPUIndexBuffer();
+	myIndexBuffer->InitStatic(indices, indexCount, sizeof(UINT));
 }
 
-void CE_RenderObject::InitFullscreenQuad(const CE_GPUContext& aGPUContext)
+void CE_RenderObject::InitFullscreenQuad()
 {
-	int vertexCount = 4;
-	CE_Pos_UV_Vert* vertices = new CE_Pos_UV_Vert[vertexCount];
+	const int vertexCount = 4;
+	CE_Pos_UV_Vert vertices[vertexCount];
 	vertices[0].myPosition = CE_Vector4f(-1.0f, -1.0f, 0.0f, 1.f); //topleft
 	vertices[0].myTexCoord = CE_Vector2f(0.f, 1.f);
 
@@ -194,48 +205,72 @@ void CE_RenderObject::InitFullscreenQuad(const CE_GPUContext& aGPUContext)
 	vertices[3].myPosition = CE_Vector4f(1.0f, 1.0f, 0.0f, 1.f); //bottomright
 	vertices[3].myTexCoord = CE_Vector2f(1.f, 0.f);
 
-	int indexCount = 6;
-	UINT* indices = new UINT[indexCount];
+	const int indexCount = 6;
+	UINT indices[indexCount];
 	indices[0] = 0;
 	indices[1] = 2;
 	indices[2] = 1;
 
 	indices[3] = 1;
 	indices[4] = 2;
-	indices[5] = 3;;
+	indices[5] = 3;
 
-	myGPUBuffer = new CE_GPUBuffer(aGPUContext);
-	myGPUBuffer->InitVertexBuffer(vertices, vertexCount, sizeof(CE_Pos_UV_Vert));
-	myGPUBuffer->InitIndexBuffer(indices, indexCount);
-	myGPUBuffer->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	myVertexBuffer = new CE_GPUVertexBuffer();
+	myVertexBuffer->InitStatic(vertices, vertexCount, sizeof(CE_Pos_UV_Vert));
 
-	CE_SAFE_DELETE_ARRAY(vertices);
-	CE_SAFE_DELETE_ARRAY(indices);
+	myIndexBuffer = new CE_GPUIndexBuffer();
+	myIndexBuffer->InitStatic(indices, indexCount, sizeof(UINT));
 }
 
-void CE_RenderObject::InitSphere(const CE_GPUContext& aGPUContext)
+void CE_RenderObject::InitSphere()
 {
 	CE_ModelSphereCreator sphereCreator;
 	sphereCreator.Create(4);
 
-	myGPUBuffer = new CE_GPUBuffer(aGPUContext);
-	myGPUBuffer->InitVertexBuffer(sphereCreator.myVertices.GetArrayAsPointer(), sphereCreator.myVertices.Size(), sizeof(sphereCreator.myVertices[0]));
-	myGPUBuffer->InitIndexBuffer(sphereCreator.myIndices.GetArrayAsPointer(), sphereCreator.myIndices.Size());
-	myGPUBuffer->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	myVertexBuffer = new CE_GPUVertexBuffer();
+	myVertexBuffer->InitStatic(sphereCreator.myVertices.GetArrayAsPointer(), sphereCreator.myVertices.Size(), sizeof(sphereCreator.myVertices[0]));
+
+	myIndexBuffer = new CE_GPUIndexBuffer();
+	myIndexBuffer->InitStatic(sphereCreator.myIndices.GetArrayAsPointer(), sphereCreator.myIndices.Size(), sizeof(sphereCreator.myIndices[0]));
 }
 
-void CE_RenderObject::InitLightSphere(const CE_GPUContext& aGPUContext)
+void CE_RenderObject::InitLightSphere()
 {
 	CE_LightSphereCreator sphereCreator;
 	sphereCreator.Create(2);
 
-	myGPUBuffer = new CE_GPUBuffer(aGPUContext);
-	myGPUBuffer->InitVertexBuffer(sphereCreator.myVertices.GetArrayAsPointer(), sphereCreator.myVertices.Size(), sizeof(sphereCreator.myVertices[0]));
-	myGPUBuffer->InitIndexBuffer(sphereCreator.myIndices.GetArrayAsPointer(), sphereCreator.myIndices.Size());
-	myGPUBuffer->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	myVertexBuffer = new CE_GPUVertexBuffer();
+	myVertexBuffer->InitStatic(sphereCreator.myVertices.GetArrayAsPointer(), sphereCreator.myVertices.Size(), sizeof(sphereCreator.myVertices[0]));
+
+	myIndexBuffer = new CE_GPUIndexBuffer();
+	myIndexBuffer->InitStatic(sphereCreator.myIndices.GetArrayAsPointer(), sphereCreator.myIndices.Size(), sizeof(sphereCreator.myIndices[0]));
 }
 
 void CE_RenderObject::Render()
 {
-	myGPUBuffer->Render();
+	CE_ASSERT(myVertexBuffer, "No VertexBuffer");
+	CE_ASSERT(myIndexBuffer, "No IndexBuffer");
+
+	ID3D11DeviceContext* context = CE_Engine::GetGPUContext().GetContext();
+	unsigned int stride = myVertexBuffer->myVertexSize;
+	unsigned int offset = 0;
+
+	context->IASetVertexBuffers(0, 1, &myVertexBuffer->myBuffer, &stride, &offset);
+	context->IASetIndexBuffer(myIndexBuffer->myBuffer, DXGI_FORMAT_R32_UINT, 0);
+	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	context->DrawIndexed(myIndexBuffer->myIndexCount, 0, 0);
+}
+
+void CE_RenderObject::CreateObjectData(int aBufferIndex, int aDataSize)
+{
+	myObjectBuffer = new CE_ConstantBuffer();
+	myObjectBuffer->Init(aBufferIndex, aDataSize);
+}
+
+void CE_RenderObject::SetObjectData(void* someData, int aDataSize)
+{
+	CE_ASSERT(myObjectBuffer != nullptr, "Dont have ObjectBuffer");
+	myObjectBuffer->SetData(someData, aDataSize);
+	myObjectBuffer->SendToGPU();
 }

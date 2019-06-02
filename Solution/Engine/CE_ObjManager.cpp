@@ -6,10 +6,10 @@
 #include "CE_MaterialManager.h"
 
 CE_ObjManager* CE_ObjManager::ourInstance = nullptr;
-void CE_ObjManager::Create(const CE_GPUContext& aGPUContext)
+void CE_ObjManager::Create()
 {
 	CE_ASSERT(ourInstance == nullptr, "Tried to create ObjManager twice!");
-	ourInstance = new CE_ObjManager(aGPUContext);
+	ourInstance = new CE_ObjManager();
 }
 
 void CE_ObjManager::Destroy()
@@ -18,10 +18,9 @@ void CE_ObjManager::Destroy()
 }
 
 
-CE_ObjManager::CE_ObjManager(const CE_GPUContext& aGPUContext)
+CE_ObjManager::CE_ObjManager()
 	: CE_AssetManager("Data/Models", true)
 	, myNextFreeID(0)
-	, myGPUContext(aGPUContext)
 {
 }
 
@@ -59,7 +58,7 @@ void CE_ObjManager::LoadObj(const char* aObjName)
 	{
 		CE_ObjMesh& mesh = objData.myMeshes.Add();
 		mesh.myRenderObject = new CE_RenderObject();
-		mesh.myRenderObject->Init<CE_PosNormColor_Vert>(myGPUContext, (void*)model.myVertices.GetArrayAsPointer(), model.myVertices.Size(), (void*)model.myIndices.GetArrayAsPointer(), model.myIndices.Size());
+		mesh.myRenderObject->Init((void*)model.myVertices.GetArrayAsPointer(), model.myVertices.Size(), sizeof(CE_PosNormColor_Vert), (void*)model.myIndices.GetArrayAsPointer(), model.myIndices.Size());
 		mesh.myMaterial = CE_MaterialManager::GetInstance()->GetMaterial(model.myMaterial.c_str());
 
 		if (model.myMin.x < objData.myMin.x) objData.myMin.x = model.myMin.x;

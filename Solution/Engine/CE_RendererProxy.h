@@ -58,6 +58,7 @@ public:
 	const CE_GrowingArray<CE_ObjRenderData>& GetObjRenderData() const { return myObjRenderData; }
 	const CE_GrowingArray<CE_PointLightData>& GetPointLightData() const { return myPointLightData; }
 	const CE_GrowingArray<CE_2DData>& Get2DData() const { return my2DData; }
+
 	void Clear();
 
 private:

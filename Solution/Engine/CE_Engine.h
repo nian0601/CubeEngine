@@ -25,9 +25,9 @@ public:
 	CE_RendererProxy& GetRendererProxy();
 	CE_Input& GetInput();
 
-	CE_GPUContext& GetGPUContext();
 	CE_Window& GetMainWindow();
 
+	static CE_GPUContext& GetGPUContext();
 	static CE_DebugRenderManager& GetDebugRenderManager();
 
 private:
@@ -35,7 +35,6 @@ private:
 	CE_Window* myMainWindow;
 	CE_DirectX* myDirectX;
 
-	CE_GPUContext* myGPUContext;
 
 	CE_Game* myGame;
 	CE_Time* myTime;
@@ -43,6 +42,7 @@ private:
 
 	CE_Renderer* myRenderer;
 
+	static CE_GPUContext* myGPUContext;
 	static CE_DebugRenderManager* myDebugRenderManager;
 };
 

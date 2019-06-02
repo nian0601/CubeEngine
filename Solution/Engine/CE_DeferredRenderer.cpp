@@ -11,9 +11,9 @@
 #include "CE_Camera.h"
 #include "CE_RendererProxy.h"
 #include "CE_Renderer.h"
-#include "CE_ConstantBuffer.h"
 #include "CE_ShaderPair.h"
 #include "CE_ShaderManager.h"
+#include "CE_GPUBuffer.h"
 
 CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, CE_Texture& aBackBuffer, const CE_Vector2i& aWindowSize)
 	: myGPUContext(aGPUContext)
@@ -21,8 +21,8 @@ CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, CE_Texture&
 {
 	myGBuffer = new CE_GBuffer(aGPUContext, aWindowSize);
 
-	myDefferedConstantBuffer = new CE_ConstantBuffer(myGPUContext);
-	myDefferedConstantBuffer->Init(sizeof(CE_GlobalPBLData), 0);
+	myDefferedConstantBuffer = new CE_ConstantBuffer();
+	myDefferedConstantBuffer->Init(0, sizeof(CE_GlobalPBLData));
 
 	myCubeMap = new CE_Texture();
 	myCubeMap->LoadDDS("Data/Textures/church_cubemap.dds", myGPUContext);
@@ -31,11 +31,11 @@ CE_DeferredRenderer::CE_DeferredRenderer(CE_GPUContext& aGPUContext, CE_Texture&
 	mySSAORandomTexture->LoadDDS("Data/Textures/ssao_random_texture.dds", myGPUContext);
 
 	myQuad = new CE_RenderObject();
-	myQuad->InitFullscreenQuad(myGPUContext);
+	myQuad->InitFullscreenQuad();
 
 	myPointLightModel = new CE_RenderObject();
-	myPointLightModel->InitLightSphere(myGPUContext);
-	myPointLightModel->CreateObjectData(sizeof(CE_PointLightShaderData), 1);
+	myPointLightModel->InitLightSphere();
+	myPointLightModel->CreateObjectData(1, sizeof(CE_PointLightShaderData));
 
 
 	CE_ShaderManager* shaderManager = CE_ShaderManager::GetInstance();
@@ -83,7 +83,7 @@ void CE_DeferredRenderer::UpdateConstantBuffers(const CE_Camera& aCamera)
 	screenSize.x = static_cast<float>(myGBuffer->myScreenSize.x);
 	screenSize.y = static_cast<float>(myGBuffer->myScreenSize.y);
 	shaderData.myScreenSize = screenSize;
-	myDefferedConstantBuffer->Update(&shaderData, sizeof(shaderData));
+	myDefferedConstantBuffer->SetData(&shaderData, sizeof(shaderData));
 }
 
 void CE_DeferredRenderer::Render(CE_Renderer& aRenderer, const CE_RendererProxy& aRendererProxy)
@@ -108,13 +108,14 @@ void CE_DeferredRenderer::RenderPointLights(const CE_RendererProxy& aRendererPro
 	
 	myGBuffer->SendToGPU(myGPUContext);
 
+	CE_PointLightShaderData lightData;
 	for (const CE_PointLightData& data : aRendererProxy.GetPointLightData())
 	{
-		CE_PointLightShaderData* modelData = myPointLightModel->GetObjectData<CE_PointLightShaderData>();
-		modelData->myWorld = data.myOrientation;
-		modelData->myColorAndIntensity = data.myColorAndIntensity;
-		modelData->myRadius = CE_Vector4f(data.myRadius);
+		lightData.myWorld = data.myOrientation;
+		lightData.myColorAndIntensity = data.myColorAndIntensity;
+		lightData.myRadius = CE_Vector4f(data.myRadius);
 
+		myPointLightModel->SetObjectData(&lightData, sizeof(lightData));
 		myPointLightModel->Render();
 	}
 }

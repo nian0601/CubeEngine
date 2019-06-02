@@ -16,6 +16,8 @@
 #include "CE_GPUContext.h"
 #include "CE_Texture.h"
 #include "CE_TextureManager.h"
+#include <d3d11.h>
+#include "CE_GPUBuffer.h"
 
 CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 	: myGPUContext(anGPUContext)
@@ -31,23 +33,23 @@ CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 	myLineObject = new CE_LineRenderObject();
 
 	myCubeModel = new CE_RenderObject();
-	myCubeModel->InitCube(myGPUContext);
+	myCubeModel->InitCube();
 
 	mySphereModel = new CE_RenderObject();
-	mySphereModel->InitSphere(myGPUContext);
+	mySphereModel->InitSphere();
 
 	mySprite = new CE_RenderObject();
-	mySprite->InitSprite(myGPUContext);
-	mySprite->CreateObjectData(sizeof(CE_SpriteShaderData), 1);
+	mySprite->InitSprite();
+	mySprite->CreateObjectData(1, sizeof(CE_SpriteShaderData));
 	
-	myViewProjectionConstantBuffer = new CE_ConstantBuffer(myGPUContext);
-	myViewProjectionConstantBuffer->Init(sizeof(CE_ViewProjectionData), 0);
+	myViewProjectionConstantBuffer = new CE_ConstantBuffer();
+	myViewProjectionConstantBuffer->Init(0, sizeof(CE_ViewProjectionData));
 
-	myOrthagonalConstantBuffer = new CE_ConstantBuffer(myGPUContext);
-	myOrthagonalConstantBuffer->Init(sizeof(CE_ProjectionData), 0);
+	myOrthagonalConstantBuffer = new CE_ConstantBuffer();
+	myOrthagonalConstantBuffer->Init(0, sizeof(CE_ProjectionData));
 
-	myModelObjectDataConstantBuffer = new CE_ConstantBuffer(myGPUContext);
-	myModelObjectDataConstantBuffer->Init(sizeof(CE_ModelShaderData), 1);
+	myModelObjectDataConstantBuffer = new CE_ConstantBuffer();
+	myModelObjectDataConstantBuffer->Init(1, sizeof(CE_ModelShaderData));
 
 
 	CE_GenericShader* cubeVX = shaderManager->GetShader("Cube.vx");
@@ -96,11 +98,11 @@ void CE_Renderer::UpdateConstantBuffers(const CE_Camera& aCamera)
 	CE_ViewProjectionData viewProjection;
 	viewProjection.myView = aCamera.GetView();
 	viewProjection.myProjection = aCamera.GetProjection();
-	myViewProjectionConstantBuffer->Update(&viewProjection, sizeof(viewProjection));
+	myViewProjectionConstantBuffer->SetData(&viewProjection, sizeof(viewProjection));
 
 	CE_ProjectionData orthagonal;
 	orthagonal.myProjection = aCamera.GetOrthagonalProjection();
-	myOrthagonalConstantBuffer->Update(&orthagonal, sizeof(orthagonal));
+	myOrthagonalConstantBuffer->SetData(&orthagonal, sizeof(orthagonal));
 }
 
 void CE_Renderer::Render3D(const CE_RendererProxy& aRendererProxy)
@@ -159,7 +161,7 @@ void CE_Renderer::RenderModels(const CE_RendererProxy& aRendererProxy)
 		modelData.myColorAndMetalness = data.myColorAndMetalness;
 		modelData.myScaleAndRoughness = data.myScaleAndRoughness;
 
-		myModelObjectDataConstantBuffer->Update(&modelData, sizeof(modelData));
+		myModelObjectDataConstantBuffer->SetData(&modelData, sizeof(modelData));
 		myModelObjectDataConstantBuffer->SendToGPU();
 
 		model->Render();
@@ -191,7 +193,7 @@ void CE_Renderer::RenderObjs(const CE_RendererProxy& aRendererProxy)
 			modelData.myScaleAndRoughness.z = data.myScale.z;
 			modelData.myScaleAndRoughness.w = material.myRoughness;
 
-			myModelObjectDataConstantBuffer->Update(&modelData, sizeof(modelData));
+			myModelObjectDataConstantBuffer->SetData(&modelData, sizeof(modelData));
 			myModelObjectDataConstantBuffer->SendToGPU();
 
 			mesh.myRenderObject->Render();
@@ -228,14 +230,16 @@ void CE_Renderer::RenderSprite(const CE_2DData& aSpriteData)
 	myOrthagonalConstantBuffer->SendToGPU();
 	mySpriteShader->Activate();
 
-	CE_SpriteShaderData* spriteData = mySprite->GetObjectData<CE_SpriteShaderData>();
+	CE_SpriteShaderData spriteData;
 
-	spriteData->myColor = aSpriteData.myColor;
-	spriteData->myPosition = aSpriteData.myPosition;
-	spriteData->mySize.x = aSpriteData.mySizeAndHotspot.x * 0.5f;
-	spriteData->mySize.y = aSpriteData.mySizeAndHotspot.y * 0.5f;
-	spriteData->myHotspot.x = aSpriteData.mySizeAndHotspot.z * 2.f;
-	spriteData->myHotspot.y = aSpriteData.mySizeAndHotspot.w * 2.f;
+	spriteData.myColor = aSpriteData.myColor;
+	spriteData.myPosition = aSpriteData.myPosition;
+	spriteData.mySize.x = aSpriteData.mySizeAndHotspot.x * 0.5f;
+	spriteData.mySize.y = aSpriteData.mySizeAndHotspot.y * 0.5f;
+	spriteData.myHotspot.x = aSpriteData.mySizeAndHotspot.z * 2.f;
+	spriteData.myHotspot.y = aSpriteData.mySizeAndHotspot.w * 2.f;
+
+	mySprite->SetObjectData(&spriteData, sizeof(spriteData));
 
 	ID3D11DeviceContext* context = myGPUContext.GetContext();
 	ID3D11ShaderResourceView* resource = myEmptyTexture->GetShaderView();

@@ -1,5 +1,4 @@
 #pragma once
-#include <d3d11.h>
 
 struct ID3D11Buffer;
 
@@ -7,32 +6,41 @@ class CE_GPUContext;
 class CE_GPUBuffer
 {
 public:
-	CE_GPUBuffer(const CE_GPUContext& aGPUContext);
+	CE_GPUBuffer();
 	~CE_GPUBuffer();
 
-	void InitVertexBuffer(void* someVertices, int aVertexCount, unsigned int aVertexSize);
-	void InitIndexBuffer(void* someIndices, int aIndexCount);
+	ID3D11Buffer* myBuffer;
 
-	void InitObjectData(unsigned int aSize, int aBufferIndex);
-	void* GetObjectData();
+protected:
+	void InternalInitStatic(void* someData, int aElementCount, int aElementSize, int aBindType);
+};
 
-	void SetTopology(D3D11_PRIMITIVE_TOPOLOGY aTopology);
+class CE_GPUVertexBuffer : public CE_GPUBuffer
+{
+public:
+	void InitStatic(void* someData, int aElementCount, int aElementSize);
+	void InitDynamic();
 
-	void Render();
-
-private:
-	const CE_GPUContext& myGPUContext;
-
-	ID3D11Buffer* myVertexBuffer;
+	int myVertexSize;
 	int myVertexCount;
-	unsigned int myVertexSize;
+};
 
-	ID3D11Buffer* myIndexBuffer;
+class CE_GPUIndexBuffer : public CE_GPUBuffer
+{
+public:
+	void InitStatic(void* someData, int aElementCount, int aElementSize);
+
 	int myIndexCount;
+};
 
-	ID3D11Buffer* myObjectDataBuffer;
-	D3D11_MAPPED_SUBRESOURCE myObjectDataResource;
-	int myObjectDataBufferIndex;
+class CE_ConstantBuffer : public CE_GPUBuffer
+{
+public:
+	void Init(int aBufferIndex, int aDataSize);
+	void SetData(void* someData, int aDataSize);
 
-	D3D11_PRIMITIVE_TOPOLOGY myTopology;
+	void SendToGPU();
+
+	int myBufferIndex;
+	int myDataSize;
 };
