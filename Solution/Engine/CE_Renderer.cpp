@@ -102,6 +102,9 @@ void CE_Renderer::UpdateConstantBuffers(const CE_Camera& aCamera)
 	CE_ProjectionData orthagonal;
 	orthagonal.myProjection = aCamera.GetOrthagonalProjection();
 	myOrthagonalConstantBuffer->SetData(&orthagonal, sizeof(orthagonal));
+
+	mySceeenSize.x = static_cast<float>(aCamera.GetWindowSize().x);
+	mySceeenSize.y = static_cast<float>(aCamera.GetWindowSize().y);
 }
 
 void CE_Renderer::Render3D(const CE_RendererProxy& aRendererProxy)
@@ -215,14 +218,37 @@ void CE_Renderer::RenderText(const CE_2DData& aTextData)
 	myOrthagonalConstantBuffer->SendToGPU();
 	shader->Activate();
 
-	myText->SetText(aTextData.myString);
 	myText->SetPosition(aTextData.myPosition);
+	myText->SetText(aTextData.myString);
 	myText->SetColor(aTextData.myColor);
 	myText->Render();
 }
 
 void CE_Renderer::RenderSprite(const CE_2DData& aSpriteData)
 {
+	CE_Vector2f topLeft;
+	topLeft.x = aSpriteData.myPosition.x - mySceeenSize.x;
+	topLeft.y = -aSpriteData.myPosition.y + mySceeenSize.y;
+	topLeft.y -= aSpriteData.mySize.y;
+	CE_Vector2f bottomRight = topLeft + aSpriteData.mySize;
+	topLeft /= mySceeenSize;
+	bottomRight /= mySceeenSize;
+
+	CE_Pos_UV_Vert vertices[4];
+	vertices[0].myPosition = CE_Vector4f(topLeft.x, topLeft.y, 0.0f, 1.f); //topleft
+	vertices[0].myTexCoord = CE_Vector2f(0.f, 1.f);
+
+	vertices[1].myPosition = CE_Vector4f(bottomRight.x, topLeft.y, 0.0f, 1.f); //topright
+	vertices[1].myTexCoord = CE_Vector2f(1.f, 1.f);
+
+	vertices[2].myPosition = CE_Vector4f(topLeft.x, bottomRight.y, 0.0f, 1.f); //bottomleft
+	vertices[2].myTexCoord = CE_Vector2f(0.f, 0.f);
+
+	vertices[3].myPosition = CE_Vector4f(bottomRight.x, bottomRight.y, 0.0f, 1.f); //bottomright
+	vertices[3].myTexCoord = CE_Vector2f(1.f, 0.f);
+	mySprite->UpdateVertexBuffer(vertices, 4, sizeof(CE_Pos_UV_Vert));
+
+
 	CE_SetResetBlend blend(ALPHA_BLEND);
 	CE_SetResetDepth depth(NO_READ_NO_WRITE);
 
@@ -232,11 +258,11 @@ void CE_Renderer::RenderSprite(const CE_2DData& aSpriteData)
 	CE_SpriteShaderData spriteData;
 
 	spriteData.myColor = aSpriteData.myColor;
-	spriteData.myPosition = aSpriteData.myPosition;
-	spriteData.mySize.x = aSpriteData.mySizeAndHotspot.x * 0.5f;
-	spriteData.mySize.y = aSpriteData.mySizeAndHotspot.y * 0.5f;
-	spriteData.myHotspot.x = aSpriteData.mySizeAndHotspot.z * 2.f;
-	spriteData.myHotspot.y = aSpriteData.mySizeAndHotspot.w * 2.f;
+	//spriteData.myPosition = aSpriteData.myPosition;
+	//spriteData.mySize.x = aSpriteData.mySizeAndHotspot.x * 0.5f;
+	//spriteData.mySize.y = aSpriteData.mySizeAndHotspot.y * 0.5f;
+	//spriteData.myHotspot.x = aSpriteData.mySizeAndHotspot.z * 2.f;
+	//spriteData.myHotspot.y = aSpriteData.mySizeAndHotspot.w * 2.f;
 
 	mySprite->SetObjectData(&spriteData, sizeof(spriteData));
 
@@ -262,8 +288,8 @@ void CE_Renderer::Render2DLine(const CE_2DData& aLineData)
 	line.myStart.x = aLineData.myPosition.x;
 	line.myStart.y = aLineData.myPosition.y;
 
-	line.myEnd.x = aLineData.mySizeAndHotspot.x;
-	line.myEnd.y = aLineData.mySizeAndHotspot.y;
+	line.myEnd.x = aLineData.mySize.x;
+	line.myEnd.y = aLineData.mySize.y;
 
 	line.myStartColor = aLineData.myColor;
 	line.myEndColor = aLineData.myColor;

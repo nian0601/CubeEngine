@@ -7,7 +7,7 @@
 class CUI_Image;
 class CUI_Label;
 
-class CE_Font;
+class CE_OldFont;
 class CE_Texture;
 
 class CUI_Button : public CUI_Widget

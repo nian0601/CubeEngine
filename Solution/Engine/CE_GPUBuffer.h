@@ -19,7 +19,9 @@ class CE_GPUVertexBuffer : public CE_GPUBuffer
 {
 public:
 	void InitStatic(void* someData, int aElementCount, int aElementSize);
-	void InitDynamic();
+
+	void InitDynamic(int aElementCount, int aElementSize);
+	void UpdateDynamic(void* someData, int aElementCount, int aElementSize);
 
 	int myVertexSize;
 	int myVertexCount;

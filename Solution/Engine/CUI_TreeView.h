@@ -3,7 +3,7 @@
 #include "CUI_VBox.h"
 
 class CUI_Button;
-class CE_Font;
+class CE_OldFont;
 class CUI_TreeView : public CUI_VBox
 {
 public:

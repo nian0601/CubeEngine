@@ -10,7 +10,6 @@ public:
 	CUI_Image(const CE_Vector4f& aColor);
 	CUI_Image(const CE_Vector2f& aSize);
 	CUI_Image(const CE_Vector2f& aSize, const CE_Vector4f& aColor);
-	CUI_Image(const CE_Vector2f& aSize, const CE_Vector4f& aColor, const CE_Vector2f& aHotspot);
 
 	void SetColor(const CE_Vector4f& aColor) { myColor = aColor; }
 	void SetTexture(const CE_Texture* aTexture) { myTexture = aTexture; }
@@ -19,7 +18,6 @@ public:
 
 protected:
 	CE_Vector4f myColor;
-	CE_Vector2f myHotspot;
 	const CE_Texture* myTexture;
 };
 

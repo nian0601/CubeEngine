@@ -3,7 +3,7 @@
 
 #include <d3d11.h>
 #include "CE_GPUContext.h"
-#include "CE_Font.h"
+#include "CE_OldFont.h"
 #include "CE_Texture.h"
 
 CE_Text::CE_Text(CE_GPUContext& aGPUContext)
@@ -20,7 +20,7 @@ CE_Text::~CE_Text()
 
 void CE_Text::Init()
 {
-	myFont = new CE_Font();
+	myFont = new CE_OldFont();
 	myFont->LoadFromFile("Data/Font/Decent_Font.png", myGPUContext);
 
 	SetupObjectBuffer();

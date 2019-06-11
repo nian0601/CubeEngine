@@ -109,3 +109,20 @@ bool CE_FileSystem::UpdateFileInfo(CE_GrowingArray<FileInfo>& someFiles)
 
 	return somethingChanged;
 }
+
+void CE_FileSystem::ReadEntireFile(const CE_String& aFilePath, FileContent& aFileContentOut)
+{
+	FILE* file = fopen(aFilePath.c_str(), "rb");
+	fseek(file, 0, SEEK_END);
+	long fileSize = ftell(file);
+	fseek(file, 0, SEEK_SET);
+
+	char* string = new char[fileSize + 1];
+	fread(string, fileSize, 1, file);
+	fclose(file);
+
+	string[fileSize] = 0;
+
+	aFileContentOut.myContents = string;
+	aFileContentOut.myFileSize = fileSize;
+}

@@ -22,6 +22,8 @@ public:
 	void CreateObjectData(int aBufferIndex, int aDataSize);
 	void SetObjectData(void* someData, int aDataSize);
 
+	void UpdateVertexBuffer(void* someData, int aElementCount, int aElementSize);
+
 private:
 	CE_GPUVertexBuffer* myVertexBuffer;
 	CE_GPUIndexBuffer* myIndexBuffer;

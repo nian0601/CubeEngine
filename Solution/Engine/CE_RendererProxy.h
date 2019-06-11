@@ -19,10 +19,10 @@ struct CE_2DData
 	};
 	Type myType;
 	CE_Vector2f myPosition;
+	CE_Vector2f mySize;
 	CE_Vector4f myColor;
 
 	// TODO(NA): Can we union these or some other smart thing?
-	CE_Vector4f mySizeAndHotspot;
 	CE_String myString;
 
 	
@@ -48,8 +48,8 @@ class CE_RendererProxy
 public:
 	void AddModel(const CE_Matrix44f& anOrientation, const CE_Vector3f& aScale, const CE_Vector4f& aColor, float aMetalness, float aRoughness, bool aIsSphere = false);
 	void AddObj(const CE_Matrix44f& anOrientation, const CE_Vector3f& aScale, int aObjID);
-	void AddSprite(const CE_Vector2f& aPosition, const CE_Vector2f& aSize, const CE_Vector4f& aColor, const CE_Vector2f& aHotspot = CE_Vector2f(0.f, 0.f));
-	void AddSprite(const CE_Vector2f& aPosition, const CE_Texture* aTexture, const CE_Vector2f& aSize, const CE_Vector2f& aHotspot = CE_Vector2f(0.f, 0.f));
+	void AddSprite(const CE_Vector2f& aPosition, const CE_Vector2f& aSize, const CE_Vector4f& aColor);
+	void AddSprite(const CE_Vector2f& aPosition, const CE_Texture* aTexture, const CE_Vector2f& aSize);
 	void AddText(const CE_String& aString, const CE_Vector2f& aPosition, const CE_Vector4f& aColor = CE_Vector4f(1.f, 1.f, 1.f, 1.f));
 	void Add2DLine(const CE_Vector2f& aStart, const CE_Vector2f& aEnd, const CE_Vector4f& aColor = CE_Vector4f(1.f, 1.f, 1.f, 1.f));
 	void AddPointLight(const CE_Matrix44f& anOrientation, const CE_Vector4f& aColorAndIntensity, float aRadius);

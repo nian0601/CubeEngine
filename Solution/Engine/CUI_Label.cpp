@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "CE_Font.h"
+#include "CE_OldFont.h"
 #include "CE_RendererProxy.h"
 
 #include "CUI_Label.h"

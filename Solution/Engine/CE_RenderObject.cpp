@@ -159,18 +159,18 @@ void CE_RenderObject::InitCube()
 void CE_RenderObject::InitSprite()
 {
 	const int vertexCount = 4;
-	CE_Pos_UV_Vert vertices[vertexCount];
-	vertices[0].myPosition = CE_Vector4f(-1.0f, -1.0f, 0.0f, 1.f); //topleft
-	vertices[0].myTexCoord = CE_Vector2f(0.f, 1.f);
+	//CE_Pos_UV_Vert vertices[vertexCount];
+	//vertices[0].myPosition = CE_Vector4f(-1.0f, -1.0f, 0.0f, 1.f); //topleft
+	//vertices[0].myTexCoord = CE_Vector2f(0.f, 1.f);
 
-	vertices[1].myPosition = CE_Vector4f(1.0f, -1.0f, 0.0f, 1.f); //topright
-	vertices[1].myTexCoord = CE_Vector2f(1.f, 1.f);
+	//vertices[1].myPosition = CE_Vector4f(1.0f, -1.0f, 0.0f, 1.f); //topright
+	//vertices[1].myTexCoord = CE_Vector2f(1.f, 1.f);
 
-	vertices[2].myPosition = CE_Vector4f(-1.0f, 1.0f, 0.0f, 1.f); //bottomleft
-	vertices[2].myTexCoord = CE_Vector2f(0.f, 0.f);
+	//vertices[2].myPosition = CE_Vector4f(-1.0f, 1.0f, 0.0f, 1.f); //bottomleft
+	//vertices[2].myTexCoord = CE_Vector2f(0.f, 0.f);
 
-	vertices[3].myPosition = CE_Vector4f(1.0f, 1.0f, 0.0f, 1.f); //bottomright
-	vertices[3].myTexCoord = CE_Vector2f(1.f, 0.f);
+	//vertices[3].myPosition = CE_Vector4f(1.0f, 1.0f, 0.0f, 1.f); //bottomright
+	//vertices[3].myTexCoord = CE_Vector2f(1.f, 0.f);
 
 	const int indexCount = 6;
 	UINT indices[indexCount];
@@ -183,7 +183,8 @@ void CE_RenderObject::InitSprite()
 	indices[5] = 3;
 
 	myVertexBuffer = new CE_GPUVertexBuffer();
-	myVertexBuffer->InitStatic(vertices, vertexCount, sizeof(CE_Pos_UV_Vert));
+	//myVertexBuffer->InitStatic(vertices, vertexCount, sizeof(CE_Pos_UV_Vert));
+	myVertexBuffer->InitDynamic(vertexCount, sizeof(CE_Pos_UV_Vert));
 
 	myIndexBuffer = new CE_GPUIndexBuffer();
 	myIndexBuffer->InitStatic(indices, indexCount, sizeof(UINT));
@@ -273,4 +274,10 @@ void CE_RenderObject::SetObjectData(void* someData, int aDataSize)
 	CE_ASSERT(myObjectBuffer != nullptr, "Dont have ObjectBuffer");
 	myObjectBuffer->SetData(someData, aDataSize);
 	myObjectBuffer->SendToGPU();
+}
+
+void CE_RenderObject::UpdateVertexBuffer(void* someData, int aElementCount, int aElementSize)
+{
+	CE_ASSERT(myVertexBuffer != nullptr, "Dont have VertexBuffer");
+	myVertexBuffer->UpdateDynamic(someData, aElementCount, aElementSize);
 }

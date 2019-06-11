@@ -2,7 +2,7 @@
 #include "CUI_Container.h"
 #include <functional>
 
-class CE_Font;
+class CE_OldFont;
 class CUI_Dropbox : public CUI_Container
 {
 public:

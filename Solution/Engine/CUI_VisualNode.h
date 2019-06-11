@@ -4,7 +4,7 @@
 class CUI_Label;
 class CUI_Pin;
 
-class CE_Font;
+class CE_OldFont;
 
 class CN_Node;
 

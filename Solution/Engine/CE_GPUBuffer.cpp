@@ -47,13 +47,16 @@ void CE_GPUVertexBuffer::InitStatic(void* someData, int aElementCount, int aElem
 	InternalInitStatic(someData, aElementCount, aElementSize, D3D11_BIND_VERTEX_BUFFER);
 }
 
-void CE_GPUVertexBuffer::InitDynamic()
+void CE_GPUVertexBuffer::InitDynamic(int aElementCount, int aElementSize)
 {
+	myVertexCount = aElementCount;
+	myVertexSize = aElementSize;
+
 	CE_ASSERT(myBuffer == nullptr, "Buffer allready initialized");
 
 	D3D11_BUFFER_DESC bufferDesc;
 	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	bufferDesc.ByteWidth = 64;
+	bufferDesc.ByteWidth = myVertexCount * myVertexSize;
 	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	bufferDesc.MiscFlags = 0;
@@ -62,6 +65,22 @@ void CE_GPUVertexBuffer::InitDynamic()
 	ID3D11Device* device = CE_Engine::GetGPUContext().GetDevice();
 	HRESULT result = device->CreateBuffer(&bufferDesc, NULL, &myBuffer);
 	CE_ASSERT(FAILED(result) == false, "Failed to create Buffer");
+}
+
+void CE_GPUVertexBuffer::UpdateDynamic(void* someData, int aElementCount, int aElementSize)
+{
+	CE_ASSERT(myBuffer != nullptr, "Buffer not initialized");
+	CE_ASSERT(myVertexCount == aElementCount && myVertexSize == aElementSize, "Missmatching sizes!");
+
+	ID3D11DeviceContext* context = CE_Engine::GetGPUContext().GetContext();
+
+	D3D11_MAPPED_SUBRESOURCE bufferData;
+	HRESULT result = context->Map(myBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &bufferData);
+	CE_ASSERT(SUCCEEDED(result), "Mapping failed");
+
+	memcpy(bufferData.pData, someData, aElementCount * aElementSize);
+
+	context->Unmap(myBuffer, 0);
 }
 
 //////////////////////////////////////////////////////////////////////////

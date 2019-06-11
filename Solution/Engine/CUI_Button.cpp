@@ -34,10 +34,10 @@ void CUI_Button::PrepareLayout()
 
 	myImage->SetPosition(position);
 
-	CE_Vector2f sizeDiff = mySize - myLabel->GetSize();
-	sizeDiff *= 0.5f;
-	position.x += sizeDiff.x;
-	position.y += sizeDiff.y;
+	//CE_Vector2f sizeDiff = mySize - myLabel->GetSize();
+	//sizeDiff *= 0.5f;
+	//position.x += sizeDiff.x;
+	//position.y += sizeDiff.y;
 	myLabel->SetPosition(position);
 
 }

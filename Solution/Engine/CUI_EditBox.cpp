@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CUI_EditBox.h"
-#include "CE_Font.h"
+#include "CE_OldFont.h"
 #include "CE_RendererProxy.h"
 #include "CE_WindowMessage.h"
 #include "CUI_Manager.h"

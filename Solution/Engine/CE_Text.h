@@ -3,7 +3,7 @@
 struct ID3D11Buffer;
 
 class CE_GPUContext;
-class CE_Font;
+class CE_OldFont;
 
 class CE_Text
 {
@@ -53,7 +53,7 @@ private:
 	CE_Vector4f myColor;
 	CE_Vector2f myPosition;
 
-	CE_Font* myFont;
+	CE_OldFont* myFont;
 
 	bool myGotText;
 };

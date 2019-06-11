@@ -7,6 +7,8 @@
 #include <WICTextureLoader.h>
 #include <DDSTextureLoader.h>
 
+#include "stb_image.h"
+
 CE_Texture::CE_Texture()
 	: myTexture(nullptr)
 	, myShaderView(nullptr)
@@ -56,29 +58,40 @@ void CE_Texture::Load(const CE_String& aFilePath, CE_GPUContext& aGPUContext)
 {
 	myFilePath = aFilePath;
 
-	const int fileLenght = strlen(aFilePath.c_str()) + 1;
-	wchar_t* wCharFile = new wchar_t[fileLenght];
-	size_t tempSize;
-	mbstowcs_s(&tempSize, wCharFile, fileLenght, aFilePath.c_str(), fileLenght);
+	int nrChannels;
+	unsigned char* data = stbi_load(aFilePath.c_str(), &mySize.x, &mySize.y, &nrChannels, 4);
+	CE_ASSERT(data != nullptr, "Failed to load %s", aFilePath.c_str());
 
-	
+	D3D11_TEXTURE2D_DESC textureDesc = {};
+	textureDesc.Width = mySize.x;
+	textureDesc.Height = mySize.y;
+	textureDesc.MipLevels = 1;
+	textureDesc.ArraySize = 1;
+	textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
-	HRESULT hr = DirectX::CreateWICTextureFromFile(aGPUContext.GetDevice(), wCharFile, nullptr, &myShaderView);
-	CE_ASSERT(FAILED(hr) == false, "Failed to create texture");
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.SampleDesc.Quality = 0;
+	textureDesc.Usage = D3D11_USAGE_IMMUTABLE;
+	textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	textureDesc.CPUAccessFlags = 0;
+	textureDesc.MiscFlags = 0;
 
-	ID3D11Resource* resource = nullptr;
-	myShaderView->GetResource(&resource);
+	D3D11_SUBRESOURCE_DATA textureData = {};
+	textureData.pSysMem = data;
+	textureData.SysMemPitch = sizeof(unsigned char) * 4 * mySize.x;
+	textureData.SysMemSlicePitch = 0;
 
-	ID3D11Texture2D* tex2D = nullptr;
-	hr = resource->QueryInterface(&tex2D);
-	CE_ASSERT(FAILED(hr) == false, "Failed to get texture size");
+	HRESULT result = aGPUContext.GetDevice()->CreateTexture2D(
+		&textureDesc,
+		&textureData,
+		&myTexture);
+	CE_ASSERT(result == S_OK, "Failed to create texture for %s", aFilePath.c_str());
 
-	D3D11_TEXTURE2D_DESC desc;
-	tex2D->GetDesc(&desc);
-	mySize.x = desc.Width;
-	mySize.y = desc.Height;
-
-	CE_SAFE_DELETE_ARRAY(wCharFile);
+	result = aGPUContext.GetDevice()->CreateShaderResourceView(
+		myTexture,
+		NULL,
+		&myShaderView);
+	CE_ASSERT(result == S_OK, "Failed to create shaderview for %s", aFilePath.c_str());
 }
 
 void CE_Texture::LoadDDS(const CE_String& aFilePath, CE_GPUContext& aGPUContext)

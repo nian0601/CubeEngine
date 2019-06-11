@@ -24,29 +24,23 @@ void CE_RendererProxy::AddObj(const CE_Matrix44f& anOrientation, const CE_Vector
 	data.myObjID = aObjID;
 }
 
-void CE_RendererProxy::AddSprite(const CE_Vector2f& aPosition, const CE_Vector2f& aSize, const CE_Vector4f& aColor, const CE_Vector2f& aHotspot /*= CE_Vector2f(0.f, 0.f)*/)
+void CE_RendererProxy::AddSprite(const CE_Vector2f& aPosition, const CE_Vector2f& aSize, const CE_Vector4f& aColor)
 {
 	CE_2DData& data = my2DData.Add();
 	data.myType = CE_2DData::SPRITE;
 	data.myPosition = aPosition;
+	data.mySize = aSize;
 	data.myColor = aColor;
-	data.mySizeAndHotspot.x = aSize.x;
-	data.mySizeAndHotspot.y = aSize.y;
-	data.mySizeAndHotspot.z = aHotspot.x;
-	data.mySizeAndHotspot.w = aHotspot.y;
 	data.myTexture = nullptr;
 }
 
-void CE_RendererProxy::AddSprite(const CE_Vector2f& aPosition, const CE_Texture* aTexture, const CE_Vector2f& aSize, const CE_Vector2f& aHotspot /*= CE_Vector2f(0.f, 0.f)*/)
+void CE_RendererProxy::AddSprite(const CE_Vector2f& aPosition, const CE_Texture* aTexture, const CE_Vector2f& aSize)
 {
 	CE_2DData& data = my2DData.Add();
 	data.myType = CE_2DData::SPRITE;
 	data.myPosition = aPosition;
+	data.mySize = aSize;
 	data.myColor = { 1.f, 1.f, 1.f, 1.f };
-	data.mySizeAndHotspot.x = aSize.x;
-	data.mySizeAndHotspot.y = aSize.y;
-	data.mySizeAndHotspot.z = aHotspot.x;
-	data.mySizeAndHotspot.w = aHotspot.y;
 	data.myTexture = aTexture;
 }
 
@@ -64,8 +58,7 @@ void CE_RendererProxy::Add2DLine(const CE_Vector2f& aStart, const CE_Vector2f& a
 	CE_2DData& data = my2DData.Add();
 	data.myType = CE_2DData::LINE;
 	data.myPosition = aStart;
-	data.mySizeAndHotspot.x = aEnd.x;
-	data.mySizeAndHotspot.y = aEnd.y;
+	data.mySize = aEnd;
 	data.myColor = aColor;
 }
 

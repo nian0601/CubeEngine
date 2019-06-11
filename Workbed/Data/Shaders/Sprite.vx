@@ -32,26 +32,22 @@ PosColorPixel main(PosUVVertex aInput)
 	output.Position = aInput.Position;
 
 	//Scale it up from 1x1 to SizeX x SizeY
-	output.Position.xy *= Size;
+	//output.Position.xy *= Size;
 
 	//Move 0,0 to TopLeft
-	output.Position.x += Size.x;
-	output.Position.y -= Size.y;
+	//output.Position.x += Size.x;
+	//output.Position.y -= Size.y;
 
-	//Hotspot-adjustments
-	//output.Position.x -= Size.x * 1.f;
-	//output.Position.y += Size.y * 0.f;
-	output.Position.x -= Size.x * Hotspot.x;
-	output.Position.y += Size.y * Hotspot.y;
-	
 	//Movement
-	output.Position.x += Position.x;
-	output.Position.y -= Position.y;
+	//output.Position.x += Position.x;
+	//output.Position.y -= Position.y;
 
-	output.Position = mul(Projection, output.Position);
+	//output.Position = mul(Projection, output.Position);
 
-	output.Position.x -= 1;
-	output.Position.y += 1;
+	//output.Position.x -= 1;
+	//output.Position.y += 1;
+	//output.Position.x *= -1;
+	//output.Position.y *= -1;
 
 	output.Color = Color;
 	output.TextureCoord = aInput.TextureCoord;

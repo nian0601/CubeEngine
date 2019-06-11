@@ -53,9 +53,6 @@
     <ClCompile Include="CE_Texture.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="CE_Font.cpp">
-      <Filter>Rendering\Text</Filter>
-    </ClCompile>
     <ClCompile Include="CE_FileParser.cpp">
       <Filter>Utility\Files</Filter>
     </ClCompile>
@@ -256,6 +253,9 @@
     </ClCompile>
     <ClCompile Include="CE_TextureManager.cpp">
       <Filter>Rendering\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="CE_OldFont.cpp">
+      <Filter>Rendering\Text</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -467,9 +467,6 @@
     </ClInclude>
     <ClInclude Include="CE_Texture.h">
       <Filter>Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="CE_Font.h">
-      <Filter>Rendering\Text</Filter>
     </ClInclude>
     <ClInclude Include="CE_FileParser.h">
       <Filter>Utility\Files</Filter>
@@ -720,6 +717,9 @@
     </ClInclude>
     <ClInclude Include="CE_TextureManager.h">
       <Filter>Rendering\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="CE_OldFont.h">
+      <Filter>Rendering\Text</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -15,13 +15,7 @@ CUI_Image::CUI_Image(const CE_Vector2f& aSize)
 }
 
 CUI_Image::CUI_Image(const CE_Vector2f& aSize, const CE_Vector4f& aColor)
-	: CUI_Image(aSize, aColor, {0.f, 0.f})
-{
-}
-
-CUI_Image::CUI_Image(const CE_Vector2f& aSize, const CE_Vector4f& aColor, const CE_Vector2f& aHotspot)
 	: myColor(aColor)
-	, myHotspot(aHotspot)
 	, myTexture(nullptr)
 {
 	mySize = aSize;
@@ -29,7 +23,6 @@ CUI_Image::CUI_Image(const CE_Vector2f& aSize, const CE_Vector4f& aColor, const 
 
 CUI_Image::CUI_Image(const char* aTexture)
 	: myColor(1.f, 1.f, 1.f, 1.f)
-	, myHotspot(0.f, 0.f)
 {
 	myTexture = GetUIManager().GetTexture(aTexture);
 	mySize.x = float(myTexture->GetSize().x);
@@ -38,7 +31,6 @@ CUI_Image::CUI_Image(const char* aTexture)
 
 CUI_Image::CUI_Image(const CE_Texture* aTexture)
 	: myColor(1.f, 1.f, 1.f, 1.f)
-	, myHotspot(0.f, 0.f)
 	, myTexture(aTexture)
 {
 	mySize.x = float(myTexture->GetSize().x);
@@ -50,5 +42,5 @@ void CUI_Image::Render(CE_RendererProxy& anRendererProxy)
 	if(myTexture)
 		anRendererProxy.AddSprite(myPosition, myTexture, mySize);
 	else
-		anRendererProxy.AddSprite(myPosition, mySize, myColor, myHotspot);
+		anRendererProxy.AddSprite(myPosition, mySize, myColor);
 }

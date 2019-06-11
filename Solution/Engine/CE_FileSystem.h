@@ -13,6 +13,16 @@ namespace CE_FileSystem
 		unsigned long myLastTimeModifiedHighbit;
 	};
 
+	// The Contents of the file will be freed when the FileContent
+	// goes out of scope, be careful if you allocated temporary FileContents
+	struct FileContent
+	{
+		FileContent() : myContents(nullptr) {}
+		~FileContent() { CE_SAFE_DELETE(myContents); }
+		const char* myContents;
+		long myFileSize;
+	};
+
 	bool GetAllFilesFromDirectory(const char* aDirectory, CE_GrowingArray<FileInfo>& someOutFilePaths);
 	void GetFileName(const CE_String& aFilePath, CE_String& aNameOut);
 	void GetFileExtention(const CE_String& aFilePath, CE_String& aExtentionOut);
@@ -20,4 +30,6 @@ namespace CE_FileSystem
 	bool GetFileInfo(const CE_String& aFilePath, FileInfo& aFileInfoOut);
 
 	bool UpdateFileInfo(CE_GrowingArray<FileInfo>& someFiles);
+
+	void ReadEntireFile(const CE_String& aFilePath, FileContent& aFileContentOut);
 }

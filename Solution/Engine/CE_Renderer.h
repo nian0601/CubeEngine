@@ -51,6 +51,7 @@ private:
 	CE_ConstantBuffer* myOrthagonalConstantBuffer;
 
 	CE_ConstantBuffer* myModelObjectDataConstantBuffer;
+	CE_Vector2f mySceeenSize;
 
 	CE_ShaderPair* myCubeShader;
 	CE_ShaderPair* myLineShader;

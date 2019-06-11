@@ -162,7 +162,7 @@
     <ClCompile Include="CE_FileParser.cpp" />
     <ClCompile Include="CE_FileSystem.cpp" />
     <ClCompile Include="CE_BinaryFileWriter.cpp" />
-    <ClCompile Include="CE_Font.cpp" />
+    <ClCompile Include="CE_OldFont.cpp" />
     <ClCompile Include="CE_GenericShader.cpp" />
     <ClCompile Include="CE_GeneticAlgorithm.cpp" />
     <ClCompile Include="CE_IcoSphereCreator.cpp" />
@@ -248,7 +248,7 @@
     <ClInclude Include="CE_FileParser.h" />
     <ClInclude Include="CE_FileSystem.h" />
     <ClInclude Include="CE_BinaryFileWriter.h" />
-    <ClInclude Include="CE_Font.h" />
+    <ClInclude Include="CE_OldFont.h" />
     <ClInclude Include="CE_Game.h" />
     <ClInclude Include="CE_GBuffer.h" />
     <ClInclude Include="CE_GenericShader.h" />

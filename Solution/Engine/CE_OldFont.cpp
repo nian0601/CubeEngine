@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CE_Font.h"
+#include "CE_OldFont.h"
 
 #include <istream>
 #include <string>
@@ -48,13 +48,13 @@ CE_String CE_CharData::LoadToken(const CE_String& aLine, const CE_String& aToken
 }
 
 
-CE_Font::CE_Font()
+CE_OldFont::CE_OldFont()
 	: myScale(0.33f)
 {
 	CE_ZERO_MEMORY(myEmptyCharData);
 }
 
-void CE_Font::LoadFromFile(const CE_String& aFilePath, CE_GPUContext& aContext)
+void CE_OldFont::LoadFromFile(const CE_String& aFilePath, CE_GPUContext& aContext)
 {
 	CE_String texturePath = aFilePath;
 
@@ -84,7 +84,7 @@ void CE_Font::LoadFromFile(const CE_String& aFilePath, CE_GPUContext& aContext)
 	}
 }
 
-bool CE_Font::GetCharData(char aCharacter, CE_CharData* aOutData) const
+bool CE_OldFont::GetCharData(char aCharacter, CE_CharData* aOutData) const
 {
 	if (myCharacters.KeyExists(aCharacter))
 	{
@@ -98,7 +98,7 @@ bool CE_Font::GetCharData(char aCharacter, CE_CharData* aOutData) const
 	return false;
 }
 
-CE_Vector2f CE_Font::GetSize(const CE_String& aString) const
+CE_Vector2f CE_OldFont::GetSize(const CE_String& aString) const
 {
 	CE_Vector2f size;
 

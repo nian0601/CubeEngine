@@ -23,10 +23,10 @@ struct CE_CharData
 class CE_GPUContext;
 class CE_Texture;
 
-class CE_Font
+class CE_OldFont
 {
 public:
-	CE_Font();
+	CE_OldFont();
 
 	void LoadFromFile(const CE_String& aFilePath, CE_GPUContext& aContext);
 

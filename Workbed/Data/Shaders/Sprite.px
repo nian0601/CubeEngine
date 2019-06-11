@@ -10,5 +10,5 @@ struct PosColorPixel
 float4 main(PosColorPixel anInput) : SV_TARGET
 {
 	float4 albedoSample = AlbedoTexture.Sample(PointSampler, anInput.TextureCoord);
-	return saturate(albedoSample * anInput.Color);
+	return saturate(albedoSample);
 };

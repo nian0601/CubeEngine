@@ -4,7 +4,6 @@
 #include <CE_DebugDraw.h>
 #include <CE_Engine.h>
 #include <CE_FileSystem.h>
-#include <CE_Font.h>
 #include <CE_World.h>
 #include <CE_Window.h>
 
@@ -23,59 +22,12 @@
 
 #include <CE_BinaryFileReader.h>
 #include <CE_BinaryFileWriter.h>
-
-
-int GetDenominatorCount(int aChange, int aDenominatorSize)
-{
-	if (aChange < aDenominatorSize)
-		return 0;
-
-	return aChange/ aDenominatorSize;
-}
-
-void TestSomeStuff()
-{
-	double doubleChange = 0.05f;
-
-	int change = static_cast<int>(doubleChange * 100.0);
-
-	int hundreds = GetDenominatorCount(change, 10000);
-	change -= hundreds * 10000;
-
-	int fifties = GetDenominatorCount(change, 5000);
-	change -= fifties * 5000;
-
-	int twenties = GetDenominatorCount(change, 2000);
-	change -= twenties * 2000;
-
-	int tens = GetDenominatorCount(change, 1000);
-	change -= tens * 1000;
-
-	int fives = GetDenominatorCount(change, 500);
-	change -= fives * 500;
-
-	int toonies = GetDenominatorCount(change, 200);
-	change -= toonies * 200;
-
-	int loonies = GetDenominatorCount(change, 100);
-	change -= loonies * 100;
-
-	int quaters = GetDenominatorCount(change, 25);
-	change -= quaters * 25;
-
-	int tenners = GetDenominatorCount(change, 10);
-	change -= tenners * 10;
-
-	int cents = (int)change;
-	cents;
-}
-
+#include <CE_RendererProxy.h>
+#include <CE_TextureManager.h>
 
 LevelEditorContext::LevelEditorContext()
 {
-	TestSomeStuff();
 }
-
 
 LevelEditorContext::~LevelEditorContext()
 {
@@ -100,7 +52,7 @@ void LevelEditorContext::Init(CE_Engine& anEngine)
 	InitWorld(anEngine);
 	myEntityFactory = new EntityFactory(*myWorld);
 
-	OnLoadLevel();
+	//OnLoadLevel();
 }
 
 void LevelEditorContext::Update(float aDelta)
@@ -111,8 +63,11 @@ void LevelEditorContext::Update(float aDelta)
 
 void LevelEditorContext::Render()
 {
-	RenderGrid();
-	myToolModule->Render(*myRendererProxy);
+	//RenderGrid();
+	//myToolModule->Render(*myRendererProxy);
+
+	//const CE_Texture* texture = CE_TextureManager::GetInstance()->GetUITexture(CUI_Theme::THEME_BLUE, "button01");
+	//myRendererProxy->AddSprite({ 100.f, 200.f }, texture, { 250.f, 125.f });
 }
 
 void LevelEditorContext::RenderGrid()
@@ -163,14 +118,14 @@ void LevelEditorContext::InitGUI(CUI_Manager& aUIManager)
 
 void LevelEditorContext::BuildEntityDropbox(CUI_Manager& aUIManager)
 {
-	CUI_HBox* saveBox = new CUI_HBox();
-	myEditbox = new CUI_EditBox(256.f);
-	CUI_Button* saveButton = new CUI_Button("Save Level");
-	saveButton->myOnClick = std::bind(&LevelEditorContext::OnSaveLevel, this);
-
-	saveBox->AddWidget(myEditbox);
-	saveBox->AddWidget(saveButton);
-	aUIManager.AddWidget(saveBox);
+	//CUI_HBox* saveBox = new CUI_HBox();
+	//myEditbox = new CUI_EditBox(256.f);
+	//CUI_Button* saveButton = new CUI_Button("Save Level");
+	//saveButton->myOnClick = std::bind(&LevelEditorContext::OnSaveLevel, this);
+	//
+	//saveBox->AddWidget(myEditbox);
+	//saveBox->AddWidget(saveButton);
+	//aUIManager.AddWidget(saveBox);
 
 	CE_GrowingArray<CE_FileSystem::FileInfo> entityFiles;
 	CE_FileSystem::GetAllFilesFromDirectory("Data/Entities", entityFiles);

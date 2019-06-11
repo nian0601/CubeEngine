@@ -2,7 +2,7 @@
 #include "EntityEditorContext.h"
 
 #include <CE_Engine.h>
-#include <CE_Font.h>
+#include <CE_OldFont.h>
 #include <CE_World.h>
 #include <CE_Camera.h>
 
