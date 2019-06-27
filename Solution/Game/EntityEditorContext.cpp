@@ -2,7 +2,6 @@
 #include "EntityEditorContext.h"
 
 #include <CE_Engine.h>
-#include <CE_OldFont.h>
 #include <CE_World.h>
 #include <CE_Camera.h>
 
@@ -125,13 +124,12 @@ void EntityEditorContext::RenderGrid()
 void EntityEditorContext::SetupConstantWidgets()
 {
 	myModelsDropbox= new CUI_Dropbox("Models");
-	myModelsDropbox->Hide();
 	myModelsDropbox->myOnSelection = std::bind(&EntityEditorContext::OnModelDropboxSelection, this, std::placeholders::_1, std::placeholders::_2);
 	myUIManager->AddWidget(myModelsDropbox);
 
 	CE_GrowingArray<CE_FileSystem::FileInfo> models;
 	CE_FileSystem::GetAllFilesFromDirectory("Data/Models/", models);
-
+	
 	for (const CE_FileSystem::FileInfo& fileInfo : models)
 		myModelsDropbox->AddLabel(fileInfo.myFileNameNoExtention.c_str());
 }
@@ -139,7 +137,6 @@ void EntityEditorContext::SetupConstantWidgets()
 void EntityEditorContext::OnModelDropboxSelection(CUI_Widget* aWidget, int /*aWidgetIndex*/)
 {
 	myModelsDropbox->SetExpansion(false);
-	myModelsDropbox->Hide();
 
 	CUI_Label* label = static_cast<CUI_Label*>(aWidget);
 	CE_String text = label->GetText();
@@ -148,7 +145,6 @@ void EntityEditorContext::OnModelDropboxSelection(CUI_Widget* aWidget, int /*aWi
 	RenderComponent::Entry& entry = myRenderComponent->myEntries.Add();
 	entry.myModelID = CE_ObjManager::GetInstance()->GetObjID(text.c_str());;
 	entry.myType = ModelType::eType::OBJ_MODEL;
-
 
 	const CE_ObjData* objData = CE_ObjManager::GetInstance()->GetObjData(entry.myModelID);
 	myToolModule->AddToolEntity(myEntity, &entry.myOffsetMatrix, &entry.myScale, objData->myMin, objData->myMax);

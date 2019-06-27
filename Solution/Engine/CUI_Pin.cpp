@@ -67,6 +67,7 @@ void CUI_Pin::PrepareLayout()
 	else
 		textPos.x -= myLabel->GetSize().x + CUI_Pin_priv::locLabelSpacing;
 
+	textPos.y -= mySize.y * 0.5f;
 	myLabel->SetPosition(textPos);
 }
 

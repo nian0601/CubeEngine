@@ -5,15 +5,13 @@
 #include "CUI_WIdget.h"
 
 #include "CE_Input.h"
-#include "CE_OldFont.h"
+#include "CE_Font.h"
 #include "CE_TextureManager.h"
 
-CUI_Manager::CUI_Manager(CE_GPUContext& aGPUContext)
+CUI_Manager::CUI_Manager()
 {
 	myDragMessage = new CUI_DragMessage();
-
-	myFont = new CE_OldFont();
-	myFont->LoadFromFile("Data/Font/Decent_Font.png", aGPUContext);
+	myFont = new CE_Font("c:/Windows/Fonts/arial.ttf", 32.f);
 }
 
 CUI_Manager::~CUI_Manager()

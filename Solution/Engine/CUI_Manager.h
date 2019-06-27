@@ -3,8 +3,7 @@
 #include "CUI_Defines.h"
 #include "CUI_VBox.h"
 
-class CE_OldFont;
-class CE_GPUContext;
+class CE_Font;
 class CE_Input;
 class CE_RendererProxy;
 class CE_Texture;
@@ -16,12 +15,12 @@ struct CUI_DragMessage;
 class CUI_Manager : public CUI_VBox
 {
 public:
-	CUI_Manager(CE_GPUContext& aGPUContext);
+	CUI_Manager();
 	~CUI_Manager();
 
 	void Update(const CE_Input& someInput);
 	
-	const CE_OldFont& GetFont() const { return *myFont; }
+	CE_Font& GetFont() const { return *myFont; }
 	const CE_Texture* GetTexture(const char* aTextureName) const;
 
 private:
@@ -30,6 +29,6 @@ private:
 	CE_Vector2f myOldMousePosition;
 	CUI_DragMessage* myDragMessage;
 
-	CE_OldFont* myFont;
+	CE_Font* myFont;
 };
 

@@ -138,6 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CE_AssetManager.cpp" />
+    <ClCompile Include="CE_Font.cpp" />
     <ClCompile Include="CE_MaterialManager.cpp" />
     <ClCompile Include="CE_ObjLoader.cpp" />
     <ClCompile Include="CE_ObjManager.cpp" />
@@ -162,7 +163,6 @@
     <ClCompile Include="CE_FileParser.cpp" />
     <ClCompile Include="CE_FileSystem.cpp" />
     <ClCompile Include="CE_BinaryFileWriter.cpp" />
-    <ClCompile Include="CE_OldFont.cpp" />
     <ClCompile Include="CE_GenericShader.cpp" />
     <ClCompile Include="CE_GeneticAlgorithm.cpp" />
     <ClCompile Include="CE_IcoSphereCreator.cpp" />
@@ -212,7 +212,6 @@
     <ClCompile Include="CUI_VBox.cpp" />
     <ClCompile Include="CUI_VisualNode.cpp" />
     <ClCompile Include="CUI_Widget.cpp" />
-    <ClCompile Include="CE_Text.cpp" />
     <ClCompile Include="CE_WindowManager.cpp" />
     <ClCompile Include="CE_BehaviorTree.cpp" />
     <ClCompile Include="CE_BTInitNode.cpp" />
@@ -248,7 +247,7 @@
     <ClInclude Include="CE_FileParser.h" />
     <ClInclude Include="CE_FileSystem.h" />
     <ClInclude Include="CE_BinaryFileWriter.h" />
-    <ClInclude Include="CE_OldFont.h" />
+    <ClInclude Include="CE_Font.h" />
     <ClInclude Include="CE_Game.h" />
     <ClInclude Include="CE_GBuffer.h" />
     <ClInclude Include="CE_GenericShader.h" />
@@ -340,7 +339,6 @@
     <ClInclude Include="CUI_VBox.h" />
     <ClInclude Include="CUI_VisualNode.h" />
     <ClInclude Include="CUI_Widget.h" />
-    <ClInclude Include="CE_Text.h" />
     <ClInclude Include="CE_WindowManager.h" />
     <ClInclude Include="CE_BehaviorTree.h" />
     <ClInclude Include="CE_BTInitNode.h" />

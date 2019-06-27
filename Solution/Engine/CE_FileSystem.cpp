@@ -117,7 +117,7 @@ void CE_FileSystem::ReadEntireFile(const CE_String& aFilePath, FileContent& aFil
 	long fileSize = ftell(file);
 	fseek(file, 0, SEEK_SET);
 
-	char* string = new char[fileSize + 1];
+	unsigned char* string = new unsigned char[fileSize + 1];
 	fread(string, fileSize, 1, file);
 	fclose(file);
 

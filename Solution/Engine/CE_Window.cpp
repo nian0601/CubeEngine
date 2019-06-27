@@ -65,7 +65,7 @@ CE_Window::CE_Window(const CE_Vector2i& aSize, const char* aTitle, CE_WindowMana
 	myDeferredRenderer = new CE_DeferredRenderer(gpuContext, *mySwapChain->GetBackbuffer(), myWindowSize);
 	myRendererProxy = new CE_RendererProxy();
 
-	myUIManager = new CUI_Manager(gpuContext);
+	myUIManager = new CUI_Manager();
 }
 
 

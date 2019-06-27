@@ -66,6 +66,8 @@ void CUI_VisualNode::PrepareLayout()
 
 	position.y += myLabel->GetSize().y;
 
+	// Add some extra spacing below the label
+	position.y += 10.f;
 
 	// Should split PrepareLayout into two steps:
 	// - PrepareSize
@@ -92,15 +94,18 @@ void CUI_VisualNode::PrepareLayout()
 		else
 			position.x = myPosition.x + mySize.x - 8.f;
 
-		position.y += 8.f;
-
 		widget->SetPosition(position);
 		widget->PrepareLayout();
 
-		position.y += 10.f;
+		CE_Vector2f pinSize = widget->GetSize();
+		if (pinSize.x > mySize.x)
+			mySize.x = pinSize.x;
 
-		if (widget->GetSize().x > mySize.x)
-			mySize.x = widget->GetSize().x;
+		// Move down one pin
+		position.y += pinSize.y * 0.5f;
+
+		// And add some spacing
+		position.y += 10.f;
 	}
 
 	mySize.y = (position.y - myPosition.y) + 10.f;

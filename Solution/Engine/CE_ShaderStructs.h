@@ -45,10 +45,6 @@ struct CE_ModelShaderData
 struct CE_SpriteShaderData
 {
 	CE_Vector4f myColor;
-	CE_Vector2f myPosition;
-	CE_Vector2f mySize;
-	CE_Vector2f myHotspot;
-	CE_Vector2f padding;
 };
 
 struct CE_PointLightShaderData

@@ -17,10 +17,11 @@ namespace CE_FileSystem
 	// goes out of scope, be careful if you allocated temporary FileContents
 	struct FileContent
 	{
-		FileContent() : myContents(nullptr) {}
-		~FileContent() { CE_SAFE_DELETE(myContents); }
-		const char* myContents;
+		FileContent(bool aAutoFreeContents = true) : myContents(nullptr), myAutoFreeContents(aAutoFreeContents) {}
+		~FileContent() { if(myAutoFreeContents) CE_SAFE_DELETE(myContents); }
+		const unsigned char* myContents;
 		long myFileSize;
+		bool myAutoFreeContents;
 	};
 
 	bool GetAllFilesFromDirectory(const char* aDirectory, CE_GrowingArray<FileInfo>& someOutFilePaths);

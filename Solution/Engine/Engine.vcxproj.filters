@@ -113,9 +113,6 @@
     <ClCompile Include="CE_GBuffer.cpp">
       <Filter>Rendering\Buffers</Filter>
     </ClCompile>
-    <ClCompile Include="CE_Text.cpp">
-      <Filter>Rendering\RenderObjects\Old</Filter>
-    </ClCompile>
     <ClCompile Include="CE_LineRenderObject.cpp">
       <Filter>Rendering\RenderObjects</Filter>
     </ClCompile>
@@ -254,7 +251,7 @@
     <ClCompile Include="CE_TextureManager.cpp">
       <Filter>Rendering\Assets</Filter>
     </ClCompile>
-    <ClCompile Include="CE_OldFont.cpp">
+    <ClCompile Include="CE_Font.cpp">
       <Filter>Rendering\Text</Filter>
     </ClCompile>
   </ItemGroup>
@@ -303,9 +300,6 @@
     </Filter>
     <Filter Include="Rendering\Buffers">
       <UniqueIdentifier>{81e2345d-017e-45f7-83be-6760dfdc014a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rendering\RenderObjects\Old">
-      <UniqueIdentifier>{58cdec27-3e0e-4aba-8fef-a8e825f9d233}</UniqueIdentifier>
     </Filter>
     <Filter Include="Rendering\RenderObjects\ModelCreator">
       <UniqueIdentifier>{d5fd9f88-a928-425f-823c-4e1205e85ae8}</UniqueIdentifier>
@@ -549,9 +543,6 @@
     <ClInclude Include="CE_GBuffer.h">
       <Filter>Rendering\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="CE_Text.h">
-      <Filter>Rendering\RenderObjects\Old</Filter>
-    </ClInclude>
     <ClInclude Include="CE_LineRenderObject.h">
       <Filter>Rendering\RenderObjects</Filter>
     </ClInclude>
@@ -718,7 +709,7 @@
     <ClInclude Include="CE_TextureManager.h">
       <Filter>Rendering\Assets</Filter>
     </ClInclude>
-    <ClInclude Include="CE_OldFont.h">
+    <ClInclude Include="CE_Font.h">
       <Filter>Rendering\Text</Filter>
     </ClInclude>
   </ItemGroup>

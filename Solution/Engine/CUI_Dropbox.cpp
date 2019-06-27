@@ -35,7 +35,7 @@ void CUI_Dropbox::PrepareLayout()
 
 	background->Hide();
 
-	if (IsEmpty())
+	if (IsEmpty() || !myIsExpanded)
 		return;
 	
 	position.y += mySize.y;
@@ -47,7 +47,7 @@ void CUI_Dropbox::PrepareLayout()
 
 	CE_Vector2f totalChildSize;
 	totalChildSize.x = mySize.x;
-	for (int i = myFirstListIndex; i < iterations; ++i)
+	for (int i = myFirstListIndex; i < iterations && i < myWidgets.Size(); ++i)
 	{
 		CUI_Widget* child = myWidgets[i];
 		child->Show();
@@ -64,11 +64,8 @@ void CUI_Dropbox::PrepareLayout()
 		}
 	}
 
-	if (myIsExpanded && !IsEmpty())
-	{
-		background->Show();
-		background->SetSize(totalChildSize);
-	}
+	background->Show();
+	background->SetSize(totalChildSize);
 }
 
 void CUI_Dropbox::Render(CE_RendererProxy& anRendererProxy)
@@ -81,7 +78,7 @@ void CUI_Dropbox::Render(CE_RendererProxy& anRendererProxy)
 
 		int iterations = myWidgets.Size() < myMaxVisibleListCount ? myWidgets.Size() : myMaxVisibleListCount;
 		iterations += myFirstListIndex;
-		for (int i = myFirstListIndex; i < iterations; ++i)
+		for (int i = myFirstListIndex; i < iterations && i < myWidgets.Size(); ++i)
 			myWidgets[i]->Render(anRendererProxy);
 	}
 }
@@ -104,7 +101,7 @@ bool CUI_Dropbox::OnMouseUp(const CUI_MouseMessage& aMessage)
 
 		int iterations = myWidgets.Size() < myMaxVisibleListCount ? myWidgets.Size() : myMaxVisibleListCount;
 		iterations += myFirstListIndex;
-		for (int i = myFirstListIndex; i < iterations; ++i)
+		for (int i = myFirstListIndex; i < iterations && i < myWidgets.Size(); ++i)
 		{
 			CUI_Widget* widget = myWidgets[i];
 			if (widget->OnMouseUp(aMessage) || widget->Contains(aMessage.myNewPosition))

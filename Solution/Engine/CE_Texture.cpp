@@ -54,7 +54,7 @@ void CE_Texture::InitAsBackBuffer(const CE_Vector2i& aSize, ID3D11Texture2D* aTe
 	CE_DirextXFactory::GetInstance()->CreateDepthStencilView(DXGI_FORMAT_D32_FLOAT, D3D11_DSV_DIMENSION_TEXTURE2D, myDepthTexture, myDepthStencil);
 }
 
-void CE_Texture::Load(const CE_String& aFilePath, CE_GPUContext& aGPUContext)
+void CE_Texture::Load(const CE_String& aFilePath, CE_GPUContext& /*aGPUContext*/)
 {
 	myFilePath = aFilePath;
 
@@ -62,12 +62,25 @@ void CE_Texture::Load(const CE_String& aFilePath, CE_GPUContext& aGPUContext)
 	unsigned char* data = stbi_load(aFilePath.c_str(), &mySize.x, &mySize.y, &nrChannels, 4);
 	CE_ASSERT(data != nullptr, "Failed to load %s", aFilePath.c_str());
 
+	Load(data, mySize, false);
+
+	stbi_image_free(data);
+}
+
+void CE_Texture::Load(unsigned char* someData, const CE_Vector2i& aSize, bool aIsSingleChannel)
+{
+	mySize = aSize;
+
 	D3D11_TEXTURE2D_DESC textureDesc = {};
 	textureDesc.Width = mySize.x;
 	textureDesc.Height = mySize.y;
 	textureDesc.MipLevels = 1;
 	textureDesc.ArraySize = 1;
-	textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+	if(aIsSingleChannel)
+		textureDesc.Format = DXGI_FORMAT_R8_UNORM;
+	else 
+		textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
 	textureDesc.SampleDesc.Count = 1;
 	textureDesc.SampleDesc.Quality = 0;
@@ -77,21 +90,25 @@ void CE_Texture::Load(const CE_String& aFilePath, CE_GPUContext& aGPUContext)
 	textureDesc.MiscFlags = 0;
 
 	D3D11_SUBRESOURCE_DATA textureData = {};
-	textureData.pSysMem = data;
-	textureData.SysMemPitch = sizeof(unsigned char) * 4 * mySize.x;
+	textureData.pSysMem = someData;
+
+	if(aIsSingleChannel)
+		textureData.SysMemPitch = sizeof(unsigned char) * mySize.x;
+	else
+		textureData.SysMemPitch = sizeof(unsigned char) * 4 * mySize.x;
+
 	textureData.SysMemSlicePitch = 0;
 
-	HRESULT result = aGPUContext.GetDevice()->CreateTexture2D(
+	
+	CE_Engine::GetGPUContext().GetDevice()->CreateTexture2D(
 		&textureDesc,
 		&textureData,
 		&myTexture);
-	CE_ASSERT(result == S_OK, "Failed to create texture for %s", aFilePath.c_str());
 
-	result = aGPUContext.GetDevice()->CreateShaderResourceView(
+	CE_Engine::GetGPUContext().GetDevice()->CreateShaderResourceView(
 		myTexture,
 		NULL,
 		&myShaderView);
-	CE_ASSERT(result == S_OK, "Failed to create shaderview for %s", aFilePath.c_str());
 }
 
 void CE_Texture::LoadDDS(const CE_String& aFilePath, CE_GPUContext& aGPUContext)

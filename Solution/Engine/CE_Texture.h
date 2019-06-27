@@ -17,6 +17,7 @@ public:
 
 	void Load(const CE_String& aFilePath, CE_GPUContext& aGPUContext);
 	void LoadDDS(const CE_String& aFilePath, CE_GPUContext& aGPUContext);
+	void Load(unsigned char* someData, const CE_Vector2i& aSize, bool aIsSingleChannel);
 
 	const CE_Vector2i& GetSize() const { return mySize; }
 

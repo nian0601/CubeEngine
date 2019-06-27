@@ -1,5 +1,15 @@
 #include "Shader_Variables.ce_shader"
 
+cbuffer GlobalData : register(b0)
+{
+	Matrix Projection;
+};
+
+cbuffer ObjectData : register(b1)
+{
+	float4 Color;
+};
+
 struct PosColorPixel
 {
 	float4 Position : SV_POSITION;
@@ -10,5 +20,5 @@ struct PosColorPixel
 float4 main(PosColorPixel anInput) : SV_TARGET
 {
 	float4 albedoSample = AlbedoTexture.Sample(PointSampler, anInput.TextureCoord);
-	return saturate(albedoSample);
+	return albedoSample * Color;
 };

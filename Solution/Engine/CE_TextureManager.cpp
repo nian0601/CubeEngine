@@ -21,7 +21,7 @@ CE_TextureManager::CE_TextureManager(CE_GPUContext& aGPUContext)
 	, myGPUContext(aGPUContext)
 {
 	myEmptyTexture = new CE_Texture();
-	myEmptyTexture->Load("Data/UI/empty.png", myGPUContext);
+	myEmptyTexture->Load("Data/UI/empty_white.png", myGPUContext);
 }
 
 const CE_Texture* CE_TextureManager::GetUITexture(CUI_Theme aTheme, const char* aTextureName)

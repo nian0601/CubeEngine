@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "CE_Renderer.h"
-#include "CE_Text.h"
 #include "CE_DirextXFactory.h"
 #include "CE_RendererProxy.h"
 #include "CE_LineRenderObject.h"
@@ -17,56 +16,17 @@
 #include "CE_TextureManager.h"
 #include <d3d11.h>
 #include "CE_GPUBuffer.h"
+#include "CE_Font.h"
 
 CE_Renderer::CE_Renderer(CE_GPUContext& anGPUContext)
 	: myGPUContext(anGPUContext)
 {
-	CE_ShaderManager* shaderManager = CE_ShaderManager::GetInstance();
-	CE_GenericShader* textVX = shaderManager->GetShader("Text.vx");
-	CE_GenericShader* textPX = shaderManager->GetShader("Text.px");
-	myTextShader = new CE_ShaderPair(textVX, textPX);
-
-	myText = new CE_Text(myGPUContext);
-	myText->Init();
-
-	myLineObject = new CE_LineRenderObject();
-
-	myCubeModel = new CE_RenderObject();
-	myCubeModel->InitCube();
-
-	mySphereModel = new CE_RenderObject();
-	mySphereModel->InitSphere();
-
-	mySprite = new CE_RenderObject();
-	mySprite->InitSprite();
-	mySprite->CreateObjectData(1, sizeof(CE_SpriteShaderData));
-	
-	myViewProjectionConstantBuffer = new CE_ConstantBuffer();
-	myViewProjectionConstantBuffer->Init(0, sizeof(CE_ViewProjectionData));
-
-	myOrthagonalConstantBuffer = new CE_ConstantBuffer();
-	myOrthagonalConstantBuffer->Init(0, sizeof(CE_ProjectionData));
-
-	myModelObjectDataConstantBuffer = new CE_ConstantBuffer();
-	myModelObjectDataConstantBuffer->Init(1, sizeof(CE_ModelShaderData));
-
-
-	CE_GenericShader* cubeVX = shaderManager->GetShader("Cube.vx");
-	CE_GenericShader* cubePX = shaderManager->GetShader("Cube.px");
-	myCubeShader = new CE_ShaderPair(cubeVX, cubePX);
-
-	CE_GenericShader* lineVX = shaderManager->GetShader("Line.vx");
-	CE_GenericShader* linePX = shaderManager->GetShader("Line.px");
-	myLineShader = new CE_ShaderPair(lineVX, linePX);
-
-	CE_GenericShader* line2DVX = shaderManager->GetShader("Line2D.vx");
-	myLine2DShader = new CE_ShaderPair(line2DVX, linePX);
-
-	CE_GenericShader* spriteVX = shaderManager->GetShader("Sprite.vx");
-	CE_GenericShader* spritePX = shaderManager->GetShader("Sprite.px");
-	mySpriteShader = new CE_ShaderPair(spriteVX, spritePX);
+	SetupRenderObjects();
+	SetupShaders();
+	SetupConstantBuffers();
 
 	myEmptyTexture = CE_TextureManager::GetInstance()->GetEmptyTexture();
+	myFont = new CE_Font("c:/Windows/Fonts/arial.ttf", 32.f);
 }
 
 CE_Renderer::~CE_Renderer()
@@ -75,21 +35,20 @@ CE_Renderer::~CE_Renderer()
 	CE_SAFE_DELETE(myOrthagonalConstantBuffer);
 	CE_SAFE_DELETE(myViewProjectionConstantBuffer);
 
-	CE_SAFE_DELETE(mySprite);
+	CE_SAFE_DELETE(myQuad);
 	CE_SAFE_DELETE(mySphereModel);
 
 	CE_SAFE_DELETE(myCubeModel);
 
 	CE_SAFE_DELETE(myLineObject);
 
-	CE_SAFE_DELETE(myText);
-
-	CE_SAFE_DELETE(myTextShader);
 	CE_SAFE_DELETE(myLineShader);
 	CE_SAFE_DELETE(myLine2DShader);
 	CE_SAFE_DELETE(mySpriteShader);
 
 	CE_SAFE_DELETE(myCubeShader);
+
+	CE_SAFE_DELETE(myFont);
 }
 
 void CE_Renderer::UpdateConstantBuffers(const CE_Camera& aCamera)
@@ -115,10 +74,12 @@ void CE_Renderer::Render3D(const CE_RendererProxy& aRendererProxy)
 
 void CE_Renderer::Render2D(const CE_RendererProxy& aRendererProxy)
 {
+	myOrthagonalConstantBuffer->SendToGPU();
+
 	for (const CE_2DData& data : aRendererProxy.Get2DData())
 	{
 		if (data.myType == CE_2DData::SPRITE)
-			RenderSprite(data);
+			RenderQuad(data);
 		else if (data.myType == CE_2DData::TEXT)
 			RenderText(data);
 		else if (data.myType == CE_2DData::LINE)
@@ -141,6 +102,49 @@ void CE_Renderer::RenderLines(const CE_GrowingArray<CE_Line>& someLines)
 	
 	myLineObject->SetLines(someLines, myGPUContext);
 	myLineObject->Render(myGPUContext);
+}
+
+void CE_Renderer::SetupRenderObjects()
+{
+	myCubeModel = new CE_RenderObject();
+	myCubeModel->InitCube();
+
+	mySphereModel = new CE_RenderObject();
+	mySphereModel->InitSphere();
+
+	myQuad = new CE_RenderObject();
+	myQuad->InitSprite();
+	myQuad->CreateObjectData(1, sizeof(CE_SpriteShaderData));
+
+	myLineObject = new CE_LineRenderObject();
+}
+
+void CE_Renderer::SetupShaders()
+{
+	CE_ShaderManager* shaderManager = CE_ShaderManager::GetInstance();
+	CE_GenericShader* cubeVX = shaderManager->GetShader("Cube.vx");
+	CE_GenericShader* cubePX = shaderManager->GetShader("Cube.px");
+	myCubeShader = new CE_ShaderPair(cubeVX, cubePX);
+
+	CE_GenericShader* quadVX = shaderManager->GetShader("Quad.vx");
+	mySpriteShader = new CE_ShaderPair(quadVX, shaderManager->GetShader("Sprite.px"));
+	myTextShader = new CE_ShaderPair(quadVX, shaderManager->GetShader("Text.px"));
+
+	CE_GenericShader* linePX = shaderManager->GetShader("Line.px");
+	myLineShader = new CE_ShaderPair(shaderManager->GetShader("Line.vx"), linePX);
+	myLine2DShader = new CE_ShaderPair(shaderManager->GetShader("Line2D.vx"), linePX);
+}
+
+void CE_Renderer::SetupConstantBuffers()
+{
+	myViewProjectionConstantBuffer = new CE_ConstantBuffer();
+	myViewProjectionConstantBuffer->Init(0, sizeof(CE_ViewProjectionData));
+
+	myModelObjectDataConstantBuffer = new CE_ConstantBuffer();
+	myModelObjectDataConstantBuffer->Init(1, sizeof(CE_ModelShaderData));
+
+	myOrthagonalConstantBuffer = new CE_ConstantBuffer();
+	myOrthagonalConstantBuffer->Init(0, sizeof(CE_ProjectionData));
 }
 
 void CE_Renderer::RenderModels(const CE_RendererProxy& aRendererProxy)
@@ -206,33 +210,46 @@ void CE_Renderer::RenderObjs(const CE_RendererProxy& aRendererProxy)
 
 void CE_Renderer::RenderText(const CE_2DData& aTextData)
 {
-	if (aTextData.myString.Empty())
-		return;
+	CE_2DData quadData;
+	quadData.myType = CE_2DData::TEXT;
 
-	CE_SetResetBlend blend(ALPHA_BLEND);
-	CE_SetResetDepth depth(NO_READ_NO_WRITE);
+	CE_Vector2f currentPoint = aTextData.myPosition;
+	currentPoint.y += myFont->GetLineHeight();
+	CE_Vector2f tempPoint = currentPoint;
 
-	CE_ShaderPair* shader = myTextShader;
-	CE_ASSERT(shader != nullptr, "We dont have a textshader????");
+	for (int i = 0; i < aTextData.myString.Lenght() + 1; ++i)
+	{
+		const CE_GlyphData& glyph = myFont->GetGlyphData(aTextData.myString[i]);
+		quadData.mySize.x = (float)glyph.mySize.x;
+		quadData.mySize.y = (float)glyph.mySize.y;
+		quadData.myTexture = glyph.myTexture;
 
-	myOrthagonalConstantBuffer->SendToGPU();
-	shader->Activate();
+		tempPoint.y -= glyph.myBoundingBox.w;
 
-	myText->SetPosition(aTextData.myPosition);
-	myText->SetText(aTextData.myString);
-	myText->SetColor(aTextData.myColor);
-	myText->Render();
+		quadData.myPosition = tempPoint;
+		quadData.myColor = { 0.f, 0.f, 0.f, 1.f };
+		RenderQuad(quadData);
+
+		tempPoint.y += 1.f;
+		tempPoint.x -= 1.f;
+		quadData.myPosition = tempPoint;
+		//quadData.myColor = { 1.f, 1.f, 1.f, 1.f };
+		quadData.myColor = aTextData.myColor;
+		RenderQuad(quadData);
+
+		currentPoint.x += glyph.myAdvance;
+		tempPoint = currentPoint;
+	}
 }
 
-void CE_Renderer::RenderSprite(const CE_2DData& aSpriteData)
+void CE_Renderer::RenderQuad(const CE_2DData& someQuadData)
 {
 	CE_Vector2f topLeft;
-	topLeft.x = aSpriteData.myPosition.x - mySceeenSize.x;
-	topLeft.y = -aSpriteData.myPosition.y + mySceeenSize.y;
-	topLeft.y -= aSpriteData.mySize.y;
-	CE_Vector2f bottomRight = topLeft + aSpriteData.mySize;
-	topLeft /= mySceeenSize;
-	bottomRight /= mySceeenSize;
+	topLeft.x = someQuadData.myPosition.x;
+	topLeft.y = -someQuadData.myPosition.y - someQuadData.mySize.y;
+	CE_Vector2f bottomRight = topLeft;
+	bottomRight.x += someQuadData.mySize.x;
+	bottomRight.y += someQuadData.mySize.y;
 
 	CE_Pos_UV_Vert vertices[4];
 	vertices[0].myPosition = CE_Vector4f(topLeft.x, topLeft.y, 0.0f, 1.f); //topleft
@@ -246,34 +263,29 @@ void CE_Renderer::RenderSprite(const CE_2DData& aSpriteData)
 
 	vertices[3].myPosition = CE_Vector4f(bottomRight.x, bottomRight.y, 0.0f, 1.f); //bottomright
 	vertices[3].myTexCoord = CE_Vector2f(1.f, 0.f);
-	mySprite->UpdateVertexBuffer(vertices, 4, sizeof(CE_Pos_UV_Vert));
+	myQuad->UpdateVertexBuffer(vertices, 4, sizeof(CE_Pos_UV_Vert));
 
 
 	CE_SetResetBlend blend(ALPHA_BLEND);
 	CE_SetResetDepth depth(NO_READ_NO_WRITE);
 
-	myOrthagonalConstantBuffer->SendToGPU();
-	mySpriteShader->Activate();
+	if (someQuadData.myType == CE_2DData::TEXT)
+		myTextShader->Activate();
+	else if (someQuadData.myType == CE_2DData::SPRITE)
+		mySpriteShader->Activate();
 
 	CE_SpriteShaderData spriteData;
-
-	spriteData.myColor = aSpriteData.myColor;
-	//spriteData.myPosition = aSpriteData.myPosition;
-	//spriteData.mySize.x = aSpriteData.mySizeAndHotspot.x * 0.5f;
-	//spriteData.mySize.y = aSpriteData.mySizeAndHotspot.y * 0.5f;
-	//spriteData.myHotspot.x = aSpriteData.mySizeAndHotspot.z * 2.f;
-	//spriteData.myHotspot.y = aSpriteData.mySizeAndHotspot.w * 2.f;
-
-	mySprite->SetObjectData(&spriteData, sizeof(spriteData));
+	spriteData.myColor = someQuadData.myColor;
+	myQuad->SetObjectData(&spriteData, sizeof(spriteData));
 
 	ID3D11DeviceContext* context = myGPUContext.GetContext();
 	ID3D11ShaderResourceView* resource = myEmptyTexture->GetShaderView();
 
-	if (const CE_Texture* texture = aSpriteData.myTexture)
+	if (const CE_Texture* texture = someQuadData.myTexture)
 		resource = texture->GetShaderView();
 
 	context->PSSetShaderResources(0, 1, &resource);
-	mySprite->Render();
+	myQuad->Render();
 }
 
 void CE_Renderer::Render2DLine(const CE_2DData& aLineData)
@@ -281,7 +293,6 @@ void CE_Renderer::Render2DLine(const CE_2DData& aLineData)
 	CE_SetResetBlend blend(ALPHA_BLEND);
 	CE_SetResetDepth depth(NO_READ_NO_WRITE);
 
-	myOrthagonalConstantBuffer->SendToGPU();
 	myLine2DShader->Activate();
 
 	CE_Line line;
@@ -296,4 +307,4 @@ void CE_Renderer::Render2DLine(const CE_2DData& aLineData)
 
 	myLineObject->SetLine(line, myGPUContext);
 	myLineObject->Render(myGPUContext);
-}
+};

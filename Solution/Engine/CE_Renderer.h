@@ -13,6 +13,8 @@ class CE_ConstantBuffer;
 class CE_ShaderPair;
 class CE_Texture;
 
+class CE_Font;
+
 #include "CE_DebugPrimitives.h"
 #include "CE_RendererProxy.h"
 
@@ -28,34 +30,37 @@ public:
 	void RenderLines(const CE_GrowingArray<CE_Line>& someLines);
 
 private:
+	void SetupRenderObjects();
+	void SetupShaders();
+	void SetupConstantBuffers();
+
 	void RenderModels(const CE_RendererProxy& aRendererProxy);
 	void RenderObjs(const CE_RendererProxy& aRendererProxy);
+	void RenderQuad(const CE_2DData& someQuadData);
 	void RenderText(const CE_2DData& aTextData);
-	void RenderSprite(const CE_2DData& aSpriteData);
 	void Render2DLine(const CE_2DData& aLineData);
 
 	CE_GPUContext& myGPUContext;
 
 	CE_RenderObject* myCubeModel;
 	CE_RenderObject* mySphereModel;
-
-	CE_RenderObject* mySprite;
-	CE_ShaderPair* mySpriteShader;
-
-	CE_Text* myText;
-	CE_ShaderPair* myTextShader;
+	CE_RenderObject* myQuad;
 
 	CE_LineRenderObject* myLineObject;
 
-	CE_ConstantBuffer* myViewProjectionConstantBuffer;
-	CE_ConstantBuffer* myOrthagonalConstantBuffer;
-
-	CE_ConstantBuffer* myModelObjectDataConstantBuffer;
-	CE_Vector2f mySceeenSize;
-
 	CE_ShaderPair* myCubeShader;
+	CE_ShaderPair* mySpriteShader;
+	CE_ShaderPair* myTextShader;
 	CE_ShaderPair* myLineShader;
 	CE_ShaderPair* myLine2DShader;
+
+	CE_ConstantBuffer* myViewProjectionConstantBuffer;
+	CE_ConstantBuffer* myModelObjectDataConstantBuffer;
+	CE_ConstantBuffer* myOrthagonalConstantBuffer;
+
+	CE_Font* myFont;
+
+	CE_Vector2f mySceeenSize;
 
 	const CE_Texture* myEmptyTexture;
 };

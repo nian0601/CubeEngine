@@ -1,21 +1,16 @@
 #include "Shader_Variables.ce_shader"
 
-static const float SMOOTHING = 1.0/32.0;
-static const float THRESHOLD = 0.3f;
-
 struct PosColorPixel
 {
 	float4 Position : SV_POSITION;
 	float4 Color : COLOR;
-	float2 Tex : TEXCOORD0;
+	float2 TextureCoord : TEXCOORD;
 };
 
 float4 main(PosColorPixel anInput) : SV_TARGET
 {
-	float distAlphaMask = AlbedoTexture.Sample(PointSampler, anInput.Tex).a;
-	
-	float alpha = smoothstep(THRESHOLD - SMOOTHING, THRESHOLD + SMOOTHING, distAlphaMask);
-
-	float4 color = float4(anInput.Color.xyz, alpha);
-	return color;
+	float alpha = AlbedoTexture.Sample(PointSampler, anInput.TextureCoord).x;
+	float4 result = anInput.Color;
+	result.w = alpha;
+	return result;
 };
